@@ -73,3 +73,6 @@ tools/docker/geth-testnet/data-geth1/
 .history/
 .manual-geth-artillery-config.yaml
 packages/cactus-plugin-ledger-connector-fabric/src/test/typescript/fixtures/go/asset-transfer-private-data/chaincode-go/chaincode-go
+packages/cacti-plugin-asset-definition-authority/CHANGELOG.md
+packages/cacti-plugin-asset-definition-authority/package.json
+packages/cacti-plugin-asset-definition-authority/README.md
