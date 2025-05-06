@@ -13,10 +13,6 @@ import {
 import type { SATPGatewayConfig } from "../../../main/typescript/plugin-satp-hermes-gateway";
 import { createClient } from "../test-utils";
 import { HealthCheckResponseStatusEnum } from "../../../main/typescript";
-import {
-  knexClientConnection,
-  knexSourceRemoteConnection,
-} from "../knex.config";
 import { PluginRegistry } from "@hyperledger/cactus-core";
 
 const logLevel: LogLevelDesc = "DEBUG";
@@ -58,8 +54,6 @@ const options: SATPGatewayConfig = {
     gatewayClientPort: 3011,
     address: "http://localhost",
   },
-  localRepository: knexClientConnection,
-  remoteRepository: knexSourceRemoteConnection,
   pluginRegistry: new PluginRegistry({ plugins: [] }),
 };
 
