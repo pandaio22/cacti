@@ -21817,6 +21817,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp":
+  version: 0.0.0-use.local
+  resolution: "cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp"
+  languageName: unknown
+  linkType: soft
+
+"cacti-test-asset-schema-architecture-plugin-satp@workspace:packages/cacti-test-asset-schema-architecture-plugin-satp":
+  version: 0.0.0-use.local
+  resolution: "cacti-test-asset-schema-architecture-plugin-satp@workspace:packages/cacti-test-asset-schema-architecture-plugin-satp"
+  languageName: unknown
+  linkType: soft
+
 "call-bind-apply-helpers@npm:^1.0.0, call-bind-apply-helpers@npm:^1.0.1, call-bind-apply-helpers@npm:^1.0.2":
   version: 1.0.2
   resolution: "call-bind-apply-helpers@npm:1.0.2"

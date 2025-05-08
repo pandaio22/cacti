@@ -189,6 +189,12 @@
     },
     {
       "path": "./packages/cactus-plugin-persistence-fabric/tsconfig.json"
+    },
+    {
+      "path": "./packages/cacti-asset-schema-architecture-plugin-satp/tsconfig.json"
+    },
+    {
+      "path": "./packages/cacti-test-asset-schema-architecture-plugin-satp/tsconfig.json"
     }
   ],
   "compilerOptions": {

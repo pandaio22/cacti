@@ -1,0 +1,30 @@
+{
+  "name": "cacti-asset-schema-architecture-plugin-satp",
+  "version": "1.0.0",
+  "description": "An implementation of the asset schema architecture used to setup assets to transfer using SATP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "(.+)\\.js": "$1"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pandaio22/cacti.git#satp-dev-thesis"
+  },
+  "keywords": [
+    "SATP",
+    "Distributed-Ledger-Technology",
+    "Interoperability",
+    "Assets"
+  ],
+  "author": "Rodolfo Carapau <rodolfo.carapau@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pandaio22/cacti/issues"
+  },
+  "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme"
+}

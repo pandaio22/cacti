@@ -1,0 +1,26 @@
+{
+  "name": "cacti-test-asset-schema-architecture-plugin-satp",
+  "version": "1.0.0",
+  "description": "A test package for cacti-asset-schema-architecture-plugin-satp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pandaio22/cacti.git#satp-dev-thesis"
+  },
+  "keywords": [
+    "SATP",
+    "Distributed-Ledger-Technology",
+    "Interoperability",
+    "Tests",
+    "Assets"
+  ],
+  "author": "Rodolfo Carapau <rodolfo.carapau@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pandaio22/cacti/issues"
+  },
+  "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme"
+}
