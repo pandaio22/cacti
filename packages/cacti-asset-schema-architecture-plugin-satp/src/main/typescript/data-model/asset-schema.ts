@@ -1,61 +1,77 @@
-export interface IAssetSchemaContext {
-  version: {
-    "@id": string;
-    "@type": string;
-  };
-  fungibility: {
-    "@id": string;
-    "@type": string;
-  };
-  facets: {
-    "@id": string;
-  };
-  organization_key: {
-    "@id": string;
-    "@context": {
-      public_key: {
-        "@id": string;
-        "@type": string;
-      };
-      issued: {
-        "@id": string;
-        "@type": string;
-      };
-    };
-  };
+import { z } from "zod";
+
+// Reusable pieces
+const JsonLdId = z.object({
+  "@id": z.string(),
+});
+
+const JsonLdType = z.object({
+  "@type": z.string(),
+});
+
+// Schema for IAssetSchemaContext
+const AssetSchemaContext = z.object({
+  version: JsonLdId.merge(JsonLdType),
+  fungibility: JsonLdId.merge(JsonLdType),
+  facets: JsonLdId,
+  organization_key: JsonLdId.extend({
+    "@context": z.object({
+      public_key: JsonLdId.merge(JsonLdType),
+      issued: JsonLdId.merge(JsonLdType),
+    }),
+  }),
+});
+
+// Schema for IAssetSchema
+export const AssetSchema = z.object({
+  "@context": AssetSchemaContext,
+  "@id": z.string(),
+});
+
+// ✅ Infer the TypeScript type from the schema
+type AssetSchemaType = z.infer<typeof AssetSchema>;
+
+function validateAndUseSchema(data: unknown): AssetSchemaType | null {
+  const parsed = AssetSchema.safeParse(data);
+
+  if (!parsed.success) {
+    console.error("❌ Invalid AssetSchema:", parsed.error.format());
+    return null;
+  }
+
+  const schema: AssetSchemaType = parsed.data;
+
+  // Now you can safely access properties with full type support
+  console.log("✅ Valid Schema ID:", schema["@id"]);
+  console.log("Version ID:", schema["@context"].version["@id"]);
+  console.log(
+    "Issued Type:",
+    schema["@context"].organization_key["@context"].issued["@type"],
+  );
+
+  return schema;
 }
 
-export interface IAssetSchema {
-  "@context": IAssetSchemaContext;
-  "@id": string;
-}
-
-export const assetSchema: IAssetSchema = {
+const input = {
+  "@id": "https://example.org/schema/asset/1",
   "@context": {
-    version: {
-      "@id": "https://example.com/schemas/v1",
-      "@type": "SchemaVersion",
-    },
+    version: { "@id": "http://schema.org/version", "@type": "xsd:string" },
     fungibility: {
-      "@id": "https://example.com/schemas/fungibility/fungible",
-      "@type": "FungibilityType",
+      "@id": "http://schema.org/fungibility",
+      "@type": "xsd:boolean",
     },
-    facets: {
-      "@id": "https://example.com/schemas/facets/asset-facets",
-    },
+    facets: { "@id": "http://schema.org/facets" },
     organization_key: {
-      "@id": "https://example.com/organizations/org123",
+      "@id": "http://schema.org/org-key",
       "@context": {
         public_key: {
-          "@id": "https://example.com/organizations/org123/public-key",
-          "@type": "PublicKey",
+          "@id": "http://schema.org/pubkey",
+          "@type": "xsd:string",
         },
-        issued: {
-          "@id": "https://example.com/organizations/org123/issued",
-          "@type": "IssuedDate",
-        },
+        issued: { "@id": "http://schema.org/issued", "@type": "xsd:dateTime" },
       },
     },
   },
-  "@id": "https://example.com/schemas/asset-schema-001",
 };
+
+validateAndUseSchema(input);
