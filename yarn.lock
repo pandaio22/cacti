@@ -21820,6 +21820,8 @@ __metadata:
 "cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp":
   version: 0.0.0-use.local
   resolution: "cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp"
+  dependencies:
+    zod: "npm:^3.24.4"
   languageName: unknown
   linkType: soft
 
