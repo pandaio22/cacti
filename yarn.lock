@@ -21822,6 +21822,7 @@ __metadata:
   resolution: "cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp"
   dependencies:
     zod: "npm:^3.24.4"
+    zod-to-json-schema: "npm:^3.24.5"
   languageName: unknown
   linkType: soft
 
@@ -56415,6 +56416,15 @@ __metadata:
   dependencies:
     "@types/yoga-layout": "npm:1.9.2"
   checksum: 10/fe36fadae9b30710083f76c73e87479c2eb291ff7c560c35a9e2b8eb78f43882ace63cc80cdaecae98ee2e4168e1bf84dc65b2f5ae1bfa31df37603c46683bd6
+  languageName: node
+  linkType: hard
+
+"zod-to-json-schema@npm:^3.24.5":
+  version: 3.24.5
+  resolution: "zod-to-json-schema@npm:3.24.5"
+  peerDependencies:
+    zod: ^3.24.1
+  checksum: 10/1af291b4c429945c9568c2e924bdb7c66ab8d139cbeb9a99b6e9fc9e1b02863f85d07759b9303714f07ceda3993dcaf0ebcb80d2c18bb2aaf5502b2c1016affd
   languageName: node
   linkType: hard
 

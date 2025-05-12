@@ -30,7 +30,7 @@ const JsonLdVersion = z.object({
  * A reusable Zod schema representing a JSON-LD object with a `@id` and `@type` field
  * of type Boolean.
  */
-const JsonLdFungibility = z.object({
+const JsonLdBoolean = z.object({
   "@id": z.string().url({
     message: "Please select a valid URL",
   }),
@@ -70,7 +70,7 @@ const Namespaces = z.object({
 const NonRequiredAssetSchemaContext = z.object({
   "@version": JsonLdVersion,
   namespaces: Namespaces,
-  fungibility: JsonLdFungibility,
+  fungibility: JsonLdBoolean,
   facets: JsonLdId,
   organization_key: JsonLdId.extend({
     "@context": z.object({
@@ -95,7 +95,69 @@ const AssetSchemaContext = NonRequiredAssetSchemaContext.required({
  */
 const NonRequiredAssetSchema = z.object({
   "@context": AssetSchemaContext,
-  "@id": z.string().url(),
+  "@id": z.string(),
 });
 
 export const AssetSchema = NonRequiredAssetSchema.required();
+
+
+
+/**
+ * TypeScript type inferred from the `AssetSchema` Zod schema.
+ */
+type AssetSchemaType = z.infer<typeof AssetSchema>;
+
+/**
+ * Validates unknown input data against the `AssetSchema`.
+ *
+ * @param data - The unknown input data to validate.
+ * @returns The parsed `AssetSchemaType` object if valid, or `null` if validation fails.
+ */
+function validateAndUseSchema(data: unknown): AssetSchemaType | null {
+  const parsed = AssetSchema.safeParse(data);
+
+  if (!parsed.success) {
+    console.error("❌ Invalid AssetSchema:", parsed.error.format());
+    return null;
+  }
+
+  const schema: AssetSchemaType = parsed.data;
+
+  // Log specific schema properties for demonstration purposes
+  console.log("✅ Valid Schema ID:", schema["@id"]);
+  console.log("Version ID:", schema["@context"].version["@id"]);
+  console.log(
+    "Issued Type:",
+    schema["@context"].organization_key["@context"].issued["@type"],
+  );
+
+  return schema;
+}
+
+/**
+ * Example input data conforming to the AssetSchema.
+ * Used to demonstrate validation and usage.
+ */
+const input = {
+  "@id": "https://example.org/schema/asset/1",
+  "@context": {
+    version: { "@id": "http://schema.org/version", "@type": "xsd:string" },
+    fungibility: {
+      "@id": "http://schema.org/fungibility",
+      "@type": "xsd:boolean",
+    },
+    facets: { "@id": "http://schema.org/facets" },
+    organization_key: {
+      "@id": "http://schema.org/org-key",
+      "@context": {
+        public_key: {
+          "@id": "http://schema.org/pubkey",
+          "@type": "xsd:string",
+        },
+        issued: { "@id": "http://schema.org/issued", "@type": "xsd:dateTime" },
+      },
+    },
+  },
+};
+
+validateAndUseSchema(input);

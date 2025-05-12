@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme",
   "dependencies": {
-    "zod": "^3.24.4"
+    "zod": "^3.24.4",
+    "zod-to-json-schema": "^3.24.5"
   }
 }

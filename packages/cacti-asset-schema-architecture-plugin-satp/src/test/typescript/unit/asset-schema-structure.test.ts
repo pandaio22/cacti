@@ -1,13 +1,12 @@
 import { AssetSchema } from "../../../main/typescript/data-model/asset-schema";
 
 describe("AssetSchema Zod validation", () => {
-  // Valid schema for testing
   const validAssetSchema = {
     "@id": "https://satp.example.org/asset_schema/",
     "@context": {
       "@version": {
-        "@value": 1.1, // version field now has @value and @type
-        "@type": "http://www.w3.org/2001/XMLSchema#decimal", // example type URL
+        "@value": 1.1,
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
       },
       namespaces: {
         foaf: "http://xmlns.com/foaf/0.1/",
@@ -17,8 +16,8 @@ describe("AssetSchema Zod validation", () => {
         rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
       },
       fungibility: {
-        "@value": true,
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean", // example type URL
+        "@id": "http://satp.example.org/asset_schema/fungibility",
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
       },
       facets: {
         "@id": "https://satp.example.org/asset_schema_facets",
@@ -40,65 +39,120 @@ describe("AssetSchema Zod validation", () => {
   };
 
   it("validates a correct asset schema", () => {
+    //Arrange and Act
     const result = AssetSchema.safeParse(validAssetSchema);
+    //Assert
     expect(result.success).toBe(true);
   });
-
   it("fails validation when @version is missing", () => {
-    const invalidSchema = { ...validAssetSchema };
-    delete invalidSchema["@context"]["@version"];
+    const { ["@version"]: _, ...contextWithoutVersion } =
+      validAssetSchema["@context"];
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": contextWithoutVersion,
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when namespaces is missing", () => {
-    const invalidSchema = { ...validAssetSchema };
-    delete invalidSchema["@context"].namespaces;
+    const { namespaces, ...contextWithoutNamespaces } =
+      validAssetSchema["@context"];
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": contextWithoutNamespaces,
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when fungibility has the wrong @type", () => {
-    const invalidSchema = { ...validAssetSchema };
-    invalidSchema["@context"].fungibility["@type"] = "xsd:string";
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": {
+        ...validAssetSchema["@context"],
+        fungibility: {
+          ...validAssetSchema["@context"].fungibility,
+          "@type": "not-a-valid-url",
+        },
+      },
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when @id is not a valid URL", () => {
-    const invalidSchema = { ...validAssetSchema };
-    invalidSchema["@id"] = "not-a-valid-url";
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@id": "not-a-valid-url",
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when @version is not correctly structured", () => {
-    const invalidSchema = { ...validAssetSchema };
-    invalidSchema["@context"]["@version"] = {
-      "@value": "not-a-number",
-      "@type": "http://www.w3.org/2001/XMLSchema#string",
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": {
+        ...validAssetSchema["@context"],
+        "@version": {
+          "@value": "not-a-number",
+          "@type": "http://www.w3.org/2001/XMLSchema#string",
+        },
+      },
     };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation if facets is missing @id", () => {
-    const invalidSchema = { ...validAssetSchema };
-    delete invalidSchema["@context"].facets["@id"];
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": {
+        ...validAssetSchema["@context"],
+        facets: {},
+      },
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when organization_key's public_key is missing @id", () => {
-    const invalidSchema = { ...validAssetSchema };
-    delete invalidSchema["@context"].organization_key["@context"].public_key["@id"];
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": {
+        ...validAssetSchema["@context"],
+        organization_key: {
+          ...validAssetSchema["@context"].organization_key,
+          "@context": {
+            ...validAssetSchema["@context"].organization_key["@context"],
+            public_key: {
+              "@type": "http://www.w3.org/2001/XMLSchema#string",
+            },
+          },
+        },
+      },
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
 
   it("fails validation when organization_key's issued is missing @id", () => {
-    const invalidSchema = { ...validAssetSchema };
-    delete invalidSchema["@context"].organization_key["@context"].issued["@id"];
+    const invalidSchema = {
+      ...validAssetSchema,
+      "@context": {
+        ...validAssetSchema["@context"],
+        organization_key: {
+          ...validAssetSchema["@context"].organization_key,
+          "@context": {
+            ...validAssetSchema["@context"].organization_key["@context"],
+            issued: {
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            },
+          },
+        },
+      },
+    };
     const result = AssetSchema.safeParse(invalidSchema);
     expect(result.success).toBe(false);
   });
