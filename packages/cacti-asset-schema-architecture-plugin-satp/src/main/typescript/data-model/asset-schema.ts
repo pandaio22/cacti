@@ -99,3 +99,4 @@ const NonRequiredAssetSchema = z.object({
 });
 
 export const AssetSchema = NonRequiredAssetSchema.required();
+export type AssetSchemaType = z.infer<typeof AssetSchema>;
