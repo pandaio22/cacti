@@ -1,18 +1,76 @@
 import { z } from "zod";
 
-// Reusable pieces
+/**
+ * A reusable Zod schema representing a JSON-LD object with an `@id` field.
+ */
 const JsonLdId = z.object({
-  "@id": z.string(),
+  "@id": z.string().url({
+    message: "Please select a valid URL",
+  }),
 });
 
+/**
+ * A reusable Zod schema representing a JSON-LD object with an `@type` field.
+ */
 const JsonLdType = z.object({
-  "@type": z.string(),
+  "@type": z.string().url({
+    message: "Please select a valid URL",
+  }),
 });
 
-// Schema for IAssetSchemaContext
-const AssetSchemaContext = z.object({
-  version: JsonLdId.merge(JsonLdType),
-  fungibility: JsonLdId.merge(JsonLdType),
+const JsonLdVersion = z.object({
+  "@value": z.number({
+    message: "Please select a valid number",
+  }),
+  "@type": z.string().url({
+    message: "Please select a valid URL",
+  }),
+});
+/**
+ * A reusable Zod schema representing a JSON-LD object with a `@id` and `@type` field
+ * of type Boolean.
+ */
+const JsonLdBoolean = z.object({
+  "@id": z.string().url({
+    message: "Please select a valid URL",
+  }),
+  "@type": z.string().url({
+    message: "Please select a valid URL",
+  }),
+});
+
+/**
+ * Namespaces block defining common RDF/OWL/Schema prefixes
+ */
+const Namespaces = z.object({
+  foaf: z.string().url({
+    message: "Please select a valid URL",
+  }),
+  schema: z.string().url({
+    message: "Please select a valid URL",
+  }),
+  skos: z.string().url({
+    message: "Please select a valid URL",
+  }),
+  xsd: z.string().url({
+    message: "Please select a valid URL",
+  }),
+  rdf: z.string().url({
+    message: "Please select a valid URL",
+  }),
+});
+
+/**
+ * Zod schema defining the structure of the `@context` field
+ * for an AssetSchema object.
+ *
+ * Includes references to semantic version, fungibility, facets,
+ * and organizational metadata.
+ */
+const NonRequiredAssetSchemaContext = z.object({
+  "@version": JsonLdVersion,
+  namespaces: Namespaces,
+  fungibility: JsonLdBoolean,
   facets: JsonLdId,
   organization_key: JsonLdId.extend({
     "@context": z.object({
@@ -22,15 +80,37 @@ const AssetSchemaContext = z.object({
   }),
 });
 
-// Schema for IAssetSchema
-export const AssetSchema = z.object({
+const AssetSchemaContext = NonRequiredAssetSchemaContext.required({
+  "@version": true,
+  namespaces: true,
+  fungibility: true,
+  organization_key: true,
+});
+
+/**
+ * Zod schema for validating a complete asset schema object in JSON-LD format.
+ *
+ * The object must include an `@id` and an `@context` field conforming to the
+ * structure defined by `AssetSchemaContext`.
+ */
+const NonRequiredAssetSchema = z.object({
   "@context": AssetSchemaContext,
   "@id": z.string(),
 });
 
-// ✅ Infer the TypeScript type from the schema
+export const AssetSchema = NonRequiredAssetSchema.required();
+
+/**
+ * TypeScript type inferred from the `AssetSchema` Zod schema.
+ */
 type AssetSchemaType = z.infer<typeof AssetSchema>;
 
+/**
+ * Validates unknown input data against the `AssetSchema`.
+ *
+ * @param data - The unknown input data to validate.
+ * @returns The parsed `AssetSchemaType` object if valid, or `null` if validation fails.
+ */
 function validateAndUseSchema(data: unknown): AssetSchemaType | null {
   const parsed = AssetSchema.safeParse(data);
 
@@ -41,7 +121,7 @@ function validateAndUseSchema(data: unknown): AssetSchemaType | null {
 
   const schema: AssetSchemaType = parsed.data;
 
-  // Now you can safely access properties with full type support
+  // Log specific schema properties for demonstration purposes
   console.log("✅ Valid Schema ID:", schema["@id"]);
   console.log("Version ID:", schema["@context"].version["@id"]);
   console.log(
@@ -52,6 +132,10 @@ function validateAndUseSchema(data: unknown): AssetSchemaType | null {
   return schema;
 }
 
+/**
+ * Example input data conforming to the AssetSchema.
+ * Used to demonstrate validation and usage.
+ */
 const input = {
   "@id": "https://example.org/schema/asset/1",
   "@context": {
