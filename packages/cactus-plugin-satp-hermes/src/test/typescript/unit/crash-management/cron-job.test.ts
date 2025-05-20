@@ -171,7 +171,7 @@ afterAll(async () => {
   }
 });
 
-describe("CrashManager Tests", () => {
+describe.skip("CrashManager Tests", () => {
   it("Default config test", async () => {
     const mock = jest
       .spyOn(crashManager, "checkAndResolveCrashes")

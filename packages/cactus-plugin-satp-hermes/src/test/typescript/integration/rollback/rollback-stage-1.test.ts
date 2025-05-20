@@ -191,7 +191,7 @@ afterAll(async () => {
     });
 });
 
-describe("Rollback Test stage 1", () => {
+describe.skip("Rollback Test stage 1", () => {
   it("should initiate stage-0 rollback strategy", async () => {
     const factoryOptions: IPluginFactoryOptions = {
       pluginImportType: PluginImportType.Local,

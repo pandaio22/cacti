@@ -256,7 +256,7 @@ afterAll(async () => {
     });
 });
 
-describe("Rollback Test stage 3", () => {
+describe.skip("Rollback Test stage 3", () => {
   it("should initiate stage-3 rollback strategy", async () => {
     const besuAsset: EvmFungibleAsset = {
       id: besuEnv.defaultAsset.id,

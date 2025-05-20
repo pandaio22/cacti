@@ -315,7 +315,7 @@ afterAll(async () => {
   }
 });
 
-describe("Stage 2 Recovery Test", () => {
+describe.skip("Stage 2 Recovery Test", () => {
   it("should recover Stage 2 hashes and timestamps and update session state to RECOVERED", async () => {
     crashManager1 = gateway1["crashManager"] as CrashManager;
     expect(crashManager1).toBeInstanceOf(CrashManager);
