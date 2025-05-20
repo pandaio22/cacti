@@ -33,14 +33,13 @@ import {
   SATP_CORE_VERSION,
   SATP_CRASH_VERSION,
 } from "../../../main/typescript/core/constants";
-import {
-  knexClientConnection,
-  knexSourceRemoteConnection,
-} from "../knex.config";
 import { Knex, knex } from "knex";
 import { ApiServer } from "@hyperledger/cactus-cmd-api-server";
 import { PluginRegistry } from "@hyperledger/cactus-core";
 import path from "path";
+import { createMigrationSource } from "../../../main/typescript/database/knex-migration-source";
+import { knexRemoteInstance } from "../../../main/typescript/database/knexfile-remote";
+import { knexLocalInstance } from "../../../main/typescript/database/knexfile";
 
 const logLevel: LogLevelDesc = "DEBUG";
 const log = LoggerProvider.getOrCreate({
@@ -48,19 +47,14 @@ const log = LoggerProvider.getOrCreate({
   label: "SATP - Hermes",
 });
 
-let knexSourceRemoteInstance: Knex;
+let knexSourceRemoteClient: Knex;
+let knexLocalClient: Knex;
 let besuEnv: BesuTestEnvironment;
 let ethereumEnv: EthereumTestEnvironment;
 let fabricEnv: FabricTestEnvironment;
 let gateway: SATPGateway;
 
 afterAll(async () => {
-  if (gateway) {
-    if (knexSourceRemoteInstance) {
-      await knexSourceRemoteInstance.destroy();
-    }
-  }
-
   await besuEnv.tearDown();
   await ethereumEnv.tearDown();
   await fabricEnv.tearDown();
@@ -73,6 +67,18 @@ afterAll(async () => {
       await Containers.logDiagnostics({ logLevel });
       fail("Pruning didn't throw OK");
     });
+});
+
+afterEach(async () => {
+  if (gateway) {
+    await gateway.shutdown();
+  }
+  if (knexLocalClient) {
+    await knexLocalClient.destroy();
+  }
+  if (knexSourceRemoteClient) {
+    await knexSourceRemoteClient.destroy();
+  }
 });
 
 beforeAll(async () => {
@@ -151,8 +157,20 @@ describe("SATPGateway sending a token from Besu to Fabric", () => {
       address: "http://localhost" as Address,
     } as GatewayIdentity;
 
-    knexSourceRemoteInstance = knex(knexSourceRemoteConnection);
-    await knexSourceRemoteInstance.migrate.latest();
+    const migrationSource = await createMigrationSource();
+    knexLocalClient = knex({
+      ...knexLocalInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    knexSourceRemoteClient = knex({
+      ...knexRemoteInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    await knexSourceRemoteClient.migrate.latest();
 
     const fabricNetworkOptions = fabricEnv.createFabricConfig();
     const besuNetworkOptions = besuEnv.createBesuConfig();
@@ -166,8 +184,8 @@ describe("SATPGateway sending a token from Besu to Fabric", () => {
       ccConfig: {
         bridgeConfig: [fabricNetworkOptions, besuNetworkOptions],
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
+      localRepository: knexLocalInstance.default,
+      remoteRepository: knexRemoteInstance.default,
       pluginRegistry: new PluginRegistry({
         plugins: [],
       }),
@@ -280,8 +298,6 @@ describe("SATPGateway sending a token from Besu to Fabric", () => {
       fabricEnv.getTestOwnerSigningCredential(),
     );
     log.info("Amount was transfer correctly to the Owner account");
-
-    await gateway.shutdown();
   });
 });
 describe("SATPGateway sending a token from Fabric to Besu", () => {
@@ -305,8 +321,20 @@ describe("SATPGateway sending a token from Fabric to Besu", () => {
       address: "http://localhost" as Address,
     } as GatewayIdentity;
 
-    knexSourceRemoteInstance = knex(knexSourceRemoteConnection);
-    await knexSourceRemoteInstance.migrate.latest();
+    const migrationSource = await createMigrationSource();
+    knexLocalClient = knex({
+      ...knexLocalInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    knexSourceRemoteClient = knex({
+      ...knexRemoteInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    await knexSourceRemoteClient.migrate.latest();
 
     const fabricNetworkOptions = fabricEnv.createFabricConfig();
     const besuNetworkOptions = besuEnv.createBesuConfig();
@@ -320,8 +348,8 @@ describe("SATPGateway sending a token from Fabric to Besu", () => {
       ccConfig: {
         bridgeConfig: [fabricNetworkOptions, besuNetworkOptions],
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
+      localRepository: knexLocalInstance.default,
+      remoteRepository: knexRemoteInstance.default,
       pluginRegistry: new PluginRegistry({
         plugins: [],
       }),
@@ -434,8 +462,6 @@ describe("SATPGateway sending a token from Fabric to Besu", () => {
       besuEnv.getTestOwnerSigningCredential(),
     );
     log.info("Amount was transferred correctly to the Owner account");
-
-    await gateway.shutdown();
   });
 });
 describe("SATPGateway sending a token from Besu to Ethereum", () => {
@@ -460,8 +486,20 @@ describe("SATPGateway sending a token from Besu to Ethereum", () => {
       address: "http://localhost" as Address,
     } as GatewayIdentity;
 
-    knexSourceRemoteInstance = knex(knexSourceRemoteConnection);
-    await knexSourceRemoteInstance.migrate.latest();
+    const migrationSource = await createMigrationSource();
+    knexLocalClient = knex({
+      ...knexLocalInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    knexSourceRemoteClient = knex({
+      ...knexRemoteInstance.default,
+      migrations: {
+        migrationSource: migrationSource,
+      },
+    });
+    await knexSourceRemoteClient.migrate.latest();
 
     const ethereumNetworkOptions = ethereumEnv.createEthereumConfig();
     const besuNetworkOptions = besuEnv.createBesuConfig();
@@ -475,8 +513,8 @@ describe("SATPGateway sending a token from Besu to Ethereum", () => {
       ccConfig: {
         bridgeConfig: [ethereumNetworkOptions, besuNetworkOptions],
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
+      localRepository: knexLocalInstance.default,
+      remoteRepository: knexRemoteInstance.default,
       pluginRegistry: new PluginRegistry({
         plugins: [],
       }),
@@ -595,7 +633,5 @@ describe("SATPGateway sending a token from Besu to Ethereum", () => {
       ethereumEnv.getTestOwnerSigningCredential(),
     );
     log.info("Amount was transfer correctly to the Owner account");
-
-    await gateway.shutdown();
   });
 });
