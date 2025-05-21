@@ -155,16 +155,17 @@ jobs:
         run: yarn configure
 
       - name: Generate protobuf files
-        continue-on-error: true
         run: yarn workspace @hyperledger/cactus-plugin-satp-hermes build-proto
 
       - name: Generate OpenAPI SDKs
+        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-yaml
           yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-json 
           yarn workspace @hyperledger/cactus-plugin-satp-hermes generate-sdk:typescript-axios-bol
 
       - name: Generate ABI types
+        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes forge:all
           yarn workspace @hyperledger/cactus-plugin-satp-hermes codegen:abi
