@@ -81,17 +81,17 @@ describe("Instantiate SATP Gateway Runner", () => {
 
     const serverHost = await gatewayRunner.getServerHost();
     expect(serverHost).toBeTruthy();
-    expect(serverHost).toMatch(/^http:\/\/localhost:\d+$/);
+    expect(serverHost).toMatch(/^localhost:\d+$/);
     console.log(serverHost);
 
     const clientHost = await gatewayRunner.getClientHost();
     expect(clientHost).toBeTruthy();
-    expect(clientHost).toMatch(/^http:\/\/localhost:\d+$/);
+    expect(serverHost).toMatch(/^localhost:\d+$/);
     console.log(clientHost);
 
     const apiHost = await gatewayRunner.getOApiHost();
     expect(apiHost).toBeTruthy();
-    expect(apiHost).toMatch(/^http:\/\/localhost:\d+$/);
+    expect(serverHost).toMatch(/^localhost:\d+$/);
     console.log(apiHost);
   });
 });

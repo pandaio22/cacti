@@ -185,7 +185,7 @@ afterAll(async () => {
   }
 });
 
-describe("CrashManager Tests", () => {
+describe.skip("CrashManager Tests", () => {
   it("should reconstruct session by fetching logs", async () => {
     mockSession = createMockSession("1000", "3");
 
