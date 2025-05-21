@@ -105,6 +105,7 @@ jobs:
             echo "No build log found."
           fi
   yarn-code-gen: 
+    needs: build-satp-dev
     runs-on: ubuntu-22.04
     continue-on-error: false
     env:
@@ -188,6 +189,7 @@ jobs:
           fi
 
   yarn-lint:
+    needs: build-satp-dev
     runs-on: ubuntu-22.04
     continue-on-error: false
     env:
@@ -280,8 +282,6 @@ jobs:
               "makes in your own commit when submitting your pull request.";
             core.setFailed(failMsg)
       
-      
-  
   build-bundle: 
     needs: build-satp-dev
     runs-on: ubuntu-22.04
