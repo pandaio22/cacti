@@ -373,15 +373,7 @@ jobs:
         run: yarn configure
 
       - name: Run SATP unit tests
-        continue-on-error: true
-        run: | 
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit 
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-      - name: Fail if Jest failed
-        if: steps.jest.outputs.exit_code != '0'
-        run: |
-          echo "Tests failed"
-          exit 1
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit 
       
 
   run-satp-tests-integration:
@@ -427,14 +419,7 @@ jobs:
 
       - name: Run SATP integration tests
         continue-on-error: true
-        run: | 
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-      - name: Fail if Jest failed
-        if: steps.jest.outputs.exit_code != '0'
-        run: |
-          echo "Tests failed"
-          exit 1
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration
   
   # Set Docker tags based on branch and commit information
   set-docker-tags:
