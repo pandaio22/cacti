@@ -19,10 +19,6 @@ import {
   SATP_CORE_VERSION,
   SATP_CRASH_VERSION,
 } from "../../../main/typescript/core/constants";
-import {
-  knexClientConnection,
-  knexSourceRemoteConnection,
-} from "../knex.config";
 import { SATPSession } from "../../../main/typescript/core/satp-session";
 import {
   TransactRequest,
@@ -85,8 +81,6 @@ describe("Shutdown Verify State Tests", () => {
         gatewayClientPort: 3015,
         address: "https://localhost",
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
       ontologyPath: ontologiesPath,
     };
 
@@ -132,8 +126,6 @@ describe("Shutdown Verify State Tests", () => {
         gatewayClientPort: 3015,
         address: "https://localhost",
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
       ontologyPath: ontologiesPath,
     };
 
@@ -188,8 +180,6 @@ describe("Shutdown Verify State Tests", () => {
         gatewayClientPort: 3015,
         address: "https://localhost",
       },
-      localRepository: knexClientConnection,
-      remoteRepository: knexSourceRemoteConnection,
       ontologyPath: ontologiesPath,
     };
 
