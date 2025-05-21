@@ -72,7 +72,6 @@ jobs:
         run: yarn lerna run build:bundle --scope=@hyperledger/cactus-plugin-satp-hermes
 
       - name: Generate protobuf files
-        continue-on-error: true
         run: yarn workspace @hyperledger/cactus-plugin-satp-hermes build-proto
 
       - name: Generate OpenAPI SDKs
@@ -87,7 +86,6 @@ jobs:
           yarn workspace @hyperledger/cactus-plugin-satp-hermes codegen:abi
 
       - name: Run linting
-        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes lint-code || echo "Linting completed with warnings" 
           yarn workspace @hyperledger/cactus-plugin-satp-hermes lint:oapi || echo "OpenAPI linting completed with warnings"
@@ -158,20 +156,17 @@ jobs:
         run: yarn workspace @hyperledger/cactus-plugin-satp-hermes build-proto
 
       - name: Generate OpenAPI SDKs
-        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-yaml
           yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-json 
           yarn workspace @hyperledger/cactus-plugin-satp-hermes generate-sdk:typescript-axios-bol
 
       - name: Generate ABI types
-        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes forge:all
           yarn workspace @hyperledger/cactus-plugin-satp-hermes codegen:abi
 
       - name: Run linting
-        continue-on-error: true
         run: |
           yarn workspace @hyperledger/cactus-plugin-satp-hermes lint-code || echo "Linting completed with warnings" 
           yarn workspace @hyperledger/cactus-plugin-satp-hermes lint:oapi || echo "OpenAPI linting completed with warnings"
@@ -379,7 +374,15 @@ jobs:
 
       - name: Run SATP unit tests
         continue-on-error: true
-        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit
+        run: | 
+          yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit 
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+      - name: Fail if Jest failed
+        if: steps.jest.outputs.exit_code != '0'
+        run: |
+          echo "Tests failed"
+          exit 1
+      
 
   run-satp-tests-integration:
     needs: build-satp-dev
@@ -424,7 +427,14 @@ jobs:
 
       - name: Run SATP integration tests
         continue-on-error: true
-        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration
+        run: | 
+          yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+      - name: Fail if Jest failed
+        if: steps.jest.outputs.exit_code != '0'
+        run: |
+          echo "Tests failed"
+          exit 1
   
   # Set Docker tags based on branch and commit information
   set-docker-tags:
