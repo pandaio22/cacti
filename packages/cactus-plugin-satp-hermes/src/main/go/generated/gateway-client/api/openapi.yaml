@@ -1611,7 +1611,7 @@ components:
           - READ
           - UPDATE
           - READ_AND_UPDATE
-          type: enum
+          type: string
         srcNetworkId:
           $ref: '#/components/schemas/Transact_request_sourceAsset_networkId'
         srcContract:
@@ -1635,7 +1635,7 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-          type: enum
+          type: string
         mode:
           description: The mode of operation for registered tasks.
           enum:
@@ -1787,7 +1787,7 @@ components:
           - READ
           - UPDATE
           - READ_AND_UPDATE
-          type: enum
+          type: string
         srcNetworkId:
           $ref: '#/components/schemas/Transact_request_sourceAsset_networkId'
         srcContract:
@@ -1811,7 +1811,7 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-          type: enum
+          type: string
         mode:
           description: The mode of operation for registered tasks.
           enum:
@@ -1849,7 +1849,7 @@ components:
           - READ
           - UPDATE
           - READ_AND_UPDATE
-          type: enum
+          type: string
         srcNetworkId:
           $ref: '#/components/schemas/Transact_request_sourceAsset_networkId'
         srcContract:
@@ -1873,7 +1873,7 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-          type: enum
+          type: string
         mode:
           description: The mode of operation for registered tasks.
           enum:
@@ -4520,10 +4520,10 @@ components:
         dstNetworkId:
           ledgerType: BESU_1X
           id: id
-        type: ""
+        type: READ
         taskID: 000003e8-e0b8-21ee-ba00-325096b39f47
         timestamp: 1672531200
-        status: ""
+        status: ACTIVE
       properties:
         taskID:
           description: The unique identifier of the task.
@@ -4535,7 +4535,7 @@ components:
           - READ
           - UPDATE
           - READ_AND_UPDATE
-          type: enum
+          type: string
         srcNetworkId:
           $ref: '#/components/schemas/Transact_request_sourceAsset_networkId'
         srcContract:
@@ -4559,7 +4559,7 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-          type: enum
+          type: string
         mode:
           description: The mode of operation for registered tasks.
           enum:
@@ -4813,10 +4813,10 @@ components:
         dstNetworkId:
           ledgerType: BESU_1X
           id: id
-        type: ""
+        type: READ
         taskID: 000003e8-e0b8-21ee-ba00-325096b39f47
         timestamp: 1672531200
-        status: ""
+        status: ACTIVE
       properties:
         taskID:
           description: The unique identifier of the task.
@@ -4828,7 +4828,7 @@ components:
           - READ
           - UPDATE
           - READ_AND_UPDATE
-          type: enum
+          type: string
         srcNetworkId:
           $ref: '#/components/schemas/Transact_request_sourceAsset_networkId'
         srcContract:
@@ -4852,7 +4852,7 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-          type: enum
+          type: string
         mode:
           description: The mode of operation for registered tasks.
           enum:
