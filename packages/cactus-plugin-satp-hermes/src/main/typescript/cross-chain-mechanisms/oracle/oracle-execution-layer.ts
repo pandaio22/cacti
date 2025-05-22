@@ -102,7 +102,10 @@ export class OracleExecutionLayer implements OracleExecutionLayer {
     try {
       return this.oracleImpl.convertOperationToEntry(operation);
     } catch (error) {
-      this.log.error(`${fnTag} - Conversion from Operation to blockchain transaction failed`, error);
+      this.log.error(
+        `${fnTag} - Conversion from Operation to blockchain transaction failed`,
+        error,
+      );
       throw error;
     }
   }

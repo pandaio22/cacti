@@ -404,7 +404,6 @@ export class OracleManager {
       // TODO: Dispatch a success notification.
     } catch (error) {
       // TODO: Dispatch a failure notification.
-
     } finally {
       task.status = OracleTaskStatusEnum.Inactive;
     }
@@ -487,9 +486,7 @@ export class OracleManager {
         const readResponse = await this.relayOperation(task, readOperation);
 
         if (readResponse.output === undefined) {
-          throw new ReadAndUpdateTaskNoDataError(
-            task.taskID,
-          );
+          throw new ReadAndUpdateTaskNoDataError(task.taskID);
         }
 
         writeContent = [readResponse.output];
