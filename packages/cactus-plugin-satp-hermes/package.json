@@ -100,7 +100,7 @@
         "start-gateway": "node ./dist/lib/main/typescript/plugin-satp-hermes-gateway-cli.js",
         "test:integration": "npx jest ./src/test/typescript/integration",
         "test:unit": "npx jest ./src/test/typescript/unit",
-        "test:unit:satp": "NODE_OPTIONS=--max-old-space-size=4096 npx jest ./src/test/typescript/unit --runInBand --detectOpenHandles",
+        "test:unit:satp": "NODE_OPTIONS=--max-old-space-size=4096 npx jest ./src/test/typescript/unit/shutdown-state.test.ts --runInBand --detectOpenHandles",
         "tsc": "tsc --project ./tsconfig.json",
         "watch": "tsc --build --watch",
         "db:setup": "bash -c 'npm run db:destroy || true && run-s db:start db:migrate db:seed'",

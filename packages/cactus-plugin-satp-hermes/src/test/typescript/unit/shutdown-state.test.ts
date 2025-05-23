@@ -60,7 +60,7 @@ beforeAll(async () => {
   sessionIDs.push(mockSession.getSessionId());
 });
 
-describe.skip("Shutdown Verify State Tests", () => {
+describe("Shutdown Verify State Tests", () => {
   //added
   afterEach(async () => {
     if (gateway) {
@@ -97,6 +97,7 @@ describe.skip("Shutdown Verify State Tests", () => {
         address: "https://localhost",
       },
       ontologyPath: ontologiesPath,
+      logLevel: logLevel,
     };
 
     const gateway = await factory.create(options);
@@ -124,6 +125,8 @@ describe.skip("Shutdown Verify State Tests", () => {
   }, 20000);
 
   test("Gateway waits for pending sessions to complete before shutdown", async () => {
+    jest.useFakeTimers();
+
     const ontologiesPath = path.join(__dirname, "../../ontologies");
     const options: SATPGatewayConfig = {
       instanceId: uuidv4(),
@@ -145,6 +148,7 @@ describe.skip("Shutdown Verify State Tests", () => {
         address: "https://localhost",
       },
       ontologyPath: ontologiesPath,
+      logLevel: logLevel,
     };
 
     const gateway = await factory.create(options);
@@ -161,21 +165,33 @@ describe.skip("Shutdown Verify State Tests", () => {
       .spyOn(satpManager, "getSATPSessionState")
       .mockImplementation(async () => {
         callCount++;
+        // false for first 3 calls, then true
         return callCount > 3;
       });
 
+    // Start shutdown (which waits for sessions to conclude)
     const shutdownPromise = gateway.shutdown();
 
+    // Check initial session state (should be false)
     const initialSessionState = await satpManager.getSATPSessionState();
     expect(initialSessionState).toBe(false);
 
+    // Advance timers and let scheduled job run enough times to return true
+    for (let i = 0; i < 4; i++) {
+      jest.advanceTimersByTime(20000); // 20 seconds cron interval
+      await Promise.resolve(); // wait a tick so async code executes
+    }
+
     await shutdownPromise;
 
+    // Final session state should be true
     const finalSessionState = await satpManager.getSATPSessionState();
     expect(finalSessionState).toBe(true);
 
     getSATPSessionStateSpy.mockRestore();
-  }, 20000);
+
+    jest.useRealTimers();
+  });
 
   test("Gateway does not allow new transactions after shutdown is initiated", async () => {
     const ontologiesPath = path.join(__dirname, "../../ontologies");
@@ -199,6 +215,7 @@ describe.skip("Shutdown Verify State Tests", () => {
         address: "https://localhost",
       },
       ontologyPath: ontologiesPath,
+      logLevel: logLevel,
     };
 
     const gateway = await factory.create(options);
@@ -236,13 +253,6 @@ describe.skip("Shutdown Verify State Tests", () => {
     );
 
     await shutdownPromise;
-  }, 20000);
+  });
 });
 //added
-afterAll(async () => {
-  try {
-    await pruneDockerAllIfGithubAction({ logLevel });
-  } catch (e) {
-    logger.error("Error during afterAll cleanup:", e);
-  }
-});
