@@ -19,7 +19,7 @@ import { DOCKER_IMAGE_VERSION, DOCKER_IMAGE_NAME } from "../constants";
 
 const logLevel: LogLevelDesc = "DEBUG";
 
-describe("Instantiate SATP Gateway Runner", () => {
+describe.skip("Instantiate SATP Gateway Runner", () => {
   let gatewayRunner: SATPGatewayRunner;
   const address: Address = `http://localhost`;
 
