@@ -41,6 +41,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         id: cache
+        env:
+          RESTORE_KEYS: ${{ runner.os }}
         with:
           path: |
             ./.yarn/
@@ -48,7 +50,7 @@ jobs:
             $HOME/.foundry/
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-deps-
+            "$RESTORE_KEYS"-deps-
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -207,6 +209,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         id: cache
+        env:
+          RESTORE_KEYS: ${{ runner.os }}
         with:
           path: |
             ./.yarn/
@@ -214,7 +218,7 @@ jobs:
             $HOME/.foundry/
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-deps-
+            "$RESTORE_KEYS"-deps-
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
