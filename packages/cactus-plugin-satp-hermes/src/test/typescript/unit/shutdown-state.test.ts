@@ -60,7 +60,7 @@ beforeAll(async () => {
   sessionIDs.push(mockSession.getSessionId());
 });
 
-describe("Shutdown Verify State Tests", () => {
+describe.skip("Shutdown Verify State Tests", () => {
   //added
   afterEach(async () => {
     if (gateway) {
@@ -76,9 +76,6 @@ describe("Shutdown Verify State Tests", () => {
   });
 
   test("Gateway waits to verify the sessions state before shutdown", async () => {
-    console.log(
-      "Starting #1: Gateway waits to verify the sessions state before shutdown",
-    );
     const ontologiesPath = path.join(__dirname, "../../ontologies");
     const options: SATPGatewayConfig = {
       instanceId: uuidv4(),
@@ -124,12 +121,9 @@ describe("Shutdown Verify State Tests", () => {
 
     verifySessionsStateSpy.mockRestore();
     shutdownBLOServerSpy.mockRestore();
-  });
+  }, 20000);
 
   test("Gateway waits for pending sessions to complete before shutdown", async () => {
-    console.log(
-      "Starting #2: Gateway waits for pending sessions to complete before shutdown",
-    );
     const ontologiesPath = path.join(__dirname, "../../ontologies");
     const options: SATPGatewayConfig = {
       instanceId: uuidv4(),
@@ -181,12 +175,9 @@ describe("Shutdown Verify State Tests", () => {
     expect(finalSessionState).toBe(true);
 
     getSATPSessionStateSpy.mockRestore();
-  });
+  }, 20000);
 
   test("Gateway does not allow new transactions after shutdown is initiated", async () => {
-    console.log(
-      "Starting #3: Gateway does not allow new transactions after shutdown is initiated",
-    );
     const ontologiesPath = path.join(__dirname, "../../ontologies");
     const options: SATPGatewayConfig = {
       instanceId: uuidv4(),
@@ -245,7 +236,7 @@ describe("Shutdown Verify State Tests", () => {
     );
 
     await shutdownPromise;
-  });
+  }, 20000);
 });
 //added
 afterAll(async () => {

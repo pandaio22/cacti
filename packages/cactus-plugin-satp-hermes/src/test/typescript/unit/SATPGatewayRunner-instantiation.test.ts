@@ -19,7 +19,7 @@ import { DOCKER_IMAGE_VERSION, DOCKER_IMAGE_NAME } from "../constants";
 
 const logLevel: LogLevelDesc = "DEBUG";
 
-describe.skip("Instantiate SATP Gateway Runner", () => {
+describe("Instantiate SATP Gateway Runner", () => {
   let gatewayRunner: SATPGatewayRunner;
   const address: Address = `http://localhost`;
 
@@ -61,15 +61,16 @@ describe.skip("Instantiate SATP Gateway Runner", () => {
     ontologiesPath: files.ontologiesPath,
   };
 
-  beforeAll(async () => {
-    const pruning = pruneDockerAllIfGithubAction({ logLevel });
-    await expect(pruning).toResolve();
-  });
-
   afterAll(async () => {
-    await gatewayRunner.stop();
-    await gatewayRunner.destroy();
-    await pruneDockerAllIfGithubAction({ logLevel });
+    if (gatewayRunner) {
+      try {
+        await gatewayRunner.stop();
+        await gatewayRunner.destroy();
+        await pruneDockerAllIfGithubAction({ logLevel });
+      } catch (err) {
+        console.error("Error shutting down gateway in afterAll:", err);
+      }
+    }
   });
 
   test("Instantiate SATP Gateway Runner", async () => {
@@ -93,5 +94,5 @@ describe.skip("Instantiate SATP Gateway Runner", () => {
     expect(apiHost).toBeTruthy();
     expect(serverHost).toMatch(/^localhost:\d+$/);
     console.log(apiHost);
-  });
+  }, 200000);
 });
