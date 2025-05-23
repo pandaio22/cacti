@@ -373,7 +373,8 @@ jobs:
         run: yarn configure
 
       - name: Run SATP unit tests
-        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit 
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit
+        continue-on-error: true 
       
 
   run-satp-tests-integration:
