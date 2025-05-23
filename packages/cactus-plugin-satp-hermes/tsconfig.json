@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
+    "target": "ES2022",
     "outDir": "./dist/lib/",
     "declarationDir": "dist/lib",
     "allowJs": false,

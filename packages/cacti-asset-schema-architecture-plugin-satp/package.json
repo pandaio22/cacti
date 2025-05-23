@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "jest": {
     "moduleNameMapper": {
       "(.+)\\.js": "$1"
@@ -28,7 +29,17 @@
   },
   "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme",
   "dependencies": {
+    "@helia/json": "^4.0.6",
+    "@helia/strings": "^4.0.6",
+    "@hyperledger/cactus-core": "workspace:^",
+    "helia": "^5.4.2",
+    "multiformats": "^13.3.6",
     "zod": "^3.24.4",
     "zod-to-json-schema": "^3.24.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
