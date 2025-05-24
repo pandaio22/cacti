@@ -40,16 +40,6 @@ jobs:
         with:
           submodules: recursive
 
-       # Install Cacti dependencies
-      - id: yarn-cache
-        name: Initialize Yarn Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
-          path: ./.yarn/
-          restore-keys: |
-            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
-
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd            
 
@@ -66,42 +56,21 @@ jobs:
       
       - id: yarn-cache-store
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache
-        uses: actions/cache@v3
+      - name: Save node_modules Cache
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Build bundle
-        run: yarn lerna run build:bundle --scope=@hyperledger/cactus-plugin-satp-hermes
-
-      - name: Generate protobuf files
-        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes build-proto
-
-      - name: Generate OpenAPI SDKs
-        run: |
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-yaml
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes bundle-openapi-json 
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes generate-sdk:typescript-axios-bol
-
-      - name: Generate ABI types
-        run: |
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes forge:all
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes codegen:abi
-
-      - name: Run linting
-        run: |
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes lint-code || echo "Linting completed with warnings" 
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes lint:oapi || echo "OpenAPI linting completed with warnings"
-          yarn workspace @hyperledger/cactus-plugin-satp-hermes lint:protobuf || echo "Protobuf linting completed with warnings"
-          
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        
       - name: Show yarn build log if it exists
         if: always()
         run: |
@@ -113,6 +82,7 @@ jobs:
           else
             echo "No build log found."
           fi
+
   yarn-code-gen: 
     needs: build-satp-dev
     runs-on: ubuntu-22.04
@@ -130,12 +100,12 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Install Cacti dependencies
       - id: yarn-cache
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
@@ -143,10 +113,12 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Initialize node_modules Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -219,7 +191,7 @@ jobs:
 
       - id: yarn-cache
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
@@ -227,10 +199,12 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Initialize node_modules Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -316,7 +290,7 @@ jobs:
       # Install Cacti dependencies
       - id: yarn-cache
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
@@ -324,10 +298,12 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Initialize node_modules Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -373,7 +349,7 @@ jobs:
           node-version: ${{ env.NODEJS_VERSION }}
       - id: yarn-cache
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
@@ -381,10 +357,12 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Initialize node_modules Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -421,7 +399,7 @@ jobs:
           node-version: ${{ env.NODEJS_VERSION }}
       - id: yarn-cache
         name: Initialize Yarn Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
           path: ./.yarn/
@@ -429,10 +407,12 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
       - name: Initialize node_modules Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
