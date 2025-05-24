@@ -35,27 +35,23 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - uses: actions/checkout@v4.1.7
-
-      # Install Cacti dependencies
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-deps-
-
-      - name: Set working directory
-        run: cd packages/cactus-plugin-satp-hermes && pwd
 
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+       # Install Cacti dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Set working directory
+        run: cd packages/cactus-plugin-satp-hermes && pwd            
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -67,6 +63,21 @@ jobs:
       
       - name: Configure
         run: yarn configure
+      
+      - id: yarn-cache
+        name: Initialize Yarn Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build bundle
         run: yarn lerna run build:bundle --scope=@hyperledger/cactus-plugin-satp-hermes
@@ -119,20 +130,23 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v3
 
       # Install Cacti dependencies
-      - name: Cache dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
         uses: actions/cache@v3
-        id: cache
         with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -201,20 +215,22 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@3
 
-      # Install Cacti dependencies
-      - name: Cache dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
         uses: actions/cache@v3
-        id: cache
         with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -298,17 +314,20 @@ jobs:
       - uses: actions/checkout@v4.1.7
 
       # Install Cacti dependencies
-      - name: Cache dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
         uses: actions/cache@v3
-        id: cache
         with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd
@@ -352,17 +371,20 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - name: Cache dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
         uses: actions/cache@v3
-        id: cache
         with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -397,17 +419,20 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - name: Cache dependencies
+      - id: yarn-cache
+        name: Initialize Yarn Cache
         uses: actions/cache@v3
-        id: cache
         with:
-          path: |
-            ./.yarn/
-            ./packages/cactus-plugin-satp-hermes/node_modules/
-            $HOME/.foundry/
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Save node_modules cache (first run only or if changed)
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
