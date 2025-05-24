@@ -39,6 +39,23 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+  
+      - id: yarn-cache
+        name: Initialize Yarn Cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+      - name: Initialize node_modules Cache
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Set working directory
         run: cd packages/cactus-plugin-satp-hermes && pwd            
@@ -53,23 +70,6 @@ jobs:
       
       - name: Configure
         run: yarn configure
-      
-      - id: yarn-cache-store
-        name: Initialize Yarn Cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
-          path: ./.yarn/
-          restore-keys: |
-            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
-
-      - name: Save node_modules Cache
-        uses: actions/cache@v4
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         
       - name: Show yarn build log if it exists
         if: always()
