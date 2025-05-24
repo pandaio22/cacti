@@ -173,7 +173,7 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NODEJS_VERSION }}
-      - uses: actions/checkout@3
+      - uses: actions/checkout@v4
 
       - id: yarn-cache
         name: Initialize Yarn Cache
