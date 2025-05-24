@@ -64,7 +64,7 @@ jobs:
       - name: Configure
         run: yarn configure
       
-      - id: yarn-cache
+      - id: yarn-cache-store
         name: Initialize Yarn Cache
         uses: actions/cache@v3
         with:
@@ -73,7 +73,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Save node_modules cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
@@ -142,7 +142,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Initialize node_modules Cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
@@ -226,7 +226,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Initialize node_modules Cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
@@ -323,7 +323,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Initialize node_modules Cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
@@ -380,7 +380,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Initialize node_modules Cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
@@ -428,7 +428,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
 
-      - name: Save node_modules cache (first run only or if changed)
+      - name: Initialize node_modules Cache
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
