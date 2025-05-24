@@ -99,7 +99,7 @@
         "pretsc": "npm run generate-sdk",
         "start-gateway": "node ./dist/lib/main/typescript/plugin-satp-hermes-gateway-cli.js",
         "test:integration": "npx jest ./src/test/typescript/integration",
-        "test:unit": "NODE_OPTIONS=--max-old-space-size=4096 npx jest ./src/test/typescript/unit --runInBand --detectOpenHandles",
+        "test:unit": "NODE_OPTIONS=--max-old-space-size=4096 npx jest ./src/test/typescript/unit --runInBand --forceExit",
         "tsc": "tsc --project ./tsconfig.json",
         "watch": "tsc --build --watch",
         "db:setup": "bash -c 'npm run db:destroy || true && run-s db:start db:migrate db:seed'",
