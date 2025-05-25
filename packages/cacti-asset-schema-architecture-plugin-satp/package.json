@@ -3,15 +3,7 @@
   "version": "1.0.0",
   "description": "An implementation of the asset schema architecture used to setup assets to transfer using SATP",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "type": "module",
-  "jest": {
-    "moduleNameMapper": {
-      "(.+)\\.js": "$1"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pandaio22/cacti.git#satp-dev-thesis"
@@ -28,17 +20,34 @@
     "url": "https://github.com/pandaio22/cacti/issues"
   },
   "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme",
+  "scripts": {
+    "test:unit": "npx jest ./src/test/typescript/unit/endpoints.test.ts --detectOpenHandles --runInBand"
+  },
   "dependencies": {
     "@helia/json": "^4.0.6",
     "@helia/strings": "^4.0.6",
+    "@hyperledger/cactus-api-client": "workspace:^",
+    "@hyperledger/cactus-cmd-api-server": "workspace:^",
+    "@hyperledger/cactus-common": "workspace:^",
     "@hyperledger/cactus-core": "workspace:^",
+    "@hyperledger/cactus-core-api": "workspace:^",
+    "@hyperledger/cactus-plugin-object-store-ipfs": "workspace:^",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
     "helia": "^5.4.2",
+    "jsonld": "^8.3.3",
     "multiformats": "^13.3.6",
+    "uuid": "^11.1.0",
     "zod": "^3.24.4",
     "zod-to-json-schema": "^3.24.5"
   },
   "devDependencies": {
+    "@types/express": "^5",
+    "@types/jest": "^29.5.14",
+    "@types/jsonld": "^1.5.15",
     "@types/node": "^22.15.21",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
