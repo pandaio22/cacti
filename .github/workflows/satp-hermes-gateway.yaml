@@ -341,7 +341,92 @@ jobs:
       - name: Run SATP unit tests
         run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:unit 
       
+  run-satp-tests-integration-bridge:
+    needs: build-satp-dev
+    runs-on: ubuntu-22.04
+    env:
+      NODEJS_VERSION: v18.18.2
+      FULL_BUILD_DISABLED: true
+      JEST_TEST_PATTERN: packages/cactus-plugin-satp-hermes/src/test/typescript/(unit|integration|benchmark)/.*/*.test.ts
+      JEST_TEST_RUNNER_DISABLED: false
 
+      # SATP specific configuration
+      SATP_ENABLE_CRASH_RECOVERY: false
+      SATP_LOG_LEVEL: DEBUG
+      SATP_ENABLE_LOCAL_REPOSITORY: true
+      SATP_ENABLE_REMOTE_REPOSITORY: false
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+      - name: Use Node.js ${{ env.NODEJS_VERSION }}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ env.NODEJS_VERSION }}
+      - id: yarn-cache
+        name: Initialize Yarn Cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+     
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Install dependencies
+        run: yarn install
+      - name: Configure
+        run: yarn configure
+
+      - name: Run SATP integration tests
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration:bridge
+
+  run-satp-tests-integration-oracle:
+    needs: build-satp-dev
+    runs-on: ubuntu-22.04
+    env:
+      NODEJS_VERSION: v18.18.2
+      FULL_BUILD_DISABLED: true
+      JEST_TEST_PATTERN: packages/cactus-plugin-satp-hermes/src/test/typescript/(unit|integration|benchmark)/.*/*.test.ts
+      JEST_TEST_RUNNER_DISABLED: false
+
+      # SATP specific configuration
+      SATP_ENABLE_CRASH_RECOVERY: false
+      SATP_LOG_LEVEL: DEBUG
+      SATP_ENABLE_LOCAL_REPOSITORY: true
+      SATP_ENABLE_REMOTE_REPOSITORY: false
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+      - name: Use Node.js ${{ env.NODEJS_VERSION }}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ env.NODEJS_VERSION }}
+      - id: yarn-cache
+        name: Initialize Yarn Cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          path: ./.yarn/
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+
+     
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Install dependencies
+        run: yarn install
+      - name: Configure
+        run: yarn configure
+
+      - name: Run SATP integration tests
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration:oracle
+  
   run-satp-tests-integration:
     needs: build-satp-dev
     runs-on: ubuntu-22.04
