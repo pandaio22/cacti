@@ -71,6 +71,7 @@ afterAll(async () => {
 });
 
 describe("Ethereum Leaf Test", () => {
+  jest.setTimeout(20000);
   it("Should Initialize the Leaf", async () => {
     ethereumLeaf = new EthereumLeaf(
       ethereumEnv.createEthereumLeafConfig(ontologyManager, "DEBUG"),

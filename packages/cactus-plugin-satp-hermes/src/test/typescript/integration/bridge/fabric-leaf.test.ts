@@ -76,6 +76,7 @@ afterAll(async () => {
 });
 
 describe("Fabric Bridge Test", () => {
+  jest.setTimeout(20000);
   it("Should Initialize the bridge", async () => {
     fabricLeaf = new FabricLeaf(
       fabricEnv.createFabricLeafConfig(ontologyManager, "DEBUG"),

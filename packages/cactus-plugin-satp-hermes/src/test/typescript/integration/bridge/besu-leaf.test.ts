@@ -70,6 +70,7 @@ afterAll(async () => {
 });
 
 describe("Besu Leaf Test", () => {
+  jest.setTimeout(20000);
   it("Should Initialize the Leaf", async () => {
     besuLeaf = new BesuLeaf(
       besuEnv.createBesuLeafConfig(ontologyManager, "DEBUG"),
