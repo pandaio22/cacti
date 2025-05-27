@@ -30,7 +30,7 @@ export class RegistryApi {
     });
   }
 
-  public stop(): Promise<void> {
+  public async stop(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.server) {
         this.server.close((err?: Error) => {
@@ -43,13 +43,24 @@ export class RegistryApi {
       }
     });
   }
-  private async commissionAsset(req: Request, res: Response) {
+  private async commissionAsset(req: Request, res: Response): Promise<void> {
     const data = req.body;
-    console.log("Commissioning asset with data:", data);
+    try {
+      await this.registryApiService.commissionAsset(data);
 
-    res.status(200).json({
-      message: "Asset commissioned successfully",
-      received: data,
-    });
+      console.log(
+        "No errors found in asset data, proceeding with commissioning.",
+      );
+      res.status(200).json({
+        message: "Asset commissioned successfully",
+        received: data,
+      });
+    } catch (error) {
+      console.error("Error commissioning asset:", error);
+      res.status(400).json({
+        error: "Invalid asset data",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
 }

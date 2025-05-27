@@ -2,18 +2,19 @@ import { RegistryApi } from "../../../../main/typescript/entities/registry/regis
 import { RegistryApiService } from "../../../../main/typescript/entities/registry/modules/registry-api-service";
 import request from "supertest";
 
-jest.mock(
-  "../../../../main/typescript/entities/registry/modules/registry-api-service",
-);
+//jest.mock(
+//  "../../../../main/typescript/entities/registry/modules/registry-api-service",
+//);
 
 describe("RegistryApiTest", () => {
-  let registryApiService: jest.Mocked<RegistryApiService>;
+  //let registryApiService: jest.Mocked<RegistryApiService>;
+  let registryApiService: RegistryApiService;
   let registryApi: RegistryApi;
 
   beforeEach(async () => {
-    //registryApiService = new RegistryApiService();
-    registryApiService =
-      new RegistryApiService() as jest.Mocked<RegistryApiService>;
+    registryApiService = new RegistryApiService();
+    //registryApiService =
+    //  new RegistryApiService() as jest.Mocked<RegistryApiService>;
     registryApi = new RegistryApi(registryApiService);
     await registryApi.start();
   });
@@ -41,15 +42,22 @@ describe("RegistryApiTest", () => {
       expect(response.body.message).toBe("Asset commissioned successfully");
       expect(response.body.received).toEqual(schema);
     });
-    it("should throw an exception when given when calling commissionAsset() with an unavailable service and a valid schema", async () => {
-      //Given
-      //When
-      //Then
-    });
+    it.skip("should throw an exception when given when calling commissionAsset() with an unavailable service and a valid schema", async () => {});
     it("should throw an exception when given when calling commissionAsset() with an available service and an invalid schema", async () => {
-      //Given
-      //When
-      //Then
+      // Given: a JSON-LD schema for an asset
+      const schema = {
+        context: "https://schema.org",
+        type: "Asset",
+        name: "Alice's Car",
+      };
+      // When: a POST request is made to /commission
+      const response = await request(registryApi.app)
+        .post("/commission")
+        .send(schema)
+        .set("Content-Type", "application/json");
+      // Then: response should be 400 and throw an exception
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe("Invalid asset data");
     });
   });
 
