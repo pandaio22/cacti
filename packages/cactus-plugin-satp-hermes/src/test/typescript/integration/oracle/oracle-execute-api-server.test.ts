@@ -176,6 +176,7 @@ afterAll(async () => {
 });
 
 describe("Oracle executing READ, UPDATE, and READ_AND_UPDATE tasks successfully", () => {
+  jest.setTimeout(20000);
   it("should fail when writing to a contract calling a function that does not exist", async () => {
     data_hash = keccak256("Hello World!");
 

@@ -427,7 +427,7 @@ jobs:
       - name: Run SATP integration tests
         run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration:oracle
   
-  run-satp-tests-integration:
+  run-satp-tests-integration-gateway:
     needs: build-satp-dev
     runs-on: ubuntu-22.04
     env:
@@ -468,7 +468,7 @@ jobs:
         run: yarn configure
 
       - name: Run SATP integration tests
-        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration
+        run: yarn workspace @hyperledger/cactus-plugin-satp-hermes test:integration:gateway
   
   # Set Docker tags based on branch and commit information
   set-docker-tags:

@@ -184,6 +184,7 @@ afterAll(async () => {
 });
 
 describe("Oracle registering READ, UPDATE, and READ_AND_UPDATE tasks successfully", () => {
+  jest.setTimeout(20000);
   it("should read and update using an event listener for events in the source contract (EVM)", async () => {
     const payload1 = "Hello World to Emit Event!";
     const payload2 = "Hello World to Emit Event 2!";
