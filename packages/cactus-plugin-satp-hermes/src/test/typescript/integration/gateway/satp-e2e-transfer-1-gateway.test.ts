@@ -9,31 +9,31 @@ import {
   SATPGateway,
   PluginFactorySATPGateway,
   TokenType,
-} from "../../../main/typescript";
-import { Address, GatewayIdentity } from "../../../main/typescript/core/types";
+} from "../../../../main/typescript";
+import { Address, GatewayIdentity } from "../../../../main/typescript/core/types";
 import {
   IPluginFactoryOptions,
   PluginImportType,
 } from "@hyperledger/cactus-core-api";
-import { ClaimFormat } from "../../../main/typescript/generated/proto/cacti/satp/v02/common/message_pb";
+import { ClaimFormat } from "../../../../main/typescript/generated/proto/cacti/satp/v02/common/message_pb";
 import {
   BesuTestEnvironment,
   EthereumTestEnvironment,
   FabricTestEnvironment,
   getTransactRequest,
-} from "../test-utils";
+} from "../../test-utils";
 import {
   SATP_ARCHITECTURE_VERSION,
   SATP_CORE_VERSION,
   SATP_CRASH_VERSION,
-} from "../../../main/typescript/core/constants";
+} from "../../../../main/typescript/core/constants";
 import { Knex, knex } from "knex";
 import { PluginRegistry } from "@hyperledger/cactus-core";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
-import { createMigrationSource } from "../../../main/typescript/database/knex-migration-source";
-import { knexLocalInstance } from "../../../main/typescript/database/knexfile";
-import { knexRemoteInstance } from "../../../main/typescript/database/knexfile-remote";
+import { createMigrationSource } from "../../../../main/typescript/database/knex-migration-source";
+import { knexLocalInstance } from "../../../../main/typescript/database/knexfile";
+import { knexRemoteInstance } from "../../../../main/typescript/database/knexfile-remote";
 
 const logLevel: LogLevelDesc = "DEBUG";
 const log = LoggerProvider.getOrCreate({

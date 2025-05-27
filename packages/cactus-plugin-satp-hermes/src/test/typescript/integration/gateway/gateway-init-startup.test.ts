@@ -10,24 +10,24 @@ import { ApiClient } from "@hyperledger/cactus-api-client";
 import {
   SATPGateway,
   type SATPGatewayConfig,
-} from "../../../main/typescript/plugin-satp-hermes-gateway";
-import { PluginFactorySATPGateway } from "../../../main/typescript/factory/plugin-factory-gateway-orchestrator";
+} from "../../../../main/typescript/plugin-satp-hermes-gateway";
+import { PluginFactorySATPGateway } from "../../../../main/typescript/factory/plugin-factory-gateway-orchestrator";
 import {
   Configuration,
   type IPluginFactoryOptions,
   LedgerType,
   PluginImportType,
 } from "@hyperledger/cactus-core-api";
-import type { ShutdownHook } from "./../../../main/typescript/core/types";
+import type { ShutdownHook } from "../../../../main/typescript/core/types";
 import {
   DEFAULT_PORT_GATEWAY_CLIENT,
   DEFAULT_PORT_GATEWAY_SERVER,
   SATP_ARCHITECTURE_VERSION,
   SATP_CORE_VERSION,
   SATP_CRASH_VERSION,
-} from "../../../main/typescript/core/constants";
+} from "../../../../main/typescript/core/constants";
 import { PluginRegistry } from "@hyperledger/cactus-core";
-import { AdminApi, OracleApi } from "../../../main/typescript";
+import { AdminApi, OracleApi } from "../../../../main/typescript";
 
 const logLevel: LogLevelDesc = "DEBUG";
 const logger = LoggerProvider.getOrCreate({

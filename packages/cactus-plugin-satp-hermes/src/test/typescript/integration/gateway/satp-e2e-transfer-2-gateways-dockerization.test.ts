@@ -10,7 +10,7 @@ import {
   SATPGatewayRunner,
   ISATPGatewayRunnerConstructorOptions,
 } from "@hyperledger/cactus-test-tooling";
-import { GatewayIdentity } from "../../../main/typescript/core/types";
+import { GatewayIdentity } from "../../../../main/typescript/core/types";
 import {
   setupGatewayDockerFiles,
   BesuTestEnvironment,
@@ -19,7 +19,7 @@ import {
   EthereumTestEnvironment,
   createPGDatabase,
   setupDBTable,
-} from "../test-utils";
+} from "../../test-utils";
 import {
   DEFAULT_PORT_GATEWAY_CLIENT,
   DEFAULT_PORT_GATEWAY_OAPI,
@@ -27,8 +27,8 @@ import {
   SATP_ARCHITECTURE_VERSION,
   SATP_CORE_VERSION,
   SATP_CRASH_VERSION,
-} from "../../../main/typescript/core/constants";
-import { ClaimFormat } from "../../../main/typescript/generated/proto/cacti/satp/v02/common/message_pb";
+} from "../../../../main/typescript/core/constants";
+import { ClaimFormat } from "../../../../main/typescript/generated/proto/cacti/satp/v02/common/message_pb";
 import { Container } from "dockerode";
 import { Knex } from "knex";
 import { Configuration, LedgerType } from "@hyperledger/cactus-core-api";
@@ -37,8 +37,8 @@ import {
   GetApproveAddressRequest,
   TokenType,
   TransactionApi,
-} from "../../../main/typescript";
-import { DOCKER_IMAGE_NAME, DOCKER_IMAGE_VERSION } from "../constants";
+} from "../../../../main/typescript";
+import { DOCKER_IMAGE_NAME, DOCKER_IMAGE_VERSION } from "../../constants";
 
 const logLevel: LogLevelDesc = "TRACE";
 const log = LoggerProvider.getOrCreate({
