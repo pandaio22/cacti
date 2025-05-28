@@ -1,4 +1,4 @@
-import axios from "axios";
+//import axios from "axios";
 import { JsonLdValidationResult } from "./validation-types";
 
 export class ValidationService {
@@ -106,6 +106,7 @@ export class ValidationService {
   }
 
   // DEAD CODE - Optional: External validation for complex cases. WORK IN PROGRESS
+  /*
   async validateWithExternalService(
     data: any,
   ): Promise<JsonLdValidationResult> {
@@ -134,4 +135,5 @@ export class ValidationService {
       };
     }
   }
+  */
 }

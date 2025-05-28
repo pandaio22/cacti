@@ -38,7 +38,9 @@
     "express": "^5.1.0",
     "helia": "^5.4.2",
     "jsonld": "^8.3.3",
+    "kubo-rpc-client": "^5.1.0",
     "multiformats": "^13.3.6",
+    "safe-stable-stringify": "^2.5.0",
     "uuid": "^11.1.0",
     "zod": "^3.24.4",
     "zod-to-json-schema": "^3.24.5"

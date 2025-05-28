@@ -1,4 +1,4 @@
-import { SchemaProfile } from "../../../main/typescript/data-model/schema-profile";
+import { SchemaProfile } from "../../../../main/typescript/data-model/schema-profile";
 
 describe("SchemaProfile schema", () => {
   const validSchemaProfile = {

@@ -29,8 +29,8 @@ describe("RegistryApiTest", () => {
       // Given: a JSON-LD schema for an asset
       const schema = {
         "@context": "https://schema.org",
-        "@type": "Asset",
-        name: "Alice's Car",
+        "@type": "Person",
+        name: "Alice",
       };
       // When: a POST request is made to /commission
       const response = await request(registryApi.app)

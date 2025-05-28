@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import { Server } from "http";
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 import bodyParser from "body-parser";
 import { RegistryApiService } from "./modules/registry-api-service";
 

@@ -1,4 +1,4 @@
-import { AssetSchema } from "../../../main/typescript/data-model/asset-schema";
+import { AssetSchema } from "../../../../main/typescript/data-model/asset-schema";
 
 describe("AssetSchema Zod validation", () => {
   const validAssetSchema = {
