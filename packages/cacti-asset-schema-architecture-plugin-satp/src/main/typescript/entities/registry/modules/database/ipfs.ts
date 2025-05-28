@@ -1,3 +1,4 @@
+/*
 import { create } from "kubo-rpc-client";
 import { LogLevelDesc } from "@hyperledger/cactus-common";
 import { v4 as uuidv4 } from "uuid";
@@ -30,3 +31,4 @@ const response = await pluginIpfs.getObjectV1({ key: yourKey });
 
 const originalData = Buffer.from(response.data.value, "base64").toString();
 console.log("Retrieved data:", originalData);
+*/

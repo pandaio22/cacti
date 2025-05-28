@@ -1,20 +1,10 @@
 import { IPFSRemoteLogRepository } from "../../../../main/typescript/entities/registry/modules/database/database-ipfs";
 import { RemoteLog } from "../../../../main/typescript/entities/registry/modules/database/database-types";
-import { create } from "kubo-rpc-client";
-import { v4 as uuidv4 } from "uuid";
+
 
 async function main() {
   const ipfsApiBaseUrl = "http://localhost:5001/api/v0";
   const repo = new IPFSRemoteLogRepository(ipfsApiBaseUrl);
-  const logLevel: LogLevelDesc = "TRACE";
-  const ipfsClientOrOptions = create();
-
-  const pluginIpfs = new PluginObjectStoreIpfs({
-    parentDir: "/" + uuidv4(),
-    logLevel: logLevel,
-    instanceId: "",
-    ipfsClientOrOptions: ipfsClientOrOptions,
-  });
 
   const log: RemoteLog = {
     key: "log-123",
