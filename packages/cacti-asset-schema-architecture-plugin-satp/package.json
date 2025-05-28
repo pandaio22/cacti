@@ -25,6 +25,7 @@
     "watch": "tsc --build --watch"
   },
   "dependencies": {
+    "@digitalcredentials/jsonld": "^9.0.0",
     "@helia/json": "^4.0.6",
     "@helia/strings": "^4.0.6",
     "@hyperledger/cactus-api-client": "workspace:^",
