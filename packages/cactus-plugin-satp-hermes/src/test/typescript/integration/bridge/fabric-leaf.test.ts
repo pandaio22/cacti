@@ -28,6 +28,7 @@ const log = LoggerProvider.getOrCreate({
 
 let fabricLeaf: FabricLeaf;
 let fabricEnv: FabricTestEnvironment;
+const TIMEOUT = 20000;
 
 beforeAll(async () => {
   pruneDockerAllIfGithubAction({ logLevel })
@@ -60,7 +61,7 @@ beforeAll(async () => {
 
     await fabricEnv.mintTokens("100");
   }
-});
+}, TIMEOUT);
 
 afterAll(async () => {
   await fabricEnv.tearDown();
@@ -73,7 +74,7 @@ afterAll(async () => {
       await Containers.logDiagnostics({ logLevel });
       fail("Pruning didn't throw OK");
     });
-});
+}, TIMEOUT);
 
 describe("Fabric Bridge Test", () => {
   jest.setTimeout(20000);

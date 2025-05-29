@@ -24,6 +24,7 @@ const log = LoggerProvider.getOrCreate({
 
 let besuLeaf: BesuLeaf;
 let besuEnv: BesuTestEnvironment;
+const TIMEOUT = 20000;
 
 beforeAll(async () => {
   pruneDockerAllIfGithubAction({ logLevel })
@@ -54,7 +55,7 @@ beforeAll(async () => {
 
     await besuEnv.mintTokens("100");
   }
-});
+}, TIMEOUT);
 
 afterAll(async () => {
   await besuEnv.tearDown();
@@ -67,7 +68,7 @@ afterAll(async () => {
       await Containers.logDiagnostics({ logLevel });
       fail("Pruning didn't throw OK");
     });
-});
+}, TIMEOUT);
 
 describe("Besu Leaf Test", () => {
   jest.setTimeout(20000);

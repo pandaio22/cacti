@@ -25,6 +25,7 @@ const log = LoggerProvider.getOrCreate({
 
 let ethereumLeaf: EthereumLeaf;
 let ethereumEnv: EthereumTestEnvironment;
+const TIMEOUT = 20000;
 
 beforeAll(async () => {
   pruneDockerAllIfGithubAction({ logLevel })
@@ -55,7 +56,7 @@ beforeAll(async () => {
 
     await ethereumEnv.mintTokens("100");
   }
-});
+}, TIMEOUT);
 
 afterAll(async () => {
   await ethereumEnv.tearDown();
@@ -68,7 +69,7 @@ afterAll(async () => {
       await Containers.logDiagnostics({ logLevel });
       fail("Pruning didn't throw OK");
     });
-});
+}, TIMEOUT);
 
 describe("Ethereum Leaf Test", () => {
   jest.setTimeout(20000);
