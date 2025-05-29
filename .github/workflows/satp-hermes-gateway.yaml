@@ -17,7 +17,7 @@ on:
   # Run tests and build/push docker images on push
   push:
     branches: [main, satp-dev]
-  
+  #test ci in gitactions
 jobs:
   build-satp-dev:
     runs-on: ubuntu-22.04
