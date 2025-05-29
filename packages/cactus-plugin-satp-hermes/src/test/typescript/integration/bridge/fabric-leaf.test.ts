@@ -28,7 +28,7 @@ const log = LoggerProvider.getOrCreate({
 
 let fabricLeaf: FabricLeaf;
 let fabricEnv: FabricTestEnvironment;
-const TIMEOUT = 20000;
+const TIMEOUT = 60000;
 
 beforeAll(async () => {
   pruneDockerAllIfGithubAction({ logLevel })

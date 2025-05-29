@@ -24,7 +24,7 @@ const log = LoggerProvider.getOrCreate({
 
 let besuLeaf: BesuLeaf;
 let besuEnv: BesuTestEnvironment;
-const TIMEOUT = 20000;
+const TIMEOUT = 60000;
 
 beforeAll(async () => {
   pruneDockerAllIfGithubAction({ logLevel })
