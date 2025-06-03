@@ -2,7 +2,6 @@
 import { JsonLdValidationResult } from "./validation-types";
 
 export class ValidationService {
-  // Manual validation (safe, no segfaults)
   public validateJsonLdStructure(data: any): JsonLdValidationResult {
     const errors: string[] = [];
 
@@ -12,14 +11,12 @@ export class ValidationService {
         return { valid: false, errors };
       }
 
-      // Required @context
       if (!data["@context"]) {
         errors.push("Missing @context");
       } else {
         this.validateContext(data["@context"], errors);
       }
 
-      // Either @type or @id required
       if (!data["@type"] && !data["@id"]) {
         errors.push("Must have either @type or @id");
       }
@@ -37,6 +34,59 @@ export class ValidationService {
       // Validate @id
       if (data["@id"] && typeof data["@id"] !== "string") {
         errors.push("@id must be a string");
+      }
+
+      // Check for reserved keywords misuse
+      this.validateReservedKeywords(data, errors);
+
+      return { valid: errors.length === 0, errors };
+    } catch (error) {
+      errors.push(
+        `Validation error: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return { valid: false, errors };
+    }
+  }
+  //public validateAssetSchema(data: any): JsonLdValidationResult {}
+
+  public validateSchemaProfile(data: any): JsonLdValidationResult {
+    const errors: string[] = [];
+
+    try {
+      console.log("Validating schema profile...");
+      console.log(data);
+      if (!data || typeof data !== "object" || Array.isArray(data)) {
+        errors.push("JSON-LD must be an object");
+        return { valid: false, errors };
+      }
+
+      if (!data["@context"]) {
+        errors.push("Missing @context");
+      } else {
+        this.validateContext(data["@context"], errors);
+      }
+
+      if (!data["@type"] && !data["@id"]) {
+        errors.push("Must have either @type or @id");
+      }
+
+      // Validate @type
+      if (data["@type"]) {
+        if (
+          typeof data["@type"] !== "string" &&
+          !Array.isArray(data["@type"])
+        ) {
+          errors.push("@type must be string or array");
+        }
+      }
+
+      // Validate @id
+      if (data["@id"] && typeof data["@id"] !== "string") {
+        errors.push("@id must be a string");
+      }
+
+      if (!("asset_schema" in data["@context"])) {
+        errors.push("Missing asset_schema property");
       }
 
       // Check for reserved keywords misuse
@@ -74,7 +124,6 @@ export class ValidationService {
       errors.push("@context must be string, object, or array");
     }
   }
-
   private validateReservedKeywords(data: any, errors: string[]): void {
     const reservedKeywords = [
       "@context",
@@ -95,7 +144,6 @@ export class ValidationService {
       }
     }
   }
-
   private isValidUrl(url: string): boolean {
     try {
       const parsed = new URL(url);

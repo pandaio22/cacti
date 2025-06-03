@@ -15,8 +15,11 @@ export class RegistryApi {
   ) {
     this.app = express();
     this.app.use(bodyParser.json());
-    this.app.post("/commission", (req: Request, res: Response) =>
-      this.commissionAsset(req, res),
+    this.app.post("/commission-asset-schema", (req: Request, res: Response) =>
+      this.commissionAssetSchemaApi(req, res),
+    );
+    this.app.post("/commission-schema-profile", (req: Request, res: Response) =>
+      this.commissionSchemaProfileApi(req, res),
     );
     this.port = port;
   }
@@ -43,27 +46,57 @@ export class RegistryApi {
       }
     });
   }
-  private async commissionAsset(req: Request, res: Response): Promise<void> {
+  private async commissionAssetSchemaApi(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     const data = req.body;
 
     try {
       const schemaId: string =
-        await this.registryApiService.commissionAsset(data);
+        await this.registryApiService.commissionAssetSchema(data);
       console.log(
-        `Asset commissioned successfully with schema ID: ${schemaId}`,
+        `Asset schema commissioned successfully with schema ID: ${schemaId}`,
       );
       console.log(
-        "No errors found in asset data, proceeding with commissioning.",
+        "No errors found in asset schema data, proceeding with commissioning.",
       );
       res.status(200).json({
-        message: "Asset commissioned successfully",
+        message: "Asset schema commissioned successfully",
         schemaId: schemaId,
         received: data,
       });
     } catch (error) {
-      console.error("Error commissioning asset:", error);
+      console.error("Error commissioning asset schema:", error);
       res.status(400).json({
-        error: "Invalid asset data",
+        error: "Invalid asset schema data",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  private async commissionSchemaProfileApi(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    const data = req.body;
+    try {
+      const schemaId: string =
+        await this.registryApiService.commissionSchemaProfile(data);
+      console.log(
+        `Schema Profile commissioned successfully with schema ID: ${schemaId}`,
+      );
+      console.log(
+        "No errors found in schema profile data, proceeding with commissioning.",
+      );
+      res.status(200).json({
+        message: "Schema Profile commissioned successfully",
+        schemaId: schemaId,
+        received: data,
+      });
+    } catch (error) {
+      console.error("Error commissioning Schema Profile:", error);
+      res.status(400).json({
+        error: "Invalid schema profile data",
         details: error instanceof Error ? error.message : String(error),
       });
     }
