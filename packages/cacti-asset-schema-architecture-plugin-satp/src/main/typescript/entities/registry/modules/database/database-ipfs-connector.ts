@@ -35,10 +35,13 @@ export class DatabaseIpfsConnector {
 
       // The response data typically includes the hash (CID), like: { Name, Hash, Size }
       console.log("IPFS add response:", response.data);
-      return response.data.Hash; // The CID of the added file
+      return this.cidToDid(response.data.Hash); // The CID of the added file
     } catch (error: any) {
       console.error("Error adding JSON to IPFS:", error.message || error);
       throw error;
     }
+  }
+  public cidToDid(cid: string): string {
+    return `did:ipfs:${cid}`;
   }
 }

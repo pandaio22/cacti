@@ -15,9 +15,11 @@ export class RegistryApiService {
    * @param data - The asset data to be commissioned.
    * @returns A promise that resolves when the asset is successfully commissioned.
    */
-  public async commissionAsset(data: any): Promise<void> {
+  public async commissionAsset(data: any): Promise<string> {
     await this.validateAssetData(data);
-    await this.databaseConnector.addFileToIpfs(data);
+    const artifactSchemaId: string =
+      await this.databaseConnector.addFileToIpfs(data);
+    return artifactSchemaId;
     //Remaining logic for commissioning the asset can be added here.
   }
   /**

@@ -45,14 +45,19 @@ export class RegistryApi {
   }
   private async commissionAsset(req: Request, res: Response): Promise<void> {
     const data = req.body;
-    try {
-      await this.registryApiService.commissionAsset(data);
 
+    try {
+      const schemaId: string =
+        await this.registryApiService.commissionAsset(data);
+      console.log(
+        `Asset commissioned successfully with schema ID: ${schemaId}`,
+      );
       console.log(
         "No errors found in asset data, proceeding with commissioning.",
       );
       res.status(200).json({
         message: "Asset commissioned successfully",
+        schemaId: schemaId,
         received: data,
       });
     } catch (error) {
