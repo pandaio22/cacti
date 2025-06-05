@@ -11,10 +11,9 @@ export class ValidationService implements IValidationService {
    * @throws An error if the validation fails.
    */
   public async validateAssetSchema(data: any): Promise<void> {
+    console.log("Validating asset data:", JSON.stringify(data, null, 2));
     const validJsonLd: JsonLdValidationResult =
       await this.validateAssetSchemaStructure(data);
-    console.log("Validating asset data:", validJsonLd);
-
     //Validate Semantics
     //TODO
 
@@ -22,7 +21,10 @@ export class ValidationService implements IValidationService {
       console.error(validJsonLd.errors);
       throw new Error(validJsonLd.errors.join(", "));
     } else {
-      console.log("Commissioning asset with data:", data);
+      console.log(
+        "Valid asset schema with data:",
+        JSON.stringify(data, null, 2),
+      );
     }
   }
 
@@ -33,10 +35,10 @@ export class ValidationService implements IValidationService {
    * @throws An error if the validation fails.
    */
   public async validateSchemaProfile(data: any): Promise<void> {
+    console.log("Validating schema profile:", JSON.stringify(data, null, 2));
     //Validate Syntax
     let validJsonLd: JsonLdValidationResult =
       await this.validateSchemaProfileStructure(data);
-    console.log("Validating schema profile:", validJsonLd);
 
     //Validate Semantics
     validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
@@ -45,7 +47,10 @@ export class ValidationService implements IValidationService {
       console.error(validJsonLd.errors);
       throw new Error(validJsonLd.errors.join(", "));
     } else {
-      console.log("Commissioning schema profile with data:", data);
+      console.log(
+        "Valid schema profile with data:",
+        JSON.stringify(data, null, 2),
+      );
     }
   }
 
@@ -216,8 +221,6 @@ export class ValidationService implements IValidationService {
     const errors: string[] = [];
 
     try {
-      console.log("Validating schema profile...");
-      console.log(data);
       if (!data || typeof data !== "object" || Array.isArray(data)) {
         errors.push("JSON-LD must be an object");
         return { valid: false, errors };
@@ -297,17 +300,19 @@ export class ValidationService implements IValidationService {
         return { valid: false, errors };
       }
 
-      const schemaData = await response.json();
-      console.log("Dereferenced asset schema:", schemaData);
+      const assetSchema = await response.json();
+      console.log(
+        "Dereferenced asset schema:",
+        JSON.stringify(assetSchema, null, 2),
+      );
+      await this.validateAssetSchema(assetSchema);
 
-      // ✅ Semantic checks on dereferenced schema TODO
-      if (!schemaData["@id"]) {
-        errors.push("Dereferenced asset schema is missing '@id'");
-      }
+      const assetSchemaContext = assetSchema["@context"];
+      const validTerms = await this.extractAssetSchemaTerms(assetSchemaContext);
+      console.log("Asset Schema valid terms:", validTerms);
 
-      if (!schemaData["@context"]) {
-        errors.push("Dereferenced asset schema is missing '@context'");
-      }
+      // Recursively validate asset_schema-prefixed keys in data
+      await this.validateAssetSchemaKeys(data, validTerms, [], errors);
 
       return {
         valid: errors.length === 0,
@@ -385,6 +390,92 @@ export class ValidationService implements IValidationService {
       return parsed.protocol === "http:" || parsed.protocol === "https:";
     } catch {
       return false;
+    }
+  }
+
+  /**
+   * Extracts top-level non-@ terms from a JSON-LD context.
+   * @param context The JSON-LD context object.
+   * @returns A Set of valid term names (excluding @keywords).
+   */
+  private async extractAssetSchemaTerms(context: any): Promise<Set<string>> {
+    const validTerms = new Set<string>();
+
+    if (
+      typeof context === "object" &&
+      context !== null &&
+      !Array.isArray(context)
+    ) {
+      for (const key of Object.keys(context)) {
+        // Exclude terms like @version, @context, etc.
+        if (!key.startsWith("@")) {
+          validTerms.add(key);
+        }
+      }
+    }
+
+    return validTerms;
+  }
+
+  /**
+   * Extracts unprefixed terms from a JSON-LD context.
+   * @param context The JSON-LD context to extract terms from.
+   * @param validTerms A Set to collect valid terms.
+   * @returns A Set of valid unprefixed terms.
+   */
+  private async extractAssetSchemaTermsRecursive(
+    context: any,
+    validTerms = new Set<string>(),
+  ): Promise<Set<string>> {
+    if (typeof context !== "object" || context === null) return validTerms;
+
+    for (const [key, value] of Object.entries(context)) {
+      // Collect keys as-is (without prefix)
+      validTerms.add(key);
+
+      // Recurse if nested context object exists
+      if (typeof value === "object" && value !== null) {
+        // Sometimes nested context is under '@context' key
+        if ("@context" in value) {
+          this.extractAssetSchemaTermsRecursive(value["@context"], validTerms);
+        } else {
+          this.extractAssetSchemaTermsRecursive(value, validTerms);
+        }
+      }
+    }
+
+    return validTerms;
+  }
+
+  private async validateAssetSchemaKeys(
+    obj: any,
+    validTerms: Set<string>,
+    path: string[] = [],
+    errors: string[] = [],
+  ): Promise<void> {
+    if (Array.isArray(obj)) {
+      obj.forEach((item, i) =>
+        this.validateAssetSchemaKeys(
+          item,
+          validTerms,
+          path.concat(`[${i}]`),
+          errors,
+        ),
+      );
+    } else if (obj && typeof obj === "object") {
+      for (const [key, value] of Object.entries(obj)) {
+        if (key.startsWith("asset_schema:") && !validTerms.has(key)) {
+          errors.push(
+            `Invalid asset_schema key "${key}" at path "${path.join(".")}"`,
+          );
+        }
+        this.validateAssetSchemaKeys(
+          value,
+          validTerms,
+          path.concat(key),
+          errors,
+        );
+      }
     }
   }
 

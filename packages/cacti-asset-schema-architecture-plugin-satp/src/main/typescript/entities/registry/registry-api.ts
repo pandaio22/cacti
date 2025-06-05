@@ -58,9 +58,6 @@ export class RegistryApi {
       console.log(
         `Asset schema commissioned successfully with schema ID: ${schemaId}`,
       );
-      console.log(
-        "No errors found in asset schema data, proceeding with commissioning.",
-      );
       res.status(200).json({
         message: "Asset schema commissioned successfully",
         schemaId: schemaId,
@@ -84,9 +81,6 @@ export class RegistryApi {
         await this.registryApiService.commissionSchemaProfile(data);
       console.log(
         `Schema Profile commissioned successfully with schema ID: ${schemaId}`,
-      );
-      console.log(
-        "No errors found in schema profile data, proceeding with commissioning.",
       );
       res.status(200).json({
         message: "Schema Profile commissioned successfully",

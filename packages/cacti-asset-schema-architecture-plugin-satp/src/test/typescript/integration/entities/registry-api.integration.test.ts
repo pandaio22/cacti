@@ -207,9 +207,9 @@ describe("RegistryApiTest", () => {
           "@id": "https://www.culture.example.org/",
           "schema:email": "info@culture.example.org",
           "asset_schema:organization_key": {
-            "asset_schema:public_key":
+            public_key:
               "did:v1:test:nym:JApJf12r82Pe6PBJ3gJAAwo8F7uDnae6B4ab9EFQ7XXk#authn-key-1",
-            "asset_schema:issued": "2018-03-15T00:00:00Z",
+            issued: "2018-03-15T00:00:00Z",
           },
         },
         "asset_schema:facets": {
@@ -314,9 +314,9 @@ describe("RegistryApiTest", () => {
           "@id": "https://www.culture.example.org/",
           "schema:email": "info@culture.example.org",
           "asset_schema:organization_key": {
-            "asset_schema:public_key":
+            public_key:
               "did:v1:test:nym:JApJf12r82Pe6PBJ3gJAAwo8F7uDnae6B4ab9EFQ7XXk#authn-key-1",
-            "asset_schema:issued": "2018-03-15T00:00:00Z",
+            issued: "2018-03-15T00:00:00Z",
           },
         },
         "asset_schema:facets": {
