@@ -20,16 +20,12 @@ export class IPFSRemoteLogRepository {
   async readById(logKey: string): Promise<RemoteLog> {
     const fnTag = `${this.className}#readById()`;
 
-    return this.database
-      .getObjectV1({ key: logKey })
-      .then((response: any) => {
-        return JSON.parse(
-          Buffer.from(response.data.value, "base64").toString(),
-        );
-      });
-     // .catch(() => {
-     //   throw new Error(`${fnTag}, error when logging to ipfs`);
-     // });
+    return this.database.getObjectV1({ key: logKey }).then((response: any) => {
+      return JSON.parse(Buffer.from(response.data.value, "base64").toString());
+    });
+    // .catch(() => {
+    //   throw new Error(`${fnTag}, error when logging to ipfs`);
+    // });
   }
 
   async create(log: RemoteLog): Promise<any> {
@@ -39,14 +35,13 @@ export class IPFSRemoteLogRepository {
       `${fnTag}, logBase64: ${logBase64}, log: ${JSON.stringify(log)}`,
     );
 
-    return this.database
-      .setObjectV1({
-        key: log.key,
-        value: logBase64,
-      });
-      //.catch(() => {
-      //  throw new Error(`${fnTag}, error when logging to ipfs`);
-      //});
+    return this.database.setObjectV1({
+      key: log.key,
+      value: logBase64,
+    });
+    //.catch(() => {
+    //  throw new Error(`${fnTag}, error when logging to ipfs`);
+    //});
   }
 
   async reset() {}

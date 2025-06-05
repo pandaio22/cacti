@@ -133,7 +133,8 @@ describe("RegistryApiTest", () => {
       const schemaProfile = {
         "@context": {
           "@version": 1.1,
-          asset_schema: "https://gateway.satp.ietf.org/asset_schema/",
+          asset_schema:
+            "did:ipfs:QmYdfWp9FKS1EshoKeyjZHwRXgn6ognPFV9EbN25qhAWfP",
           dcap: {
             "@id": "https://www.culture.example.org/asset_profile/dcap",
             "@context": {

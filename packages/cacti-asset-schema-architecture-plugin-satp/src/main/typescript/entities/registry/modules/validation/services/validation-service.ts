@@ -1,4 +1,5 @@
 //import axios from "axios";
+import { IPFS_URL } from "../../../constants";
 import { JsonLdValidationResult } from "../types/validation-types";
 import { IValidationService } from "../interfaces/validation-service-interface"; // adjust path as needed
 
@@ -33,12 +34,12 @@ export class ValidationService implements IValidationService {
    */
   public async validateSchemaProfile(data: any): Promise<void> {
     //Validate Syntax
-    const validJsonLd: JsonLdValidationResult =
+    let validJsonLd: JsonLdValidationResult =
       await this.validateSchemaProfileStructure(data);
     console.log("Validating schema profile:", validJsonLd);
 
     //Validate Semantics
-    //TODO
+    validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
 
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
@@ -247,8 +248,13 @@ export class ValidationService implements IValidationService {
         errors.push("@id must be a string");
       }
 
-      if (!("asset_schema" in data["@context"])) {
-        errors.push("Missing asset_schema property");
+      if (
+        !data["@context"]["asset_schema"] ||
+        typeof data["@context"]["asset_schema"] !== "string" ||
+        !data["@context"]["asset_schema"].startsWith("did:ipfs:")
+      ) {
+        errors.push("Missing or malformed 'asset_schema' DID in @context.");
+        return { valid: false, errors };
       }
 
       // Check for reserved keywords misuse
@@ -263,6 +269,63 @@ export class ValidationService implements IValidationService {
     }
   }
 
+  /**
+   * Validates the semantics of a schema profile.
+   * @param data The schema profile data to validate.
+   * @param structureResult The result of the structure validation.
+   * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
+   */
+  public async validateSchemaProfileSemantics(
+    structureResult: JsonLdValidationResult,
+    data: any,
+  ): Promise<JsonLdValidationResult> {
+    const errors = [...(structureResult.errors || [])];
+
+    if (!structureResult.valid) return { valid: false, errors };
+
+    try {
+      const context = data["@context"];
+      const assetSchemaDid = context["asset_schema"];
+      const cid = assetSchemaDid.replace("did:ipfs:", "");
+      const ipfsUrl = IPFS_URL + `/cat?arg=${cid}`;
+      const response = await fetch(ipfsUrl, { method: "POST" });
+
+      if (!response.ok) {
+        errors.push(
+          `Unable to fetch asset schema from IPFS (${ipfsUrl}): ${response.statusText}`,
+        );
+        return { valid: false, errors };
+      }
+
+      const schemaData = await response.json();
+      console.log("Dereferenced asset schema:", schemaData);
+
+      // ✅ Semantic checks on dereferenced schema TODO
+      if (!schemaData["@id"]) {
+        errors.push("Dereferenced asset schema is missing '@id'");
+      }
+
+      if (!schemaData["@context"]) {
+        errors.push("Dereferenced asset schema is missing '@context'");
+      }
+
+      return {
+        valid: errors.length === 0,
+        errors,
+      };
+    } catch (error) {
+      errors.push(
+        `Semantic validation error: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return { valid: false, errors };
+    }
+  }
+
+  /**
+   * Validates the context of a JSON-LD document.
+   * @param context The @context to validate.
+   * @param errors An array to collect validation errors.
+   */
   private validateContext(context: any, errors: string[]): void {
     if (typeof context === "string") {
       if (!this.isValidUrl(context)) {
@@ -286,6 +349,11 @@ export class ValidationService implements IValidationService {
       errors.push("@context must be string, object, or array");
     }
   }
+  /**
+   * Validates reserved keywords in a JSON-LD document.
+   * @param data The JSON-LD data to validate.
+   * @param errors An array to collect validation errors.
+   */
   private validateReservedKeywords(data: any, errors: string[]): void {
     const reservedKeywords = [
       "@context",
@@ -306,6 +374,11 @@ export class ValidationService implements IValidationService {
       }
     }
   }
+  /**
+   * Checks if a URL is valid.
+   * @param url The URL to validate.
+   * @returns True if the URL is valid, false otherwise.
+   */
   private isValidUrl(url: string): boolean {
     try {
       const parsed = new URL(url);

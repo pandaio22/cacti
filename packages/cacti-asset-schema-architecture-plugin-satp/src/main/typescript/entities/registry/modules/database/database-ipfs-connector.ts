@@ -1,9 +1,10 @@
+import { IPFS_URL } from "../../constants";
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
 
 export class DatabaseIpfsConnector {
-  private ipfsApiUrl = "http://localhost:5001/api/v0";
+  private ipfsApiUrl = IPFS_URL;
 
   /**
    * Adds JSON data to the local IPFS node and returns the resulting CID.
