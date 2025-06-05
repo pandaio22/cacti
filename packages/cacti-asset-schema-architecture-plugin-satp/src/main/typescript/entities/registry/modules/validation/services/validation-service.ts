@@ -1,17 +1,17 @@
 //import axios from "axios";
-import { JsonLdValidationResult } from "./validation-types";
+import { JsonLdValidationResult } from "../types/validation-types";
+import { IValidationService } from "../interfaces/validation-service-interface"; // adjust path as needed
 
-export class ValidationService {
-
+export class ValidationService implements IValidationService {
   /**
-   * Validates asset schema data.
+   * Validates asset schema data. Exported by IValidationService.
    * @param data The asset schema data to validate.
    * @returns A promise that resolves when the validation is complete.
    * @throws An error if the validation fails.
    */
   public async validateAssetSchema(data: any): Promise<void> {
     const validJsonLd: JsonLdValidationResult =
-      await this.validateJsonLdStructure(data);
+      await this.validateAssetSchemaStructure(data);
     console.log("Validating asset data:", validJsonLd);
 
     //Validate Semantics
@@ -25,6 +25,12 @@ export class ValidationService {
     }
   }
 
+  /**
+   * Validates schema profile data. Exported by IValidationService.
+   * @param data The schema profile data to validate.
+   * @returns A promise that resolves when the validation is complete.
+   * @throws An error if the validation fails.
+   */
   public async validateSchemaProfile(data: any): Promise<void> {
     //Validate Syntax
     const validJsonLd: JsonLdValidationResult =
@@ -37,17 +43,19 @@ export class ValidationService {
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
       throw new Error(validJsonLd.errors.join(", "));
-      } else {
-       console.log("Commissioning schema profile with data:", data);
-      }
-    }  
-  
+    } else {
+      console.log("Commissioning schema profile with data:", data);
+    }
+  }
+
   /**
    * Validates a JSON-LD structure.
    * @param data The JSON-LD data to validate.
    * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
    */
-  public async validateJsonLdStructure(data: any): Promise<JsonLdValidationResult> {
+  public async validateJsonLdStructure(
+    data: any,
+  ): Promise<JsonLdValidationResult> {
     const errors: string[] = [];
 
     try {
@@ -91,13 +99,119 @@ export class ValidationService {
       );
       return { valid: false, errors };
     }
-  }  
+  }
+
+  /**
+   * Validates the structure of an asset schema.
+   * @param data The asset schema data to validate.
+   * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
+   */
+  public async validateAssetSchemaStructure(
+    data: any,
+  ): Promise<JsonLdValidationResult> {
+    const errors: string[] = [];
+
+    try {
+      if (!data || typeof data !== "object" || Array.isArray(data)) {
+        errors.push("Asset schema must be a non-array object.");
+        return { valid: false, errors };
+      }
+
+      // Required: @context
+      if (!data["@context"]) {
+        errors.push("Missing @context.");
+      } else {
+        this.validateContext(data["@context"], errors);
+
+        // Validate specific prefixes in @context
+        const context = data["@context"];
+        const requiredPrefixes = ["foaf", "schema", "skos", "xsd", "rdf"];
+        requiredPrefixes.forEach((prefix) => {
+          if (!context[prefix]) {
+            errors.push(`Missing namespace prefix: "${prefix}"`);
+          }
+        });
+
+        // Check specific term definitions
+        if (
+          !context["schema_version"] ||
+          context["schema_version"]["@id"] !==
+            "https://schema.org/schemaVersion"
+        ) {
+          errors.push(`Missing or incorrect "schema_version" mapping`);
+        }
+
+        if (
+          !context["fungible"] ||
+          context["fungible"]["@id"] !== "https://example.org/fungibility"
+        ) {
+          errors.push(`Missing or incorrect "fungible" mapping`);
+        }
+
+        if (
+          !context["facets"] ||
+          context["facets"]["@id"] !==
+            "https://satp.example.org/asset_schema_facets"
+        ) {
+          errors.push(`Missing or incorrect "facets" mapping`);
+        }
+
+        // Validate nested organization_key context
+        const orgKey = context["organization_key"];
+        if (!orgKey || !orgKey["@context"]) {
+          errors.push(
+            `Missing or incomplete "organization_key" mapping or sub-context`,
+          );
+        } else {
+          const subCtx = orgKey["@context"];
+          if (
+            !subCtx["public_key"] ||
+            subCtx["public_key"]["@id"] !==
+              "https://gateway.satp.ietf.org/asset_schema_pub_key"
+          ) {
+            errors.push(
+              `Missing or incorrect "public_key" in organization_key context`,
+            );
+          }
+          if (
+            !subCtx["issued"] ||
+            subCtx["issued"]["@id"] !==
+              "https://gateway.satp.ietf.org/asset_schema_key_issued"
+          ) {
+            errors.push(
+              `Missing or incorrect "issued" in organization_key context`,
+            );
+          }
+        }
+      }
+
+      // Optional but recommended: check @id
+      if (!data["@id"]) {
+        errors.push("Missing @id in asset schema.");
+      } else if (typeof data["@id"] !== "string") {
+        errors.push("@id must be a string.");
+      }
+
+      // You can reuse reserved keyword validation
+      this.validateReservedKeywords(data, errors);
+
+      return { valid: errors.length === 0, errors };
+    } catch (error) {
+      errors.push(
+        `Validation error: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return { valid: false, errors };
+    }
+  }
+
   /**
    * Validates a JSON-LD schema profile.
    * @param data The JSON-LD data to validate.
    * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
    */
-  public async validateSchemaProfileStructure(data: any): Promise<JsonLdValidationResult> {
+  public async validateSchemaProfileStructure(
+    data: any,
+  ): Promise<JsonLdValidationResult> {
     const errors: string[] = [];
 
     try {
