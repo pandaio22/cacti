@@ -2,7 +2,52 @@
 import { JsonLdValidationResult } from "./validation-types";
 
 export class ValidationService {
-  public validateJsonLdStructure(data: any): JsonLdValidationResult {
+
+  /**
+   * Validates asset schema data.
+   * @param data The asset schema data to validate.
+   * @returns A promise that resolves when the validation is complete.
+   * @throws An error if the validation fails.
+   */
+  public async validateAssetSchema(data: any): Promise<void> {
+    const validJsonLd: JsonLdValidationResult =
+      await this.validateJsonLdStructure(data);
+    console.log("Validating asset data:", validJsonLd);
+
+    //Validate Semantics
+    //TODO
+
+    if (!validJsonLd.valid) {
+      console.error(validJsonLd.errors);
+      throw new Error(validJsonLd.errors.join(", "));
+    } else {
+      console.log("Commissioning asset with data:", data);
+    }
+  }
+
+  public async validateSchemaProfile(data: any): Promise<void> {
+    //Validate Syntax
+    const validJsonLd: JsonLdValidationResult =
+      await this.validateSchemaProfileStructure(data);
+    console.log("Validating schema profile:", validJsonLd);
+
+    //Validate Semantics
+    //TODO
+
+    if (!validJsonLd.valid) {
+      console.error(validJsonLd.errors);
+      throw new Error(validJsonLd.errors.join(", "));
+      } else {
+       console.log("Commissioning schema profile with data:", data);
+      }
+    }  
+  
+  /**
+   * Validates a JSON-LD structure.
+   * @param data The JSON-LD data to validate.
+   * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
+   */
+  public async validateJsonLdStructure(data: any): Promise<JsonLdValidationResult> {
     const errors: string[] = [];
 
     try {
@@ -46,10 +91,13 @@ export class ValidationService {
       );
       return { valid: false, errors };
     }
-  }
-  //public validateAssetSchema(data: any): JsonLdValidationResult {}
-
-  public validateSchemaProfile(data: any): JsonLdValidationResult {
+  }  
+  /**
+   * Validates a JSON-LD schema profile.
+   * @param data The JSON-LD data to validate.
+   * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
+   */
+  public async validateSchemaProfileStructure(data: any): Promise<JsonLdValidationResult> {
     const errors: string[] = [];
 
     try {
