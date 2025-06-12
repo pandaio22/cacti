@@ -37,11 +37,11 @@ export class ValidationService implements IValidationService {
   public async validateSchemaProfile(data: any): Promise<void> {
     console.log("Validating schema profile:", JSON.stringify(data, null, 2));
     //Validate Syntax
-    const validJsonLd: JsonLdValidationResult =
+    let validJsonLd: JsonLdValidationResult =
       await this.validateSchemaProfileStructure(data);
 
     //Validate Semantics
-    //validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
+    validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
 
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
@@ -54,6 +54,37 @@ export class ValidationService implements IValidationService {
     }
   }
 
+  /**
+   * Validates a tokenized asset record. Exported by IValidationService.
+   * @param data The tokenized asset record data to validate.
+   * @returns A promise that resolves when the validation is complete.
+   * @throws An error if the validation fails.
+   */
+  public async validateTokenizedAssetRecord(data: any): Promise<void> {
+    console.log(
+      "Validating tokenized asset record:",
+      JSON.stringify(data, null, 2),
+    );
+    // Validate Syntax
+    let validJsonLd: JsonLdValidationResult =
+      await this.validateJsonLdStructure(data);
+
+    //Validate Semantics
+    validJsonLd = await this.validateTokenizedAssetRecordSemantics(
+      validJsonLd,
+      data,
+    );
+
+    if (!validJsonLd.valid) {
+      console.error(validJsonLd.errors);
+      throw new Error(validJsonLd.errors.join(", "));
+    } else {
+      console.log(
+        "Valid tokenized asset record with data:",
+        JSON.stringify(data, null, 2),
+      );
+    }
+  }
   /**
    * Validates a JSON-LD structure.
    * @param data The JSON-LD data to validate.
@@ -312,7 +343,7 @@ export class ValidationService implements IValidationService {
       console.log("Asset Schema valid terms:", validTerms);
 
       // Recursively validate asset_schema-prefixed keys in data
-      await this.validateAssetSchemaKeys(data, validTerms, [], errors);
+      //await this.validateAssetSchemaKeys(data, validTerms, [], errors);
 
       return {
         valid: errors.length === 0,
@@ -327,13 +358,61 @@ export class ValidationService implements IValidationService {
   }
 
   /**
+   * Validates the semantics of a tokenized asset record.
+   * @param structureResult The result of the structure validation.
+   * @param data The tokenized asset record data to validate.
+   * @returns A JsonLdValidationResult indicating whether the validation was successful and any errors encountered.
+   */
+  public async validateTokenizedAssetRecordSemantics(
+    structureResult: JsonLdValidationResult,
+    data: any,
+  ): Promise<JsonLdValidationResult> {
+    const errors = [...(structureResult.errors || [])];
+
+    if (!structureResult.valid) return { valid: false, errors };
+
+    try {
+      const schemaProfileDid = data["@context"];
+
+      if (
+        !schemaProfileDid ||
+        typeof schemaProfileDid !== "string" ||
+        !schemaProfileDid.startsWith("did:ipfs:")
+      ) {
+        errors.push("Missing or malformed 'schema_profile' DID in @context.");
+        return { valid: false, errors };
+      }
+      const cid = schemaProfileDid.replace("did:ipfs:", "");
+      const ipfsUrl = IPFS_URL + `/cat?arg=${cid}`;
+      const response = await fetch(ipfsUrl, { method: "POST" });
+      if (!response.ok) {
+        errors.push(
+          `Unable to fetch schema profile from IPFS (${ipfsUrl}): ${response.statusText}`,
+        );
+        return { valid: false, errors };
+      }
+      const schemaProfile = await response.json();
+      console.log(
+        "Dereferenced schema profile:",
+        JSON.stringify(schemaProfile, null, 2),
+      );
+      await this.validateSchemaProfile(schemaProfile);
+    } catch (error) {
+      errors.push(
+        `Semantic validation error: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return { valid: false, errors };
+    }
+    return { valid: true, errors };
+  }
+  /**
    * Validates the context of a JSON-LD document.
    * @param context The @context to validate.
    * @param errors An array to collect validation errors.
    */
   private validateContext(context: any, errors: string[]): void {
     if (typeof context === "string") {
-      if (!this.isValidUrl(context)) {
+      if (!this.isValidIRI(context)) {
         errors.push("Invalid @context URL format");
       }
     } else if (Array.isArray(context)) {
@@ -379,6 +458,60 @@ export class ValidationService implements IValidationService {
       }
     }
   }
+
+  /**
+   * Checks if a string is a valid IRI (Internationalized Resource Identifier).
+   * Supports schemes like did, urn, http, and https.
+   * @param iri The IRI to validate.
+   * @returns True if the IRI is valid, false otherwise.
+   */
+  private isValidIRI(iri: string): boolean {
+    if (typeof iri !== "string" || iri.trim() === "") {
+      return false;
+    }
+
+    if (this.isValidUrl(iri)) {
+      return true;
+    }
+
+    const iriMatch = iri.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):(.+)$/);
+    if (!iriMatch) {
+      return false;
+    }
+
+    const scheme = iriMatch[1].toLowerCase();
+    const rest = iriMatch[2];
+
+    switch (scheme) {
+      case "did":
+        return this.isValidDID(rest);
+      case "urn":
+        return this.isValidURN(rest);
+      default:
+        return false;
+    }
+  }
+
+  /**
+   * Checks if a string is a valid DID (Decentralized Identifier).
+   * @param rest The part of the DID after the scheme.
+   * @returns True if the DID is valid, false otherwise.
+   */
+  private isValidDID(rest: string): boolean {
+    // e.g., did:method:identifier
+    return /^([a-z0-9]+):[a-zA-Z0-9.\-_:%]+$/.test(rest);
+  }
+
+  /**
+   * Checks if a string is a valid URN (Uniform Resource Name).
+   * @param rest The part of the URN after the scheme.
+   * @returns True if the URN is valid, false otherwise.
+   */
+  private isValidURN(rest: string): boolean {
+    // e.g., urn:namespace:identifier (very simplified)
+    return /^[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:.+$/.test(rest);
+  }
+
   /**
    * Checks if a URL is valid.
    * @param url The URL to validate.

@@ -128,7 +128,6 @@ describe("RegistryApiTest", () => {
     it.skip("should throw an exception when calling commissionAsset() with an unavailable service and a valid schema", async () => {});
     //it("", async () => {});
   });
-
   describe("Test /POST commissionSchemaProfile() method", () => {
     it("should return a success message and an unique id when calling commissionAsset() with an available service and valid schema profile", async () => {
       // Given: a JSON-LD schema profile
@@ -342,13 +341,69 @@ describe("RegistryApiTest", () => {
       expect(response.body.error).toEqual("Invalid schema profile data");
       expect(typeof response.body.details).toBe("string");
     });
-    it("should throw an exception when calling commissionAsset() with an semantically invalid schema profile", async () => {
+    it.skip("should throw an exception when calling commissionAsset() with an semantically invalid schema profile", async () => {
       // Given: a semantically invalid JSON-LD schema profile
       // When: a POST request is made to /commission
       // Then: response should be HTTP 400 and throw an exception
     });
   });
-  describe("Test /POST commissionTokenisedAssetrecord() method", () => {});
+  describe("Test /POST commissionTokenizedAssetRecord() method", () => {
+    it("should return a success message and an unique id when calling commissionTokenizedAssetRecord() with an available service and valid TAR", async () => {
+      // Given: a JSON-LD schema for a tokenized asset record
+      const tar = {
+        "@context": "did:ipfs:QmThwy7F7k1aTGPjUeuiqgkhH2gmyzx36VGkcJPzgehEgJ",
+        "@id": "https://www.culture.example.org/tokenized_asset_record/12345",
+        dcap: {
+          rwa: {
+            digital_carrier_id: "E492069BT491278256346325",
+            digital_carrier_type: "rfid_tag",
+            rwa_kind: {
+              en: "Various cases",
+            },
+            rwa_description: {
+              en: "Blue velvet jewelry box with fabric lining on the inside. The metal edges in gold colour can be seen at the application point of the hinged cover.",
+            },
+            rwa_current_storage: {
+              en: "Former Royal Estate",
+            },
+            rwa_storage_location: {
+              en: "Former Royal Estate, Box XX",
+            },
+          },
+          dcar: {
+            dar_id: "911024",
+            dar_system_id: "5TDYIU",
+            dar_url: "https://www.culture.example.org/doi/5TDYIU/911024",
+            dar_description: {
+              en: " Blue velvet jewelry box with fabric lining inside.",
+            },
+          },
+        },
+      };
+      // When: a POST request is made to /commission-tokenized-asset-record
+      const response = await request(registryApi.app)
+        .post("/commission-tokenized-asset-record")
+        .send(tar)
+        .set("Content-Type", "application/json");
+      // Then: response should be HTTP 200 and contain the expected data
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(
+        "Tokenized Asset Record commissioned successfully",
+      );
+      expect(response.body.received).toEqual(tar);
+      expect(response.body.tokenizedAssetRecordId).toBeDefined();
+    });
+    it.skip("should throw an exception when calling commissionTokenizedAssetRecord() with an unavailable service and valid TAR", async () => {
+      // Given: a JSON-LD schema for a tokenized asset record
+      // When: a POST request is made to /commission-tokenized-asset-record
+      // Then: response should be HTTP 500 and throw an exception
+    });
+    it.skip("should throw an exception when calling commissionTokenizedAssetRecord() with a syntactically invalid TAR", async () => {
+      // Given: a syntactically invalid JSON-LD schema for a tokenized asset record
+      // When: a POST request is made to /commission-tokenized-asset-record
+      // Then: response should be HTTP 400 and throw an exception
+    });
+  });
   describe("Test /POST commissionAssetSchemaAuthority() method", () => {});
   describe("Test /POST commissionAssetProviders() method", () => {});
   describe("Test /GET get() method", () => {
@@ -416,6 +471,5 @@ describe("RegistryApiTest", () => {
       );
     });
   });
-
   describe("Test /POST decommission() method", () => {});
 });

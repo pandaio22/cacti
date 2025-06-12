@@ -26,6 +26,11 @@ export class RegistryApi {
     this.app.post("/commission-schema-profile", (req: Request, res: Response) =>
       this.commissionSchemaProfileApi(req, res),
     );
+    this.app.post(
+      "/commission-tokenized-asset-record",
+      (req: Request, res: Response) =>
+        this.commissionTokenizedAssetRecordApi(req, res),
+    );
     this.app.get("/get-asset-schema/:uid", (req: Request, res: Response) =>
       this.getAssetSchemaApi(req, res),
     );
@@ -148,6 +153,31 @@ export class RegistryApi {
       const errorStatus = (error as any)?.status ?? 400;
       res.status(errorStatus).json({
         error: "Invalid schema profile data",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  private async commissionTokenizedAssetRecordApi(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    const data = req.body;
+    try {
+      const tokenizedAssetRecordId: string =
+        await this.registryApiService.commissionTokenizedAssetRecord(data);
+      console.log(
+        `Tokenized Asset Record commissioned successfully with record ID: ${tokenizedAssetRecordId}`,
+      );
+      res.status(200).json({
+        message: "Tokenized Asset Record commissioned successfully",
+        tokenizedAssetRecordId: tokenizedAssetRecordId,
+        received: data,
+      });
+    } catch (error) {
+      console.error("Error commissioning Tokenized Asset Record:", error);
+      const errorStatus = (error as any)?.status ?? 400;
+      res.status(errorStatus).json({
+        error: "Invalid tokenized asset record data",
         details: error instanceof Error ? error.message : String(error),
       });
     }

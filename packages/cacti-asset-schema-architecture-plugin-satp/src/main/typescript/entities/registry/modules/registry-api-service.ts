@@ -17,13 +17,18 @@ export class RegistryApiService {
     this.validationService = validationService ?? new ValidationService();
   }
 
+  /**
+   * Retrieves an asset schema by its unique identifier (UID).
+   * @param uid - The unique identifier of the asset schema to retrieve.
+   * @returns A promise that resolves to the asset schema data.
+   * @throws An error if the asset schema with the given UID is not found.
+   */
   public async getAssetSchemaById(uid: string): Promise<any> {
     const assetSchema: any = await this.databaseConnector.getFileFromIpfs(uid);
     if (!assetSchema) {
       throw new Error(`Asset schema with UID ${uid} not found.`);
     }
     return assetSchema;
-
   }
 
   /**
@@ -36,8 +41,11 @@ export class RegistryApiService {
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
     //Remaining logic for commissioning the asset can be added here.
+
+    if (!artifactSchemaId) {
+      throw new Error("Failed to commission asset schema.");
+    }
     return artifactSchemaId;
-    
   }
 
   /**
@@ -50,6 +58,27 @@ export class RegistryApiService {
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
     //Remaining logic for commissioning the asset can be added here.
+    if (!artifactSchemaId) {
+      throw new Error("Failed to commission schema profile.");
+    }
+    return artifactSchemaId;
+  }
+
+  /**
+   * Commissions a tokenized asset record by validating its data and adding it to IPFS.
+   * @param data - The tokenized asset record data to be commissioned.
+   * @returns A promise that resolves to the CID of the commissioned tokenized asset record.
+   */
+  public async commissionTokenizedAssetRecord(
+    data: any
+  ): Promise<string> {
+    await this.validationService.validateTokenizedAssetRecord(data);
+    const artifactSchemaId: string =
+      await this.databaseConnector.addFileToIpfs(data);
+    // Remaining logic for commissioning the tokenized asset record can be added here.
+    if (!artifactSchemaId) {
+      throw new Error("Failed to commission tokenized asset record.");
+    }
     return artifactSchemaId;
   }
 }
