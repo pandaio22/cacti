@@ -17,6 +17,15 @@ export class RegistryApiService {
     this.validationService = validationService ?? new ValidationService();
   }
 
+  public async getAssetSchemaById(uid: string): Promise<any> {
+    const assetSchema: any = await this.databaseConnector.getFileFromIpfs(uid);
+    if (!assetSchema) {
+      throw new Error(`Asset schema with UID ${uid} not found.`);
+    }
+    return assetSchema;
+
+  }
+
   /**
    * Commission an asset schema by validating its data and adding it to IPFS.
    * @param data - The asset schema data to be commissioned.

@@ -9,6 +9,11 @@ export class RegistryApi {
   private readonly port: number;
   private server?: Server;
 
+  /**
+   * Constructs a new instance of the RegistryApi.
+   * @param registryApiService - An instance of the RegistryApiService to handle API requests.
+   * @param port - The port on which the server will listen (default is 3000).
+   */
   constructor(
     private readonly registryApiService: RegistryApiService,
     port: number = 3000,
@@ -21,8 +26,15 @@ export class RegistryApi {
     this.app.post("/commission-schema-profile", (req: Request, res: Response) =>
       this.commissionSchemaProfileApi(req, res),
     );
+    this.app.get("/get-asset-schema/:uid", (req: Request, res: Response) =>
+      this.getAssetSchemaApi(req, res),
+    );
     this.port = port;
   }
+  /**
+   * Starts the server and listens on the specified port.
+   * @returns A promise that resolves when the server is successfully started.
+   */
   public async start(): Promise<void> {
     this.server = await new Promise<Server>((resolve, reject) => {
       const server = this.app.listen(this.port, () => {
@@ -33,6 +45,10 @@ export class RegistryApi {
     });
   }
 
+  /**
+   * Stops the server if it is running.
+   * @returns A promise that resolves when the server is successfully stopped.
+   */
   public async stop(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.server) {
@@ -46,6 +62,39 @@ export class RegistryApi {
       }
     });
   }
+  /**
+   * Retrieves an asset schema by its unique identifier (UID).
+   * @param req - The request object containing the UID in the URL parameters.
+   * @param res - The response object to send the asset schema or an error message.
+   */
+  private async getAssetSchemaApi(req: Request, res: Response): Promise<void> {
+    const uid = req.params.uid;
+
+    try {
+      const assetSchema: any =
+        await this.registryApiService.getAssetSchemaById(uid);
+      console.log(
+        `Asset schema retrieved successfully with unique identifier: ${uid}`,
+      );
+      res.status(200).json({
+        message: "Asset schema retrieved successfully",
+        assetSchema: assetSchema,
+      });
+    } catch (error) {
+      console.error("Error retrieving asset schema:", error);
+      const errorStatus = (error as any)?.status ?? 400;
+      res.status(errorStatus).json({
+        error: "Invalid unique identifier for asset schema",
+        details: error instanceof Error ? error.message : String(error),
+      });
+      return;
+    }
+  }
+  /**
+   * Commissions an asset schema by validating its data and adding it to IPFS.
+   * @param req - The request object containing the asset schema data in the body.
+   * @param res - The response object to send the result of the commissioning process.
+   */
   private async commissionAssetSchemaApi(
     req: Request,
     res: Response,
@@ -65,12 +114,19 @@ export class RegistryApi {
       });
     } catch (error) {
       console.error("Error commissioning asset schema:", error);
-      res.status(400).json({
+      const errorStatus = (error as any)?.status ?? 400;
+
+      res.status(errorStatus).json({
         error: "Invalid asset schema data",
         details: error instanceof Error ? error.message : String(error),
       });
     }
   }
+  /**
+   * Commissions a schema profile by validating its data and adding it to IPFS.
+   * @param req - The request object containing the schema profile data in the body.
+   * @param res - The response object to send the result of the commissioning process.
+   */
   private async commissionSchemaProfileApi(
     req: Request,
     res: Response,
@@ -89,7 +145,8 @@ export class RegistryApi {
       });
     } catch (error) {
       console.error("Error commissioning Schema Profile:", error);
-      res.status(400).json({
+      const errorStatus = (error as any)?.status ?? 400;
+      res.status(errorStatus).json({
         error: "Invalid schema profile data",
         details: error instanceof Error ? error.message : String(error),
       });

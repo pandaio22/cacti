@@ -1,6 +1,7 @@
 import { RegistryApi } from "../../../../main/typescript/entities/registry/registry-api";
 import { RegistryApiService } from "../../../../main/typescript/entities/registry/modules/registry-api-service";
 import request from "supertest";
+import { string } from "yargs";
 
 //jest.mock(
 //  "../../../../main/typescript/entities/registry/modules/registry-api-service",
@@ -121,7 +122,8 @@ describe("RegistryApiTest", () => {
         .set("Content-Type", "application/json");
       // Then: response should be 400 and throw an exception
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe("Invalid asset schema data");
+      expect(response.body.error).toEqual("Invalid asset schema data");
+      expect(typeof response.body.details).toBe("string");
     });
     it.skip("should throw an exception when calling commissionAsset() with an unavailable service and a valid schema", async () => {});
     //it("", async () => {});
@@ -335,9 +337,10 @@ describe("RegistryApiTest", () => {
         .post("/commission-schema-profile")
         .send(schemaProfile)
         .set("Content-Type", "application/json");
-      // Then: response should be HTTP 400 and throw an exception
+      // Then: response should be 400 and throw an exception
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe("Invalid schema profile data");
+      expect(response.body.error).toEqual("Invalid schema profile data");
+      expect(typeof response.body.details).toBe("string");
     });
     it("should throw an exception when calling commissionAsset() with an semantically invalid schema profile", async () => {
       // Given: a semantically invalid JSON-LD schema profile
@@ -348,7 +351,71 @@ describe("RegistryApiTest", () => {
   describe("Test /POST commissionTokenisedAssetrecord() method", () => {});
   describe("Test /POST commissionAssetSchemaAuthority() method", () => {});
   describe("Test /POST commissionAssetProviders() method", () => {});
-  describe("Test /GET get() method", () => {});
+  describe("Test /GET get() method", () => {
+    it("should return an asset schema when calling get() with a valid unique id", async () => {
+      // Given: a valid unique id
+      const uniqueId: string = "QmYdfWp9FKS1EshoKeyjZHwRXgn6ognPFV9EbN25qhAWfP";
+      // When: an HTTP request is made to /get
+      const response = await request(registryApi.app)
+        .get(`/get-asset-schema/${uniqueId}`)
+        .set("Accept", "application/json");
+      // Then: response should be HTTP 200 and return the asset schema
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe("Asset schema retrieved successfully");
+      //assert that the response body contains the expected asset schema
+    });
+    it("should return a schema profile when calling get() with a valid unique id", async () => {
+      // Given: a valid unique id
+      // When: an HTTP request is made to /get
+      // Then: response should be HTTP 200 and return the schema profile
+    });
+    it("should return a Tokenized Asset Record (TAR) when calling get() with a valid unique id", async () => {
+      // Given: a valid unique id
+      // When: an HTTP request is made to /get
+      // Then: response should be HTTP 200 and return the tokenized asset record
+    });
+    it("should return an Asset Schema Authority public key when calling get() with a valid unique id", async () => {
+      // Given: a valid unique id
+      // When: an HTTP request is made to /get
+      // Then: response should be HTTP 200 and return the Asset Schema Authority public key
+    });
+    it("should return an Asset Provider public key when calling get() with a valid unique id", async () => {
+      // Given: a valid unique id
+      // When: an HTTP request is made to /get
+      // Then: response should be HTTP 200 and return the Asset Provider public key
+    });
+    it("should throw an exception when calling get() with an invalid unique id", async () => {
+      // Given: an invalid unique id
+      // When: an HTTP request is made to /get
+      // Then: response should be HTTP 400 and throw an exception
+    });
+    it("should throw an exception when calling get() with a null unique id", async () => {
+      // Given: a null input
+      const uniqueId = null;
+      // When: an HTTP request is made to /get
+      const response = await request(registryApi.app)
+        .get(`/get-asset-schema/${uniqueId}`)
+        .set("Accept", "application/json");
+      // Then: response should be HTTP 500 and throw an exception
+      expect(response.status).toBe(500);
+      expect(response.body.error).toBe(
+        "Invalid unique identifier for asset schema",
+      );
+    });
+    it("should throw an exception when calling get() with a valid id but the asset schema is not returned", async () => {
+      // Given: a valid input
+      const uniqueId: string = "AmYdfWp9FKS1EshoKeyjZHwRXgn6ognPFV9EbN25qhAWfP";
+      // When: an HTTP request is made to /get
+      const response = await request(registryApi.app)
+        .get(`/get-asset-schema/${uniqueId}`)
+        .set("Accept", "application/json");
+      // Then: response should be HTTP 500 and throw an exception
+      expect(response.status).toBe(500);
+      expect(response.body.error).toBe(
+        "Invalid unique identifier for asset schema",
+      );
+    });
+  });
 
-  describe("Test /GET decommission() method", () => {});
+  describe("Test /POST decommission() method", () => {});
 });

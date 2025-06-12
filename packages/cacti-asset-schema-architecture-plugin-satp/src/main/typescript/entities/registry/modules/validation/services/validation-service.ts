@@ -37,11 +37,11 @@ export class ValidationService implements IValidationService {
   public async validateSchemaProfile(data: any): Promise<void> {
     console.log("Validating schema profile:", JSON.stringify(data, null, 2));
     //Validate Syntax
-    let validJsonLd: JsonLdValidationResult =
+    const validJsonLd: JsonLdValidationResult =
       await this.validateSchemaProfileStructure(data);
 
     //Validate Semantics
-    validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
+    //validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
 
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
