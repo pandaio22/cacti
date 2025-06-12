@@ -1,5 +1,5 @@
 //import axios from "axios";
-import { IPFS_URL } from "../../../constants";
+import { IPFS_URL } from "../../../../../constants/constants";
 import { JsonLdValidationResult } from "../types/validation-types";
 import { IValidationService } from "../interfaces/validation-service-interface"; // adjust path as needed
 

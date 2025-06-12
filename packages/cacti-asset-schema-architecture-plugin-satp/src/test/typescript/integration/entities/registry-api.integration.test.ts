@@ -1,7 +1,6 @@
 import { RegistryApi } from "../../../../main/typescript/entities/registry/registry-api";
 import { RegistryApiService } from "../../../../main/typescript/entities/registry/modules/registry-api-service";
 import request from "supertest";
-import { string } from "yargs";
 
 //jest.mock(
 //  "../../../../main/typescript/entities/registry/modules/registry-api-service",
@@ -404,8 +403,11 @@ describe("RegistryApiTest", () => {
       // Then: response should be HTTP 400 and throw an exception
     });
   });
-  describe("Test /POST commissionAssetSchemaAuthority() method", () => {});
-  describe("Test /POST commissionAssetProviders() method", () => {});
+  describe("Test /POST registerAssetSchemaAuthority() method", () => {
+    it("should return a success message and an unique id when calling registerAssetSchemaAuthority() with an available service and valid schema authority and verified public key", async () => {});
+  });
+  describe("Test /POST registerTokenIssuanceAuthorization() method", () => {});
+  describe("Test /POST registerAssetProviders() method", () => {});
   describe("Test /GET get() method", () => {
     it("should return an asset schema when calling get() with a valid unique id", async () => {
       // Given: a valid unique id

@@ -1,6 +1,5 @@
-import { IPFSRemoteLogRepository } from "../../../../main/typescript/entities/registry/modules/database/database-ipfs";
-import { RemoteLog } from "../../../../main/typescript/entities/registry/modules/database/database-types";
-
+import { IPFSRemoteLogRepository } from "../../../main/typescript/entities/registry/modules/database/database-ipfs";
+import { RemoteLog } from "../../../main/typescript/entities/registry/modules/database/database-types";
 
 async function main() {
   const ipfsApiBaseUrl = "http://localhost:5001/api/v0";

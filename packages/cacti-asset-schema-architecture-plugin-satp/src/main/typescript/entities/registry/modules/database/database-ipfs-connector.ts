@@ -1,4 +1,4 @@
-import { IPFS_URL } from "../../constants";
+import { IPFS_URL } from "../../../../constants/constants";
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
