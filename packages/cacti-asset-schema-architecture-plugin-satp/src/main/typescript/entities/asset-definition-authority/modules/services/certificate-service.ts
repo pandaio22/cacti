@@ -1,33 +1,31 @@
-/*import forge from "node-forge";
+import { execSync } from "child_process";
+import * as fs from "fs";
+import * as path from "path";
+
+interface CertificateSubject {
+  C: string;
+  ST: string;
+  L: string;
+  O: string;
+  OU: string;
+  CN: string;
+}
 
 export class CertificateService {
-  public createSelfSignedCertificate(subjectAttrs: any, keys: { privateKey: string, publicKey: string }, validityDays: number = 3650): string {
-    const pki = forge.pki;
+  public createSelfSignedCertificate(
+    directory: string,
+    subject: CertificateSubject,
+    validityDays = 3650,
+  ): string {
+    const privateKeyPath = path.join(directory, "ada-private-key.pem");
+    const certPath = path.join(directory, "ada-certificate.pem");
 
-    const cert = pki.createCertificate();
-    cert.publicKey = pki.publicKeyFromPem(keys.publicKey);
-    cert.serialNumber = this.generateSerialNumber();
-    
-    const now = new Date();
-    cert.validity.notBefore = now;
-    cert.validity.notAfter = new Date(now.getTime() + validityDays * 24 * 60 * 60 * 1000);
+    const subjectString = `/C=${subject.C}/ST=${subject.ST}/L=${subject.L}/O=${subject.O}/OU=${subject.OU}/CN=${subject.CN}`;
 
-    cert.setSubject(subjectAttrs);
-    cert.setIssuer(subjectAttrs);
+    execSync(
+      `openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days ${validityDays} -subj "${subjectString}"`,
+    );
 
-    cert.setExtensions([
-      { name: "basicConstraints", cA: true },
-      { name: "keyUsage", keyCertSign: true, digitalSignature: true, cRLSign: true },
-      { name: "subjectKeyIdentifier" },
-    ]);
-
-    cert.sign(pki.privateKeyFromPem(keys.privateKey), forge.md.sha256.create());
-    
-    return pki.certificateToPem(cert);
-  }
-
-  private generateSerialNumber(): string {
-    return Math.floor(Math.random() * 1e16).toString(16);
+    return certPath;
   }
 }
-*/

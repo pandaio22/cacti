@@ -1,6 +1,7 @@
 import { RegistryApi } from "../../../../main/typescript/entities/registry/registry-api";
 import { RegistryApiService } from "../../../../main/typescript/entities/registry/modules/registry-api-service";
 import request from "supertest";
+import { execSync } from "child_process";
 
 //jest.mock(
 //  "../../../../main/typescript/entities/registry/modules/registry-api-service",
@@ -10,6 +11,22 @@ describe("RegistryApiTest", () => {
   //let registryApiService: jest.Mocked<RegistryApiService>;
   let registryApiService: RegistryApiService;
   let registryApi: RegistryApi;
+
+  beforeAll(() => {
+    try {
+      console.log("Starting IPFS container...");
+      execSync("docker run -d --rm --name ipfs -p 5001:5001 ipfs/kubo", {
+        stdio: "inherit",
+      });
+
+      // Optional: wait a bit to ensure IPFS is fully started
+      console.log("Waiting for IPFS to initialize...");
+      execSync("sleep 5");
+    } catch (err) {
+      console.error("Failed to start IPFS container:", err);
+      throw err;
+    }
+  });
 
   beforeEach(async () => {
     registryApiService = new RegistryApiService();
@@ -22,6 +39,16 @@ describe("RegistryApiTest", () => {
   afterEach(async () => {
     await registryApi.stop();
     jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    try {
+      console.log("Stopping IPFS container...");
+      execSync("docker stop ipfs", { stdio: "inherit" });
+    } catch (err) {
+      console.error("Failed to stop IPFS container:", err);
+      // Don't rethrow; allow cleanup to finish
+    }
   });
 
   describe("Test /POST commissionAssetSchema() method", () => {
