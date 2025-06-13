@@ -157,6 +157,11 @@ export class RegistryApi {
       });
     }
   }
+  /**
+   * Commissions a tokenized asset record by validating its data and adding it to IPFS.
+   * @param req - The request object containing the tokenized asset record data in the body.
+   * @param res - The response object to send the result of the commissioning process.
+   */
   private async commissionTokenizedAssetRecordApi(
     req: Request,
     res: Response,
