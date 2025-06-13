@@ -11,7 +11,18 @@ interface CertificateSubject {
   CN: string;
 }
 
+/**
+ * CertificateService is responsible for creating self-signed certificates using OpenSSL.
+ * It provides a method to generate a certificate with specified subject details and validity.
+ */
 export class CertificateService {
+  /**
+   * Creates a self-signed certificate using OpenSSL.
+   * @param directory - The directory where the private key and certificate will be stored.
+   * @param subject - The subject details for the certificate.
+   * @param validityDays - The number of days the certificate will be valid (default is 3650).
+   * @returns The path to the generated certificate file.
+   */
   public createSelfSignedCertificate(
     directory: string,
     subject: CertificateSubject,

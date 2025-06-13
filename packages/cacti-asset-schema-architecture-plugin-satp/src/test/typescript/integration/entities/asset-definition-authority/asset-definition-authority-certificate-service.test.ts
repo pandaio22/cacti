@@ -38,7 +38,7 @@ describe("KeyService with OpenSSL CertificateService", () => {
 
     // Build subject string for OpenSSL
     const subject =
-      "/C=US/ST=Massachusetts/L=Boston/O=Asset Definition Authority/OU=Root CA/CN=ada-root-ca.example.org";
+      "/C=US/ST=Massachusetts/L=Boston/O=Asset Schema Authority/OU=Root CA/CN=ada-root-ca.example.org";
 
     // When:
     console.log("Generating self-signed certificate using OpenSSL...");
