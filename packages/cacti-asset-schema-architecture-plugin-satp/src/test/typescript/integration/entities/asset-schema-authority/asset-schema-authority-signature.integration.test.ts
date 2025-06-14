@@ -1,5 +1,5 @@
-import { SignatureService } from "../../../../../main/typescript/entities/asset-definition-authority/modules/services/signature-service";
-import { KeyService } from "../../../../../main/typescript/entities/asset-definition-authority/modules/services/key-service";
+import { SignatureService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/signature-service";
+import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
 
 const sampleDocument = {
   "@context": {
@@ -48,10 +48,6 @@ describe("SignatureService", () => {
     );
     console.log("✅ Document signed successfully");
     console.log("📝 Signed document:", JSON.stringify(signedDoc, null, 2));
-    console.log(
-      "🔏 JWS signature:",
-      signedDoc.proof?.jws?.substring(0, 50) + "...",
-    );
 
     // Then: Document should have proof and be verifiable
     console.log("🔍 Then: Verifying document structure...");

@@ -1,4 +1,4 @@
-import { SignatureService } from "../services/signature-service";
+import { SignatureService } from "./signature-service";
 import { PRIVATE_KEY_PEM } from "../../../../constants/constants";
 
 const signatureService = new SignatureService();

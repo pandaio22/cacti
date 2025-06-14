@@ -3,7 +3,7 @@ import path from "path";
 
 const privateKeyPath = path.resolve(
   process.cwd(),
-  "src/main/typescript/entities/asset-definition-authority/certificates/privateKey.pem",
+  "src/main/typescript/entities/asset-schema-authority/certificates/privateKey.pem",
 );
 /**
  * EXPORTS

@@ -1,4 +1,4 @@
-import { KeyService } from "../../../../../main/typescript/entities/asset-definition-authority/modules/services/key-service";
+import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
 import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
