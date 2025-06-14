@@ -1,7 +1,17 @@
 import jsonld from "jsonld";
 import { importPKCS8, SignJWT, jwtVerify, importSPKI } from "jose";
 
+/**
+ * SignatureService is responsible for signing and verifying JSON-LD objects
+ * using JWS (JSON Web Signature) with ES256 algorithm.
+ */
 export class SignatureService {
+  /**
+   * Signs a JSON-LD object using a private key in PEM format.
+   * @param jsonLdObject - The JSON-LD object to be signed.
+   * @param privateKeyPem - The private key in PEM format used for signing.
+   * @returns A promise that resolves to the signed JSON-LD object with proof.
+   */
   public async sign(jsonLdObject: any, privateKeyPem: string) {
     const canon = await jsonld.canonize(jsonLdObject, {
       algorithm: "URDNA2015",
@@ -24,6 +34,12 @@ export class SignatureService {
     };
   }
 
+  /**
+   * Verifies a signed JSON-LD object against a public key.
+   * @param signedObject - The signed JSON-LD object containing the proof.
+   * @param publicKeyPem - The public key in PEM format used for verification.
+   * @returns A promise that resolves to true if the signature is valid, false otherwise.
+   */
   public async verify(
     signedObject: any,
     publicKeyPem: string,

@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme",
   "scripts": {
-    "test:unit": "npx jest ./src/test/typescript/unit/endpoints.test.ts --detectOpenHandles --runInBand",
+    "test:integration": "npx jest ./src/test/typescript/integration/entities --detectOpenHandles --runInBand",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "watch": "tsc --build --watch"
   },
   "dependencies": {
@@ -40,7 +41,7 @@
     "crypto": "1.0.1",
     "express": "5.1.0",
     "helia": "5.4.2",
-    "jose": "^6.0.11",
+    "jose": "^5",
     "jsonld": "^8.3.3",
     "jsonld-signatures": "^11.5.0",
     "kubo-rpc-client": "5.1.0",
