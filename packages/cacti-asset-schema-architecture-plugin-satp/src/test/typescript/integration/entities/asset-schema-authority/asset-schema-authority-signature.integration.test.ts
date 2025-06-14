@@ -3,11 +3,11 @@ import { KeyService } from "../../../../../main/typescript/entities/asset-defini
 
 const sampleDocument = {
   "@context": {
-    "name": "http://schema.org/name",
-    "age": "http://schema.org/age"
+    name: "http://schema.org/name",
+    age: "http://schema.org/age",
   },
-  "name": "John Doe",
-  "age": 30
+  name: "John Doe",
+  age: 30,
 };
 
 describe("SignatureService", () => {
@@ -21,19 +21,25 @@ describe("SignatureService", () => {
     keyService = new KeyService();
     signatureService = new SignatureService();
     keys = keyService.generateKeyPair();
-    
+
     console.log("📋 Sample document:", JSON.stringify(sampleDocument, null, 2));
     console.log("🔑 Generated key pair");
-    console.log("🔐 Private key (first 50 chars):", keys.privateKey.substring(0, 50) + "...");
-    console.log("🔓 Public key (first 50 chars):", keys.publicKey.substring(0, 50) + "...");
+    console.log(
+      "🔐 Private key (first 50 chars):",
+      keys.privateKey.substring(0, 50) + "...",
+    );
+    console.log(
+      "🔓 Public key (first 50 chars):",
+      keys.publicKey.substring(0, 50) + "...",
+    );
   });
 
   it("should sign and verify a JSON-LD document", async () => {
     console.log("\n🧪 Test: should sign and verify a JSON-LD document");
-    
+
     // Given: A sample JSON-LD document and valid key pair
     console.log("📄 Given: Sample document and valid key pair are ready");
-    
+
     // When: Signing the document with private key
     console.log("✍️  When: Signing document with private key...");
     const signedDoc = await signatureService.sign(
@@ -42,8 +48,11 @@ describe("SignatureService", () => {
     );
     console.log("✅ Document signed successfully");
     console.log("📝 Signed document:", JSON.stringify(signedDoc, null, 2));
-    console.log("🔏 JWS signature:", signedDoc.proof?.jws?.substring(0, 50) + "...");
-    
+    console.log(
+      "🔏 JWS signature:",
+      signedDoc.proof?.jws?.substring(0, 50) + "...",
+    );
+
     // Then: Document should have proof and be verifiable
     console.log("🔍 Then: Verifying document structure...");
     expect(signedDoc.proof).toBeDefined();
@@ -59,7 +68,7 @@ describe("SignatureService", () => {
 
   it("should fail verification with invalid public key", async () => {
     console.log("\n🧪 Test: should fail verification with invalid public key");
-    
+
     // Given: A signed document and an invalid public key
     console.log("📄 Given: Signing document with valid private key...");
     const signedDoc = await signatureService.sign(
@@ -72,8 +81,11 @@ describe("SignatureService", () => {
     // When: Generating a different key pair for invalid verification
     console.log("🔑 When: Generating invalid public key...");
     const { publicKey: invalidPublicKey } = keyService.generateKeyPair();
-    console.log("🔓 Invalid public key (first 50 chars):", invalidPublicKey.substring(0, 50) + "...");
-    
+    console.log(
+      "🔓 Invalid public key (first 50 chars):",
+      invalidPublicKey.substring(0, 50) + "...",
+    );
+
     // Then: Verification should fail with invalid public key
     console.log("🔍 Then: Attempting verification with invalid public key...");
     const isValid = await signatureService.verify(signedDoc, invalidPublicKey);

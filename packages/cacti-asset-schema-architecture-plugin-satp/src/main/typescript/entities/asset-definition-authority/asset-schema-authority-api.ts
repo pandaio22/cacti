@@ -67,20 +67,16 @@ export class AssetSchemaAuthorityApi {
   ): Promise<void> {
     try {
       const assetSchema = req.body;
-      console.log(
-        "Received asset schema and subject for certification:",
-        assetSchema,
-      );
+      console.log("Received asset schema for certification:", assetSchema);
       if (!assetSchema) {
-        throw new Error(
-          "Asset schema and subject are required to issue a certificate.",
-        );
+        throw new Error("Asset schema are required to issue a certificate.");
       }
-      const certificatePath =
+      const certifiedAssetSchema =
         await this.assetSchemaAuthorityService.signAssetSchema(assetSchema);
+
       res.status(200).json({
         message: "Asset schema certified successfully",
-        certificatePath,
+        received: certifiedAssetSchema,
       });
     } catch (error) {
       console.error("Error issuing certificate:", error);

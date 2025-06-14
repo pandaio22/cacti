@@ -13,25 +13,32 @@ export class SignatureService {
    * @returns A promise that resolves to the signed JSON-LD object with proof.
    */
   public async sign(jsonLdObject: any, privateKeyPem: string) {
-    const canon = await jsonld.canonize(jsonLdObject, {
-      algorithm: "URDNA2015",
-      format: "application/n-quads",
-    });
+    try {
+      const canon = await jsonld.canonize(jsonLdObject, {
+        algorithm: "URDNA2015",
+        format: "application/n-quads",
+      });
 
-    const privateKey = await importPKCS8(privateKeyPem, "ES256");
+      const privateKey = await importPKCS8(privateKeyPem, "ES256");
 
-    const jws = await new SignJWT({ canon })
-      .setProtectedHeader({ alg: "ES256" })
-      .sign(privateKey);
+      const jws = await new SignJWT({ canon })
+        .setProtectedHeader({ alg: "ES256" })
+        .sign(privateKey);
 
-    return {
-      ...jsonLdObject,
-      proof: {
-        type: "JwsSignature2020",
-        created: new Date().toISOString(),
-        jws,
-      },
-    };
+      return {
+        ...jsonLdObject,
+        proof: {
+          type: "JwsSignature2020",
+          created: new Date().toISOString(),
+          proofPurpose: "assertionMethod",
+          verificationMethod: "https://example.com/path-to-public-key",
+          jws,
+        },
+      };
+    } catch (error) {
+      console.error("Error while signing JSON-LD document:", error);
+      throw error;
+    }
   }
 
   /**
@@ -44,24 +51,24 @@ export class SignatureService {
     signedObject: any,
     publicKeyPem: string,
   ): Promise<boolean> {
-    const proof = signedObject.proof;
-    if (!proof) return false;
-
-    const objectToVerify = { ...signedObject };
-    delete objectToVerify.proof;
-
-    const canon = await jsonld.canonize(objectToVerify, {
-      algorithm: "URDNA2015",
-      format: "application/n-quads",
-    });
-
-    const publicKey = await importSPKI(publicKeyPem, "ES256");
-
     try {
+      const proof = signedObject.proof;
+      if (!proof) return false;
+
+      const objectToVerify = { ...signedObject };
+      delete objectToVerify.proof;
+
+      const canon = await jsonld.canonize(objectToVerify, {
+        algorithm: "URDNA2015",
+        format: "application/n-quads",
+      });
+
+      const publicKey = await importSPKI(publicKeyPem, "ES256");
+
       const { payload } = await jwtVerify(proof.jws, publicKey);
       return payload.canon === canon;
-    } catch (e) {
-      console.error("Verification failed:", e);
+    } catch (error) {
+      console.error("Verification failed:", error);
       return false;
     }
   }

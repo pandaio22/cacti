@@ -22,16 +22,12 @@ describe("AssetSchemaAuthorityApi", () => {
     it("should sign an asset schema when given a valid JSON-LD asset schema", async () => {
       // Given: a valid JSON-LD asset schema
       const assetSchema = {
-        "@context": "https://schema.org",
-        "@type": "AssetSchema",
-        name: "Test Asset Schema",
-        description: "A test asset schema for integration testing.",
-        properties: {
-          property1: {
-            type: "string",
-            description: "A sample property.",
-          },
+        "@context": {
+          name: "http://schema.org/name",
+          age: "http://schema.org/age",
         },
+        name: "John Doe",
+        age: 30,
       };
       // When: a POST request is made to /certificate-asset-schema
       const response = await request(assetSchemaAuthorityApi.app)
@@ -40,12 +36,12 @@ describe("AssetSchemaAuthorityApi", () => {
         .set("Content-Type", "application/json");
       // Then: the response should be successful (200) and contain a signed asset schema according to W3C JSON-LD signatures
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty("proof");
-      expect(response.body.proof).toHaveProperty("type");
-      expect(response.body.proof).toHaveProperty("created");
-      expect(response.body.proof).toHaveProperty("proofPurpose");
-      expect(response.body.proof).toHaveProperty("verificationMethod");
-      expect(response.body.proof).toHaveProperty("jws");
+      expect(response.body.received).toHaveProperty("proof");
+      expect(response.body.received.proof).toHaveProperty("type");
+      expect(response.body.received.proof).toHaveProperty("created");
+      expect(response.body.received.proof).toHaveProperty("proofPurpose");
+      expect(response.body.received.proof).toHaveProperty("verificationMethod");
+      expect(response.body.received.proof).toHaveProperty("jws");
     });
   });
 });

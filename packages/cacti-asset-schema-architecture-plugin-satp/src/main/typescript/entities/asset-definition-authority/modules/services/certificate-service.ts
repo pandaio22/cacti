@@ -33,10 +33,14 @@ export class CertificateService {
 
     const subjectString = `/C=${subject.C}/ST=${subject.ST}/L=${subject.L}/O=${subject.O}/OU=${subject.OU}/CN=${subject.CN}`;
 
-    execSync(
-      `openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days ${validityDays} -subj "${subjectString}"`,
-    );
-
-    return certPath;
+    try {
+      execSync(
+        `openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days ${validityDays} -subj "${subjectString}"`,
+      );
+      return certPath;
+    } catch (error) {
+      console.error("Error creating self-signed certificate:", error);
+      throw error;
+    }
   }
 }
