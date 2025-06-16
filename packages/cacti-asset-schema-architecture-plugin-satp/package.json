@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/pandaio22/cacti/tree/satp-dev-thesis#readme",
   "scripts": {
+    "test:unit": "npx jest ./src/test/typescript/unit --detectOpenHandles --runInBand",
     "test:integration": "npx jest ./src/test/typescript/integration/entities --detectOpenHandles --runInBand",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "watch": "tsc --build --watch"

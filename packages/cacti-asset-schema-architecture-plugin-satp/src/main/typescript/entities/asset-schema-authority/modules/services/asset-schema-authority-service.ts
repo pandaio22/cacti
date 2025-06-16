@@ -1,5 +1,5 @@
 import { SignatureService } from "./signature-service";
-import { PRIVATE_KEY_PEM } from "../../../../constants/constants";
+import { PRIVATE_KEYS_PEM } from "../../../../constants/constants";
 
 const signatureService = new SignatureService();
 export class AssetSchemaAuthorityService {
@@ -16,13 +16,13 @@ export class AssetSchemaAuthorityService {
       if (!assetSchema || typeof assetSchema !== "object") {
         throw new Error("Invalid asset schema provided for signing.");
       }
-      if (!PRIVATE_KEY_PEM) {
+      if (!PRIVATE_KEYS_PEM.ASSET_SCHEMA_AUTHORITY) {
         throw new Error("Private key PEM is not set in environment variables.");
       }
 
       const signedSchema = await signatureService.sign(
         assetSchema,
-        PRIVATE_KEY_PEM,
+        PRIVATE_KEYS_PEM.ASSET_SCHEMA_AUTHORITY,
       );
       console.log("Asset schema signed successfully:", signedSchema);
       // TODO - Here you would typically save the signed schema to a file or database
@@ -41,13 +41,13 @@ export class AssetSchemaAuthorityService {
       if (!schemaProfile || typeof schemaProfile !== "object") {
         throw new Error("Invalid schema profile provided for signing.");
       }
-      if (!PRIVATE_KEY_PEM) {
+      if (!PRIVATE_KEYS_PEM.ASSET_SCHEMA_AUTHORITY) {
         throw new Error("Private key PEM is not set in environment variables.");
       }
 
       const signedProfile = await signatureService.sign(
         schemaProfile,
-        PRIVATE_KEY_PEM,
+        PRIVATE_KEYS_PEM.ASSET_SCHEMA_AUTHORITY,
       );
       console.log("Schema profile signed successfully:", signedProfile);
       // TODO - Here you would typically save the signed profile to a file or database
