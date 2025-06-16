@@ -14669,7 +14669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/webcrypto@npm:^1.0.22, @peculiar/webcrypto@npm:^1.5.0":
+"@peculiar/webcrypto@npm:1.5.0, @peculiar/webcrypto@npm:^1.0.22, @peculiar/webcrypto@npm:^1.5.0":
   version: 1.5.0
   resolution: "@peculiar/webcrypto@npm:1.5.0"
   dependencies:
@@ -21270,6 +21270,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asn1js@npm:3.0.6, asn1js@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "asn1js@npm:3.0.6"
+  dependencies:
+    pvtsutils: "npm:^1.3.6"
+    pvutils: "npm:^1.1.3"
+    tslib: "npm:^2.8.1"
+  checksum: 10/2b283dd87662b3276ccc3e68db041c1062f629d9454b24fc2c141ad07c400ae50e02ee78f8c8a67043aa7d430e949d4616b8921178243932167bc2c9e861b972
+  languageName: node
+  linkType: hard
+
 "asn1js@npm:^3.0.5":
   version: 3.0.5
   resolution: "asn1js@npm:3.0.5"
@@ -21278,17 +21289,6 @@ __metadata:
     pvutils: "npm:^1.1.3"
     tslib: "npm:^2.4.0"
   checksum: 10/17fb0302432186631550de9606a4622ec366646d072cde9cdf4bcafa47bd2425e157eeb7b1377ee6520f8b46687b4ecaee31cf0ad2fa494361a1938b2ed53194
-  languageName: node
-  linkType: hard
-
-"asn1js@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "asn1js@npm:3.0.6"
-  dependencies:
-    pvtsutils: "npm:^1.3.6"
-    pvutils: "npm:^1.1.3"
-    tslib: "npm:^2.8.1"
-  checksum: 10/2b283dd87662b3276ccc3e68db041c1062f629d9454b24fc2c141ad07c400ae50e02ee78f8c8a67043aa7d430e949d4616b8921178243932167bc2c9e861b972
   languageName: node
   linkType: hard
 
@@ -23058,24 +23058,26 @@ __metadata:
     "@hyperledger/cactus-core": "workspace:^"
     "@hyperledger/cactus-core-api": "workspace:^"
     "@hyperledger/cactus-plugin-object-store-ipfs": "workspace:^"
-    "@peculiar/webcrypto": "npm:^1.5.0"
+    "@peculiar/webcrypto": "npm:1.5.0"
     "@types/express": "npm:5"
     "@types/jest": "npm:29.5.14"
     "@types/jsonld": "npm:1.5.15"
     "@types/node": "npm:22.15.21"
     "@types/node-forge": "npm:1"
-    asn1js: "npm:^3.0.6"
+    asn1js: "npm:3.0.6"
     body-parser: "npm:2.2.0"
     crypto: "npm:1.0.1"
     express: "npm:5.1.0"
     helia: "npm:5.4.2"
     jest: "npm:29.7.0"
+    jose: "npm:5"
     jsonld: "npm:8.3.3"
+    jsonld-signatures: "npm:11.5.0"
     kubo-rpc-client: "npm:5.1.0"
     multiformats: "npm:13.3.6"
     node-forge: "npm:1.3.1"
-    pkijs: "npm:^3.2.5"
-    pvutils: "npm:^1.1.3"
+    pkijs: "npm:3.2.5"
+    pvutils: "npm:1.1.3"
     safe-stable-stringify: "npm:2.5.0"
     ts-jest: "npm:29.3.4"
     ts-node: "npm:10.9.2"
@@ -37415,6 +37417,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:5":
+  version: 5.10.0
+  resolution: "jose@npm:5.10.0"
+  checksum: 10/03881d1dfb390dcf50926402edcfe233bf557b5a77321fcb1bdb53453bc1cdd26d2d0a9ab28c7445cbb826881f84fdf5074179700f10c2711ccb9880f51065d7
+  languageName: node
+  linkType: hard
+
 "js-levenshtein@npm:^1.1.6":
   version: 1.1.6
   resolution: "js-levenshtein@npm:1.1.6"
@@ -37832,7 +37841,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonld@npm:8.3.3":
+"jsonld-signatures@npm:11.5.0":
+  version: 11.5.0
+  resolution: "jsonld-signatures@npm:11.5.0"
+  dependencies:
+    "@digitalbazaar/security-context": "npm:^1.0.0"
+    jsonld: "npm:^8.0.0"
+    rdf-canonize: "npm:^4.0.1"
+    serialize-error: "npm:^8.1.0"
+  checksum: 10/b4840e210ab2bee0e19d1061bb61d451fef3b71d950f7537d3d7d9d9f42c8d9fc22206bf731cd61c5ba9768215face372a08b21e6af5175ad968a5cf79618d09
+  languageName: node
+  linkType: hard
+
+"jsonld@npm:8.3.3, jsonld@npm:^8.0.0":
   version: 8.3.3
   resolution: "jsonld@npm:8.3.3"
   dependencies:
@@ -44873,7 +44894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkijs@npm:^3.2.5":
+"pkijs@npm:3.2.5":
   version: 3.2.5
   resolution: "pkijs@npm:3.2.5"
   dependencies:
@@ -46710,7 +46731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pvutils@npm:^1.1.3":
+"pvutils@npm:1.1.3, pvutils@npm:^1.1.3":
   version: 1.1.3
   resolution: "pvutils@npm:1.1.3"
   checksum: 10/e5201b8f78ece68eae414a938c844bc45fb3f0de298178eed1775a217eedfd897c4346e5e54f410bb4d7466e09ceb262e85f20fd64239b8bb2595f14c52fa95e
@@ -46935,6 +46956,15 @@ __metadata:
   dependencies:
     setimmediate: "npm:^1.0.5"
   checksum: 10/4b77dad3ef52eb314a056b9c158d6bc245e6856a45b9409f872fe9f613ef3797832ae331ae8241e25634feeb20fb95e67f475921e42627a7d95b3c2121ada52e
+  languageName: node
+  linkType: hard
+
+"rdf-canonize@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "rdf-canonize@npm:4.0.1"
+  dependencies:
+    setimmediate: "npm:^1.0.5"
+  checksum: 10/2ec568c3e8b44c0fee64811496bdcbd8915b9db750660ffb05b16a334e28fd8314c34e54c0013fae77453aa5c10006af9a5a26e38034cbc2335638d7f9703c48
   languageName: node
   linkType: hard
 
@@ -49480,7 +49510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-error@npm:^8.0.1":
+"serialize-error@npm:^8.0.1, serialize-error@npm:^8.1.0":
   version: 8.1.0
   resolution: "serialize-error@npm:8.1.0"
   dependencies:

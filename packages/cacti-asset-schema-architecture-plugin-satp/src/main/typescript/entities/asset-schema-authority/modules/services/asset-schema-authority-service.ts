@@ -3,7 +3,12 @@ import { PRIVATE_KEY_PEM } from "../../../../constants/constants";
 
 const signatureService = new SignatureService();
 export class AssetSchemaAuthorityService {
-  // Placeholder for future implementation
+  /**
+   * Signs an asset schema using the private key PEM.
+   * @param assetSchema - The asset schema to sign.
+   * @returns A promise that resolves to the signed asset schema.
+   * @throws Error if the asset schema is invalid or signing fails.
+   */
   public async signAssetSchema(assetSchema: any): Promise<string> {
     try {
       console.log("Signing asset schema:", assetSchema);
@@ -20,11 +25,36 @@ export class AssetSchemaAuthorityService {
         PRIVATE_KEY_PEM,
       );
       console.log("Asset schema signed successfully:", signedSchema);
-      // Here you would typically save the signed schema to a file or database
+      // TODO - Here you would typically save the signed schema to a file or database
 
       return signedSchema;
     } catch (error) {
       console.error("Error signing asset schema:", error);
+      throw error;
+    }
+  }
+
+  public async signSchemaProfile(schemaProfile: any): Promise<string> {
+    try {
+      console.log("Signing schema profile:", schemaProfile);
+
+      if (!schemaProfile || typeof schemaProfile !== "object") {
+        throw new Error("Invalid schema profile provided for signing.");
+      }
+      if (!PRIVATE_KEY_PEM) {
+        throw new Error("Private key PEM is not set in environment variables.");
+      }
+
+      const signedProfile = await signatureService.sign(
+        schemaProfile,
+        PRIVATE_KEY_PEM,
+      );
+      console.log("Schema profile signed successfully:", signedProfile);
+      // TODO - Here you would typically save the signed profile to a file or database
+
+      return signedProfile;
+    } catch (error) {
+      console.error("Error signing schema profile:", error);
       throw error;
     }
   }

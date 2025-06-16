@@ -23,11 +23,55 @@ describe("AssetSchemaAuthorityApi", () => {
       // Given: a valid JSON-LD asset schema
       const assetSchema = {
         "@context": {
-          name: "http://schema.org/name",
-          age: "http://schema.org/age",
+          "@version": 1.1,
+          schema_version: {
+            "@id": "https://schema.org/schemaVersion",
+            "@type": "@id",
+          },
+          foaf: "http://xmlns.com/foaf/0.1/",
+          schema: "http://schema.org/",
+          skos: "http://www.w3.org/2004/02/skos/core#",
+          xsd: "http://www.w3.org/2001/XMLSchema#",
+          rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          fungible: {
+            "@id":
+              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+            "@type": "https://schema.org/Boolean",
+          },
+          organization_key: {
+            "@id":
+              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+            "@context": {
+              public_key: {
+                "@id":
+                  "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+                "@type": "schema:string",
+              },
+              issued: {
+                "@id":
+                  "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+                "@type": "schema:string",
+              },
+            },
+          },
+          facets: {
+            "@id":
+              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+          },
         },
-        name: "John Doe",
-        age: 30,
+        "@id":
+          "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
+        "foaf:name": "Example Corp",
+        organization_key: {
+          public_key: "0xabcdef1234567890",
+          issued: "2025-05-31T10:00:00Z",
+        },
+        facets: {
+          "skos:note": "A sample asset representing an organization with a key",
+          "schema:category": "financial",
+        },
+        fungible: true,
+        schema_version: 1.0,
       };
       // When: a POST request is made to /certificate-asset-schema
       const response = await request(assetSchemaAuthorityApi.app)

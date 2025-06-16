@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import { Server } from "http";
 import bodyParser from "body-parser";
 import { AssetSchemaAuthorityService } from "./modules/services/asset-schema-authority-service";
+import { API_ENDPOINTS } from "../../constants/constants";
 
 export class AssetSchemaAuthorityApi {
   public app: Express;
@@ -18,10 +19,14 @@ export class AssetSchemaAuthorityApi {
   ) {
     this.app = express();
     this.app.use(bodyParser.json());
-    this.app.post("/certificate-asset-schema", (req: Request, res: Response) =>
-      this.certificateAssetSchema(req, res),
+    this.app.post(
+      API_ENDPOINTS.ASSET_SCHEMA_AUTHORITY.CERTIFICATE_ASSET_SCHEMA,
+      (req: Request, res: Response) => this.certificateAssetSchema(req, res),
     );
-
+    this.app.post(
+      API_ENDPOINTS.ASSET_SCHEMA_AUTHORITY.CERTIFICATE_SCHEMA_PROFILE,
+      (req: Request, res: Response) => this.certificateSchemaProfile(req, res),
+    );
     this.port = port;
   }
   /**
@@ -83,6 +88,33 @@ export class AssetSchemaAuthorityApi {
       const errorStatus = (error as any)?.status ?? 400;
       res.status(errorStatus).json({
         error: "Invalid asset schema data",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  private async certificateSchemaProfile(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    try {
+      const schemaProfile = req.body;
+      console.log("Received schema profile for certification:", schemaProfile);
+      if (!schemaProfile) {
+        throw new Error("Schema profile is required to issue a certificate.");
+      }
+      const certifiedSchemaProfile =
+        await this.assetSchemaAuthorityService.signSchemaProfile(schemaProfile);
+
+      res.status(200).json({
+        message: "Schema profile certified successfully",
+        received: certifiedSchemaProfile,
+      });
+    } catch (error) {
+      console.error("Error issuing certificate:", error);
+      const errorStatus = (error as any)?.status ?? 400;
+      res.status(errorStatus).json({
+        error: "Invalid schema profile data",
         details: error instanceof Error ? error.message : String(error),
       });
     }

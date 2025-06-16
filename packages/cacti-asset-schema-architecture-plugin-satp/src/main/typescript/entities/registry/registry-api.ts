@@ -3,6 +3,7 @@ import { Server } from "http";
 //import { v4 as uuidv4 } from "uuid";
 import bodyParser from "body-parser";
 import { RegistryApiService } from "./modules/registry-api-service";
+import { API_ENDPOINTS } from "../../constants/constants";
 
 export class RegistryApi {
   public app: Express;
@@ -20,19 +21,23 @@ export class RegistryApi {
   ) {
     this.app = express();
     this.app.use(bodyParser.json());
-    this.app.post("/commission-asset-schema", (req: Request, res: Response) =>
-      this.commissionAssetSchemaApi(req, res),
-    );
-    this.app.post("/commission-schema-profile", (req: Request, res: Response) =>
-      this.commissionSchemaProfileApi(req, res),
+    this.app.post(
+      API_ENDPOINTS.REGISTRY.COMMISSION_ASSET_SCHEMA,
+      (req: Request, res: Response) => this.commissionAssetSchemaApi(req, res),
     );
     this.app.post(
-      "/commission-tokenized-asset-record",
+      API_ENDPOINTS.REGISTRY.COMMISSION_SCHEMA_PROFILE,
+      (req: Request, res: Response) =>
+        this.commissionSchemaProfileApi(req, res),
+    );
+    this.app.post(
+      API_ENDPOINTS.REGISTRY.COMMISSION_TOKENIZED_ASSET_RECORD,
       (req: Request, res: Response) =>
         this.commissionTokenizedAssetRecordApi(req, res),
     );
-    this.app.get("/get-asset-schema/:uid", (req: Request, res: Response) =>
-      this.getAssetSchemaApi(req, res),
+    this.app.get(
+      API_ENDPOINTS.REGISTRY.GET_ASSET_SCHEMA,
+      (req: Request, res: Response) => this.getAssetSchemaApi(req, res),
     );
     this.port = port;
   }
