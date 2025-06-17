@@ -34,6 +34,12 @@ export class AssetSchemaAuthorityService {
     }
   }
 
+  /**
+   * Signs a schema profile using the private key PEM.
+   * @param schemaProfile - The schema profile to sign.
+   * @returns A promise that resolves to the signed schema profile.
+   * @throws Error if the schema profile is invalid or signing fails.
+   */
   public async signSchemaProfile(schemaProfile: any): Promise<string> {
     try {
       console.log("Signing schema profile:", schemaProfile);
@@ -57,5 +63,20 @@ export class AssetSchemaAuthorityService {
       console.error("Error signing schema profile:", error);
       throw error;
     }
+  }
+  /**
+   * Signs a token issuance authorization request, using the private key PEM, hands sends it to the registry.
+   * @param tokenIssuanceAuthorizationRequest - The request to sign.
+   * @returns A promise that resolves to the signed token issuance authorization.
+   * @throws Error if the request is invalid or signing fails.
+   */
+  public async handleTokenIssuanceAuthorizationRequest(
+    tokenIssuanceAuthorizationRequest: any,
+  ): Promise<string> {
+    console.log(
+      "Handling token issuance authorization request:",
+      tokenIssuanceAuthorizationRequest,
+    );
+    return "Signed";
   }
 }

@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: SATP - Asset Schema Architecture for Asset Exchanges
+  version: 0.0.1
+  description: |-
+    SATP is a protocol operating between two gateways that conducts the transfer of a digital asset from one gateway to another. The protocol establishes a secure channel between the endpoints and implements a 2-phase commit to ensure the properties of transfer atomicity, consistency, isolation and durability.
+    The Asset Schema Architecture for Asset Exchanges defines the data structures and schemas used in the SATP protocol. It provides a standardized way to represent assets, their properties, and the transactions that involve them. It is designed to be flexible and extensible, allowing for the representation of a wide variety of asset types and their associated metadata.
+
+    This API defines the registry, asset schema authority and asset provider facing APIs.
+
+    **Additional Resources**:
+    - [Asset Schema Architecture for Asset Exchange](https://datatracker.ietf.org/doc/html/draft-avrilionis-satp-asset-schema-architecture-06)
+    - [Asset Profiles for Asset Exchange draft](https://datatracker.ietf.org/doc/draft-avrilionis-satp-asset-profiles/)
+  contact:
+    name: Hyperledger Cacti
+  x-logo:
+    altText: Cacti logo
+    backgroundColor: '#fafafa'
+    url: 'https://github.com/hyperledger/cacti/blob/main/images/HL_Cacti_Logo_Color.png'
+externalDocs:
+  description: 'For more information about the SATP Gateway Client, refer to the official documentation.'
+  url: 'https://github.com/hyperledger/cacti/tree/main/packages/cactus-plugin-satp-hermes/README.md'
+servers:
+  - url: 'http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/registry'
+    description: Registry server
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '3000'
+  - url: 'http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority'
+    description: Asset Schema Authority server
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '3010'
+  - url: 'http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/asset-provider'
+    description: Asset Provider server
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '3020'
+paths:
+  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request:
+    post:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request
+      summary: Request Token Issuance Authorization
+      description: |
+        This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature.
+      operationId: requestTokenIssuanceAuthorization
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              type: object
+              properties:
+                '@context':
+                  oneOf:
+                    - type: string
+                    - type: object
+                    - type: array
+                      items:
+                        anyOf:
+                          - type: string
+                          - type: object
+                asset_provider:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    id:
+                      type: string
+                    organization_key:
+                      type: object
+                      properties:
+                        public_key:
+                          type: string
+                        issued:
+                          type: string
+                          format: date-time
+                  required:
+                    - name
+                    - id
+                    - organization_key
+                schema_profile:
+                  type: string
+                network_id:
+                  type: string
+                proof:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    created:
+                      type: string
+                      format: date-time
+                    proofPurpose:
+                      type: string
+                    verificationMethod:
+                      type: string
+                    jws:
+                      type: string
+                  required:
+                    - type
+                    - created
+                    - proofPurpose
+                    - verificationMethod
+                    - jws
+              required:
+                - '@context'
+                - asset_provider
+                - schema_profile
+                - network_id
+                - proof
+      responses:
+        '200':
+          description: Token issuance authorization request successful
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties:
+                  token_issuance_authorization_request:
+                    $ref: '#./schemas.yml#/TokenIssuanceAuthorizationRequest'
+                  proof:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      created:
+                        type: string
+                        format: date-time
+                      proofPurpose:
+                        type: string
+                      verificationMethod:
+                        type: string
+                      jws:
+                        type: string
+                    required:
+                      - type
+                      - created
+                      - proofPurpose
+                      - verificationMethod
+                      - jws
+                required:
+                  - token_issuance_authorization_request
+                  - proof
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    TokenIssuanceAuthorizationRequest:
+      type: object
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+            - type: object
+            - type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: object
+        asset_provider:
+          type: object
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+            organization_key:
+              type: object
+              properties:
+                public_key:
+                  type: string
+                issued:
+                  type: string
+                  format: date-time
+          required:
+            - name
+            - id
+            - organization_key
+        schema_profile:
+          type: string
+        network_id:
+          type: string
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            verificationMethod:
+              type: string
+            jws:
+              type: string
+          required:
+            - type
+            - created
+            - proofPurpose
+            - verificationMethod
+            - jws
+      required:
+        - '@context'
+        - asset_provider
+        - schema_profile
+        - network_id
+        - proof
+    TokenIssuanceAuthorizationResponse:
+      type: object
+      properties:
+        token_issuance_authorization_request:
+          $ref: '#./schemas.yml#/TokenIssuanceAuthorizationRequest'
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            verificationMethod:
+              type: string
+            jws:
+              type: string
+          required:
+            - type
+            - created
+            - proofPurpose
+            - verificationMethod
+            - jws
+      required:
+        - token_issuance_authorization_request
+        - proof

@@ -72,4 +72,4 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    $ref: ./schemas.yaml
+    $ref: ./schemas.yml

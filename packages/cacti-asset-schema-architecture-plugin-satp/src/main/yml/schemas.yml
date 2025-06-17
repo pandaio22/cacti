@@ -64,7 +64,7 @@ TokenIssuanceAuthorizationResponse:
   type: object
   properties:
     token_issuance_authorization_request:
-      $ref: '#./schemas.yaml#/TokenIssuanceAuthorizationRequest'
+      $ref: '#./schemas.yml#/TokenIssuanceAuthorizationRequest'
     proof:
       type: object
       properties:
