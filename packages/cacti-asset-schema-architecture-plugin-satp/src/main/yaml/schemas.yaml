@@ -1,0 +1,90 @@
+TokenIssuanceAuthorizationRequest:
+  type: object
+  properties:
+    "@context":
+      oneOf:
+        - type: string
+        - type: object
+        - type: array
+          items:
+            anyOf:
+              - type: string
+              - type: object
+    asset_provider:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        organization_key:
+          type: object
+          properties:
+            public_key:
+              type: string
+            issued:
+              type: string
+              format: date-time
+      required:
+        - name
+        - id
+        - organization_key
+    schema_profile:
+      type: string
+    network_id:
+      type: string
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - "@context"
+    - asset_provider
+    - schema_profile
+    - network_id
+    - proof
+
+TokenIssuanceAuthorizationResponse:
+  type: object
+  properties:
+    token_issuance_authorization_request:
+      $ref: '#./schemas.yaml#/TokenIssuanceAuthorizationRequest'
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - token_issuance_authorization_request
+    - proof
