@@ -72,10 +72,8 @@ describe("AssetSchemaAuthorityPlugin API test", () => {
     };
 
     await pluginAssetSchemaArchitecture.getOrCreateWebServices();
-    const webServices =
-      await pluginAssetSchemaArchitecture.registerWebServices(expressApp);
+    await pluginAssetSchemaArchitecture.registerWebServices(expressApp);
 
-    console.log(webServices);
     const addressInfo = (await Servers.listen(listenOptions)) as AddressInfo;
     const { address, port } = addressInfo;
 

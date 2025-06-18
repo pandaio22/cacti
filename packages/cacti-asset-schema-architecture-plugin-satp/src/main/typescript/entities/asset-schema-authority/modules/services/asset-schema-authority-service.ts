@@ -76,7 +76,7 @@ export class AssetSchemaAuthorityService {
   ): Promise<string> {
     console.log(
       "Handling token issuance authorization request:",
-      tokenIssuanceAuthorizationRequest.network_id,
+      tokenIssuanceAuthorizationRequest,
     );
     return "Signed";
   }
