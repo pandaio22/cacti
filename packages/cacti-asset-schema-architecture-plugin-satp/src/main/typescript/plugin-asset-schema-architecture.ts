@@ -1,14 +1,16 @@
 import {
+  Checks,
   type Logger,
   LoggerProvider,
   type ILoggerOptions,
   LogLevelDesc,
 } from "@hyperledger/cactus-common";
-import type {
-  IPluginWebService,
-  ICactusPlugin,
-  IWebServiceEndpoint,
-  ICactusPluginOptions,
+import {
+  type IPluginWebService,
+  type ICactusPlugin,
+  type IWebServiceEndpoint,
+  type ICactusPluginOptions,
+  createAjvTypeGuard,
 } from "@hyperledger/cactus-core-api";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -17,9 +19,21 @@ import {
   IsObject,
   IsString,
 } from "class-validator";
+import { PluginRegistry } from "@hyperledger/cactus-core";
 import express, { type Express } from "express";
+import { TokenIssuanceAuthorizationRequestEndpoint } from "./entities/asset-schema-authority/endpoints/token-issuance-authorization-request-endpoint";
+import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
+import { object } from "zod";
 
 //TODO
+
+export interface IPluginAssetSchemaArchitectureOptions
+  extends ICactusPluginOptions {
+  instanceId: string;
+  readonly pluginRegistry: PluginRegistry;
+  logLevel?: LogLevelDesc;
+  disableSignalHandlers?: true;
+}
 
 export class PluginAssetSchemaArchitecture
   implements IPluginWebService, ICactusPlugin
@@ -32,19 +46,25 @@ export class PluginAssetSchemaArchitecture
   @IsString()
   public readonly instanceId: string;
 
+  private endpoints: IWebServiceEndpoint[] | undefined;
+
   constructor(
-    public readonly opts: ICactusPluginOptions,
+    public readonly options: IPluginAssetSchemaArchitectureOptions,
     public readonly className: string = "PluginAssetSchemaArchitecture",
-    public readonly logLevel: LogLevelDesc = "INFO",
   ) {
-    const level = "INFO";
+    const fnTag = `${this.className}#constructor()`;
+    Checks.truthy(options, `${fnTag} arg options`);
+    Checks.truthy(options.instanceId, `${fnTag} options.instanceId`);
+
+    const level = options.logLevel || "INFO";
     const logOptions: ILoggerOptions = {
       level: level,
       label: this.className,
     };
     this.logger = LoggerProvider.getOrCreate(logOptions);
-    this.logger.info("Initializing PluginAssetSchemaArchitecture");
     this.instanceId = uuidv4();
+
+    this.logger.info("Initializing PluginAssetSchemaArchitecture");
   }
 
   /* ICactus Plugin methods */
@@ -75,17 +95,23 @@ export class PluginAssetSchemaArchitecture
 
   public async getOrCreateWebServices(): Promise<IWebServiceEndpoint[]> {
     const fnTag = `${this.className}#getOrCreateWebServices()`;
+    this.logger.info(
+      `${fnTag}, Registering webservices on instanceId=${this.instanceId}`,
+    );
     this.logger.trace(`Entering ${fnTag}`);
-    return await new Promise<IWebServiceEndpoint[]>((resolve) => {
-      this.logger.debug(
-        `Returning empty array for web services in ${this.className}`,
-      );
-    });
-  }
 
-  public async getWebServiceEndpoints(): Promise<IWebServiceEndpoint[]> {
-    // Return the web service endpoints provided by this plugin
-    return [];
+    if (Array.isArray(this.endpoints)) {
+      return await this.endpoints;
+    }
+
+    const tokenIssuanceAuthorizationRequestEndpoint =
+      new TokenIssuanceAuthorizationRequestEndpoint(
+        new AssetSchemaAuthorityService(),
+      );
+
+    this.endpoints = [tokenIssuanceAuthorizationRequestEndpoint];
+
+    return await this.endpoints;
   }
 
   public getOpenApiSpec(): unknown {
@@ -96,6 +122,7 @@ export class PluginAssetSchemaArchitecture
       Error: 404 not found - on all api requests when the middleware is installed.
     */
   }
+
   public async shutdown(): Promise<void> {
     const fnTag = `${this.className}#shutdown()`;
     this.logger.info(`Shutting down ${this.className}`);

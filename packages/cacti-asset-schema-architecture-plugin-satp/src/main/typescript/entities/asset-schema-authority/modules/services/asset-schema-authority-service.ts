@@ -1,5 +1,6 @@
 import { SignatureService } from "./signature-service";
 import { PRIVATE_KEYS_PEM } from "../../../../constants/constants";
+import { TokenIssuanceAuthorizationRequest } from "../../../../generated/asset-schema-architecture/typescript-axios/api";
 
 const signatureService = new SignatureService();
 export class AssetSchemaAuthorityService {
@@ -71,11 +72,11 @@ export class AssetSchemaAuthorityService {
    * @throws Error if the request is invalid or signing fails.
    */
   public async handleTokenIssuanceAuthorizationRequest(
-    tokenIssuanceAuthorizationRequest: any,
+    tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
   ): Promise<string> {
     console.log(
       "Handling token issuance authorization request:",
-      tokenIssuanceAuthorizationRequest,
+      tokenIssuanceAuthorizationRequest.network_id,
     );
     return "Signed";
   }

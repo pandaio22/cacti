@@ -44,6 +44,7 @@ export class AssetSchemaAuthorityApi {
       server.on("error", reject);
     });
   }
+
   /**
    * Stops the server if it is running.
    * @returns A promise that resolves when the server is successfully stopped.

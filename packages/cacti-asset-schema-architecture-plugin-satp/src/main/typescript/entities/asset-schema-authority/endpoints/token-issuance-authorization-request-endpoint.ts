@@ -33,13 +33,13 @@ export class TokenIssuanceAuthorizationRequestEndpoint
 
   constructor(
     private readonly assetSchemaAuthorityService: AssetSchemaAuthorityService,
-    public readonly options: IRequestOptions,
   ) {
     const fnTag = `${this.className}#constructor()`;
-    Checks.truthy(options, `${fnTag} arg options`);
-    Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
+    //Checks.truthy(options, `${fnTag} arg options`);
+    //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
 
-    const level = this.options.logLevel || "INFO";
+    //const level = this.options.logLevel || "INFO";
+    const level = "INFO";
     const label = this.className;
     this.log = LoggerProvider.getOrCreate({ level, label });
   }
@@ -85,9 +85,9 @@ export class TokenIssuanceAuthorizationRequestEndpoint
   public async handleRequest(req: Request, res: Response): Promise<void> {
     const fnTag = `${this.className}#handleRequest()`;
     const reqTag = `${this.getVerbLowerCase()} - ${this.getPath()}`;
-    const tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest =
-      req.body;
     try {
+      const tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest =
+        req.body;
       const tokenIssuanceAuthorization =
         await this.assetSchemaAuthorityService.handleTokenIssuanceAuthorizationRequest(
           tokenIssuanceAuthorizationRequest,
