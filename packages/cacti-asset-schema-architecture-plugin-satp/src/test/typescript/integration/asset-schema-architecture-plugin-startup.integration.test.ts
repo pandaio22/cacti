@@ -1,27 +1,12 @@
-import { AssetSchemaAuthorityApi } from "../../../main/typescript/entities/asset-schema-authority/asset-schema-authority-api";
-import { AssetSchemaAuthorityService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
-import {
-  bigIntToDecimalStringReplacer,
-  IListenOptions,
-  LogLevelDesc,
-  LoggerProvider,
-  Secp256k1Keys,
-  Servers,
-} from "@hyperledger/cactus-common";
+import { LogLevelDesc } from "@hyperledger/cactus-common";
 import { PluginRegistry } from "@hyperledger/cactus-core";
-import { Configuration, Constants } from "@hyperledger/cactus-core-api";
+import { Configuration } from "@hyperledger/cactus-core-api";
 import {
   PluginAssetSchemaArchitecture,
   IPluginAssetSchemaArchitectureOptions,
 } from "../../../main/typescript/plugin-asset-schema-architecture";
 import { DefaultApi as AssetSchemaArchitectureApi } from "../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
 import { v4 as uuidv4 } from "uuid";
-import http, { Server } from "http";
-import bodyParser from "body-parser";
-import request from "supertest";
-import express from "express";
-import { AddressInfo } from "net";
-import { log } from "console";
 
 describe("Asset Schema Architecture Plugin Startup test", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
@@ -35,6 +20,7 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     pluginAssetSchemaArchitectureOptions = {
       pluginRegistry,
       instanceId: uuidv4(),
+      logLevel: "DEBUG",
     };
     // When
     pluginAssetSchemaArchitecture = new PluginAssetSchemaArchitecture(
@@ -51,13 +37,11 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
   afterAll(async () => {
     //Placeholder
   });
+
   it(
     "Starts up the Asset Schema Architecture Plugin: Given plugin options, When starting the plugin, Then the package name is defined",
     async () => {
       // Then
-      console.log(
-        "Starts up the Asset Schema Architecture Plugin: Given plugin options, When starting the plugin, Then the package name is defined",
-      );
       expect(pluginAssetSchemaArchitecture.getPackageName()).toBeDefined();
       expect(pluginAssetSchemaArchitecture.getPackageName()).toBe(
         "@hyperledger/cacti-asset-schema-architecture-plugin-satp",
@@ -70,19 +54,9 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     async () => {
       // Then
       console.log(
-        "Starts up the Asset Schema Architecture Plugin: Given plugin options, When starting the plugin, Then publish API endpoints for the Registry, the Asset Schema Authority and the Asset Provider",
-      );
-      console.log(
-        "API Endpoints;",
-        await pluginAssetSchemaArchitecture.getOrCreateWebServices(),
-      );
-      console.log(
         "API Endpoints;",
         pluginAssetSchemaArchitecture.getWebServices(),
       );
-      expect(
-        await pluginAssetSchemaArchitecture.getOrCreateWebServices(),
-      ).toBeDefined();
       expect(pluginAssetSchemaArchitecture.getWebServices()).toBeDefined();
     },
     TIMEOUT,
@@ -91,9 +65,6 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     "Starts up the Asset Schema Architecture Plugin: Given plugin options, When starting the plugin, Then create servers for the Registry, the Asset Schema Authority and the Asset Provider",
     async () => {
       // Then
-      console.log(
-        "Starts up the Asset Schema Architecture Plugin: Given plugin options, When starting the plugin, Then create servers for the Registry, the Asset Schema Authority and the Asset Provider",
-      );
       console.log("Web Servers", pluginAssetSchemaArchitecture.getWebServers());
       expect(pluginAssetSchemaArchitecture.getWebServers().size).toBe(3);
     },

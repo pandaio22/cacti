@@ -28,20 +28,15 @@ import {
   IsString,
 } from "class-validator";
 import { PluginRegistry } from "@hyperledger/cactus-core";
-import http, { Server } from "http";
+import http from "http";
 import express, { type Express } from "express";
 import bodyParser from "body-parser";
 import { TokenIssuanceAuthorizationRequestEndpoint } from "./entities/asset-schema-authority/endpoints/token-issuance-authorization-request-endpoint";
-import { DefaultApi as AssetSchemaArchitectureApi } from "../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
-import { object } from "zod";
 import {
   EntityServerConfig,
   EntityServerType,
 } from "./web-services/entity-server-config";
-import { AddressInfo } from "net";
-
-//TODO
 
 export interface IPluginAssetSchemaArchitectureOptions
   extends ICactusPluginOptions {
@@ -109,7 +104,6 @@ export class PluginAssetSchemaArchitecture
   /*******************************/
 
   /* Shutdown methods */
-  //TODO
   public async shutdown(): Promise<void> {
     const fnTag = `${this.className}#shutdown()`;
     this.logger.info(
@@ -127,7 +121,7 @@ export class PluginAssetSchemaArchitecture
     await this.shutdownWebServers();
   }
 
-  async shutdownWebServers(): Promise<void> {
+  private async shutdownWebServers(): Promise<void> {
     const fnTag = `${this.className}#shutdownWebServers()`;
     this.logger.info(`${fnTag}, Shutting down web servers...`);
 
@@ -147,7 +141,6 @@ export class PluginAssetSchemaArchitecture
 
     this.logger.info(`${fnTag}, All web servers shut down`);
   }
-
   /*******************************/
 
   /* Getters */
@@ -202,8 +195,6 @@ export class PluginAssetSchemaArchitecture
         }
       }),
     );
-    //Define a type for entity object
-    //for each EntityServerConfig, create a Web Server by calling getOrCreateHttpServer()
   }
 
   private async createHttpServer(type: EntityServerType): Promise<ApiServer> {
@@ -222,17 +213,14 @@ export class PluginAssetSchemaArchitecture
         limit: "250mb",
       }),
     );
-
     const httpServer = http.createServer(expressApp);
-
     const listenOptions: IListenOptions = {
       hostname,
       port: parseInt(port),
       server: httpServer,
     };
 
-    await this.registerWebServices(expressApp);
-
+    await this.registerEntityWebServices(type, expressApp);
     await Servers.listen(listenOptions);
     this.logger.info(`${fnTag} listening on ${url}`);
 
@@ -245,7 +233,73 @@ export class PluginAssetSchemaArchitecture
       httpServerApi: httpServer,
       pluginRegistry: pluginRegistry,
     });
+
     return apiServer;
+  }
+
+  async registerWebServices(
+    app: Express,
+  ): Promise<IWebServiceEndpoint[]> {
+    const webServices: IWebServiceEndpoint[] =
+      await this.getOrCreateWebServices();
+
+    for (const ws of webServices) {
+      this.logger.debug(`Registering service ${ws.getPath()}`);
+      ws.registerExpress(app);
+    }
+    return webServices;
+  }
+
+  private async registerEntityWebServices(
+    type: EntityServerType,
+    app: Express,
+  ): Promise<IWebServiceEndpoint[]> {
+    const webServices: IWebServiceEndpoint[] =
+      await this.getOrCreateWebServices();
+    this.logger.debug(`Webservices: ${JSON.stringify(webServices, null, 2)}`);
+
+    const entityWebServices: IWebServiceEndpoint[] =
+      await this.filterApiEndpoints(type, webServices);
+    this.logger.debug(
+      `${type} Webservices: ${JSON.stringify(entityWebServices, null, 2)}`,
+    );
+
+    for (const ws of entityWebServices) {
+      this.logger.debug(`Registering service ${ws.getPath()}`);
+      ws.registerExpress(app);
+    }
+    return webServices;
+  }
+
+  private async filterApiEndpoints(
+    targetEntity: EntityServerType,
+    webServices: IWebServiceEndpoint[],
+  ): Promise<IWebServiceEndpoint[]> {
+    const fnTag = `${this.className}#filterApiEndpoints()`;
+
+    const basePath = this.entityServerConfig
+      .getServerUrl(targetEntity)
+      // Remove host and port from URL to extract just the path:
+      .replace(/^https?:\/\/[^\/]+/, "");
+
+    this.logger.debug(
+      `${fnTag} - Filtering endpoints for entity: ${targetEntity}`,
+    );
+    this.logger.debug(`${fnTag} - Expected basePath: ${basePath}`);
+
+    const filtered = webServices.filter((ws) => {
+      const path = ws.getPath();
+      const matches = path.startsWith(basePath);
+      if (matches) {
+        this.logger.debug(`${fnTag} - Matched endpoint: ${path}`);
+      }
+      return matches;
+    });
+
+    this.logger.debug(
+      `${fnTag} - Found ${filtered.length} matching endpoint(s).`,
+    );
+    return filtered;
   }
 
   public async getOrCreateWebServices(): Promise<IWebServiceEndpoint[]> {
@@ -263,19 +317,9 @@ export class PluginAssetSchemaArchitecture
       new TokenIssuanceAuthorizationRequestEndpoint(
         new AssetSchemaAuthorityService(),
       );
-
     this.endpoints = [tokenIssuanceAuthorizationRequestEndpoint];
 
     return await this.endpoints;
-  }
-
-  async registerWebServices(app: Express): Promise<IWebServiceEndpoint[]> {
-    const webServices = await this.getOrCreateWebServices();
-    for (const ws of webServices) {
-      this.logger.debug(`Registering service ${ws.getPath()}`);
-      ws.registerExpress(app);
-    }
-    return webServices;
   }
   /*******************************/
 }
