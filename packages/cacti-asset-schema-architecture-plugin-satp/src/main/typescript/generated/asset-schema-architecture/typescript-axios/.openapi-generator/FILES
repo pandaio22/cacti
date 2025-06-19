@@ -5,6 +5,9 @@ base.ts
 common.ts
 configuration.ts
 docs/DefaultApi.md
+docs/RegisterTokenIssuanceAuthorization200Response.md
+docs/RegisterTokenIssuanceAuthorization200ResponseContext.md
+docs/RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner.md
 docs/RequestTokenIssuanceAuthorization200Response.md
 docs/RequestTokenIssuanceAuthorizationRequest.md
 docs/RequestTokenIssuanceAuthorizationRequestAssetProvider.md
@@ -12,7 +15,8 @@ docs/RequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey.md
 docs/RequestTokenIssuanceAuthorizationRequestContext.md
 docs/RequestTokenIssuanceAuthorizationRequestContextOneOfInner.md
 docs/RequestTokenIssuanceAuthorizationRequestProof.md
+docs/TokenIssuanceAuthorization.md
+docs/TokenIssuanceAuthorizationID.md
 docs/TokenIssuanceAuthorizationRequest.md
-docs/TokenIssuanceAuthorizationResponse.md
 git_push.sh
 index.ts

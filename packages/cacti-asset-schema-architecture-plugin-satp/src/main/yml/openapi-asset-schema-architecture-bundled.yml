@@ -155,6 +155,86 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization:
+    post:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization
+      summary: Register Token Issuance Authorization
+      description: |
+        This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA).
+      operationId: registerTokenIssuanceAuthorization
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              type: object
+              properties:
+                token_issuance_authorization_request:
+                  $ref: '#./schemas.yml#/TokenIssuanceAuthorizationRequest'
+                proof:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    created:
+                      type: string
+                      format: date-time
+                    proofPurpose:
+                      type: string
+                    verificationMethod:
+                      type: string
+                    jws:
+                      type: string
+                  required:
+                    - type
+                    - created
+                    - proofPurpose
+                    - verificationMethod
+                    - jws
+              required:
+                - token_issuance_authorization_request
+                - proof
+      responses:
+        '200':
+          description: Token issuance authorization request successful
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                description: A JSON-LD response representing the DID for a registered Token Issuance Authorization.
+                properties:
+                  '@context':
+                    description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+                    oneOf:
+                      - type: string
+                        format: uri
+                        example: 'https://www.w3.org/ns/did/v1.1'
+                      - type: array
+                        items:
+                          oneOf:
+                            - type: string
+                              format: uri
+                            - type: object
+                  id:
+                    type: string
+                    pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+                    example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+                    description: A Decentralized Identifier (DID).
+                  type:
+                    type: string
+                    example: TokenIssuanceAuthorizationID
+                    description: Semantic type of the object.
+                required:
+                  - '@context'
+                  - id
+                  - type
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
 components:
   schemas:
     TokenIssuanceAuthorizationRequest:
@@ -218,7 +298,7 @@ components:
         - schema_profile
         - network_id
         - proof
-    TokenIssuanceAuthorizationResponse:
+    TokenIssuanceAuthorization:
       type: object
       properties:
         token_issuance_authorization_request:
@@ -246,3 +326,32 @@ components:
       required:
         - token_issuance_authorization_request
         - proof
+    TokenIssuanceAuthorizationID:
+      type: object
+      description: A JSON-LD response representing the DID for a registered Token Issuance Authorization.
+      properties:
+        '@context':
+          description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+          oneOf:
+            - type: string
+              format: uri
+              example: 'https://www.w3.org/ns/did/v1.1'
+            - type: array
+              items:
+                oneOf:
+                  - type: string
+                    format: uri
+                  - type: object
+        id:
+          type: string
+          pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+          example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+          description: A Decentralized Identifier (DID).
+        type:
+          type: string
+          example: TokenIssuanceAuthorizationID
+          description: Semantic type of the object.
+      required:
+        - '@context'
+        - id
+        - type

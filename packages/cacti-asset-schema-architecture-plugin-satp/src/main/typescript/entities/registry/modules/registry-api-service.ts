@@ -2,7 +2,8 @@
 import { IValidationService } from "./validation/interfaces/validation-service-interface";
 import { ValidationService } from "./validation/services/validation-service";
 import { DatabaseIpfsConnector } from "./database/database-ipfs-connector";
-
+import { TokenIssuanceAuthorization } from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { TokenIssuanceAuthorizationID } from "../../../generated/asset-schema-architecture/typescript-axios/api";
 
 export class RegistryApiService {
   private databaseConnector: DatabaseIpfsConnector;
@@ -80,5 +81,20 @@ export class RegistryApiService {
       throw new Error("Failed to commission tokenized asset record.");
     }
     return artifactSchemaId;
+  }
+
+  public async registerTokenIssuanceAuthorization(tokenIssuanceAuthorization: TokenIssuanceAuthorization): Promise<TokenIssuanceAuthorizationID>{
+    const tokenIssuanceAuthorizationId: string =
+    await this.databaseConnector.addFileToIpfs(tokenIssuanceAuthorization);
+
+    if (!tokenIssuanceAuthorizationId) {
+      throw new Error("Failed to commission tokenized asset record.");
+    }
+    
+    return { 
+      '@context': "https://www.w3.org/ns/did/v1.1",
+      id: tokenIssuanceAuthorizationId,
+      type: "TokenIssuanceAuthorizationID",
+    };
   }
 }

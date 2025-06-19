@@ -24,6 +24,44 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * A JSON-LD response representing the DID for a registered Token Issuance Authorization.
+ * @export
+ * @interface RegisterTokenIssuanceAuthorization200Response
+ */
+export interface RegisterTokenIssuanceAuthorization200Response {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof RegisterTokenIssuanceAuthorization200Response
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorization200Response
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorization200Response
+     */
+    'type': string;
+}
+/**
+ * @type RegisterTokenIssuanceAuthorization200ResponseContext
+ * The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+ * @export
+ */
+export type RegisterTokenIssuanceAuthorization200ResponseContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+
+/**
+ * @type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner
+ * @export
+ */
+export type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner = object | string;
+
+/**
  * 
  * @export
  * @interface RequestTokenIssuanceAuthorization200Response
@@ -176,6 +214,50 @@ export interface RequestTokenIssuanceAuthorizationRequestProof {
 /**
  * 
  * @export
+ * @interface TokenIssuanceAuthorization
+ */
+export interface TokenIssuanceAuthorization {
+    /**
+     * 
+     * @type {TokenIssuanceAuthorizationRequest}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'token_issuance_authorization_request': TokenIssuanceAuthorizationRequest;
+    /**
+     * 
+     * @type {RequestTokenIssuanceAuthorizationRequestProof}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'proof': RequestTokenIssuanceAuthorizationRequestProof;
+}
+/**
+ * A JSON-LD response representing the DID for a registered Token Issuance Authorization.
+ * @export
+ * @interface TokenIssuanceAuthorizationID
+ */
+export interface TokenIssuanceAuthorizationID {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof TokenIssuanceAuthorizationID
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof TokenIssuanceAuthorizationID
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof TokenIssuanceAuthorizationID
+     */
+    'type': string;
+}
+/**
+ * 
+ * @export
  * @interface TokenIssuanceAuthorizationRequest
  */
 export interface TokenIssuanceAuthorizationRequest {
@@ -210,25 +292,6 @@ export interface TokenIssuanceAuthorizationRequest {
      */
     'proof': RequestTokenIssuanceAuthorizationRequestProof;
 }
-/**
- * 
- * @export
- * @interface TokenIssuanceAuthorizationResponse
- */
-export interface TokenIssuanceAuthorizationResponse {
-    /**
-     * 
-     * @type {TokenIssuanceAuthorizationRequest}
-     * @memberof TokenIssuanceAuthorizationResponse
-     */
-    'token_issuance_authorization_request': TokenIssuanceAuthorizationRequest;
-    /**
-     * 
-     * @type {RequestTokenIssuanceAuthorizationRequestProof}
-     * @memberof TokenIssuanceAuthorizationResponse
-     */
-    'proof': RequestTokenIssuanceAuthorizationRequestProof;
-}
 
 /**
  * DefaultApi - axios parameter creator
@@ -236,6 +299,42 @@ export interface TokenIssuanceAuthorizationResponse {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
+         * @summary Register Token Issuance Authorization
+         * @param {RequestTokenIssuanceAuthorization200Response} requestTokenIssuanceAuthorization200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTokenIssuanceAuthorization: async (requestTokenIssuanceAuthorization200Response: RequestTokenIssuanceAuthorization200Response, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'requestTokenIssuanceAuthorization200Response' is not null or undefined
+            assertParamExists('registerTokenIssuanceAuthorization', 'requestTokenIssuanceAuthorization200Response', requestTokenIssuanceAuthorization200Response)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestTokenIssuanceAuthorization200Response, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
@@ -283,6 +382,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
         /**
+         * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
+         * @summary Register Token Issuance Authorization
+         * @param {RequestTokenIssuanceAuthorization200Response} requestTokenIssuanceAuthorization200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response: RequestTokenIssuanceAuthorization200Response, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterTokenIssuanceAuthorization200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.registerTokenIssuanceAuthorization']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
          * @param {RequestTokenIssuanceAuthorizationRequest} requestTokenIssuanceAuthorizationRequest 
@@ -306,6 +418,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     const localVarFp = DefaultApiFp(configuration)
     return {
         /**
+         * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
+         * @summary Register Token Issuance Authorization
+         * @param {RequestTokenIssuanceAuthorization200Response} requestTokenIssuanceAuthorization200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response: RequestTokenIssuanceAuthorization200Response, options?: RawAxiosRequestConfig): AxiosPromise<RegisterTokenIssuanceAuthorization200Response> {
+            return localVarFp.registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
          * @param {RequestTokenIssuanceAuthorizationRequest} requestTokenIssuanceAuthorizationRequest 
@@ -325,6 +447,18 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
+     * @summary Register Token Issuance Authorization
+     * @param {RequestTokenIssuanceAuthorization200Response} requestTokenIssuanceAuthorization200Response 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response: RequestTokenIssuanceAuthorization200Response, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).registerTokenIssuanceAuthorization(requestTokenIssuanceAuthorization200Response, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
      * @summary Request Token Issuance Authorization

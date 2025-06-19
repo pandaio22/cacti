@@ -65,7 +65,34 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/TokenIssuanceAuthorizationResponse'
+                $ref: '#/components/schemas/TokenIssuanceAuthorization'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization:
+    post:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization
+      summary: Register Token Issuance Authorization
+      description: |
+        This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA).
+      operationId: registerTokenIssuanceAuthorization
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/TokenIssuanceAuthorization'
+      responses:
+        '200':
+          description: Token issuance authorization request successful
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/TokenIssuanceAuthorizationID'
         '400':
           description: Bad Request
         '500':

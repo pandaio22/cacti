@@ -60,7 +60,7 @@ TokenIssuanceAuthorizationRequest:
     - network_id
     - proof
 
-TokenIssuanceAuthorizationResponse:
+TokenIssuanceAuthorization:
   type: object
   properties:
     token_issuance_authorization_request:
@@ -88,3 +88,33 @@ TokenIssuanceAuthorizationResponse:
   required:
     - token_issuance_authorization_request
     - proof
+
+TokenIssuanceAuthorizationID:
+  type: object
+  description: A JSON-LD response representing the DID for a registered Token Issuance Authorization.
+  properties:
+    '@context':
+      description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+      example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+      description: A Decentralized Identifier (DID).
+    type:
+      type: string
+      example: 'TokenIssuanceAuthorizationID'
+      description: Semantic type of the object.
+  required:
+    - '@context'
+    - 'id'
+    - 'type'

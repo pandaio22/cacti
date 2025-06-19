@@ -31,8 +31,10 @@ import { PluginRegistry } from "@hyperledger/cactus-core";
 import http from "http";
 import express, { type Express } from "express";
 import bodyParser from "body-parser";
-import { TokenIssuanceAuthorizationRequestEndpoint } from "./entities/asset-schema-authority/endpoints/token-issuance-authorization-request-endpoint";
+import { TokenIssuanceAuthorizationRequestEndpoint } from "./entities/asset-schema-authority/endpoints/asset-schema-authority-endpoints";
+import { RegisterTokenAuthorizationEndpoint } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
+import { RegistryApiService } from "../typescript/entities/registry/modules/registry-api-service";
 import {
   EntityServerConfig,
   EntityServerType,
@@ -237,9 +239,7 @@ export class PluginAssetSchemaArchitecture
     return apiServer;
   }
 
-  async registerWebServices(
-    app: Express,
-  ): Promise<IWebServiceEndpoint[]> {
+  async registerWebServices(app: Express): Promise<IWebServiceEndpoint[]> {
     const webServices: IWebServiceEndpoint[] =
       await this.getOrCreateWebServices();
 
@@ -317,7 +317,14 @@ export class PluginAssetSchemaArchitecture
       new TokenIssuanceAuthorizationRequestEndpoint(
         new AssetSchemaAuthorityService(),
       );
-    this.endpoints = [tokenIssuanceAuthorizationRequestEndpoint];
+
+    const registerTokenAuthorizationEndpoint =
+      new RegisterTokenAuthorizationEndpoint(new RegistryApiService());
+
+    this.endpoints = [
+      tokenIssuanceAuthorizationRequestEndpoint,
+      registerTokenAuthorizationEndpoint,
+    ];
 
     return await this.endpoints;
   }

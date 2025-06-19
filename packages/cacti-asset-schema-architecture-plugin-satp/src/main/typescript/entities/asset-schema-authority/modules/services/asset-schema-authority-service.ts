@@ -74,6 +74,7 @@ export class AssetSchemaAuthorityService {
   public async handleTokenIssuanceAuthorizationRequest(
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
   ): Promise<string> {
+    //TODO
     console.log(
       "Handling token issuance authorization request:",
       tokenIssuanceAuthorizationRequest,

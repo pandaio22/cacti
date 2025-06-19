@@ -71,7 +71,7 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     TIMEOUT,
   );
   it(
-    "Sends a resquest to the ASA: Given plugin options, When starting the plugin, Then create servers for the Registry, the Asset Schema Authority and the Asset Provider",
+    "Sends a resquest to the ASA",
     async () => {
       // Given
       const assetSchemaAuthorityPath = `http://localhost:3010`;
@@ -105,7 +105,62 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
 
       //Then
       expect(testTokenIssuanceAuthorizationRequestEndpoint.status).toEqual(200);
-      expect(pluginAssetSchemaArchitecture.getWebServers().size).toBe(3);
+    },
+    TIMEOUT,
+  );
+
+  it(
+    "Sends a resquest to the Registry",
+    async () => {
+      // Given
+      const assetSchemaAuthorityPath = `http://localhost:3000`;
+      const config = new Configuration({ basePath: assetSchemaAuthorityPath });
+      const assetSchemaArchitectureApi = new AssetSchemaArchitectureApi(config);
+
+      // When
+      const testRegisterTokenIssuanceAuthorizationEndpoint =
+        await assetSchemaArchitectureApi.registerTokenIssuanceAuthorization({
+          token_issuance_authorization_request: {
+            "@context":
+              "https://example.org/context/token-issuance-authorization",
+            asset_provider: {
+              name: "Acme Asset Provider",
+              id: "https://example.org/asset-providers/acme",
+              organization_key: {
+                public_key: "MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEp...xyz",
+                issued: "2025-06-14T10:20:30.000Z",
+              },
+            },
+            schema_profile:
+              "https://example.org/schema-profiles/standard-profile",
+            network_id: "testnet-12345",
+            proof: {
+              type: "JwsSignature2020",
+              created: "2025-06-14T12:34:56.789Z",
+              proofPurpose: "assertionMethod",
+              verificationMethod: "https://example.org/keys/asset-provider-key",
+              jws: "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..abc123",
+            },
+          },
+          proof: {
+            type: "JwsSignature2020",
+            created: "2025-06-14T12:34:56.789Z",
+            proofPurpose: "assertionMethod",
+            verificationMethod: "https://example.org/keys/asset-provider-key",
+            jws: "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..abc123",
+          },
+        });
+
+      console.log(
+        "Registered with ID:",
+        testRegisterTokenIssuanceAuthorizationEndpoint.data,
+      );
+
+      //Then
+      expect(testRegisterTokenIssuanceAuthorizationEndpoint.status).toEqual(
+        200,
+      );
+      expect(testRegisterTokenIssuanceAuthorizationEndpoint.data).toBeDefined();
     },
     TIMEOUT,
   );
