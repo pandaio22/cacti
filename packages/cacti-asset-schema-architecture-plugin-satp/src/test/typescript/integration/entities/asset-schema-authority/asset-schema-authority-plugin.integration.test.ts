@@ -1,24 +1,18 @@
-import { AssetSchemaAuthorityApi } from "../../../../../main/typescript/entities/asset-schema-authority/asset-schema-authority-api";
-import { AssetSchemaAuthorityService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
 import {
-  bigIntToDecimalStringReplacer,
   IListenOptions,
   LogLevelDesc,
-  LoggerProvider,
-  Secp256k1Keys,
   Servers,
 } from "@hyperledger/cactus-common";
 import { PluginRegistry } from "@hyperledger/cactus-core";
-import { Configuration, Constants } from "@hyperledger/cactus-core-api";
+import { Configuration } from "@hyperledger/cactus-core-api";
 import {
   PluginAssetSchemaArchitecture,
   IPluginAssetSchemaArchitectureOptions,
 } from "../../../../../main/typescript/plugin-asset-schema-architecture";
-import { DefaultApi as AssetSchemaArchitectureApi } from "../../../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
+import { AssetSchemaAuthorityApi } from "../../../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
 import { v4 as uuidv4 } from "uuid";
 import http, { Server } from "http";
 import bodyParser from "body-parser";
-import request from "supertest";
 import express from "express";
 import { AddressInfo } from "net";
 
@@ -79,11 +73,11 @@ describe("AssetSchemaAuthorityPlugin API test", () => {
 
     const assetSchemaAuthorityPath = `http://${address}:${port}`;
     const config = new Configuration({ basePath: assetSchemaAuthorityPath });
-    const assetSchemaArchitectureApi = new AssetSchemaArchitectureApi(config);
+    const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
 
     // When
     const testTokenIssuanceAuthorizationRequestEndpoint =
-      await assetSchemaArchitectureApi.requestTokenIssuanceAuthorization({
+      await assetSchemaAuthorityApi.requestTokenIssuanceAuthorization({
         "@context": "https://example.org/context/token-issuance-authorization",
         asset_provider: {
           name: "Acme Asset Provider",

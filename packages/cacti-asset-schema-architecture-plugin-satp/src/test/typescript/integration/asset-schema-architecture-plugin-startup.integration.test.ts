@@ -5,8 +5,9 @@ import {
   PluginAssetSchemaArchitecture,
   IPluginAssetSchemaArchitectureOptions,
 } from "../../../main/typescript/plugin-asset-schema-architecture";
-import { DefaultApi as AssetSchemaArchitectureApi } from "../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
+import { AssetSchemaAuthorityApi } from "../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
 import { v4 as uuidv4 } from "uuid";
+import { RegistryApi } from "../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
 
 describe("Asset Schema Architecture Plugin Startup test", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
@@ -76,11 +77,11 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
       // Given
       const assetSchemaAuthorityPath = `http://localhost:3010`;
       const config = new Configuration({ basePath: assetSchemaAuthorityPath });
-      const assetSchemaArchitectureApi = new AssetSchemaArchitectureApi(config);
+      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
 
       // When
       const testTokenIssuanceAuthorizationRequestEndpoint =
-        await assetSchemaArchitectureApi.requestTokenIssuanceAuthorization({
+        await assetSchemaAuthorityApi.requestTokenIssuanceAuthorization({
           "@context":
             "https://example.org/context/token-issuance-authorization",
           asset_provider: {
@@ -113,13 +114,13 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     "Sends a resquest to the Registry",
     async () => {
       // Given
-      const assetSchemaAuthorityPath = `http://localhost:3000`;
-      const config = new Configuration({ basePath: assetSchemaAuthorityPath });
-      const assetSchemaArchitectureApi = new AssetSchemaArchitectureApi(config);
+      const registryPath = `http://localhost:3000`;
+      const config = new Configuration({ basePath: registryPath });
+      const registryApi = new RegistryApi(config);
 
       // When
       const testRegisterTokenIssuanceAuthorizationEndpoint =
-        await assetSchemaArchitectureApi.registerTokenIssuanceAuthorization({
+        await registryApi.registerTokenIssuanceAuthorization({
           token_issuance_authorization_request: {
             "@context":
               "https://example.org/context/token-issuance-authorization",

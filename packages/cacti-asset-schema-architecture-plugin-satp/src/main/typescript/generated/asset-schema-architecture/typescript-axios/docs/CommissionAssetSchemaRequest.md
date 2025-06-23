@@ -1,20 +1,20 @@
-# TokenIssuanceAuthorization
+# CommissionAssetSchemaRequest
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**token_issuance_authorization_request** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
+**asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
 **proof** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { TokenIssuanceAuthorization } from './api';
+import { CommissionAssetSchemaRequest } from './api';
 
-const instance: TokenIssuanceAuthorization = {
-    token_issuance_authorization_request,
+const instance: CommissionAssetSchemaRequest = {
+    asset_schema,
     proof,
 };
 ```

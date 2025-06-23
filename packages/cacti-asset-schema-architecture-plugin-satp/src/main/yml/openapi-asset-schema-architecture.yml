@@ -42,90 +42,18 @@ servers:
         default: localhost
       port:
         default: '3020'
+tags:
+  - name: Registry
+    description: API endpoints for interacting with the Registry
+  - name: AssetSchemaAuthority
+    description: API endpoints for interacting with the Asset Schema Authority
+  - name: AssetProvider
+    description: API endpoints for interacting with the Asset Provider
 paths:
-  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request:
-    post:
-      x-hyperledger-cacti:
-        http:
-          verbLowerCase: post
-          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request
-      summary: Request Token Issuance Authorization
-      description: |
-        This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature.
-      operationId: requestTokenIssuanceAuthorization
-      requestBody:
-        required: true
-        content:
-          application/ld+json:
-            schema:
-              $ref: '#/components/schemas/TokenIssuanceAuthorizationRequest'
-      responses:
-        '200':
-          description: Token issuance authorization request successful
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/TokenIssuanceAuthorization'
-        '400':
-          description: Bad Request
-        '500':
-          description: Internal Server Error
-  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification:
-    post:
-      x-hyperledger-cacti:
-        http:
-          verbLowerCase: post
-          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification
-      summary: Asset Schema Certification
-      description: |
-        This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response.
-      operationId: assetSchemaCertification
-      requestBody:
-        required: true
-        content:
-          application/ld+json:
-            schema:
-              $ref: '#/components/schemas/AssetSchema'
-      responses:
-        '200':
-          description: Asset Schema was certified successfully
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/SignedAssetSchema'
-        '400':
-          description: Bad Request
-        '500':
-          description: Internal Server Error
-  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification:
-    post:
-      x-hyperledger-cacti:
-        http:
-          verbLowerCase: post
-          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification
-      summary: Schema Profile Certification
-      description: |
-        This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response.
-      operationId: schemaProfileCertification
-      requestBody:
-        required: true
-        content:
-          application/ld+json:
-            schema:
-              $ref: '#/components/schemas/SchemaProfile'
-      responses:
-        '200':
-          description: Schema Profile was certified successfully
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/SignedSchemaProfile'
-        '400':
-          description: Bad Request
-        '500':
-          description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -153,6 +81,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-asset-schema:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -180,6 +110,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -207,6 +139,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -234,6 +168,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -261,6 +197,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider:
     post:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
@@ -288,6 +226,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}:
     get:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
@@ -316,6 +256,8 @@ paths:
           description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}:
     get:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
@@ -344,6 +286,8 @@ paths:
           description: Internal Server Error        
   /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}:
     get:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
@@ -372,6 +316,8 @@ paths:
           description: Internal Server Error    
   /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}:
     get:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
@@ -400,6 +346,8 @@ paths:
           description: Internal Server Error    
   /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}:
     get:
+      tags:
+        - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
@@ -426,6 +374,93 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error  
+  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request:
+    post:
+      tags:
+        - AssetSchemaAuthority
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request
+      summary: Request Token Issuance Authorization
+      description: |
+        This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature.
+      operationId: requestTokenIssuanceAuthorization
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/TokenIssuanceAuthorizationRequest'
+      responses:
+        '200':
+          description: Token issuance authorization request successful
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/TokenIssuanceAuthorization'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification:
+    post:
+      tags:
+        - AssetSchemaAuthority
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification
+      summary: Asset Schema Certification
+      description: |
+        This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response.
+      operationId: assetSchemaCertification
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/AssetSchema'
+      responses:
+        '200':
+          description: Asset Schema was certified successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SignedAssetSchema'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification:
+    post:
+      tags:
+        - AssetSchemaAuthority
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification
+      summary: Schema Profile Certification
+      description: |
+        This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response.
+      operationId: schemaProfileCertification
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/SchemaProfile'
+      responses:
+        '200':
+          description: Schema Profile was certified successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SignedSchemaProfile'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
 components:
   schemas:
     $ref: 'schemas.yml#'

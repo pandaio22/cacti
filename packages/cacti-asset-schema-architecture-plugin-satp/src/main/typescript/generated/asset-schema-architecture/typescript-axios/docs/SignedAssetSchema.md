@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**asset_schema** | [**AssetSchemaCertificationRequest**](AssetSchemaCertificationRequest.md) |  | [default to undefined]
-**proof** | [**RequestTokenIssuanceAuthorizationRequestProof**](RequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
+**asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
+**proof** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 

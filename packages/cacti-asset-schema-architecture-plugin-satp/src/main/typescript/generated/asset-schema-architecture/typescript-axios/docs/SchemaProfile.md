@@ -6,7 +6,7 @@ Structure of a valid Schema Profile (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestContext**](AssetSchemaCertificationRequestContext.md) |  | [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaContext**](CommissionAssetSchemaRequestAssetSchemaContext.md) |  | [default to undefined]
 
 ## Example
 

@@ -1,6 +1,6 @@
-# AssetSchema
+# CommissionSchemaProfileRequestSchemaProfile
 
-Structure of a valid Asset Schema (JSON-LD format)
+Structure of a valid Schema Profile (JSON-LD format)
 
 ## Properties
 
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { AssetSchema } from './api';
+import { CommissionSchemaProfileRequestSchemaProfile } from './api';
 
-const instance: AssetSchema = {
+const instance: CommissionSchemaProfileRequestSchemaProfile = {
     context,
 };
 ```

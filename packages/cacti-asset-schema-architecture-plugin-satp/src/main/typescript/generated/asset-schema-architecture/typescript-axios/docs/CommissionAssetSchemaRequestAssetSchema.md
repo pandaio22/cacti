@@ -1,4 +1,4 @@
-# AssetSchema
+# CommissionAssetSchemaRequestAssetSchema
 
 Structure of a valid Asset Schema (JSON-LD format)
 
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { AssetSchema } from './api';
+import { CommissionAssetSchemaRequestAssetSchema } from './api';
 
-const instance: AssetSchema = {
+const instance: CommissionAssetSchemaRequestAssetSchema = {
     context,
 };
 ```

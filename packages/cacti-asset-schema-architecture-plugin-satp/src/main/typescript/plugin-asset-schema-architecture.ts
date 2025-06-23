@@ -12,11 +12,9 @@ import {
   type ICactusPlugin,
   type IWebServiceEndpoint,
   type ICactusPluginOptions,
-  createAjvTypeGuard,
 } from "@hyperledger/cactus-core-api";
 import {
   ApiServer,
-  AuthorizationProtocol,
   ConfigService,
   ICactusApiServerOptions,
 } from "@hyperledger/cactus-cmd-api-server";

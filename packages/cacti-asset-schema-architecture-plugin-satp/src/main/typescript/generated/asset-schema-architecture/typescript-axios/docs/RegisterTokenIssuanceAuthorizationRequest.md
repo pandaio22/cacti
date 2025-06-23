@@ -1,4 +1,4 @@
-# TokenIssuanceAuthorization
+# RegisterTokenIssuanceAuthorizationRequest
 
 
 ## Properties
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { TokenIssuanceAuthorization } from './api';
+import { RegisterTokenIssuanceAuthorizationRequest } from './api';
 
-const instance: TokenIssuanceAuthorization = {
+const instance: RegisterTokenIssuanceAuthorizationRequest = {
     token_issuance_authorization_request,
     proof,
 };

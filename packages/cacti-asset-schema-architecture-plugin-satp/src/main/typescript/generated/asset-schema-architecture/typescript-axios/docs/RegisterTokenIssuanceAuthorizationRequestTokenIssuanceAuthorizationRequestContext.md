@@ -1,20 +1,17 @@
-# AssetSchema
+# RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext
 
-Structure of a valid Asset Schema (JSON-LD format)
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionAssetSchemaRequestAssetSchemaContext**](CommissionAssetSchemaRequestAssetSchemaContext.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { AssetSchema } from './api';
+import { RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext } from './api';
 
-const instance: AssetSchema = {
-    context,
+const instance: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext = {
 };
 ```
 
