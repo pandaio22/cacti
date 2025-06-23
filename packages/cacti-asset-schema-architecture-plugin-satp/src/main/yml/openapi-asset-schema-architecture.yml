@@ -305,7 +305,7 @@ paths:
           description: Unique identifier of the asset schema
       responses:
         '200':
-          description: Asset Provider returned successfully
+          description: Asset Schema returned successfully
           content:
             application/ld+json:
               schema:
@@ -314,6 +314,118 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}:
+    get:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: get
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}
+      summary: Given an unique id, returns a Schema Profile
+      description: |
+        This endpoint allows a client to get a Schema Profile, when given an unique id.
+      operationId: getSchemaProfile
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the Schema Profile
+      responses:
+        '200':
+          description: Schema Profile returned successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SignedSchemaProfile'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error        
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}:
+    get:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: get
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}
+      summary: Given an unique id, returns a Tokenized Asset Record (TAR)
+      description: |
+        This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id.
+      operationId: getTokenizedAssetRecord
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the Tokenized Asset Record
+      responses:
+        '200':
+          description: Tokenized Asset Record returned successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/TokenizedAssetRecord'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error    
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}:
+    get:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: get
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}
+      summary: Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)
+      description: |
+        This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id.
+      operationId: getAssetSchemaAuthority
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the Asset Schema Authority (ASA)
+      responses:
+        '200':
+          description: Asset Schema Authority (ASA) returned successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/AssetSchemaAuthorityCertificate'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error    
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}:
+    get:
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: get
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}
+      summary: Given an unique id, returns the X.509 certificate of an Asset Provider
+      description: |
+        This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id.
+      operationId: getAssetProvider
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the Asset Provider
+      responses:
+        '200':
+          description: Asset Provider returned successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/AssetProviderCertificate'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error  
 components:
   schemas:
-    $ref: '#schemas.yml'
+    $ref: 'schemas.yml#'

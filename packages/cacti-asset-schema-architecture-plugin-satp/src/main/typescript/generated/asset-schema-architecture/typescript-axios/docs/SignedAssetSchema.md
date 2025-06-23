@@ -1,20 +1,20 @@
-# RequestTokenIssuanceAuthorization200Response
+# SignedAssetSchema
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**token_issuance_authorization_request** | [**RequestTokenIssuanceAuthorizationRequest**](RequestTokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
+**asset_schema** | [**AssetSchemaCertificationRequest**](AssetSchemaCertificationRequest.md) |  | [default to undefined]
 **proof** | [**RequestTokenIssuanceAuthorizationRequestProof**](RequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { RequestTokenIssuanceAuthorization200Response } from './api';
+import { SignedAssetSchema } from './api';
 
-const instance: RequestTokenIssuanceAuthorization200Response = {
-    token_issuance_authorization_request,
+const instance: SignedAssetSchema = {
+    asset_schema,
     proof,
 };
 ```

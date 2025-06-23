@@ -24,6 +24,426 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+ * @export
+ * @interface AssetProviderCertificate
+ */
+export interface AssetProviderCertificate {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @memberof AssetProviderCertificate
+     */
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    /**
+     * The decentralized identifier (DID) of the Asset Provider.
+     * @type {string}
+     * @memberof AssetProviderCertificate
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetProviderCertificate
+     */
+    'type': string;
+    /**
+     * The X.509 certificate (PEM-encoded, Base64).
+     * @type {string}
+     * @memberof AssetProviderCertificate
+     */
+    'certificate': string;
+}
+/**
+ * Structure of a valid Asset Schema (JSON-LD format)
+ * @export
+ * @interface AssetSchema
+ */
+export interface AssetSchema {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof AssetSchema
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
+/**
+ * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+ * @export
+ * @interface AssetSchemaAuthorityCertificate
+ */
+export interface AssetSchemaAuthorityCertificate {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @memberof AssetSchemaAuthorityCertificate
+     */
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    /**
+     * The decentralized identifier (DID) of the Asset Schema Authority.
+     * @type {string}
+     * @memberof AssetSchemaAuthorityCertificate
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaAuthorityCertificate
+     */
+    'type': string;
+    /**
+     * The X.509 certificate (PEM-encoded, Base64).
+     * @type {string}
+     * @memberof AssetSchemaAuthorityCertificate
+     */
+    'certificate': string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaCertification200Response
+ */
+export interface AssetSchemaCertification200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequest}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'asset-schema': AssetSchemaCertificationRequest;
+    /**
+     * 
+     * @type {RequestTokenIssuanceAuthorizationRequestProof}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'proof': RequestTokenIssuanceAuthorizationRequestProof;
+}
+/**
+ * Structure of a valid Asset Schema (JSON-LD format)
+ * @export
+ * @interface AssetSchemaCertificationRequest
+ */
+export interface AssetSchemaCertificationRequest {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof AssetSchemaCertificationRequest
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
+/**
+ * @type AssetSchemaCertificationRequestContext
+ * @export
+ */
+export type AssetSchemaCertificationRequestContext = Array<AssetSchemaCertificationRequestContextOneOfInner> | string;
+
+/**
+ * @type AssetSchemaCertificationRequestContextOneOfInner
+ * @export
+ */
+export type AssetSchemaCertificationRequestContextOneOfInner = object | string;
+
+/**
+ * A JSON-LD response representing the DID for a commissioned Asset Schema.
+ * @export
+ * @interface CommissionAssetSchema200Response
+ */
+export interface CommissionAssetSchema200Response {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionAssetSchema200Response
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionAssetSchema200Response
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionAssetSchema200Response
+     */
+    'type': string;
+}
+/**
+ * A JSON-LD response representing the DID for a commissioned Schema Profile.
+ * @export
+ * @interface CommissionSchemaProfile200Response
+ */
+export interface CommissionSchemaProfile200Response {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionSchemaProfile200Response
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionSchemaProfile200Response
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionSchemaProfile200Response
+     */
+    'type': string;
+}
+/**
+ * A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).
+ * @export
+ * @interface CommissionTokenizedAssetRecord200Response
+ */
+export interface CommissionTokenizedAssetRecord200Response {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionTokenizedAssetRecord200Response
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecord200Response
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecord200Response
+     */
+    'type': string;
+}
+/**
+ * Structure of a valid Tokenized Asset Record (JSON-LD format)
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequest
+ */
+export interface CommissionTokenizedAssetRecordRequest {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
+/**
+ * A JSON-LD response representing the DID for a commissioned Asset Schema.
+ * @export
+ * @interface CommissionedAssetSchemaID
+ */
+export interface CommissionedAssetSchemaID {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionedAssetSchemaID
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionedAssetSchemaID
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionedAssetSchemaID
+     */
+    'type': string;
+}
+/**
+ * A JSON-LD response representing the DID for a commissioned Schema Profile.
+ * @export
+ * @interface CommissionedSchemaProfileID
+ */
+export interface CommissionedSchemaProfileID {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionedSchemaProfileID
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionedSchemaProfileID
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionedSchemaProfileID
+     */
+    'type': string;
+}
+/**
+ * A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).
+ * @export
+ * @interface CommissionedTokenizedAssetRecordID
+ */
+export interface CommissionedTokenizedAssetRecordID {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorization200ResponseContext}
+     * @memberof CommissionedTokenizedAssetRecordID
+     */
+    '@context': RegisterTokenIssuanceAuthorization200ResponseContext;
+    /**
+     * A Decentralized Identifier (DID).
+     * @type {string}
+     * @memberof CommissionedTokenizedAssetRecordID
+     */
+    'id': string;
+    /**
+     * Semantic type of the object.
+     * @type {string}
+     * @memberof CommissionedTokenizedAssetRecordID
+     */
+    'type': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterAssetProvider200Response
+ */
+export interface RegisterAssetProvider200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetProvider200Response
+     */
+    '@context': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetProvider200Response
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetProvider200Response
+     */
+    'type': string;
+}
+/**
+ * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+ * @export
+ * @interface RegisterAssetProviderRequest
+ */
+export interface RegisterAssetProviderRequest {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @memberof RegisterAssetProviderRequest
+     */
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    /**
+     * The decentralized identifier (DID) of the Asset Provider.
+     * @type {string}
+     * @memberof RegisterAssetProviderRequest
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetProviderRequest
+     */
+    'type': string;
+    /**
+     * The X.509 certificate (PEM-encoded, Base64).
+     * @type {string}
+     * @memberof RegisterAssetProviderRequest
+     */
+    'certificate': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterAssetSchemaAuthority200Response
+ */
+export interface RegisterAssetSchemaAuthority200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthority200Response
+     */
+    '@context': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthority200Response
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthority200Response
+     */
+    'type': string;
+}
+/**
+ * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+ * @export
+ * @interface RegisterAssetSchemaAuthorityRequest
+ */
+export interface RegisterAssetSchemaAuthorityRequest {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @memberof RegisterAssetSchemaAuthorityRequest
+     */
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    /**
+     * The decentralized identifier (DID) of the Asset Schema Authority.
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthorityRequest
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthorityRequest
+     */
+    'type': string;
+    /**
+     * The X.509 certificate (PEM-encoded, Base64).
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthorityRequest
+     */
+    'certificate': string;
+}
+/**
+ * @type RegisterAssetSchemaAuthorityRequestContext
+ * @export
+ */
+export type RegisterAssetSchemaAuthorityRequestContext = Array<AssetSchemaCertificationRequestContextOneOfInner> | string;
+
+/**
  * A JSON-LD response representing the DID for a registered Token Issuance Authorization.
  * @export
  * @interface RegisterTokenIssuanceAuthorization200Response
@@ -53,14 +473,62 @@ export interface RegisterTokenIssuanceAuthorization200Response {
  * The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
  * @export
  */
-export type RegisterTokenIssuanceAuthorization200ResponseContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+export type RegisterTokenIssuanceAuthorization200ResponseContext = Array<AssetSchemaCertificationRequestContextOneOfInner> | string;
 
 /**
- * @type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner
+ * 
  * @export
+ * @interface RegisteredAssetProviderID
  */
-export type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner = object | string;
+export interface RegisteredAssetProviderID {
+    [key: string]: any;
 
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetProviderID
+     */
+    '@context': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetProviderID
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetProviderID
+     */
+    'type': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisteredAssetSchemaAuthorityID
+ */
+export interface RegisteredAssetSchemaAuthorityID {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAuthorityID
+     */
+    '@context': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAuthorityID
+     */
+    '@id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAuthorityID
+     */
+    'type': string;
+}
 /**
  * 
  * @export
@@ -69,10 +537,10 @@ export type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner = obj
 export interface RequestTokenIssuanceAuthorization200Response {
     /**
      * 
-     * @type {TokenIssuanceAuthorizationRequest}
+     * @type {RequestTokenIssuanceAuthorizationRequest}
      * @memberof RequestTokenIssuanceAuthorization200Response
      */
-    'token_issuance_authorization_request': TokenIssuanceAuthorizationRequest;
+    'token_issuance_authorization_request': RequestTokenIssuanceAuthorizationRequest;
     /**
      * 
      * @type {RequestTokenIssuanceAuthorizationRequestProof}
@@ -212,6 +680,99 @@ export interface RequestTokenIssuanceAuthorizationRequestProof {
     'jws': string;
 }
 /**
+ * Structure of a valid Schema Profile (JSON-LD format)
+ * @export
+ * @interface SchemaProfile
+ */
+export interface SchemaProfile {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof SchemaProfile
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
+/**
+ * 
+ * @export
+ * @interface SchemaProfileCertification200Response
+ */
+export interface SchemaProfileCertification200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {SchemaProfileCertificationRequest}
+     * @memberof SchemaProfileCertification200Response
+     */
+    'schema-profile': SchemaProfileCertificationRequest;
+    /**
+     * 
+     * @type {RequestTokenIssuanceAuthorizationRequestProof}
+     * @memberof SchemaProfileCertification200Response
+     */
+    'proof': RequestTokenIssuanceAuthorizationRequestProof;
+}
+/**
+ * Structure of a valid Schema Profile (JSON-LD format)
+ * @export
+ * @interface SchemaProfileCertificationRequest
+ */
+export interface SchemaProfileCertificationRequest {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof SchemaProfileCertificationRequest
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
+/**
+ * 
+ * @export
+ * @interface SignedAssetSchema
+ */
+export interface SignedAssetSchema {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequest}
+     * @memberof SignedAssetSchema
+     */
+    'asset-schema': AssetSchemaCertificationRequest;
+    /**
+     * 
+     * @type {RequestTokenIssuanceAuthorizationRequestProof}
+     * @memberof SignedAssetSchema
+     */
+    'proof': RequestTokenIssuanceAuthorizationRequestProof;
+}
+/**
+ * 
+ * @export
+ * @interface SignedSchemaProfile
+ */
+export interface SignedSchemaProfile {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {SchemaProfileCertificationRequest}
+     * @memberof SignedSchemaProfile
+     */
+    'schema-profile': SchemaProfileCertificationRequest;
+    /**
+     * 
+     * @type {RequestTokenIssuanceAuthorizationRequestProof}
+     * @memberof SignedSchemaProfile
+     */
+    'proof': RequestTokenIssuanceAuthorizationRequestProof;
+}
+/**
  * 
  * @export
  * @interface TokenIssuanceAuthorization
@@ -219,10 +780,10 @@ export interface RequestTokenIssuanceAuthorizationRequestProof {
 export interface TokenIssuanceAuthorization {
     /**
      * 
-     * @type {TokenIssuanceAuthorizationRequest}
+     * @type {RequestTokenIssuanceAuthorizationRequest}
      * @memberof TokenIssuanceAuthorization
      */
-    'token_issuance_authorization_request': TokenIssuanceAuthorizationRequest;
+    'token_issuance_authorization_request': RequestTokenIssuanceAuthorizationRequest;
     /**
      * 
      * @type {RequestTokenIssuanceAuthorizationRequestProof}
@@ -292,6 +853,21 @@ export interface TokenIssuanceAuthorizationRequest {
      */
     'proof': RequestTokenIssuanceAuthorizationRequestProof;
 }
+/**
+ * Structure of a valid Tokenized Asset Record (JSON-LD format)
+ * @export
+ * @interface TokenizedAssetRecord
+ */
+export interface TokenizedAssetRecord {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestContext}
+     * @memberof TokenizedAssetRecord
+     */
+    '@context': AssetSchemaCertificationRequestContext;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -299,6 +875,392 @@ export interface TokenIssuanceAuthorizationRequest {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
+         * @summary Asset Schema Certification
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assetSchemaCertification: async (assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assetSchemaCertificationRequest' is not null or undefined
+            assertParamExists('assetSchemaCertification', 'assetSchemaCertificationRequest', assetSchemaCertificationRequest)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(assetSchemaCertificationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to commission an Asset Schema into the Registry. 
+         * @summary Commission an Asset Schema
+         * @param {AssetSchemaCertification200Response} assetSchemaCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionAssetSchema: async (assetSchemaCertification200Response: AssetSchemaCertification200Response, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assetSchemaCertification200Response' is not null or undefined
+            assertParamExists('commissionAssetSchema', 'assetSchemaCertification200Response', assetSchemaCertification200Response)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-asset-schema`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(assetSchemaCertification200Response, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to commission an Schema Profile into the Registry. 
+         * @summary Commission a Schema Profile
+         * @param {SchemaProfileCertification200Response} schemaProfileCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionSchemaProfile: async (schemaProfileCertification200Response: SchemaProfileCertification200Response, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'schemaProfileCertification200Response' is not null or undefined
+            assertParamExists('commissionSchemaProfile', 'schemaProfileCertification200Response', schemaProfileCertification200Response)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(schemaProfileCertification200Response, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry. 
+         * @summary Commission a Tokenized Asset Record (TAR)
+         * @param {CommissionTokenizedAssetRecordRequest} commissionTokenizedAssetRecordRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionTokenizedAssetRecord: async (commissionTokenizedAssetRecordRequest: CommissionTokenizedAssetRecordRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'commissionTokenizedAssetRecordRequest' is not null or undefined
+            assertParamExists('commissionTokenizedAssetRecord', 'commissionTokenizedAssetRecordRequest', commissionTokenizedAssetRecordRequest)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(commissionTokenizedAssetRecordRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Provider
+         * @param {string} uid Unique identifier of the Asset Provider
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetProvider: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uid' is not null or undefined
+            assertParamExists('getAssetProvider', 'uid', uid)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}`
+                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to get an Asset Schema, when given an unique id. 
+         * @summary Given an unique id, returns an Asset Schema
+         * @param {string} uid Unique identifier of the asset schema
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetSchema: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uid' is not null or undefined
+            assertParamExists('getAssetSchema', 'uid', uid)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}`
+                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)
+         * @param {string} uid Unique identifier of the Asset Schema Authority (ASA)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetSchemaAuthority: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uid' is not null or undefined
+            assertParamExists('getAssetSchemaAuthority', 'uid', uid)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}`
+                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to get a Schema Profile, when given an unique id. 
+         * @summary Given an unique id, returns a Schema Profile
+         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSchemaProfile: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uid' is not null or undefined
+            assertParamExists('getSchemaProfile', 'uid', uid)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}`
+                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
+         * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
+         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenizedAssetRecord: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uid' is not null or undefined
+            assertParamExists('getTokenizedAssetRecord', 'uid', uid)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}`
+                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to register an Asset Provider into the Registry. 
+         * @summary Register an Asset Provider
+         * @param {RegisterAssetProviderRequest} registerAssetProviderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerAssetProvider: async (registerAssetProviderRequest: RegisterAssetProviderRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'registerAssetProviderRequest' is not null or undefined
+            assertParamExists('registerAssetProvider', 'registerAssetProviderRequest', registerAssetProviderRequest)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(registerAssetProviderRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to register an Asset Schema Authority into the Registry. 
+         * @summary Register an Asset Schema Authority
+         * @param {RegisterAssetSchemaAuthorityRequest} registerAssetSchemaAuthorityRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerAssetSchemaAuthority: async (registerAssetSchemaAuthorityRequest: RegisterAssetSchemaAuthorityRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'registerAssetSchemaAuthorityRequest' is not null or undefined
+            assertParamExists('registerAssetSchemaAuthority', 'registerAssetSchemaAuthorityRequest', registerAssetSchemaAuthorityRequest)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(registerAssetSchemaAuthorityRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
          * @summary Register Token Issuance Authorization
@@ -371,6 +1333,42 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
+         * @summary Schema Profile Certification
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        schemaProfileCertification: async (schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'schemaProfileCertificationRequest' is not null or undefined
+            assertParamExists('schemaProfileCertification', 'schemaProfileCertificationRequest', schemaProfileCertificationRequest)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(schemaProfileCertificationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -381,6 +1379,149 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 export const DefaultApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
+        /**
+         * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
+         * @summary Asset Schema Certification
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetSchemaCertification200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.assetSchemaCertification(assetSchemaCertificationRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.assetSchemaCertification']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to commission an Asset Schema into the Registry. 
+         * @summary Commission an Asset Schema
+         * @param {AssetSchemaCertification200Response} assetSchemaCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async commissionAssetSchema(assetSchemaCertification200Response: AssetSchemaCertification200Response, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionAssetSchema200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commissionAssetSchema(assetSchemaCertification200Response, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.commissionAssetSchema']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to commission an Schema Profile into the Registry. 
+         * @summary Commission a Schema Profile
+         * @param {SchemaProfileCertification200Response} schemaProfileCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async commissionSchemaProfile(schemaProfileCertification200Response: SchemaProfileCertification200Response, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionSchemaProfile200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commissionSchemaProfile(schemaProfileCertification200Response, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.commissionSchemaProfile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry. 
+         * @summary Commission a Tokenized Asset Record (TAR)
+         * @param {CommissionTokenizedAssetRecordRequest} commissionTokenizedAssetRecordRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest: CommissionTokenizedAssetRecordRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionTokenizedAssetRecord200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.commissionTokenizedAssetRecord']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Provider
+         * @param {string} uid Unique identifier of the Asset Provider
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetProvider(uid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterAssetProviderRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetProvider(uid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAssetProvider']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to get an Asset Schema, when given an unique id. 
+         * @summary Given an unique id, returns an Asset Schema
+         * @param {string} uid Unique identifier of the asset schema
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetSchema(uid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetSchemaCertification200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetSchema(uid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAssetSchema']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)
+         * @param {string} uid Unique identifier of the Asset Schema Authority (ASA)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetSchemaAuthority(uid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterAssetSchemaAuthorityRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetSchemaAuthority(uid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAssetSchemaAuthority']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to get a Schema Profile, when given an unique id. 
+         * @summary Given an unique id, returns a Schema Profile
+         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSchemaProfile(uid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SchemaProfileCertification200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSchemaProfile(uid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getSchemaProfile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
+         * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
+         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTokenizedAssetRecord(uid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionTokenizedAssetRecordRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenizedAssetRecord(uid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getTokenizedAssetRecord']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to register an Asset Provider into the Registry. 
+         * @summary Register an Asset Provider
+         * @param {RegisterAssetProviderRequest} registerAssetProviderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async registerAssetProvider(registerAssetProviderRequest: RegisterAssetProviderRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterAssetProvider200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerAssetProvider(registerAssetProviderRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.registerAssetProvider']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to register an Asset Schema Authority into the Registry. 
+         * @summary Register an Asset Schema Authority
+         * @param {RegisterAssetSchemaAuthorityRequest} registerAssetSchemaAuthorityRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest: RegisterAssetSchemaAuthorityRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterAssetSchemaAuthority200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.registerAssetSchemaAuthority']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
          * @summary Register Token Issuance Authorization
@@ -407,6 +1548,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.requestTokenIssuanceAuthorization']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
+         * @summary Schema Profile Certification
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SchemaProfileCertification200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.schemaProfileCertification(schemaProfileCertificationRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.schemaProfileCertification']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -417,6 +1571,116 @@ export const DefaultApiFp = function(configuration?: Configuration) {
 export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DefaultApiFp(configuration)
     return {
+        /**
+         * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
+         * @summary Asset Schema Certification
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<AssetSchemaCertification200Response> {
+            return localVarFp.assetSchemaCertification(assetSchemaCertificationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to commission an Asset Schema into the Registry. 
+         * @summary Commission an Asset Schema
+         * @param {AssetSchemaCertification200Response} assetSchemaCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionAssetSchema(assetSchemaCertification200Response: AssetSchemaCertification200Response, options?: RawAxiosRequestConfig): AxiosPromise<CommissionAssetSchema200Response> {
+            return localVarFp.commissionAssetSchema(assetSchemaCertification200Response, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to commission an Schema Profile into the Registry. 
+         * @summary Commission a Schema Profile
+         * @param {SchemaProfileCertification200Response} schemaProfileCertification200Response 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionSchemaProfile(schemaProfileCertification200Response: SchemaProfileCertification200Response, options?: RawAxiosRequestConfig): AxiosPromise<CommissionSchemaProfile200Response> {
+            return localVarFp.commissionSchemaProfile(schemaProfileCertification200Response, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry. 
+         * @summary Commission a Tokenized Asset Record (TAR)
+         * @param {CommissionTokenizedAssetRecordRequest} commissionTokenizedAssetRecordRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest: CommissionTokenizedAssetRecordRequest, options?: RawAxiosRequestConfig): AxiosPromise<CommissionTokenizedAssetRecord200Response> {
+            return localVarFp.commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Provider
+         * @param {string} uid Unique identifier of the Asset Provider
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetProvider(uid: string, options?: RawAxiosRequestConfig): AxiosPromise<RegisterAssetProviderRequest> {
+            return localVarFp.getAssetProvider(uid, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to get an Asset Schema, when given an unique id. 
+         * @summary Given an unique id, returns an Asset Schema
+         * @param {string} uid Unique identifier of the asset schema
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetSchema(uid: string, options?: RawAxiosRequestConfig): AxiosPromise<AssetSchemaCertification200Response> {
+            return localVarFp.getAssetSchema(uid, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id. 
+         * @summary Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)
+         * @param {string} uid Unique identifier of the Asset Schema Authority (ASA)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetSchemaAuthority(uid: string, options?: RawAxiosRequestConfig): AxiosPromise<RegisterAssetSchemaAuthorityRequest> {
+            return localVarFp.getAssetSchemaAuthority(uid, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to get a Schema Profile, when given an unique id. 
+         * @summary Given an unique id, returns a Schema Profile
+         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSchemaProfile(uid: string, options?: RawAxiosRequestConfig): AxiosPromise<SchemaProfileCertification200Response> {
+            return localVarFp.getSchemaProfile(uid, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
+         * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
+         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenizedAssetRecord(uid: string, options?: RawAxiosRequestConfig): AxiosPromise<CommissionTokenizedAssetRecordRequest> {
+            return localVarFp.getTokenizedAssetRecord(uid, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to register an Asset Provider into the Registry. 
+         * @summary Register an Asset Provider
+         * @param {RegisterAssetProviderRequest} registerAssetProviderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerAssetProvider(registerAssetProviderRequest: RegisterAssetProviderRequest, options?: RawAxiosRequestConfig): AxiosPromise<RegisterAssetProvider200Response> {
+            return localVarFp.registerAssetProvider(registerAssetProviderRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to register an Asset Schema Authority into the Registry. 
+         * @summary Register an Asset Schema Authority
+         * @param {RegisterAssetSchemaAuthorityRequest} registerAssetSchemaAuthorityRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest: RegisterAssetSchemaAuthorityRequest, options?: RawAxiosRequestConfig): AxiosPromise<RegisterAssetSchemaAuthority200Response> {
+            return localVarFp.registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
          * @summary Register Token Issuance Authorization
@@ -437,6 +1701,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         requestTokenIssuanceAuthorization(requestTokenIssuanceAuthorizationRequest: RequestTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig): AxiosPromise<RequestTokenIssuanceAuthorization200Response> {
             return localVarFp.requestTokenIssuanceAuthorization(requestTokenIssuanceAuthorizationRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
+         * @summary Schema Profile Certification
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<SchemaProfileCertification200Response> {
+            return localVarFp.schemaProfileCertification(schemaProfileCertificationRequest, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -447,6 +1721,138 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
+     * @summary Asset Schema Certification
+     * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).assetSchemaCertification(assetSchemaCertificationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to commission an Asset Schema into the Registry. 
+     * @summary Commission an Asset Schema
+     * @param {AssetSchemaCertification200Response} assetSchemaCertification200Response 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public commissionAssetSchema(assetSchemaCertification200Response: AssetSchemaCertification200Response, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).commissionAssetSchema(assetSchemaCertification200Response, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to commission an Schema Profile into the Registry. 
+     * @summary Commission a Schema Profile
+     * @param {SchemaProfileCertification200Response} schemaProfileCertification200Response 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public commissionSchemaProfile(schemaProfileCertification200Response: SchemaProfileCertification200Response, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).commissionSchemaProfile(schemaProfileCertification200Response, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry. 
+     * @summary Commission a Tokenized Asset Record (TAR)
+     * @param {CommissionTokenizedAssetRecordRequest} commissionTokenizedAssetRecordRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest: CommissionTokenizedAssetRecordRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).commissionTokenizedAssetRecord(commissionTokenizedAssetRecordRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id. 
+     * @summary Given an unique id, returns the X.509 certificate of an Asset Provider
+     * @param {string} uid Unique identifier of the Asset Provider
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAssetProvider(uid: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getAssetProvider(uid, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to get an Asset Schema, when given an unique id. 
+     * @summary Given an unique id, returns an Asset Schema
+     * @param {string} uid Unique identifier of the asset schema
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAssetSchema(uid: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getAssetSchema(uid, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id. 
+     * @summary Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)
+     * @param {string} uid Unique identifier of the Asset Schema Authority (ASA)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAssetSchemaAuthority(uid: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getAssetSchemaAuthority(uid, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to get a Schema Profile, when given an unique id. 
+     * @summary Given an unique id, returns a Schema Profile
+     * @param {string} uid Unique identifier of the Schema Profile
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getSchemaProfile(uid: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getSchemaProfile(uid, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
+     * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
+     * @param {string} uid Unique identifier of the Tokenized Asset Record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getTokenizedAssetRecord(uid: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getTokenizedAssetRecord(uid, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to register an Asset Provider into the Registry. 
+     * @summary Register an Asset Provider
+     * @param {RegisterAssetProviderRequest} registerAssetProviderRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public registerAssetProvider(registerAssetProviderRequest: RegisterAssetProviderRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).registerAssetProvider(registerAssetProviderRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to register an Asset Schema Authority into the Registry. 
+     * @summary Register an Asset Schema Authority
+     * @param {RegisterAssetSchemaAuthorityRequest} registerAssetSchemaAuthorityRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest: RegisterAssetSchemaAuthorityRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).registerAssetSchemaAuthority(registerAssetSchemaAuthorityRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA). 
      * @summary Register Token Issuance Authorization
@@ -469,6 +1875,18 @@ export class DefaultApi extends BaseAPI {
      */
     public requestTokenIssuanceAuthorization(requestTokenIssuanceAuthorizationRequest: RequestTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).requestTokenIssuanceAuthorization(requestTokenIssuanceAuthorizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
+     * @summary Schema Profile Certification
+     * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).schemaProfileCertification(schemaProfileCertificationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

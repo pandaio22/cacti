@@ -64,7 +64,7 @@ TokenIssuanceAuthorization:
   type: object
   properties:
     token_issuance_authorization_request:
-      $ref: '#schemas.yml#/TokenIssuanceAuthorizationRequest'
+      $ref: '#/TokenIssuanceAuthorizationRequest'
     proof:
       type: object
       properties:
@@ -142,7 +142,7 @@ SignedAssetSchema:
   type: object
   properties:
     asset-schema: 
-      $ref: '#schemas.yml#/AssetSchema' 
+      $ref: '#/AssetSchema' 
     proof:
       type: object
       properties:
@@ -221,7 +221,7 @@ SignedSchemaProfile:
   type: object
   properties:
     schema-profile: 
-      $ref: '#schemas.yml#/SchemaProfile' 
+      $ref: '#/SchemaProfile' 
     proof:
       type: object
       properties:

@@ -1,20 +1,20 @@
-# RequestTokenIssuanceAuthorization200Response
+# SignedSchemaProfile
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**token_issuance_authorization_request** | [**RequestTokenIssuanceAuthorizationRequest**](RequestTokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
+**schema_profile** | [**SchemaProfileCertificationRequest**](SchemaProfileCertificationRequest.md) |  | [default to undefined]
 **proof** | [**RequestTokenIssuanceAuthorizationRequestProof**](RequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { RequestTokenIssuanceAuthorization200Response } from './api';
+import { SignedSchemaProfile } from './api';
 
-const instance: RequestTokenIssuanceAuthorization200Response = {
-    token_issuance_authorization_request,
+const instance: SignedSchemaProfile = {
+    schema_profile,
     proof,
 };
 ```

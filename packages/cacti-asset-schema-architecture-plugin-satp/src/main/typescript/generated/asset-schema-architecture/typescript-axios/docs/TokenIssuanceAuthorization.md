@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**token_issuance_authorization_request** | [**TokenIssuanceAuthorizationRequest**](TokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
+**token_issuance_authorization_request** | [**RequestTokenIssuanceAuthorizationRequest**](RequestTokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
 **proof** | [**RequestTokenIssuanceAuthorizationRequestProof**](RequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
