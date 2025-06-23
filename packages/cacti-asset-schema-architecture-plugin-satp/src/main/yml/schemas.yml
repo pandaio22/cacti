@@ -64,7 +64,7 @@ TokenIssuanceAuthorization:
   type: object
   properties:
     token_issuance_authorization_request:
-      $ref: '#./schemas.yml#/TokenIssuanceAuthorizationRequest'
+      $ref: '#schemas.yml#/TokenIssuanceAuthorizationRequest'
     proof:
       type: object
       properties:
@@ -118,3 +118,320 @@ TokenIssuanceAuthorizationID:
     - '@context'
     - 'id'
     - 'type'
+
+AssetSchema:
+  type: object
+  description: Structure of a valid Asset Schema (JSON-LD format)
+  required:
+    - '@context'
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+  additionalProperties: true
+
+SignedAssetSchema:
+  type: object
+  properties:
+    asset-schema: 
+      $ref: '#schemas.yml#/AssetSchema' 
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - asset-schema
+    - proof
+  additionalProperties: true
+
+CommissionedAssetSchemaID:
+  type: object
+  description: A JSON-LD response representing the DID for a commissioned Asset Schema.
+  properties:
+    '@context':
+      description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+      example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+      description: A Decentralized Identifier (DID).
+    type:
+      type: string
+      example: 'CommissionedAssetSchemaID'
+      description: Semantic type of the object.
+  required:
+    - '@context'
+    - 'id'
+    - 'type'
+
+SchemaProfile:
+  type: object
+  description: Structure of a valid Schema Profile (JSON-LD format)
+  required:
+    - '@context'
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+  additionalProperties: true
+
+SignedSchemaProfile:
+  type: object
+  properties:
+    schema-profile: 
+      $ref: '#schemas.yml#/SchemaProfile' 
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - schema-profile
+    - proof
+  additionalProperties: true
+
+CommissionedSchemaProfileID:
+  type: object
+  description: A JSON-LD response representing the DID for a commissioned Schema Profile.
+  properties:
+    '@context':
+      description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+      example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+      description: A Decentralized Identifier (DID).
+    type:
+      type: string
+      example: 'CommissionedSchemaProfileID'
+      description: Semantic type of the object.
+  required:
+    - '@context'
+    - 'id'
+    - 'type'
+
+TokenizedAssetRecord:
+  type: object
+  description: Structure of a valid Tokenized Asset Record (JSON-LD format)
+  required:
+    - '@context'
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+  additionalProperties: true
+
+CommissionedTokenizedAssetRecordID:
+  type: object
+  description: A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).
+  properties:
+    '@context':
+      description: The JSON-LD context IRI (or array of IRIs) referencing the DID specification.
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      pattern: '^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$'
+      example: 'did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ'
+      description: A Decentralized Identifier (DID).
+    type:
+      type: string
+      example: 'CommissionedTokenizedAssetRecordID'
+      description: Semantic type of the object.
+  required:
+    - '@context'
+    - 'id'
+    - 'type'
+
+AssetSchemaAuthorityCertificate:
+  type: object
+  description: A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+  required:
+    - '@context'
+    - '@id'
+    - type
+    - certificate
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/2018/credentials/v1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    '@id':
+      type: string
+      format: uri
+      example: 'did:web:example.com'
+      description: The decentralized identifier (DID) of the Asset Schema Authority.
+    type:
+      type: string
+      example: 'AssetSchemaAuthority'
+    certificate:
+      type: string
+      format: byte
+      description: The X.509 certificate (PEM-encoded, Base64).
+  additionalProperties: true
+
+RegisteredAssetSchemaAuthorityID:
+  type: object
+  required:
+    - '@context'
+    - '@id'
+    - type
+  properties:
+    '@context':
+      type: string
+      format: uri
+      example: 'https://www.w3.org/2018/credentials/v1'
+    '@id':
+      type: string
+      format: uri
+      example: 'did:web:example.com#asset-schema-authority'
+    type:
+      type: string
+      example: 'RegisteredAssetSchemaAuthority'
+  additionalProperties: true
+
+AssetProviderCertificate:
+  type: object
+  description: A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+  required:
+    - '@context'
+    - '@id'
+    - type
+    - certificate
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/2018/credentials/v1'
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    '@id':
+      type: string
+      format: uri
+      example: 'did:web:example.com'
+      description: The decentralized identifier (DID) of the Asset Provider.
+    type:
+      type: string
+      example: 'AssetProvider'
+    certificate:
+      type: string
+      format: byte
+      description: The X.509 certificate (PEM-encoded, Base64).
+  additionalProperties: true
+
+RegisteredAssetProviderID:
+  type: object
+  required:
+    - '@context'
+    - '@id'
+    - type
+  properties:
+    '@context':
+      type: string
+      format: uri
+      example: 'https://www.w3.org/2018/credentials/v1'
+    '@id':
+      type: string
+      format: uri
+      example: 'did:web:example.com#asset-provider'
+    type:
+      type: string
+      example: 'RegisteredAssetProvider'
+  additionalProperties: true
+
+
