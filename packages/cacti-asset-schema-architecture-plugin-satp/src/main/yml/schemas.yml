@@ -142,7 +142,7 @@ AssetSchema:
 SignedAssetSchema:
   type: object
   properties:
-    asset-schema: 
+    asset_schema: 
       $ref: '#/AssetSchema' 
     proof:
       type: object
@@ -222,7 +222,7 @@ SchemaProfile:
 SignedSchemaProfile:
   type: object
   properties:
-    schema-profile: 
+    schema_profile: 
       $ref: '#/SchemaProfile' 
     proof:
       type: object

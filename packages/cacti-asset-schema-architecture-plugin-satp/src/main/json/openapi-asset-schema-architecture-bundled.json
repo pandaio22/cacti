@@ -309,7 +309,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "asset-schema": {
+                  "asset_schema": {
                     "type": "object",
                     "description": "Structure of a valid Asset Schema (JSON-LD format)",
                     "required": [
@@ -467,7 +467,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "schema-profile": {
+                  "schema_profile": {
                     "type": "object",
                     "description": "Structure of a valid Schema Profile (JSON-LD format)",
                     "required": [
@@ -982,7 +982,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "asset-schema": {
+                    "asset_schema": {
                       "type": "object",
                       "description": "Structure of a valid Asset Schema (JSON-LD format)",
                       "required": [
@@ -1098,7 +1098,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "schema-profile": {
+                    "schema_profile": {
                       "type": "object",
                       "description": "Structure of a valid Schema Profile (JSON-LD format)",
                       "required": [
@@ -1776,7 +1776,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "asset-schema": {
+                    "asset_schema": {
                       "type": "object",
                       "description": "Structure of a valid Asset Schema (JSON-LD format)",
                       "required": [
@@ -1924,7 +1924,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "schema-profile": {
+                    "schema_profile": {
                       "type": "object",
                       "description": "Structure of a valid Schema Profile (JSON-LD format)",
                       "required": [
@@ -2326,7 +2326,7 @@
       "SignedAssetSchema": {
         "type": "object",
         "properties": {
-          "asset-schema": {
+          "asset_schema": {
             "type": "object",
             "description": "Structure of a valid Asset Schema (JSON-LD format)",
             "required": [
@@ -2482,7 +2482,7 @@
       "SignedSchemaProfile": {
         "type": "object",
         "properties": {
-          "schema-profile": {
+          "schema_profile": {
             "type": "object",
             "description": "Structure of a valid Schema Profile (JSON-LD format)",
             "required": [

@@ -34,9 +34,12 @@ import {
   AssetSchemaCertificationEndpoint,
   SchemaProfileCertificationEndpoint,
 } from "./entities/asset-schema-authority/endpoints/asset-schema-authority-endpoints";
-import { RegisterTokenAuthorizationEndpoint } from "./entities/registry/endpoints/registry-endpoints";
+import {
+  RegisterTokenAuthorizationEndpoint,
+  CommissionAssetSchemaEndpoint,
+} from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
-import { RegistryApiService } from "../typescript/entities/registry/modules/registry-api-service";
+import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
 import {
   EntityServerConfig,
   EntityServerType,
@@ -315,6 +318,7 @@ export class PluginAssetSchemaArchitecture
       return await this.endpoints;
     }
 
+    /*ASSET SCHEMA AUTHORITY ENDPOINTS*/
     const tokenIssuanceAuthorizationRequestEndpoint =
       new TokenIssuanceAuthorizationRequestEndpoint(
         new AssetSchemaAuthorityService(),
@@ -326,6 +330,10 @@ export class PluginAssetSchemaArchitecture
     const schemaProfileCertificationEndpoint =
       new SchemaProfileCertificationEndpoint(new AssetSchemaAuthorityService());
 
+    /*REGISTRY ENDPOINTS*/
+    const commissionAssetSchemaEndpoint = new CommissionAssetSchemaEndpoint(
+      new RegistryApiService(),
+    );
     const registerTokenAuthorizationEndpoint =
       new RegisterTokenAuthorizationEndpoint(new RegistryApiService());
 
@@ -333,6 +341,7 @@ export class PluginAssetSchemaArchitecture
       assetSchemaCertificationEndpoint,
       schemaProfileCertificationEndpoint,
       tokenIssuanceAuthorizationRequestEndpoint,
+      commissionAssetSchemaEndpoint,
       registerTokenAuthorizationEndpoint,
     ];
 

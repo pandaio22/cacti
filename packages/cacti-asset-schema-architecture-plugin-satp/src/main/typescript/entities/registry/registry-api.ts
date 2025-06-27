@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import { Server } from "http";
 //import { v4 as uuidv4 } from "uuid";
 import bodyParser from "body-parser";
-import { RegistryApiService } from "./modules/registry-api-service";
+import { RegistryApiService } from "./modules/services/registry-api-service/implementations/registry-api-service";
 import { API_ENDPOINTS } from "../../constants/constants";
 
 export class RegistryApi {

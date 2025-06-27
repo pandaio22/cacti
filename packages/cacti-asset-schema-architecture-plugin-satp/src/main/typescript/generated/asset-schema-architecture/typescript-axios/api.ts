@@ -142,7 +142,7 @@ export interface CommissionAssetSchemaRequest {
      * @type {CommissionAssetSchemaRequestAssetSchema}
      * @memberof CommissionAssetSchemaRequest
      */
-    'asset-schema': CommissionAssetSchemaRequestAssetSchema;
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
@@ -209,7 +209,7 @@ export interface CommissionSchemaProfileRequest {
      * @type {CommissionSchemaProfileRequestSchemaProfile}
      * @memberof CommissionSchemaProfileRequest
      */
-    'schema-profile': CommissionSchemaProfileRequestSchemaProfile;
+    'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
@@ -749,7 +749,7 @@ export interface SignedAssetSchema {
      * @type {CommissionAssetSchemaRequestAssetSchema}
      * @memberof SignedAssetSchema
      */
-    'asset-schema': CommissionAssetSchemaRequestAssetSchema;
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
@@ -770,7 +770,7 @@ export interface SignedSchemaProfile {
      * @type {CommissionSchemaProfileRequestSchemaProfile}
      * @memberof SignedSchemaProfile
      */
-    'schema-profile': CommissionSchemaProfileRequestSchemaProfile;
+    'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}

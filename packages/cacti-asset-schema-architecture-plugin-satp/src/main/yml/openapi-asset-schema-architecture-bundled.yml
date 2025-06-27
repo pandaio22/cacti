@@ -210,7 +210,7 @@ paths:
             schema:
               type: object
               properties:
-                asset-schema:
+                asset_schema:
                   type: object
                   description: Structure of a valid Asset Schema (JSON-LD format)
                   required:
@@ -310,7 +310,7 @@ paths:
             schema:
               type: object
               properties:
-                schema-profile:
+                schema_profile:
                   type: object
                   description: Structure of a valid Schema Profile (JSON-LD format)
                   required:
@@ -644,7 +644,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  asset-schema:
+                  asset_schema:
                     type: object
                     description: Structure of a valid Asset Schema (JSON-LD format)
                     required:
@@ -718,7 +718,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema-profile:
+                  schema_profile:
                     type: object
                     description: Structure of a valid Schema Profile (JSON-LD format)
                     required:
@@ -1149,7 +1149,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  asset-schema:
+                  asset_schema:
                     type: object
                     description: Structure of a valid Asset Schema (JSON-LD format)
                     required:
@@ -1239,7 +1239,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema-profile:
+                  schema_profile:
                     type: object
                     description: Structure of a valid Schema Profile (JSON-LD format)
                     required:
@@ -1487,7 +1487,7 @@ components:
     SignedAssetSchema:
       type: object
       properties:
-        asset-schema:
+        asset_schema:
           type: object
           description: Structure of a valid Asset Schema (JSON-LD format)
           required:
@@ -1581,7 +1581,7 @@ components:
     SignedSchemaProfile:
       type: object
       properties:
-        schema-profile:
+        schema_profile:
           type: object
           description: Structure of a valid Schema Profile (JSON-LD format)
           required:

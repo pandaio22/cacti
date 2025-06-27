@@ -19,7 +19,7 @@ import {
   TokenIssuanceAuthorization,
   TokenIssuanceAuthorizationID,
 } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { RegistryApiService } from "../../registry/modules/registry-api-service";
+import { RegistryApiService } from "../../registry/modules/services/registry-api-service/implementations/registry-api-service";
 
 export class RegisterTokenAuthorizationEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME =

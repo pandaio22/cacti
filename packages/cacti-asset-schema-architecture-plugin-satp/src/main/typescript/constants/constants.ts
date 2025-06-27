@@ -106,6 +106,17 @@ const VALID_ASSET_SCHEMA_EXAMPLE = {
   schema_version: 1.0,
 };
 
+const VALID_SIGNED_ASSET_SCHEMA_EXAMPLE = {
+  asset_schema: { ...VALID_ASSET_SCHEMA_EXAMPLE },
+  proof: {
+    type: "EcdsaSecp256k1VerificationKey2019", // example proof type
+    created: "2025-06-27T12:00:00Z", // ISO 8601 date string
+    proofPurpose: "assertionMethod", // purpose of proof, e.g., authentication or assertion
+    verificationMethod: "https://example.org/keys/1", // URL or DID key identifier
+    jws: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...", // a JSON Web Signature string (example)
+  },
+};
+
 const VALID_SCHEMA_PROFILE_EXAMPLE = {
   "@context": {
     "@version": 1.1,
@@ -228,6 +239,7 @@ export {
   ASSET_PROVIDER_API_SERVER,
   API_ENDPOINTS,
   VALID_ASSET_SCHEMA_EXAMPLE,
+  VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
 };

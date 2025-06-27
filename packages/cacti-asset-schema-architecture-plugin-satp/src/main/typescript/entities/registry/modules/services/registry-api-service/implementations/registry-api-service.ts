@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { IValidationService } from "./validation/interfaces/validation-service-interface";
-import { ValidationService } from "./validation/services/validation-service";
-import { DatabaseIpfsConnector } from "./database/database-ipfs-connector";
-import { TokenIssuanceAuthorization } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { TokenIssuanceAuthorizationID } from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { IValidationService } from "./../../../validation/interfaces/validation-service-interface";
+import { ValidationService } from "./../../../validation/services/validation-service";
+import { DatabaseIpfsConnector } from "./../../../database/database-ipfs-connector";
+import { TokenIssuanceAuthorization, TokenIssuanceAuthorizationID, SignedAssetSchema, CommissionedAssetSchemaID, CommissionedSchemaProfileID } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
+import {IRegistryApiService} from "../interfaces/registry-api-service.interface";
 
-export class RegistryApiService {
+
+export class RegistryApiService implements IRegistryApiService {
   private databaseConnector: DatabaseIpfsConnector;
   private validationService: IValidationService;
 
@@ -37,14 +38,27 @@ export class RegistryApiService {
    * @param data - The asset schema data to be commissioned.
    * @returns A promise that resolves when the asset is successfully commissioned.
    */
-  public async commissionAssetSchema(data: any): Promise<string> {
-    await this.validationService.validateAssetSchema(data);
+  public commissionAssetSchema(data: object): Promise<string>; //TO REMOVEEE
+  public commissionAssetSchema(signedAssetSchema: SignedAssetSchema): Promise<CommissionedAssetSchemaID>;
+
+  public async commissionAssetSchema(data: any | SignedAssetSchema): Promise<string | CommissionedAssetSchemaID> {
+    //Add step to verify ASA signature
+    await this.validationService.validateAssetSchema(data.asset_schema);
+
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
     //Remaining logic for commissioning the asset can be added here.
 
     if (!artifactSchemaId) {
       throw new Error("Failed to commission asset schema.");
+    }
+
+    if (this.isSignedAssetSchema(data)) {
+      return {
+        "@context": "https://www.w3.org/ns/did/v1.1",
+        id: artifactSchemaId,
+        type: "CommissionedAssetSchemaID",
+      };
     }
     return artifactSchemaId;
   }
@@ -96,5 +110,9 @@ export class RegistryApiService {
       id: tokenIssuanceAuthorizationId,
       type: "TokenIssuanceAuthorizationID",
     };
+  }
+
+  private isSignedAssetSchema(data: any): data is SignedAssetSchema {
+    return data && typeof data === "object" && "proof" in data;
   }
 }

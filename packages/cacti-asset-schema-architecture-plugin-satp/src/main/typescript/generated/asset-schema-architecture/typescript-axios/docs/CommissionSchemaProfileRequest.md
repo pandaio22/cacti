@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**schema_profile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [default to undefined]
+**schema_profile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [optional] [default to undefined]
 **proof** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
