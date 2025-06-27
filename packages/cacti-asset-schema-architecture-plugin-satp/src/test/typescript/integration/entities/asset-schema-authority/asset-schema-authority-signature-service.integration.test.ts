@@ -1,6 +1,11 @@
 import { SignatureService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/signature-service";
 import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
 
+const sampleDocument1 = {
+  "@context": "https://json-ld.org/contexts/person.jsonld",
+  name: "John Doe",
+};
+
 const sampleDocument = {
   "@context": {
     name: "http://schema.org/name",

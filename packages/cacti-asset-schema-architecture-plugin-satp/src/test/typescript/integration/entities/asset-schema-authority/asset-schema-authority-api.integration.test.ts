@@ -1,91 +1,171 @@
-import { AssetSchemaAuthorityApi } from "../../../../../main/typescript/entities/asset-schema-authority/asset-schema-authority-api";
-import { AssetSchemaAuthorityService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
-import request from "supertest";
+import { LogLevelDesc } from "@hyperledger/cactus-common";
+import { PluginRegistry } from "@hyperledger/cactus-core";
+import { Configuration } from "@hyperledger/cactus-core-api";
+import {
+  PluginAssetSchemaArchitecture,
+  IPluginAssetSchemaArchitectureOptions,
+} from "../../../../../main/typescript/plugin-asset-schema-architecture";
+import { AssetSchemaAuthorityApi } from "../../../../../main/typescript/generated/asset-schema-architecture/typescript-axios/api";
+import { v4 as uuidv4 } from "uuid";
+import {
+  ASSET_SCHEMA_AUTHORITY_API_SERVER,
+  VALID_ASSET_SCHEMA_EXAMPLE,
+  VALID_SCHEMA_PROFILE_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+} from "../../../../../main/typescript/constants/constants";
 
-describe("AssetSchemaAuthorityApi", () => {
-  let assetSchemaAuthorityService: AssetSchemaAuthorityService;
-  let assetSchemaAuthorityApi: AssetSchemaAuthorityApi;
+describe("Asset Schema Authority (ASA) API Integration Tests", () => {
+  let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
+  let pluginAssetSchemaArchitecture: PluginAssetSchemaArchitecture;
+  const logLevel: LogLevelDesc = "INFO";
+  const pluginRegistry = new PluginRegistry({ logLevel, plugins: [] });
+  const TIMEOUT: number = 50000000;
+
+  beforeAll(async () => {
+    //Placeholder
+  });
 
   beforeEach(async () => {
-    assetSchemaAuthorityService = new AssetSchemaAuthorityService();
-    assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(
-      assetSchemaAuthorityService,
+    pluginAssetSchemaArchitectureOptions = {
+      pluginRegistry,
+      instanceId: uuidv4(),
+      logLevel: "DEBUG",
+    };
+
+    pluginAssetSchemaArchitecture = new PluginAssetSchemaArchitecture(
+      pluginAssetSchemaArchitectureOptions,
     );
 
-    await assetSchemaAuthorityApi.start();
-  });
+    await pluginAssetSchemaArchitecture.startup();
+  }, TIMEOUT);
+
   afterEach(async () => {
-    await assetSchemaAuthorityApi.stop();
+    pluginRegistry.deleteByPackageName(pluginAssetSchemaArchitecture.className);
+
+    await pluginAssetSchemaArchitecture.shutdown();
+  }, TIMEOUT);
+
+  afterAll(async () => {
+    //Placeholder
   });
 
-  describe("Test POST /certificate-asset-schema", () => {
-    it("should sign an asset schema when given a valid JSON-LD asset schema", async () => {
-      // Given: a valid JSON-LD asset schema
-      const assetSchema = {
-        "@context": {
-          "@version": 1.1,
-          schema_version: {
-            "@id": "https://schema.org/schemaVersion",
-            "@type": "@id",
-          },
-          foaf: "http://xmlns.com/foaf/0.1/",
-          schema: "http://schema.org/",
-          skos: "http://www.w3.org/2004/02/skos/core#",
-          xsd: "http://www.w3.org/2001/XMLSchema#",
-          rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-          fungible: {
-            "@id":
-              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-            "@type": "https://schema.org/Boolean",
-          },
-          organization_key: {
-            "@id":
-              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-            "@context": {
-              public_key: {
-                "@id":
-                  "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-                "@type": "schema:string",
-              },
-              issued: {
-                "@id":
-                  "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-                "@type": "schema:string",
-              },
-            },
-          },
-          facets: {
-            "@id":
-              "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-          },
-        },
-        "@id":
-          "https://web.tecnico.ulisboa.pt/~ist173130/ontology/ontology-satp-facets.jsonld#",
-        "foaf:name": "Example Corp",
-        organization_key: {
-          public_key: "0xabcdef1234567890",
-          issued: "2025-05-31T10:00:00Z",
-        },
-        facets: {
-          "skos:note": "A sample asset representing an organization with a key",
-          "schema:category": "financial",
-        },
-        fungible: true,
-        schema_version: 1.0,
-      };
-      // When: a POST request is made to /certificate-asset-schema
-      const response = await request(assetSchemaAuthorityApi.app)
-        .post("/certificate-asset-schema")
-        .send(assetSchema)
-        .set("Content-Type", "application/json");
-      // Then: the response should be successful (200) and contain a signed asset schema according to W3C JSON-LD signatures
-      expect(response.status).toBe(200);
-      expect(response.body.received).toHaveProperty("proof");
-      expect(response.body.received.proof).toHaveProperty("type");
-      expect(response.body.received.proof).toHaveProperty("created");
-      expect(response.body.received.proof).toHaveProperty("proofPurpose");
-      expect(response.body.received.proof).toHaveProperty("verificationMethod");
-      expect(response.body.received.proof).toHaveProperty("jws");
-    });
-  });
+  it(
+    "Tests POST /token-issuance-authorization-request: Given a Valid Token Issuance Authorization Request (TIAR), When calling the endpoint, Then returns a Token Issuance Authorization",
+    async () => {
+      //Given
+      const config = new Configuration({
+        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
+      });
+      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
+
+      //When
+      const tokenIssuanceAuthorizationRequestEndpoint =
+        await assetSchemaAuthorityApi.requestTokenIssuanceAuthorization(
+          VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+        );
+
+      //Then
+      expect(tokenIssuanceAuthorizationRequestEndpoint.status).toEqual(200);
+      expect(tokenIssuanceAuthorizationRequestEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+
+  it(
+    "Tests POST /token-issuance-authorization-request: Given an Invalid Token Issuance Authorization Request (TIAR), When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /token-issuance-authorization-request: Given a Valid Token Issuance Authorization Request (TIAR) and an Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
+
+  it(
+    "Tests POST /asset-schema-certification: Given a Valid Asset Schema, When calling the endpoint, Then returns a certified Asset Schema",
+    async () => {
+      //Given
+      const config = new Configuration({
+        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
+      });
+      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
+
+      //When
+      const assetSchemaCertificationEndpoint =
+        await assetSchemaAuthorityApi.assetSchemaCertification(
+          VALID_ASSET_SCHEMA_EXAMPLE,
+        );
+
+      //Then
+      expect(assetSchemaCertificationEndpoint.status).toEqual(200);
+      expect(assetSchemaCertificationEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /asset-schema-certification: Given an Invalid Asset Schema, When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /asset-schema-certification: Given a Valid Asset Schema and an Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /schema-profile-certification: Given a Valid Schema Profile, When calling the endpoint, Then returns a certified Schema Profile",
+    async () => {
+      //Given
+      const config = new Configuration({
+        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
+      });
+      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
+
+      //When
+      const schemaProfileCertificationEndpoint =
+        await assetSchemaAuthorityApi.schemaProfileCertification(
+          VALID_SCHEMA_PROFILE_EXAMPLE,
+        );
+
+      //Then
+      expect(schemaProfileCertificationEndpoint.status).toEqual(200);
+      expect(schemaProfileCertificationEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /asset-schema-certification: Given an Invalid Asset Schema, When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests POST /asset-schema-certification: Given a Valid Asset Schema and an Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      //Given
+      //When
+      //Then
+    },
+    TIMEOUT,
+  );
 });

@@ -1,4 +1,5 @@
 import jsonld from "jsonld";
+import { JsonLdDocument } from "jsonld";
 import { importPKCS8, CompactSign, importSPKI, flattenedVerify } from "jose";
 import * as crypto from "crypto";
 
@@ -6,6 +7,7 @@ export class SignatureService {
   /**
    * Signs a JSON-LD object using Linked Data Proofs (JwsSignature2020).
    * W3C compliant implementation.
+   * DISCLAIMER - IT REQUIRES VALID IRI's to resolve
    * @param jsonLdObject - The JSON-LD object to sign.
    * @param privateKeyPem - The private key in PEM format used for signing.
    * @param verificationMethod - The verification method URL or identifier.
@@ -26,8 +28,15 @@ export class SignatureService {
         verificationMethod: verificationMethod,
       };
 
-      // Step 2: Canonicalize the document with proof config
-      const canon = await jsonld.canonize(jsonLdObject, {
+      // Step 2: Expand and Canonicalize the document
+      //const doc = { name: "John Doe" };
+      //const context = { "@base": "https://json-ld.org/contexts/person.jsonld" };
+      //const compacted = await jsonld.compact(doc, context);
+      console.log(JSON.stringify(jsonLdObject, null, 2));
+
+      const expanded = await jsonld.expand(jsonLdObject);
+      console.log(expanded);
+      const canon = await jsonld.canonize(expanded, {
         algorithm: "URDNA2015",
         format: "application/n-quads",
       });
@@ -98,7 +107,6 @@ export class SignatureService {
         algorithm: "URDNA2015",
         format: "application/n-quads",
       });
-
       // Step 4: Create hash of canonicalized document
       const canonHash = crypto
         .createHash("sha256")

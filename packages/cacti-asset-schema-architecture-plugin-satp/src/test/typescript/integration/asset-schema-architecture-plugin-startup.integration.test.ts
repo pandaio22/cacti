@@ -17,13 +17,12 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
   const TIMEOUT: number = 50000000;
 
   beforeEach(async () => {
-    // Given
     pluginAssetSchemaArchitectureOptions = {
       pluginRegistry,
       instanceId: uuidv4(),
       logLevel: "DEBUG",
     };
-    // When
+
     pluginAssetSchemaArchitecture = new PluginAssetSchemaArchitecture(
       pluginAssetSchemaArchitectureOptions,
     );

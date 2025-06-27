@@ -29,7 +29,11 @@ import { PluginRegistry } from "@hyperledger/cactus-core";
 import http from "http";
 import express, { type Express } from "express";
 import bodyParser from "body-parser";
-import { TokenIssuanceAuthorizationRequestEndpoint } from "./entities/asset-schema-authority/endpoints/asset-schema-authority-endpoints";
+import {
+  TokenIssuanceAuthorizationRequestEndpoint,
+  AssetSchemaCertificationEndpoint,
+  SchemaProfileCertificationEndpoint,
+} from "./entities/asset-schema-authority/endpoints/asset-schema-authority-endpoints";
 import { RegisterTokenAuthorizationEndpoint } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/registry-api-service";
@@ -316,10 +320,18 @@ export class PluginAssetSchemaArchitecture
         new AssetSchemaAuthorityService(),
       );
 
+    const assetSchemaCertificationEndpoint =
+      new AssetSchemaCertificationEndpoint(new AssetSchemaAuthorityService());
+
+    const schemaProfileCertificationEndpoint =
+      new SchemaProfileCertificationEndpoint(new AssetSchemaAuthorityService());
+
     const registerTokenAuthorizationEndpoint =
       new RegisterTokenAuthorizationEndpoint(new RegistryApiService());
 
     this.endpoints = [
+      assetSchemaCertificationEndpoint,
+      schemaProfileCertificationEndpoint,
       tokenIssuanceAuthorizationRequestEndpoint,
       registerTokenAuthorizationEndpoint,
     ];

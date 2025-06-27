@@ -221,6 +221,7 @@ paths:
                         - type: string
                           format: uri
                           example: 'https://www.w3.org/ns/did/v1.1'
+                        - type: object
                         - type: array
                           items:
                             oneOf:
@@ -320,6 +321,7 @@ paths:
                         - type: string
                           format: uri
                           example: 'https://www.w3.org/ns/did/v1.1'
+                        - type: object
                         - type: array
                           items:
                             oneOf:
@@ -653,6 +655,7 @@ paths:
                           - type: string
                             format: uri
                             example: 'https://www.w3.org/ns/did/v1.1'
+                          - type: object
                           - type: array
                             items:
                               oneOf:
@@ -726,6 +729,7 @@ paths:
                           - type: string
                             format: uri
                             example: 'https://www.w3.org/ns/did/v1.1'
+                          - type: object
                           - type: array
                             items:
                               oneOf:
@@ -1129,6 +1133,7 @@ paths:
                     - type: string
                       format: uri
                       example: 'https://www.w3.org/ns/did/v1.1'
+                    - type: object
                     - type: array
                       items:
                         oneOf:
@@ -1155,6 +1160,7 @@ paths:
                           - type: string
                             format: uri
                             example: 'https://www.w3.org/ns/did/v1.1'
+                          - type: object
                           - type: array
                             items:
                               oneOf:
@@ -1217,6 +1223,7 @@ paths:
                     - type: string
                       format: uri
                       example: 'https://www.w3.org/ns/did/v1.1'
+                    - type: object
                     - type: array
                       items:
                         oneOf:
@@ -1243,6 +1250,7 @@ paths:
                           - type: string
                             format: uri
                             example: 'https://www.w3.org/ns/did/v1.1'
+                          - type: object
                           - type: array
                             items:
                               oneOf:
@@ -1468,6 +1476,7 @@ components:
             - type: string
               format: uri
               example: 'https://www.w3.org/ns/did/v1.1'
+            - type: object
             - type: array
               items:
                 oneOf:
@@ -1489,6 +1498,7 @@ components:
                 - type: string
                   format: uri
                   example: 'https://www.w3.org/ns/did/v1.1'
+                - type: object
                 - type: array
                   items:
                     oneOf:
@@ -1560,6 +1570,7 @@ components:
             - type: string
               format: uri
               example: 'https://www.w3.org/ns/did/v1.1'
+            - type: object
             - type: array
               items:
                 oneOf:
@@ -1581,6 +1592,7 @@ components:
                 - type: string
                   format: uri
                   example: 'https://www.w3.org/ns/did/v1.1'
+                - type: object
                 - type: array
                   items:
                     oneOf:

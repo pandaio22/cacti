@@ -169,7 +169,7 @@ export interface CommissionAssetSchemaRequestAssetSchema {
  * @type CommissionAssetSchemaRequestAssetSchemaContext
  * @export
  */
-export type CommissionAssetSchemaRequestAssetSchemaContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+export type CommissionAssetSchemaRequestAssetSchemaContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
 
 /**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
@@ -267,11 +267,17 @@ export interface CommissionTokenizedAssetRecordRequest {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionTokenizedAssetRecordRequestContext}
      * @memberof CommissionTokenizedAssetRecordRequest
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionTokenizedAssetRecordRequestContext;
 }
+/**
+ * @type CommissionTokenizedAssetRecordRequestContext
+ * @export
+ */
+export type CommissionTokenizedAssetRecordRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
  * @export
@@ -863,10 +869,10 @@ export interface TokenizedAssetRecord {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionTokenizedAssetRecordRequestContext}
      * @memberof TokenizedAssetRecord
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionTokenizedAssetRecordRequestContext;
 }
 
 /**
