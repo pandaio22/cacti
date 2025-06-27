@@ -11,6 +11,10 @@ import { execSync } from "child_process";
 import {
   REGISTRY_API_SERVER,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+  VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+  VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+  VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+  VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
 } from "../../../../../main/typescript/constants/constants";
 
 describe("Registry API Integration Tests", () => {
@@ -19,6 +23,10 @@ describe("Registry API Integration Tests", () => {
   const logLevel: LogLevelDesc = "INFO";
   const pluginRegistry = new PluginRegistry({ logLevel, plugins: [] });
   const TIMEOUT: number = 50000000;
+  const config = new Configuration({
+    basePath: REGISTRY_API_SERVER,
+  });
+  let registryApi: RegistryApi;
 
   beforeAll(async () => {
     try {
@@ -42,12 +50,13 @@ describe("Registry API Integration Tests", () => {
       instanceId: uuidv4(),
       logLevel: "DEBUG",
     };
-
     pluginAssetSchemaArchitecture = new PluginAssetSchemaArchitecture(
       pluginAssetSchemaArchitectureOptions,
     );
 
     await pluginAssetSchemaArchitecture.startup();
+
+    registryApi = new RegistryApi(config);
   }, TIMEOUT);
 
   afterEach(async () => {
@@ -68,13 +77,7 @@ describe("Registry API Integration Tests", () => {
 
   /*POST /commission-asset-schema*/
   it("Tests POST /commission-asset-schema: Given a Valid Asset Schema to an Available service, When calling the endpoint, Then registers Asset Schema successfully and returns a DID", async () => {
-    //Given
-    const config = new Configuration({
-      basePath: REGISTRY_API_SERVER,
-    });
-    const registryApi = new RegistryApi(config);
-
-    //When
+    //Given & When
     const commissionAssetSchemaEndpoint =
       await registryApi.commissionAssetSchema(
         VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
@@ -88,22 +91,62 @@ describe("Registry API Integration Tests", () => {
   it("Tests POST /commission-asset-schema: Given an Valid Asset Schema to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
   /*POST /commission-schema-profile*/
-  it("Tests POST /commission-schema-profile: Given a Valid Schema Profile to an Available service, When calling the endpoint, Then registers Schema Profile successfully and returns a DID", async () => {});
+  it("Tests POST /commission-schema-profile: Given a Valid Schema Profile to an Available service, When calling the endpoint, Then registers Schema Profile successfully and returns a DID", async () => {
+    //Given & When
+    const commissionSchemaProfileEndpoint =
+      await registryApi.commissionSchemaProfile(
+        VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+      );
+
+    //Then
+    expect(commissionSchemaProfileEndpoint.status).toBe(200);
+    expect(commissionSchemaProfileEndpoint.data).toBeDefined();
+  });
   it("Tests POST /commission-schema-profile: Given an Invalid Schema Profile to an Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests POST /commission-schema-profile: Given a Valid Schema Profile to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
-  /*POST /tokenized-asset-record*/
-  it("Tests POST /tokenized-asset-record: Given a Valid Tokenized Asset Record to an Available service, When calling the endpoint, Then registers the TAR successfully and returns a DID", async () => {});
-  it("Tests POST /tokenized-asset-record: Given an Invalid Tokenized Asset Record to an Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests POST /tokenized-asset-record: Given a Valid Tokenized Asset Record to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+  /*POST /commission-tokenized-asset-record*/
+  it("Tests POST /commission-tokenized-asset-record: Given a Valid Tokenized Asset Record to an Available service, When calling the endpoint, Then registers the TAR successfully and returns a DID", async () => {
+    //Given & When
+    const commissionTokenizedAssetRecordEndpoint =
+      await registryApi.commissionTokenizedAssetRecord(
+        VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+      );
+
+    //Then
+    expect(commissionTokenizedAssetRecordEndpoint.status).toBe(200);
+    expect(commissionTokenizedAssetRecordEndpoint.data).toBeDefined();
+  });
+  it("Tests POST /commission-tokenized-asset-record: Given an Invalid Tokenized Asset Record to an Available service, When calling the endpoint, Then throw exception", async () => {});
+  it("Tests POST /commission-tokenized-asset-record: Given a Valid Tokenized Asset Record to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
   /*POST /register-asset-schema-authority*/
-  it("Tests POST /register-asset-schema-authority: Given a Valid Asset Schema Authority Certificate to an Available service, When calling the endpoint, Then registers the authority successfully and returns a DID", async () => {});
+  it("Tests POST /register-asset-schema-authority: Given a Valid Asset Schema Authority Certificate to an Available service, When calling the endpoint, Then registers the authority successfully and returns a DID", async () => {
+   /* //Given & When
+    const registerAssetSchemaAuthorityEndpoint =
+      await registryApi.registerAssetSchemaAuthority(
+        VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+      );
+
+    //Then
+    expect(registerAssetSchemaAuthorityEndpoint.status).toBe(200);
+    expect(registerAssetSchemaAuthorityEndpoint.data).toBeDefined();*/
+  });
   it("Tests POST /register-asset-schema-authority: Given an Invalid Asset Schema Authority Certificate to an Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests POST /register-asset-schema-authority: Given a Valid Asset Schema Authority Certificate to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
   /*POST /register-asset-provider*/
-  it("Tests POST /register-asset-provider: Given a Valid Asset Provider Certificate to an Available service, When calling the endpoint, Then registers the provider successfully and returns a DID", async () => {});
+  it("Tests POST /register-asset-provider: Given a Valid Asset Provider Certificate to an Available service, When calling the endpoint, Then registers the provider successfully and returns a DID", async () => {
+    /*//Given & When
+    const registerAssetProviderEndpoint =
+      await registryApi.registerAssetProvider(
+        VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+      );
+
+    //Then
+    expect(registerAssetProviderEndpoint.status).toBe(200);
+    expect(registerAssetProviderEndpoint.data).toBeDefined();*/
+  });
   it("Tests POST /register-asset-provider: Given an Invalid Asset Provider Certificate to an Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests POST /register-asset-provider: Given a Valid Asset Provider Certificate to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 

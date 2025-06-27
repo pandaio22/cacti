@@ -2,7 +2,15 @@
 import { IValidationService } from "./../../../validation/interfaces/validation-service-interface";
 import { ValidationService } from "./../../../validation/services/validation-service";
 import { DatabaseIpfsConnector } from "./../../../database/database-ipfs-connector";
-import { TokenIssuanceAuthorization, TokenIssuanceAuthorizationID, SignedAssetSchema, CommissionedAssetSchemaID, CommissionedSchemaProfileID } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
+import { TokenIssuanceAuthorization, 
+  TokenIssuanceAuthorizationID, 
+  SignedAssetSchema, 
+  CommissionedAssetSchemaID, 
+  SignedSchemaProfile, 
+  CommissionedSchemaProfileID,
+  TokenizedAssetRecord,
+  CommissionedTokenizedAssetRecordID,
+ } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import {IRegistryApiService} from "../interfaces/registry-api-service.interface";
 
 
@@ -47,13 +55,14 @@ export class RegistryApiService implements IRegistryApiService {
 
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
+      
     //Remaining logic for commissioning the asset can be added here.
 
     if (!artifactSchemaId) {
       throw new Error("Failed to commission asset schema.");
     }
 
-    if (this.isSignedAssetSchema(data)) {
+    if (this.isSchemaSigned<SignedAssetSchema>(data)) {
       return {
         "@context": "https://www.w3.org/ns/did/v1.1",
         id: artifactSchemaId,
@@ -68,13 +77,28 @@ export class RegistryApiService implements IRegistryApiService {
    * @param data - The schema profile data to be commissioned.
    * @returns A promise that resolves to the CID of the commissioned schema profile.
    */
-  public async commissionSchemaProfile(data: any): Promise<string> {
-    await this.validationService.validateSchemaProfile(data);
+  public commissionSchemaProfile(data: object): Promise<string>; //TO REMOVEEE
+  public commissionSchemaProfile(signedSchemaProfile: SignedSchemaProfile): Promise<CommissionedSchemaProfileID>;
+
+  public async commissionSchemaProfile(data: any | SignedSchemaProfile): Promise<string | CommissionedSchemaProfileID> {
+    //Add step to verify ASA signature
+
+    await this.validationService.validateSchemaProfile(data.schema_profile);
+
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
+
     //Remaining logic for commissioning the asset can be added here.
+
     if (!artifactSchemaId) {
       throw new Error("Failed to commission schema profile.");
+    }
+    if (this.isSchemaSigned<SignedSchemaProfile>(data)) {
+      return {
+        "@context": "https://www.w3.org/ns/did/v1.1",
+        id: artifactSchemaId,
+        type: "CommissionedAssetSchemaID",
+      };
     }
     return artifactSchemaId;
   }
@@ -84,15 +108,25 @@ export class RegistryApiService implements IRegistryApiService {
    * @param data - The tokenized asset record data to be commissioned.
    * @returns A promise that resolves to the CID of the commissioned tokenized asset record.
    */
-  public async commissionTokenizedAssetRecord(
-    data: any
-  ): Promise<string> {
+  public commissionTokenizedAssetRecord(data: object): Promise<string>; //TO REMOVEEE
+  public commissionTokenizedAssetRecord(tokenizedAssetRecord: TokenizedAssetRecord): Promise<CommissionedTokenizedAssetRecordID>;
+
+  public async commissionTokenizedAssetRecord(data: any | TokenizedAssetRecord): Promise<string | CommissionedTokenizedAssetRecordID> {
     await this.validationService.validateTokenizedAssetRecord(data);
+
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
     // Remaining logic for commissioning the tokenized asset record can be added here.
+
     if (!artifactSchemaId) {
       throw new Error("Failed to commission tokenized asset record.");
+    }
+    if (this.isTokenizedAssetRecord(data)) {
+      return {
+        "@context": "https://www.w3.org/ns/did/v1.1",
+        id: artifactSchemaId,
+        type: "CommissionedTokenizedAssetRecordID",
+      };
     }
     return artifactSchemaId;
   }
@@ -112,7 +146,19 @@ export class RegistryApiService implements IRegistryApiService {
     };
   }
 
-  private isSignedAssetSchema(data: any): data is SignedAssetSchema {
+  private isSchemaSigned<T extends { proof: unknown }>(data: any): data is T {
     return data && typeof data === "object" && "proof" in data;
   }
+
+  private isTokenizedAssetRecord(data: any): data is TokenizedAssetRecord {
+    if (!data || typeof data !== "object") return false;
+
+    const context = data["@context"];
+    const isValidContext =
+      typeof context === "string" ||
+      typeof context === "object" ||
+      (Array.isArray(context) && context.every(c => typeof c === "object" || typeof c === "string"));
+
+    return isValidContext;
+}
 }

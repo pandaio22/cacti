@@ -20,6 +20,10 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   const logLevel: LogLevelDesc = "INFO";
   const pluginRegistry = new PluginRegistry({ logLevel, plugins: [] });
   const TIMEOUT: number = 50000000;
+  const config = new Configuration({
+    basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
+  });
+  let assetSchemaAuthorityApi: AssetSchemaAuthorityApi;
 
   beforeAll(async () => {
     //Placeholder
@@ -37,6 +41,8 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     );
 
     await pluginAssetSchemaArchitecture.startup();
+
+    assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
   }, TIMEOUT);
 
   afterEach(async () => {
@@ -52,13 +58,7 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   it(
     "Tests POST /token-issuance-authorization-request: Given a Valid Token Issuance Authorization Request (TIAR), When calling the endpoint, Then returns a Token Issuance Authorization",
     async () => {
-      //Given
-      const config = new Configuration({
-        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
-      });
-      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
-
-      //When
+      //Given & When
       const tokenIssuanceAuthorizationRequestEndpoint =
         await assetSchemaAuthorityApi.requestTokenIssuanceAuthorization(
           VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
@@ -93,13 +93,7 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   it(
     "Tests POST /asset-schema-certification: Given a Valid Asset Schema, When calling the endpoint, Then returns a certified Asset Schema",
     async () => {
-      //Given
-      const config = new Configuration({
-        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
-      });
-      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
-
-      //When
+      //Given & When
       const assetSchemaCertificationEndpoint =
         await assetSchemaAuthorityApi.assetSchemaCertification(
           VALID_ASSET_SCHEMA_EXAMPLE,
@@ -132,13 +126,7 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   it(
     "Tests POST /schema-profile-certification: Given a Valid Schema Profile, When calling the endpoint, Then returns a certified Schema Profile",
     async () => {
-      //Given
-      const config = new Configuration({
-        basePath: ASSET_SCHEMA_AUTHORITY_API_SERVER,
-      });
-      const assetSchemaAuthorityApi = new AssetSchemaAuthorityApi(config);
-
-      //When
+      //Given & When
       const schemaProfileCertificationEndpoint =
         await assetSchemaAuthorityApi.schemaProfileCertification(
           VALID_SCHEMA_PROFILE_EXAMPLE,

@@ -267,17 +267,11 @@ export interface CommissionTokenizedAssetRecordRequest {
 
     /**
      * 
-     * @type {CommissionTokenizedAssetRecordRequestContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
      * @memberof CommissionTokenizedAssetRecordRequest
      */
-    '@context': CommissionTokenizedAssetRecordRequestContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
 }
-/**
- * @type CommissionTokenizedAssetRecordRequestContext
- * @export
- */
-export type CommissionTokenizedAssetRecordRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
-
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
  * @export
@@ -869,10 +863,10 @@ export interface TokenizedAssetRecord {
 
     /**
      * 
-     * @type {CommissionTokenizedAssetRecordRequestContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
      * @memberof TokenizedAssetRecord
      */
-    '@context': CommissionTokenizedAssetRecordRequestContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
 }
 
 /**
@@ -1215,7 +1209,7 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         commissionTokenizedAssetRecord: async (commissionTokenizedAssetRecordRequest: CommissionTokenizedAssetRecordRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'commissionTokenizedAssetRecordRequest' is not null or undefined
             assertParamExists('commissionTokenizedAssetRecord', 'commissionTokenizedAssetRecordRequest', commissionTokenizedAssetRecordRequest)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record`;
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;

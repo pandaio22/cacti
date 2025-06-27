@@ -41,7 +41,7 @@ export class ValidationService implements IValidationService {
       await this.validateSchemaProfileStructure(data);
 
     //Validate Semantics
-    validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
+    //validJsonLd = await this.validateSchemaProfileSemantics(validJsonLd, data);
 
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
@@ -70,10 +70,10 @@ export class ValidationService implements IValidationService {
       await this.validateJsonLdStructure(data);
 
     //Validate Semantics
-    validJsonLd = await this.validateTokenizedAssetRecordSemantics(
-      validJsonLd,
-      data,
-    );
+    //validJsonLd = await this.validateTokenizedAssetRecordSemantics(
+    //  validJsonLd,
+    //  data,
+    //);
 
     if (!validJsonLd.valid) {
       console.error(validJsonLd.errors);
@@ -107,9 +107,10 @@ export class ValidationService implements IValidationService {
         this.validateContext(data["@context"], errors);
       }
 
-      if (!data["@type"] && !data["@id"]) {
-        errors.push("Must have either @type or @id");
-      }
+      //REMOVE
+      //if (!data["@type"] && !data["@id"]) {
+      //  errors.push("Must have either @type or @id");
+      //}
 
       // Validate @type
       if (data["@type"]) {

@@ -105,7 +105,6 @@ const VALID_ASSET_SCHEMA_EXAMPLE = {
   fungible: true,
   schema_version: 1.0,
 };
-
 const VALID_SIGNED_ASSET_SCHEMA_EXAMPLE = {
   asset_schema: { ...VALID_ASSET_SCHEMA_EXAMPLE },
   proof: {
@@ -206,6 +205,16 @@ const VALID_SCHEMA_PROFILE_EXAMPLE = {
     },
   },
 };
+const VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE = {
+  schema_profile: { ...VALID_SCHEMA_PROFILE_EXAMPLE },
+  proof: {
+    type: "EcdsaSecp256k1VerificationKey2019", // example proof type
+    created: "2025-06-27T12:00:00Z", // ISO 8601 date string
+    proofPurpose: "assertionMethod", // purpose of proof, e.g., authentication or assertion
+    verificationMethod: "https://example.org/keys/1", // URL or DID key identifier
+    jws: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...", // a JSON Web Signature string (example)
+  },
+};
 
 const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
   "@context": "https://web.tecnico.ulisboa.pt/ist173130/asset-schema.jsonld",
@@ -229,6 +238,39 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
     jws: "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..abc123",
   },
 };
+const VALID_TOKENIZED_ASSET_RECORD_EXAMPLE = {
+  "@context": "urn:tar:eip155.137:0x517BBF0c9B71f64b5807f644E1F1bacD3Afb3ec2",
+  dcap: {
+    rwa: {
+      digital_carrier_id: "E492069BT491278256346325",
+      digital_carrier_type: "rfid_tag",
+      rwa_kind: {
+        en: "Various cases",
+      },
+      rwa_description: {
+        en: "Blue velvet jewelry box with fabric lining on the inside. The metal edges in gold colour can be seen at the application point of the hinged cover.",
+      },
+      rwa_current_storage: {
+        en: "Former Royal Estate",
+      },
+      rwa_storage_location: {
+        en: "Former Royal Estate, Box XX",
+      },
+    },
+    dcar: {
+      dar_id: "911024",
+      dar_system_id: "5TDYIU",
+      dar_url: "https://www.culture.example.org/doi/5TDYIU/911024",
+      dar_description: {
+        en: " Blue velvet jewelry box with fabric lining inside.",
+      },
+    },
+  },
+};
+
+const VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE = {};
+
+const VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE = {};
 
 /****************************************************/
 export {
@@ -241,5 +283,9 @@ export {
   VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
+  VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+  VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+  VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+  VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
 };

@@ -604,7 +604,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record": {
       "post": {
         "tags": [
           "Registry"
@@ -612,7 +612,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "post",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record"
           }
         },
         "summary": "Commission a Tokenized Asset Record (TAR)",
@@ -635,6 +635,9 @@
                         "type": "string",
                         "format": "uri",
                         "example": "https://www.w3.org/ns/did/v1.1"
+                      },
+                      {
+                        "type": "object"
                       },
                       {
                         "type": "array",
@@ -1224,6 +1227,9 @@
                           "type": "string",
                           "format": "uri",
                           "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "object"
                         },
                         {
                           "type": "array",
@@ -2612,6 +2618,9 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "object"
               },
               {
                 "type": "array",

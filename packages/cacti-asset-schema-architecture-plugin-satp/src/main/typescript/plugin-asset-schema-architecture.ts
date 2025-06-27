@@ -37,6 +37,8 @@ import {
 import {
   RegisterTokenAuthorizationEndpoint,
   CommissionAssetSchemaEndpoint,
+  CommissionSchemaProfileEndpoint,
+  CommissionTokenizedAssetRecordEndpoint,
 } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
@@ -334,6 +336,11 @@ export class PluginAssetSchemaArchitecture
     const commissionAssetSchemaEndpoint = new CommissionAssetSchemaEndpoint(
       new RegistryApiService(),
     );
+    const commissionSchemaProfileEndpoint = new CommissionSchemaProfileEndpoint(
+      new RegistryApiService(),
+    );
+    const commissionTokenizedAssetRecord =
+      new CommissionTokenizedAssetRecordEndpoint(new RegistryApiService());
     const registerTokenAuthorizationEndpoint =
       new RegisterTokenAuthorizationEndpoint(new RegistryApiService());
 
@@ -342,6 +349,8 @@ export class PluginAssetSchemaArchitecture
       schemaProfileCertificationEndpoint,
       tokenIssuanceAuthorizationRequestEndpoint,
       commissionAssetSchemaEndpoint,
+      commissionSchemaProfileEndpoint,
+      commissionTokenizedAssetRecord,
       registerTokenAuthorizationEndpoint,
     ];
 

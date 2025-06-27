@@ -137,14 +137,14 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
-  /api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record:
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record:
     post:
       tags:
         - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: post
-          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/tokenized-asset-record
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record
       summary: Commission a Tokenized Asset Record (TAR)
       description: |
         This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry.
