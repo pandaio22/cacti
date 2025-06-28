@@ -8,7 +8,7 @@ All URIs are relative to *http://localhost:3000/api/@hyperledger/cacti-asset-sch
 |[**commissionSchemaProfile**](#commissionschemaprofile) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile | Commission a Schema Profile|
 |[**commissionTokenizedAssetRecord**](#commissiontokenizedassetrecord) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record | Commission a Tokenized Asset Record (TAR)|
 |[**getAssetProvider**](#getassetprovider) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid} | Given an unique id, returns the X.509 certificate of an Asset Provider|
-|[**getAssetSchema**](#getassetschema) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid} | Given an unique id, returns an Asset Schema|
+|[**getAssetSchema**](#getassetschema) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema | Given an unique id, returns an Asset Schema|
 |[**getAssetSchemaAuthority**](#getassetschemaauthority) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid} | Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)|
 |[**getSchemaProfile**](#getschemaprofile) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid} | Given an unique id, returns a Schema Profile|
 |[**getTokenizedAssetRecord**](#gettokenizedassetrecord) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid} | Given an unique id, returns a Tokenized Asset Record (TAR)|

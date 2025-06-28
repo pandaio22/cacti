@@ -33,10 +33,10 @@ export interface AssetProviderCertificate {
 
     /**
      * 
-     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @type {RegisterAssetProviderRequestContext}
      * @memberof AssetProviderCertificate
      */
-    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    '@context': RegisterAssetProviderRequestContext;
     /**
      * The decentralized identifier (DID) of the Asset Provider.
      * @type {string}
@@ -384,10 +384,10 @@ export interface RegisterAssetProviderRequest {
 
     /**
      * 
-     * @type {RegisterAssetSchemaAuthorityRequestContext}
+     * @type {RegisterAssetProviderRequestContext}
      * @memberof RegisterAssetProviderRequest
      */
-    '@context': RegisterAssetSchemaAuthorityRequestContext;
+    '@context': RegisterAssetProviderRequestContext;
     /**
      * The decentralized identifier (DID) of the Asset Provider.
      * @type {string}
@@ -407,6 +407,12 @@ export interface RegisterAssetProviderRequest {
      */
     'certificate': string;
 }
+/**
+ * @type RegisterAssetProviderRequestContext
+ * @export
+ */
+export type RegisterAssetProviderRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+
 /**
  * 
  * @export
@@ -471,7 +477,7 @@ export interface RegisterAssetSchemaAuthorityRequest {
  * @type RegisterAssetSchemaAuthorityRequestContext
  * @export
  */
-export type RegisterAssetSchemaAuthorityRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
+export type RegisterAssetSchemaAuthorityRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
 
 /**
  * A JSON-LD response representing the DID for a registered Token Issuance Authorization.
@@ -1279,8 +1285,7 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         getAssetSchema: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uid' is not null or undefined
             assertParamExists('getAssetSchema', 'uid', uid)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}`
-                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1291,6 +1296,10 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (uid !== undefined) {
+                localVarQueryParameter['uid'] = uid;
+            }
 
 
     

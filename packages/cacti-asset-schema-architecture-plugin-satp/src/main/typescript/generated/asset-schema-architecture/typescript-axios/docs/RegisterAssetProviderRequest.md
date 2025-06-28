@@ -6,7 +6,7 @@ A W3C-compliant JSON-LD object containing an X.509 certificate representing an A
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**RegisterAssetSchemaAuthorityRequestContext**](RegisterAssetSchemaAuthorityRequestContext.md) |  | [default to undefined]
+**context** | [**RegisterAssetProviderRequestContext**](RegisterAssetProviderRequestContext.md) |  | [default to undefined]
 **id** | **string** | The decentralized identifier (DID) of the Asset Provider. | [default to undefined]
 **type** | **string** |  | [default to undefined]
 **certificate** | **string** | The X.509 certificate (PEM-encoded, Base64). | [default to undefined]

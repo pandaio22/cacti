@@ -122,7 +122,7 @@ describe("Registry API Integration Tests", () => {
 
   /*POST /register-asset-schema-authority*/
   it("Tests POST /register-asset-schema-authority: Given a Valid Asset Schema Authority Certificate to an Available service, When calling the endpoint, Then registers the authority successfully and returns a DID", async () => {
-   /* //Given & When
+    //Given & When
     const registerAssetSchemaAuthorityEndpoint =
       await registryApi.registerAssetSchemaAuthority(
         VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
@@ -130,14 +130,14 @@ describe("Registry API Integration Tests", () => {
 
     //Then
     expect(registerAssetSchemaAuthorityEndpoint.status).toBe(200);
-    expect(registerAssetSchemaAuthorityEndpoint.data).toBeDefined();*/
+    expect(registerAssetSchemaAuthorityEndpoint.data).toBeDefined();
   });
   it("Tests POST /register-asset-schema-authority: Given an Invalid Asset Schema Authority Certificate to an Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests POST /register-asset-schema-authority: Given a Valid Asset Schema Authority Certificate to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
   /*POST /register-asset-provider*/
   it("Tests POST /register-asset-provider: Given a Valid Asset Provider Certificate to an Available service, When calling the endpoint, Then registers the provider successfully and returns a DID", async () => {
-    /*//Given & When
+    //Given & When
     const registerAssetProviderEndpoint =
       await registryApi.registerAssetProvider(
         VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
@@ -145,17 +145,74 @@ describe("Registry API Integration Tests", () => {
 
     //Then
     expect(registerAssetProviderEndpoint.status).toBe(200);
-    expect(registerAssetProviderEndpoint.data).toBeDefined();*/
+    expect(registerAssetProviderEndpoint.data).toBeDefined();
   });
   it("Tests POST /register-asset-provider: Given an Invalid Asset Provider Certificate to an Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests POST /register-asset-provider: Given a Valid Asset Provider Certificate to an Unavailable service, When calling the endpoint, Then throw exception", async () => {});
 
-  /*GET /get-asset-schema/{uid}*/
-  it("Tests GET /get-asset-schema/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Schema", async () => {});
-  it("Tests GET /get-asset-schema/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests GET /get-asset-schema/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+  /*GET /get-asset-schema*/
+  it(
+    "Tests GET /get-asset-schema: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Schema",
+    async () => {
+      //Given
+      const commissionAssetSchemaEndpoint =
+        await registryApi.commissionAssetSchema(
+          VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+        );
+      const uid: string = commissionAssetSchemaEndpoint.data.id;
 
-  /*GET /get-schema-profile/{uid}*/
+      //When
+      const getAssetSchemaEndpoint = await registryApi.getAssetSchema(uid);
+
+      //Then
+      expect(getAssetSchemaEndpoint.status).toBe(200);
+      expect(getAssetSchemaEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it("Tests GET /get-asset-schema: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
+  it(
+    "Tests GET /get-asset-schema: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      try {
+        //Given
+        const commissionAssetSchemaEndpoint =
+          await registryApi.commissionAssetSchema(
+            VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+          );
+        const uid: string = commissionAssetSchemaEndpoint.data.id;
+
+        const badRegistryApi = new RegistryApi(
+          new Configuration({
+            basePath: "http://badlocalhost//:666",
+          }),
+        );
+
+        //When
+        await badRegistryApi.getAssetSchema(uid);
+
+        //Then
+        fail("Expected network error due to unavailable service");
+      } catch (error: any) {
+        console.log(error);
+        expect(error).toBeDefined();
+        expect([
+          "ECONNREFUSED",
+          "EAI_AGAIN",
+          "ENOTFOUND",
+          "ETIMEDOUT",
+          "ECONNRESET",
+        ]).toContain(error.code);
+        expect(error.message).toMatch(
+          /connect|refused|timeout|not found|getaddrinfo/i,
+        );
+        expect(error.response).toBeUndefined();
+      }
+    },
+    TIMEOUT,
+  );
+
+  /*GET /get-schema-profile*/
   it("Tests GET /get-schema-profile/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Schema Profile", async () => {});
   it("Tests GET /get-schema-profile/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
   it("Tests GET /get-schema-profile/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});

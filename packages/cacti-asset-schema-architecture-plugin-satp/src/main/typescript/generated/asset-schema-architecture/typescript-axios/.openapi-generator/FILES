@@ -22,6 +22,7 @@ docs/CommissionedSchemaProfileID.md
 docs/CommissionedTokenizedAssetRecordID.md
 docs/RegisterAssetProvider200Response.md
 docs/RegisterAssetProviderRequest.md
+docs/RegisterAssetProviderRequestContext.md
 docs/RegisterAssetSchemaAuthority200Response.md
 docs/RegisterAssetSchemaAuthorityRequest.md
 docs/RegisterAssetSchemaAuthorityRequestContext.md

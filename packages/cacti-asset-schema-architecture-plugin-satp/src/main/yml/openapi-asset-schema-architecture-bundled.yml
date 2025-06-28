@@ -494,6 +494,7 @@ paths:
                     - type: string
                       format: uri
                       example: 'https://www.w3.org/2018/credentials/v1'
+                    - type: object
                     - type: array
                       items:
                         oneOf:
@@ -618,24 +619,26 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
-  '/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}':
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema:
     get:
       tags:
         - Registry
       x-hyperledger-cacti:
         http:
           verbLowerCase: get
-          path: '/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}'
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema
       summary: 'Given an unique id, returns an Asset Schema'
       description: |
         This endpoint allows a client to get an Asset Schema, when given an unique id.
       operationId: getAssetSchema
       parameters:
-        - in: path
-          name: uid
+        - name: uid
+          in: query
           required: true
           schema:
             type: string
+            description: A unique identifier string for an artifact
+            example: QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ
           description: Unique identifier of the asset schema
       responses:
         '200':
@@ -851,6 +854,7 @@ paths:
                       - type: string
                         format: uri
                         example: 'https://www.w3.org/2018/credentials/v1'
+                      - type: object
                       - type: array
                         items:
                           oneOf:
@@ -1717,6 +1721,7 @@ components:
             - type: string
               format: uri
               example: 'https://www.w3.org/2018/credentials/v1'
+            - type: object
             - type: array
               items:
                 oneOf:
@@ -1807,3 +1812,7 @@ components:
           type: string
           example: RegisteredAssetProvider
       additionalProperties: true
+    UniqueId:
+      type: string
+      description: A unique identifier string for an artifact
+      example: QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ

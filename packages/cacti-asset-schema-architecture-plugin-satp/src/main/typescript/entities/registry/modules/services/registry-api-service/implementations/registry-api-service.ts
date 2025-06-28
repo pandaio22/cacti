@@ -10,6 +10,10 @@ import { TokenIssuanceAuthorization,
   CommissionedSchemaProfileID,
   TokenizedAssetRecord,
   CommissionedTokenizedAssetRecordID,
+  AssetSchemaAuthorityCertificate,
+  RegisteredAssetSchemaAuthorityID,
+  AssetProviderCertificate,
+  RegisteredAssetProviderID,
  } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import {IRegistryApiService} from "../interfaces/registry-api-service.interface";
 
@@ -26,7 +30,23 @@ export class RegistryApiService implements IRegistryApiService {
     this.databaseConnector = new DatabaseIpfsConnector();
     this.validationService = validationService ?? new ValidationService();
   }
-
+  /**
+   * Retrieves an asset schema by its unique identifier (UID).
+   * @param uid - The unique identifier of the asset schema to retrieve.
+   * @returns A promise that resolves to the asset schema data.
+   * @throws An error if the asset schema with the given UID is not found.
+   */
+  public async getAssetSchema(uid: string): Promise<SignedAssetSchema> {
+    if (uid.startsWith("did:ipfs:")) 
+      uid = uid.substring("did:ipfs:".length);
+  
+    const assetSchema: SignedAssetSchema = await this.databaseConnector.getFileFromIpfs(uid);
+    
+    if (!assetSchema) 
+      throw new Error(`Asset schema with UID ${uid} not found.`);
+    
+    return assetSchema;
+  }
   /**
    * Retrieves an asset schema by its unique identifier (UID).
    * @param uid - The unique identifier of the asset schema to retrieve.
@@ -55,7 +75,7 @@ export class RegistryApiService implements IRegistryApiService {
 
     const artifactSchemaId: string =
       await this.databaseConnector.addFileToIpfs(data);
-      
+
     //Remaining logic for commissioning the asset can be added here.
 
     if (!artifactSchemaId) {
@@ -144,6 +164,37 @@ export class RegistryApiService implements IRegistryApiService {
       id: tokenIssuanceAuthorizationId,
       type: "TokenIssuanceAuthorizationID",
     };
+  }
+
+  public async registerAssetSchemaAuthority(assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate,
+  ): Promise<RegisteredAssetSchemaAuthorityID>{
+    const registeredAssetSchemaAuthorityID: string =
+    await this.databaseConnector.addFileToIpfs(assetSchemaAuthorityCertificate);
+
+    if (!registeredAssetSchemaAuthorityID) {
+      throw new Error("Failed to register Asset Schema Authority.");
+    }
+    
+    return { 
+      '@context': "https://www.w3.org/ns/did/v1.1",
+      '@id': registeredAssetSchemaAuthorityID,
+      type: "RegisteredAssetSchemaAuthority",
+    };
+  }
+
+  public async registerAssetProvider(assetProviderCertificate: AssetProviderCertificate): Promise<RegisteredAssetProviderID> {
+    const registeredAssetProviderID: string =
+    await this.databaseConnector.addFileToIpfs(assetProviderCertificate);
+
+    if (!registeredAssetProviderID) {
+      throw new Error("Failed to register Asset Schema Authority.");
+    }
+    
+    return { 
+      '@context': "https://www.w3.org/ns/did/v1.1",
+      '@id': registeredAssetProviderID,
+      type: "RegisteredAssetProvider",
+    };    
   }
 
   private isSchemaSigned<T extends { proof: unknown }>(data: any): data is T {

@@ -760,6 +760,9 @@
                         "example": "https://www.w3.org/2018/credentials/v1"
                       },
                       {
+                        "type": "object"
+                      },
+                      {
                         "type": "array",
                         "items": {
                           "oneOf": [
@@ -952,7 +955,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema": {
       "get": {
         "tags": [
           "Registry"
@@ -960,7 +963,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "get",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema/{uid}"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema"
           }
         },
         "summary": "Given an unique id, returns an Asset Schema",
@@ -968,11 +971,13 @@
         "operationId": "getAssetSchema",
         "parameters": [
           {
-            "in": "path",
             "name": "uid",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
             },
             "description": "Unique identifier of the asset schema"
           }
@@ -1308,6 +1313,9 @@
                           "type": "string",
                           "format": "uri",
                           "example": "https://www.w3.org/2018/credentials/v1"
+                        },
+                        {
+                          "type": "object"
                         },
                         {
                           "type": "array",
@@ -2705,6 +2713,9 @@
                 "example": "https://www.w3.org/2018/credentials/v1"
               },
               {
+                "type": "object"
+              },
+              {
                 "type": "array",
                 "items": {
                   "oneOf": [
@@ -2838,6 +2849,11 @@
           }
         },
         "additionalProperties": true
+      },
+      "UniqueId": {
+        "type": "string",
+        "description": "A unique identifier string for an artifact",
+        "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
       }
     }
   }

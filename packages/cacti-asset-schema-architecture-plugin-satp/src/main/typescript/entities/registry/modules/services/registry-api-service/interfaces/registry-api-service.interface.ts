@@ -7,10 +7,14 @@ import {
   TokenIssuanceAuthorizationID,
   TokenizedAssetRecord,
   SignedSchemaProfile,
+  AssetSchemaAuthorityCertificate,
+  RegisteredAssetSchemaAuthorityID,
+  AssetProviderCertificate,
+  RegisteredAssetProviderID,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 
 export interface IRegistryApiService {
-  getAssetSchemaById(uid: string): Promise<any>;
+  getAssetSchema(uid: string): Promise<SignedAssetSchema>;
 
   commissionAssetSchema(
     signedAssetSchema: SignedAssetSchema,
@@ -27,4 +31,12 @@ export interface IRegistryApiService {
   registerTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<TokenIssuanceAuthorizationID>;
+
+  registerAssetSchemaAuthority(
+    assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate,
+  ): Promise<RegisteredAssetSchemaAuthorityID>;
+
+  registerAssetProvider(
+    assetProviderCertificate: AssetProviderCertificate,
+  ): Promise<RegisteredAssetProviderID>;
 }

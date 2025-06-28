@@ -343,6 +343,7 @@ AssetSchemaAuthorityCertificate:
         - type: string
           format: uri
           example: 'https://www.w3.org/2018/credentials/v1'
+        - type: object
         - type: array
           items:
             oneOf:
@@ -436,5 +437,10 @@ RegisteredAssetProviderID:
       type: string
       example: 'RegisteredAssetProvider'
   additionalProperties: true
+
+UniqueId:
+    type: string
+    description: A unique identifier string for an artifact
+    example: "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
 
 

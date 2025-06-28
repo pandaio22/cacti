@@ -17,10 +17,10 @@ export class DatabaseIpfsConnector {
           maxBodyLength: Infinity,
         },
       );
-      // Convert the response data (Buffer) to a JSON object
       const jsonData = JSON.parse(response.data.toString("utf8"));
-      console.log("IPFS get response:", jsonData);
-      return jsonData; // Return the JSON object
+      console.debug("IPFS get response:", jsonData);
+
+      return jsonData;
     } catch (error: any) {
       console.error("Error retrieving file from IPFS:", error.message || error);
       throw error;
