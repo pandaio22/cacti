@@ -213,22 +213,256 @@ describe("Registry API Integration Tests", () => {
   );
 
   /*GET /get-schema-profile*/
-  it("Tests GET /get-schema-profile/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Schema Profile", async () => {});
-  it("Tests GET /get-schema-profile/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests GET /get-schema-profile/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+  it(
+    "Tests GET /get-schema-profile: Given a valid UID and Available service, When calling the endpoint, Then returns the Schema Profile",
+    async () => {
+      //Given
+      const commissionSchemaProfileEndpoint =
+        await registryApi.commissionSchemaProfile(
+          VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+        );
+      const uid: string = commissionSchemaProfileEndpoint.data.id;
 
-  /*GET /get-tokenized-asset-record/{uid}*/
-  it("Tests GET /get-tokenized-asset-record/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Tokenized Asset Record", async () => {});
-  it("Tests GET /get-tokenized-asset-record/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests GET /get-tokenized-asset-record/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+      //When
+      const getSchemaProfileEndpoint = await registryApi.getSchemaProfile(uid);
 
-  /*GET /get-asset-schema-authority/{uid}*/
-  it("Tests GET /get-asset-schema-authority/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Schema Authority certificate", async () => {});
-  it("Tests GET /get-asset-schema-authority/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests GET /get-asset-schema-authority/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+      //Then
+      expect(getSchemaProfileEndpoint.status).toBe(200);
+      expect(getSchemaProfileEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it("Tests GET /get-schema-profile: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
+  it(
+    "Tests GET /get-schema-profile: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      try {
+        //Given
+        const commissionSchemaProfileEndpoint =
+          await registryApi.commissionSchemaProfile(
+            VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+          );
+        const uid: string = commissionSchemaProfileEndpoint.data.id;
 
-  /*GET /get-asset-provider/{uid}*/
-  it("Tests GET /get-asset-provider/{uid}: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Provider certificate", async () => {});
-  it("Tests GET /get-asset-provider/{uid}: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
-  it("Tests GET /get-asset-provider/{uid}: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception", async () => {});
+        const badRegistryApi = new RegistryApi(
+          new Configuration({
+            basePath: "http://badlocalhost//:666",
+          }),
+        );
+
+        //When
+        await badRegistryApi.getSchemaProfile(uid);
+
+        //Then
+        fail("Expected network error due to unavailable service");
+      } catch (error: any) {
+        console.log(error);
+        expect(error).toBeDefined();
+        expect([
+          "ECONNREFUSED",
+          "EAI_AGAIN",
+          "ENOTFOUND",
+          "ETIMEDOUT",
+          "ECONNRESET",
+        ]).toContain(error.code);
+        expect(error.message).toMatch(
+          /connect|refused|timeout|not found|getaddrinfo/i,
+        );
+        expect(error.response).toBeUndefined();
+      }
+    },
+    TIMEOUT,
+  );
+
+  /*GET /get-tokenized-asset-record*/
+  it(
+    "Tests GET /get-tokenized-asset-record: Given a valid UID and Available service, When calling the endpoint, Then returns the Tokenized Asset Record",
+    async () => {
+      //Given
+      const commissionTokenizedAssetRecordEndpoint =
+        await registryApi.commissionTokenizedAssetRecord(
+          VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+        );
+      const uid: string = commissionTokenizedAssetRecordEndpoint.data.id;
+
+      //When
+      const getTokenizedAssetRecordEndpoint =
+        await registryApi.getTokenizedAssetRecord(uid);
+
+      //Then
+      expect(getTokenizedAssetRecordEndpoint.status).toBe(200);
+      expect(getTokenizedAssetRecordEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it("Tests GET /get-tokenized-asset-record: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
+  it(
+    "Tests GET /get-tokenized-asset-record: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      try {
+        //Given
+        const commissionTokenizedAssetRecordEndpoint =
+          await registryApi.commissionTokenizedAssetRecord(
+            VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+          );
+        const uid: string = commissionTokenizedAssetRecordEndpoint.data.id;
+
+        const badRegistryApi = new RegistryApi(
+          new Configuration({
+            basePath: "http://badlocalhost//:666",
+          }),
+        );
+
+        //When
+        await badRegistryApi.getTokenizedAssetRecord(uid);
+
+        //Then
+        fail("Expected network error due to unavailable service");
+      } catch (error: any) {
+        console.log(error);
+        expect(error).toBeDefined();
+        expect([
+          "ECONNREFUSED",
+          "EAI_AGAIN",
+          "ENOTFOUND",
+          "ETIMEDOUT",
+          "ECONNRESET",
+        ]).toContain(error.code);
+        expect(error.message).toMatch(
+          /connect|refused|timeout|not found|getaddrinfo/i,
+        );
+        expect(error.response).toBeUndefined();
+      }
+    },
+    TIMEOUT,
+  );
+
+  /*GET /get-asset-schema-authority*/
+  it(
+    "Tests GET /get-asset-schema-authority: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Schema Authority certificate",
+    async () => {
+      //Given
+      const registerAssetSchemaAuthorityEndpoint =
+        await registryApi.registerAssetSchemaAuthority(
+          VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+        );
+      const uid: string = registerAssetSchemaAuthorityEndpoint.data["@id"];
+
+      //When
+      const getAssetSchemaAuthorityEndpoint =
+        await registryApi.getAssetSchemaAuthority(uid);
+
+      //Then
+      expect(getAssetSchemaAuthorityEndpoint.status).toBe(200);
+      expect(getAssetSchemaAuthorityEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it(
+    "Tests GET /get-asset-schema-authority: Given an invalid UID and Available service, When calling the endpoint, Then throw exception",
+    async () => {},
+    TIMEOUT,
+  );
+  it(
+    "Tests GET /get-asset-schema-authority: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      try {
+        //Given
+        const registerAssetSchemaAuthorityEndpoint =
+          await registryApi.registerAssetSchemaAuthority(
+            VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+          );
+        const uid: string = registerAssetSchemaAuthorityEndpoint.data["@id"];
+
+        const badRegistryApi = new RegistryApi(
+          new Configuration({
+            basePath: "http://badlocalhost//:666",
+          }),
+        );
+        console.log(uid);
+        //When
+        await badRegistryApi.getAssetSchemaAuthority(uid);
+
+        //Then
+        fail("Expected network error due to unavailable service");
+      } catch (error: any) {
+        console.log(error);
+        expect(error).toBeDefined();
+        expect([
+          "ECONNREFUSED",
+          "EAI_AGAIN",
+          "ENOTFOUND",
+          "ETIMEDOUT",
+          "ECONNRESET",
+        ]).toContain(error.code);
+        expect(error.message).toMatch(
+          /connect|refused|timeout|not found|getaddrinfo/i,
+        );
+        expect(error.response).toBeUndefined();
+      }
+    },
+    TIMEOUT,
+  );
+
+  /*GET /get-asset-provider*/
+  it(
+    "Tests GET /get-asset-provider: Given a valid UID and Available service, When calling the endpoint, Then returns the Asset Provider certificate",
+    async () => {
+      //Given
+      const registerAssetProviderEndpoint =
+        await registryApi.registerAssetProvider(
+          VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+        );
+      const uid: string = registerAssetProviderEndpoint.data["@id"];
+
+      //When
+      const getAssetProviderEndpoint = await registryApi.getAssetProvider(uid);
+
+      //Then
+      expect(getAssetProviderEndpoint.status).toBe(200);
+      expect(getAssetProviderEndpoint.data).toBeDefined();
+    },
+    TIMEOUT,
+  );
+  it("Tests GET /get-asset-provider: Given an invalid UID and Available service, When calling the endpoint, Then throw exception", async () => {});
+  it(
+    "Tests GET /get-asset-provider: Given a valid UID and Unavailable service, When calling the endpoint, Then throw exception",
+    async () => {
+      try {
+        //Given
+        const registerAssetProviderEndpoint =
+          await registryApi.registerAssetProvider(
+            VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+          );
+        const uid: string = registerAssetProviderEndpoint.data["@id"];
+
+        const badRegistryApi = new RegistryApi(
+          new Configuration({
+            basePath: "http://badlocalhost//:666",
+          }),
+        );
+
+        //When
+        await badRegistryApi.getAssetProvider(uid);
+
+        //Then
+        fail("Expected network error due to unavailable service");
+      } catch (error: any) {
+        console.log(error);
+        expect(error).toBeDefined();
+        expect([
+          "ECONNREFUSED",
+          "EAI_AGAIN",
+          "ENOTFOUND",
+          "ETIMEDOUT",
+          "ECONNRESET",
+        ]).toContain(error.code);
+        expect(error.message).toMatch(
+          /connect|refused|timeout|not found|getaddrinfo/i,
+        );
+        expect(error.response).toBeUndefined();
+      }
+    },
+    TIMEOUT,
+  );
 });

@@ -1073,7 +1073,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile": {
       "get": {
         "tags": [
           "Registry"
@@ -1081,7 +1081,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "get",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile"
           }
         },
         "summary": "Given an unique id, returns a Schema Profile",
@@ -1089,13 +1089,15 @@
         "operationId": "getSchemaProfile",
         "parameters": [
           {
-            "in": "path",
             "name": "uid",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
             },
-            "description": "Unique identifier of the Schema Profile"
+            "description": "Unique identifier of the schema profile"
           }
         ],
         "responses": {
@@ -1189,7 +1191,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record": {
       "get": {
         "tags": [
           "Registry"
@@ -1197,7 +1199,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "get",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record"
           }
         },
         "summary": "Given an unique id, returns a Tokenized Asset Record (TAR)",
@@ -1205,13 +1207,15 @@
         "operationId": "getTokenizedAssetRecord",
         "parameters": [
           {
-            "in": "path",
             "name": "uid",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
             },
-            "description": "Unique identifier of the Tokenized Asset Record"
+            "description": "Unique identifier of the Tokenized Asset Record (TAR)"
           }
         ],
         "responses": {
@@ -1267,7 +1271,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority": {
       "get": {
         "tags": [
           "Registry"
@@ -1275,7 +1279,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "get",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority"
           }
         },
         "summary": "Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)",
@@ -1283,11 +1287,13 @@
         "operationId": "getAssetSchemaAuthority",
         "parameters": [
           {
-            "in": "path",
             "name": "uid",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
             },
             "description": "Unique identifier of the Asset Schema Authority (ASA)"
           }
@@ -1363,7 +1369,7 @@
         }
       }
     },
-    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider": {
       "get": {
         "tags": [
           "Registry"
@@ -1371,7 +1377,7 @@
         "x-hyperledger-cacti": {
           "http": {
             "verbLowerCase": "get",
-            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}"
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider"
           }
         },
         "summary": "Given an unique id, returns the X.509 certificate of an Asset Provider",
@@ -1379,11 +1385,13 @@
         "operationId": "getAssetProvider",
         "parameters": [
           {
-            "in": "path",
             "name": "uid",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
             },
             "description": "Unique identifier of the Asset Provider"
           }

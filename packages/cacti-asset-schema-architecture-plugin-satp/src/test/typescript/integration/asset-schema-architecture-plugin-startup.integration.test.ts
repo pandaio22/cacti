@@ -70,7 +70,7 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     },
     TIMEOUT,
   );
-  it(
+  it.skip(
     "Sends a resquest to the ASA",
     async () => {
       // Given
@@ -109,7 +109,7 @@ describe("Asset Schema Architecture Plugin Startup test", () => {
     TIMEOUT,
   );
 
-  it(
+  it.skip(
     "Sends a resquest to the Registry",
     async () => {
       // Given

@@ -41,7 +41,7 @@ export class RegistryApiService implements IRegistryApiService {
       uid = uid.substring("did:ipfs:".length);
   
     const assetSchema: SignedAssetSchema = await this.databaseConnector.getFileFromIpfs(uid);
-    
+
     if (!assetSchema) 
       throw new Error(`Asset schema with UID ${uid} not found.`);
     
@@ -59,6 +59,78 @@ export class RegistryApiService implements IRegistryApiService {
       throw new Error(`Asset schema with UID ${uid} not found.`);
     }
     return assetSchema;
+  }
+
+  /**
+   * Retrieves an schema profile by its unique identifier (UID).
+   * @param uid - The unique identifier of the schema profile to retrieve.
+   * @returns A promise that resolves to the schema profile data.
+   * @throws An error if the schema profile with the given UID is not found.
+   */
+  public async getSchemaProfile(uid: string): Promise<SignedSchemaProfile> {
+    if (uid.startsWith("did:ipfs:")) 
+      uid = uid.substring("did:ipfs:".length);
+  
+    const schemaProfile: SignedSchemaProfile = await this.databaseConnector.getFileFromIpfs(uid);
+    
+    if (!schemaProfile) 
+      throw new Error(`Schema Profile with UID ${uid} not found.`);
+    
+    return schemaProfile;
+  }
+
+  /**
+   * Retrieves a Tokenized Asset Record (TAR) by its unique identifier (UID).
+   * @param uid - The unique identifier of the TAR to retrieve.
+   * @returns A promise that resolves to the TAR data.
+   * @throws An error if the TAR with the given UID is not found.
+   */
+  public async getTokenizedAssetRecord(uid: string): Promise<TokenizedAssetRecord> {
+    if (uid.startsWith("did:ipfs:")) 
+      uid = uid.substring("did:ipfs:".length);
+  
+    const tokenizedAssetRecord: TokenizedAssetRecord = await this.databaseConnector.getFileFromIpfs(uid);
+    
+    if (!tokenizedAssetRecord) 
+      throw new Error(`Tokenized Asset Record with UID ${uid} not found.`);
+    
+    return tokenizedAssetRecord;
+  }
+
+  /**
+   * Retrieves an Asset Schema Authority (ASA) by its unique identifier (UID).
+   * @param uid - The unique identifier of the ASA to retrieve.
+   * @returns A promise that resolves to the ASA data.
+   * @throws An error if the ASA with the given UID is not found.
+   */
+  public async getAssetSchemaAuthority(uid: string): Promise<AssetSchemaAuthorityCertificate> {
+    if (uid.startsWith("did:ipfs:")) 
+      uid = uid.substring("did:ipfs:".length);
+  
+    const assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate = await this.databaseConnector.getFileFromIpfs(uid);
+
+    if (!assetSchemaAuthorityCertificate) 
+      throw new Error(`Asset schema Authority with UID ${uid} not found.`);
+    
+    return assetSchemaAuthorityCertificate;
+  }
+
+  /**
+   * Retrieves an Asset Provider by its unique identifier (UID).
+   * @param uid - The unique identifier of the Asset Provider to retrieve.
+   * @returns A promise that resolves to the Asset Provider data.
+   * @throws An error if the Asset Provider with the given UID is not found.
+   */
+  public async getAssetProvider(uid: string): Promise<AssetProviderCertificate> {
+    if (uid.startsWith("did:ipfs:")) 
+      uid = uid.substring("did:ipfs:".length);
+  
+    const assetProviderCertificate: AssetProviderCertificate = await this.databaseConnector.getFileFromIpfs(uid);
+
+    if (!assetProviderCertificate) 
+      throw new Error(`Asset Provider with UID ${uid} not found.`);
+    
+    return assetProviderCertificate;
   }
 
   /**

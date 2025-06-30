@@ -42,6 +42,10 @@ import {
   RegisterAssetSchemaAuthorityEndpoint,
   RegisterAssetProviderEndpoint,
   GetAssetSchemaEndpoint,
+  GetSchemaProfileEndpoint,
+  GetTokenizedAssetRecordEndpoint,
+  GetAssetSchemaAuthorityEndpoint,
+  GetAssetProviderEndpoint,
 } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
@@ -354,6 +358,18 @@ export class PluginAssetSchemaArchitecture
     const getAssetSchemaEndpoint = new GetAssetSchemaEndpoint(
       new RegistryApiService(),
     );
+    const getSchemaProfileEndpoint = new GetSchemaProfileEndpoint(
+      new RegistryApiService(),
+    );
+    const getTokenizedAssetRecordEndpoint = new GetTokenizedAssetRecordEndpoint(
+      new RegistryApiService(),
+    );
+    const getAssetSchemaAuthorityEndpoint = new GetAssetSchemaAuthorityEndpoint(
+      new RegistryApiService(),
+    );
+    const getAssetProviderEndpoint = new GetAssetProviderEndpoint(
+      new RegistryApiService(),
+    );
 
     this.endpoints = [
       assetSchemaCertificationEndpoint,
@@ -366,6 +382,10 @@ export class PluginAssetSchemaArchitecture
       registerAssetSchemaAuthorityEndpoint,
       registerAssetProviderEndpoint,
       getAssetSchemaEndpoint,
+      getSchemaProfileEndpoint,
+      getTokenizedAssetRecordEndpoint,
+      getAssetSchemaAuthorityEndpoint,
+      getAssetProviderEndpoint,
     ];
 
     return await this.endpoints;

@@ -16,6 +16,16 @@ import {
 export interface IRegistryApiService {
   getAssetSchema(uid: string): Promise<SignedAssetSchema>;
 
+  getSchemaProfile(uid: string): Promise<SignedSchemaProfile>;
+
+  getTokenizedAssetRecord(uid: string): Promise<TokenizedAssetRecord>;
+
+  getAssetSchemaAuthority(
+    uid: string,
+  ): Promise<AssetSchemaAuthorityCertificate>;
+
+  getAssetProvider(uid: string): Promise<AssetProviderCertificate>;
+
   commissionAssetSchema(
     signedAssetSchema: SignedAssetSchema,
   ): Promise<CommissionedAssetSchemaID>;

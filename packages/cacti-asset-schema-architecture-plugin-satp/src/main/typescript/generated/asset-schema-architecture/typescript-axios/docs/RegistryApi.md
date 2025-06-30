@@ -7,11 +7,11 @@ All URIs are relative to *http://localhost:3000/api/@hyperledger/cacti-asset-sch
 |[**commissionAssetSchema**](#commissionassetschema) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-asset-schema | Commission an Asset Schema|
 |[**commissionSchemaProfile**](#commissionschemaprofile) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile | Commission a Schema Profile|
 |[**commissionTokenizedAssetRecord**](#commissiontokenizedassetrecord) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record | Commission a Tokenized Asset Record (TAR)|
-|[**getAssetProvider**](#getassetprovider) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid} | Given an unique id, returns the X.509 certificate of an Asset Provider|
+|[**getAssetProvider**](#getassetprovider) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider | Given an unique id, returns the X.509 certificate of an Asset Provider|
 |[**getAssetSchema**](#getassetschema) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema | Given an unique id, returns an Asset Schema|
-|[**getAssetSchemaAuthority**](#getassetschemaauthority) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid} | Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)|
-|[**getSchemaProfile**](#getschemaprofile) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid} | Given an unique id, returns a Schema Profile|
-|[**getTokenizedAssetRecord**](#gettokenizedassetrecord) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid} | Given an unique id, returns a Tokenized Asset Record (TAR)|
+|[**getAssetSchemaAuthority**](#getassetschemaauthority) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority | Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)|
+|[**getSchemaProfile**](#getschemaprofile) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile | Given an unique id, returns a Schema Profile|
+|[**getTokenizedAssetRecord**](#gettokenizedassetrecord) | **GET** /api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record | Given an unique id, returns a Tokenized Asset Record (TAR)|
 |[**registerAssetProvider**](#registerassetprovider) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider | Register an Asset Provider|
 |[**registerAssetSchemaAuthority**](#registerassetschemaauthority) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority | Register an Asset Schema Authority|
 |[**registerTokenIssuanceAuthorization**](#registertokenissuanceauthorization) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization | Register Token Issuance Authorization|
@@ -353,7 +353,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new RegistryApi(configuration);
 
-let uid: string; //Unique identifier of the Schema Profile (default to undefined)
+let uid: string; //Unique identifier of the schema profile (default to undefined)
 
 const { status, data } = await apiInstance.getSchemaProfile(
     uid
@@ -364,7 +364,7 @@ const { status, data } = await apiInstance.getSchemaProfile(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **uid** | [**string**] | Unique identifier of the Schema Profile | defaults to undefined|
+| **uid** | [**string**] | Unique identifier of the schema profile | defaults to undefined|
 
 
 ### Return type
@@ -406,7 +406,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new RegistryApi(configuration);
 
-let uid: string; //Unique identifier of the Tokenized Asset Record (default to undefined)
+let uid: string; //Unique identifier of the Tokenized Asset Record (TAR) (default to undefined)
 
 const { status, data } = await apiInstance.getTokenizedAssetRecord(
     uid
@@ -417,7 +417,7 @@ const { status, data } = await apiInstance.getTokenizedAssetRecord(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **uid** | [**string**] | Unique identifier of the Tokenized Asset Record | defaults to undefined|
+| **uid** | [**string**] | Unique identifier of the Tokenized Asset Record (TAR) | defaults to undefined|
 
 
 ### Return type

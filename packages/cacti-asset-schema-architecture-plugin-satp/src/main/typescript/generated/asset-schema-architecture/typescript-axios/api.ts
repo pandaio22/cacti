@@ -1251,8 +1251,7 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         getAssetProvider: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uid' is not null or undefined
             assertParamExists('getAssetProvider', 'uid', uid)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider/{uid}`
-                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1263,6 +1262,10 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (uid !== undefined) {
+                localVarQueryParameter['uid'] = uid;
+            }
 
 
     
@@ -1322,8 +1325,7 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         getAssetSchemaAuthority: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uid' is not null or undefined
             assertParamExists('getAssetSchemaAuthority', 'uid', uid)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority/{uid}`
-                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1334,6 +1336,10 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (uid !== undefined) {
+                localVarQueryParameter['uid'] = uid;
+            }
 
 
     
@@ -1349,15 +1355,14 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * This endpoint allows a client to get a Schema Profile, when given an unique id. 
          * @summary Given an unique id, returns a Schema Profile
-         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {string} uid Unique identifier of the schema profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getSchemaProfile: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uid' is not null or undefined
             assertParamExists('getSchemaProfile', 'uid', uid)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile/{uid}`
-                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1368,6 +1373,10 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (uid !== undefined) {
+                localVarQueryParameter['uid'] = uid;
+            }
 
 
     
@@ -1383,15 +1392,14 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
          * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
-         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {string} uid Unique identifier of the Tokenized Asset Record (TAR)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getTokenizedAssetRecord: async (uid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uid' is not null or undefined
             assertParamExists('getTokenizedAssetRecord', 'uid', uid)
-            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record/{uid}`
-                .replace(`{${"uid"}}`, encodeURIComponent(String(uid)));
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1402,6 +1410,10 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (uid !== undefined) {
+                localVarQueryParameter['uid'] = uid;
+            }
 
 
     
@@ -1613,7 +1625,7 @@ export const RegistryApiFp = function(configuration?: Configuration) {
         /**
          * This endpoint allows a client to get a Schema Profile, when given an unique id. 
          * @summary Given an unique id, returns a Schema Profile
-         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {string} uid Unique identifier of the schema profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1626,7 +1638,7 @@ export const RegistryApiFp = function(configuration?: Configuration) {
         /**
          * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
          * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
-         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {string} uid Unique identifier of the Tokenized Asset Record (TAR)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1748,7 +1760,7 @@ export const RegistryApiFactory = function (configuration?: Configuration, baseP
         /**
          * This endpoint allows a client to get a Schema Profile, when given an unique id. 
          * @summary Given an unique id, returns a Schema Profile
-         * @param {string} uid Unique identifier of the Schema Profile
+         * @param {string} uid Unique identifier of the schema profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1758,7 +1770,7 @@ export const RegistryApiFactory = function (configuration?: Configuration, baseP
         /**
          * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
          * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
-         * @param {string} uid Unique identifier of the Tokenized Asset Record
+         * @param {string} uid Unique identifier of the Tokenized Asset Record (TAR)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1880,7 +1892,7 @@ export class RegistryApi extends BaseAPI {
     /**
      * This endpoint allows a client to get a Schema Profile, when given an unique id. 
      * @summary Given an unique id, returns a Schema Profile
-     * @param {string} uid Unique identifier of the Schema Profile
+     * @param {string} uid Unique identifier of the schema profile
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RegistryApi
@@ -1892,7 +1904,7 @@ export class RegistryApi extends BaseAPI {
     /**
      * This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id. 
      * @summary Given an unique id, returns a Tokenized Asset Record (TAR)
-     * @param {string} uid Unique identifier of the Tokenized Asset Record
+     * @param {string} uid Unique identifier of the Tokenized Asset Record (TAR)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RegistryApi

@@ -7,7 +7,7 @@ import { execSync } from "child_process";
 //  "../../../../main/typescript/entities/registry/modules/registry-api-service",
 //);
 
-describe("RegistryApiTest", () => {
+describe.skip("RegistryApiTest", () => {
   //let registryApiService: jest.Mocked<RegistryApiService>;
   let registryApiService: RegistryApiService;
   let registryApi: RegistryApi;

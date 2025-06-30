@@ -16,7 +16,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import { AddressInfo } from "net";
 
-describe("AssetSchemaAuthorityPlugin API test", () => {
+describe.skip("AssetSchemaAuthorityPlugin API test", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
   let pluginAssetSchemaArchitecture: PluginAssetSchemaArchitecture;
   let assetSchemaAuthorityServer: Server;
