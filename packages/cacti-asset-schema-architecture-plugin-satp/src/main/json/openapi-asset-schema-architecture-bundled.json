@@ -1,0 +1,2868 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SATP - Asset Schema Architecture for Asset Exchanges",
+    "version": "0.0.1",
+    "description": "SATP is a protocol operating between two gateways that conducts the transfer of a digital asset from one gateway to another. The protocol establishes a secure channel between the endpoints and implements a 2-phase commit to ensure the properties of transfer atomicity, consistency, isolation and durability.\nThe Asset Schema Architecture for Asset Exchanges defines the data structures and schemas used in the SATP protocol. It provides a standardized way to represent assets, their properties, and the transactions that involve them. It is designed to be flexible and extensible, allowing for the representation of a wide variety of asset types and their associated metadata.\n\nThis API defines the registry, asset schema authority and asset provider facing APIs.\n\n**Additional Resources**:\n- [Asset Schema Architecture for Asset Exchange](https://datatracker.ietf.org/doc/html/draft-avrilionis-satp-asset-schema-architecture-06)\n- [Asset Profiles for Asset Exchange draft](https://datatracker.ietf.org/doc/draft-avrilionis-satp-asset-profiles/)",
+    "contact": {
+      "name": "Hyperledger Cacti"
+    },
+    "x-logo": {
+      "altText": "Cacti logo",
+      "backgroundColor": "#fafafa",
+      "url": "https://github.com/hyperledger/cacti/blob/main/images/HL_Cacti_Logo_Color.png"
+    }
+  },
+  "externalDocs": {
+    "description": "For more information about the SATP Gateway Client, refer to the official documentation.",
+    "url": "https://github.com/hyperledger/cacti/tree/main/packages/cactus-plugin-satp-hermes/README.md"
+  },
+  "servers": [
+    {
+      "url": "http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/registry",
+      "description": "Registry server",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        },
+        "port": {
+          "default": "3000"
+        }
+      }
+    },
+    {
+      "url": "http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority",
+      "description": "Asset Schema Authority server",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        },
+        "port": {
+          "default": "3010"
+        }
+      }
+    },
+    {
+      "url": "http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/asset-provider",
+      "description": "Asset Provider server",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        },
+        "port": {
+          "default": "3020"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "Registry",
+      "description": "API endpoints for interacting with the Registry"
+    },
+    {
+      "name": "AssetSchemaAuthority",
+      "description": "API endpoints for interacting with the Asset Schema Authority"
+    },
+    {
+      "name": "AssetProvider",
+      "description": "API endpoints for interacting with the Asset Provider"
+    }
+  ],
+  "paths": {
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization"
+          }
+        },
+        "summary": "Register Token Issuance Authorization",
+        "description": "This endpoint allows a client to register Token Issuance Authorization (TIA), signed by a given Asset Schema Authority (ASA).\n",
+        "operationId": "registerTokenIssuanceAuthorization",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token_issuance_authorization_request": {
+                    "type": "object",
+                    "properties": {
+                      "@context": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "asset_provider": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "organization_key": {
+                            "type": "object",
+                            "properties": {
+                              "public_key": {
+                                "type": "string"
+                              },
+                              "issued": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "id",
+                          "organization_key"
+                        ]
+                      },
+                      "schema_profile": {
+                        "type": "string"
+                      },
+                      "network_id": {
+                        "type": "string"
+                      },
+                      "proof": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "created": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "proofPurpose": {
+                            "type": "string"
+                          },
+                          "verificationMethod": {
+                            "type": "string"
+                          },
+                          "jws": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "created",
+                          "proofPurpose",
+                          "verificationMethod",
+                          "jws"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "@context",
+                      "asset_provider",
+                      "schema_profile",
+                      "network_id",
+                      "proof"
+                    ]
+                  },
+                  "proof": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "proofPurpose": {
+                        "type": "string"
+                      },
+                      "verificationMethod": {
+                        "type": "string"
+                      },
+                      "jws": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "created",
+                      "proofPurpose",
+                      "verificationMethod",
+                      "jws"
+                    ]
+                  }
+                },
+                "required": [
+                  "token_issuance_authorization_request",
+                  "proof"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token issuance authorization registered successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A JSON-LD response representing the DID for a registered Token Issuance Authorization.",
+                  "properties": {
+                    "@context": {
+                      "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+                      "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+                      "description": "A Decentralized Identifier (DID)."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "TokenIssuanceAuthorizationID",
+                      "description": "Semantic type of the object."
+                    }
+                  },
+                  "required": [
+                    "@context",
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-asset-schema": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-asset-schema"
+          }
+        },
+        "summary": "Commission an Asset Schema",
+        "description": "This endpoint allows a client to commission an Asset Schema into the Registry.\n",
+        "operationId": "commissionAssetSchema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "asset_schema": {
+                    "type": "object",
+                    "description": "Structure of a valid Asset Schema (JSON-LD format)",
+                    "required": [
+                      "@context"
+                    ],
+                    "properties": {
+                      "@context": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  "proof": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "proofPurpose": {
+                        "type": "string"
+                      },
+                      "verificationMethod": {
+                        "type": "string"
+                      },
+                      "jws": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "created",
+                      "proofPurpose",
+                      "verificationMethod",
+                      "jws"
+                    ]
+                  }
+                },
+                "required": [
+                  "asset-schema",
+                  "proof"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset Schema commissioned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A JSON-LD response representing the DID for a commissioned Asset Schema.",
+                  "properties": {
+                    "@context": {
+                      "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+                      "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+                      "description": "A Decentralized Identifier (DID)."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "CommissionedAssetSchemaID",
+                      "description": "Semantic type of the object."
+                    }
+                  },
+                  "required": [
+                    "@context",
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-schema-profile"
+          }
+        },
+        "summary": "Commission a Schema Profile",
+        "description": "This endpoint allows a client to commission an Schema Profile into the Registry.\n",
+        "operationId": "commissionSchemaProfile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "schema_profile": {
+                    "type": "object",
+                    "description": "Structure of a valid Schema Profile (JSON-LD format)",
+                    "required": [
+                      "@context"
+                    ],
+                    "properties": {
+                      "@context": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  "proof": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "proofPurpose": {
+                        "type": "string"
+                      },
+                      "verificationMethod": {
+                        "type": "string"
+                      },
+                      "jws": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "created",
+                      "proofPurpose",
+                      "verificationMethod",
+                      "jws"
+                    ]
+                  }
+                },
+                "required": [
+                  "schema-profile",
+                  "proof"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Schema Profile commissioned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A JSON-LD response representing the DID for a commissioned Schema Profile.",
+                  "properties": {
+                    "@context": {
+                      "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+                      "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+                      "description": "A Decentralized Identifier (DID)."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "CommissionedSchemaProfileID",
+                      "description": "Semantic type of the object."
+                    }
+                  },
+                  "required": [
+                    "@context",
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/commission-tokenized-asset-record"
+          }
+        },
+        "summary": "Commission a Tokenized Asset Record (TAR)",
+        "description": "This endpoint allows a client to commission a Tokenized Asset Record (TAR) into the Registry.\n",
+        "operationId": "commissionTokenizedAssetRecord",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "description": "Structure of a valid Tokenized Asset Record (JSON-LD format)",
+                "required": [
+                  "@context"
+                ],
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.w3.org/ns/did/v1.1"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Schema Profile commissioned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).",
+                  "properties": {
+                    "@context": {
+                      "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+                      "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+                      "description": "A Decentralized Identifier (DID)."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "CommissionedTokenizedAssetRecordID",
+                      "description": "Semantic type of the object."
+                    }
+                  },
+                  "required": [
+                    "@context",
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority"
+          }
+        },
+        "summary": "Register an Asset Schema Authority",
+        "description": "This endpoint allows a client to register an Asset Schema Authority into the Registry.\n",
+        "operationId": "registerAssetSchemaAuthority",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+                "required": [
+                  "@context",
+                  "@id",
+                  "type",
+                  "certificate"
+                ],
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.w3.org/2018/credentials/v1"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "@id": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:web:example.com",
+                    "description": "The decentralized identifier (DID) of the Asset Schema Authority."
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "AssetSchemaAuthority"
+                  },
+                  "certificate": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The X.509 certificate (PEM-encoded, Base64)."
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset Schema Authority registered successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "@context",
+                    "@id",
+                    "type"
+                  ],
+                  "properties": {
+                    "@context": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://www.w3.org/2018/credentials/v1"
+                    },
+                    "@id": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "did:web:example.com#asset-schema-authority"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "RegisteredAssetSchemaAuthority"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider": {
+      "post": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider"
+          }
+        },
+        "summary": "Register an Asset Provider",
+        "description": "This endpoint allows a client to register an Asset Provider into the Registry.\n",
+        "operationId": "registerAssetProvider",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+                "required": [
+                  "@context",
+                  "@id",
+                  "type",
+                  "certificate"
+                ],
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.w3.org/2018/credentials/v1"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "@id": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:web:example.com",
+                    "description": "The decentralized identifier (DID) of the Asset Provider."
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "AssetProvider"
+                  },
+                  "certificate": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The X.509 certificate (PEM-encoded, Base64)."
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset Provider registered successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "@context",
+                    "@id",
+                    "type"
+                  ],
+                  "properties": {
+                    "@context": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://www.w3.org/2018/credentials/v1"
+                    },
+                    "@id": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "did:web:example.com#asset-provider"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "RegisteredAssetProvider"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema": {
+      "get": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "get",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema"
+          }
+        },
+        "summary": "Given an unique id, returns an Asset Schema",
+        "description": "This endpoint allows a client to get an Asset Schema, when given an unique id.\n",
+        "operationId": "getAssetSchema",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+            },
+            "description": "Unique identifier of the asset schema"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset Schema returned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "asset_schema": {
+                      "type": "object",
+                      "description": "Structure of a valid Asset Schema (JSON-LD format)",
+                      "required": [
+                        "@context"
+                      ],
+                      "properties": {
+                        "@context": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://www.w3.org/ns/did/v1.1"
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uri"
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "proof": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "proofPurpose": {
+                          "type": "string"
+                        },
+                        "verificationMethod": {
+                          "type": "string"
+                        },
+                        "jws": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "created",
+                        "proofPurpose",
+                        "verificationMethod",
+                        "jws"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "asset-schema",
+                    "proof"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile": {
+      "get": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "get",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile"
+          }
+        },
+        "summary": "Given an unique id, returns a Schema Profile",
+        "description": "This endpoint allows a client to get a Schema Profile, when given an unique id.\n",
+        "operationId": "getSchemaProfile",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+            },
+            "description": "Unique identifier of the schema profile"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schema Profile returned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema_profile": {
+                      "type": "object",
+                      "description": "Structure of a valid Schema Profile (JSON-LD format)",
+                      "required": [
+                        "@context"
+                      ],
+                      "properties": {
+                        "@context": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://www.w3.org/ns/did/v1.1"
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uri"
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "proof": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "proofPurpose": {
+                          "type": "string"
+                        },
+                        "verificationMethod": {
+                          "type": "string"
+                        },
+                        "jws": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "created",
+                        "proofPurpose",
+                        "verificationMethod",
+                        "jws"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "schema-profile",
+                    "proof"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record": {
+      "get": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "get",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record"
+          }
+        },
+        "summary": "Given an unique id, returns a Tokenized Asset Record (TAR)",
+        "description": "This endpoint allows a client to get a Tokenized Asset Record (TAR), when given an unique id.\n",
+        "operationId": "getTokenizedAssetRecord",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+            },
+            "description": "Unique identifier of the Tokenized Asset Record (TAR)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tokenized Asset Record returned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Structure of a valid Tokenized Asset Record (JSON-LD format)",
+                  "required": [
+                    "@context"
+                  ],
+                  "properties": {
+                    "@context": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/ns/did/v1.1"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority": {
+      "get": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "get",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-schema-authority"
+          }
+        },
+        "summary": "Given an unique id, returns the X.509 certificate of an Asset Schema Authority (ASA)",
+        "description": "This endpoint allows a client to get the X.509 certificate of an Asset Schema Authority (ASA), when given an unique id.\n",
+        "operationId": "getAssetSchemaAuthority",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+            },
+            "description": "Unique identifier of the Asset Schema Authority (ASA)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset Schema Authority (ASA) returned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+                  "required": [
+                    "@context",
+                    "@id",
+                    "type",
+                    "certificate"
+                  ],
+                  "properties": {
+                    "@context": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/2018/credentials/v1"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "@id": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "did:web:example.com",
+                      "description": "The decentralized identifier (DID) of the Asset Schema Authority."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "AssetSchemaAuthority"
+                    },
+                    "certificate": {
+                      "type": "string",
+                      "format": "byte",
+                      "description": "The X.509 certificate (PEM-encoded, Base64)."
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider": {
+      "get": {
+        "tags": [
+          "Registry"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "get",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-asset-provider"
+          }
+        },
+        "summary": "Given an unique id, returns the X.509 certificate of an Asset Provider",
+        "description": "This endpoint allows a client to get the X.509 certificate of an Asset Provider, when given an unique id.\n",
+        "operationId": "getAssetProvider",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A unique identifier string for an artifact",
+              "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+            },
+            "description": "Unique identifier of the Asset Provider"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset Provider returned successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+                  "required": [
+                    "@context",
+                    "@id",
+                    "type",
+                    "certificate"
+                  ],
+                  "properties": {
+                    "@context": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://www.w3.org/2018/credentials/v1"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "@id": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "did:web:example.com",
+                      "description": "The decentralized identifier (DID) of the Asset Provider."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "AssetProvider"
+                    },
+                    "certificate": {
+                      "type": "string",
+                      "format": "byte",
+                      "description": "The X.509 certificate (PEM-encoded, Base64)."
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request": {
+      "post": {
+        "tags": [
+          "AssetSchemaAuthority"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request"
+          }
+        },
+        "summary": "Request Token Issuance Authorization",
+        "description": "This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature.\n",
+        "operationId": "requestTokenIssuanceAuthorization",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "asset_provider": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "organization_key": {
+                        "type": "object",
+                        "properties": {
+                          "public_key": {
+                            "type": "string"
+                          },
+                          "issued": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "id",
+                      "organization_key"
+                    ]
+                  },
+                  "schema_profile": {
+                    "type": "string"
+                  },
+                  "network_id": {
+                    "type": "string"
+                  },
+                  "proof": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "created": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "proofPurpose": {
+                        "type": "string"
+                      },
+                      "verificationMethod": {
+                        "type": "string"
+                      },
+                      "jws": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "created",
+                      "proofPurpose",
+                      "verificationMethod",
+                      "jws"
+                    ]
+                  }
+                },
+                "required": [
+                  "@context",
+                  "asset_provider",
+                  "schema_profile",
+                  "network_id",
+                  "proof"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token issuance authorization request successful",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token_issuance_authorization_request": {
+                      "type": "object",
+                      "properties": {
+                        "@context": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "asset_provider": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "organization_key": {
+                              "type": "object",
+                              "properties": {
+                                "public_key": {
+                                  "type": "string"
+                                },
+                                "issued": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                }
+                              }
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "id",
+                            "organization_key"
+                          ]
+                        },
+                        "schema_profile": {
+                          "type": "string"
+                        },
+                        "network_id": {
+                          "type": "string"
+                        },
+                        "proof": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "created": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "proofPurpose": {
+                              "type": "string"
+                            },
+                            "verificationMethod": {
+                              "type": "string"
+                            },
+                            "jws": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "type",
+                            "created",
+                            "proofPurpose",
+                            "verificationMethod",
+                            "jws"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "@context",
+                        "asset_provider",
+                        "schema_profile",
+                        "network_id",
+                        "proof"
+                      ]
+                    },
+                    "proof": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "proofPurpose": {
+                          "type": "string"
+                        },
+                        "verificationMethod": {
+                          "type": "string"
+                        },
+                        "jws": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "created",
+                        "proofPurpose",
+                        "verificationMethod",
+                        "jws"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "token_issuance_authorization_request",
+                    "proof"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification": {
+      "post": {
+        "tags": [
+          "AssetSchemaAuthority"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification"
+          }
+        },
+        "summary": "Asset Schema Certification",
+        "description": "This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response.\n",
+        "operationId": "assetSchemaCertification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "description": "Structure of a valid Asset Schema (JSON-LD format)",
+                "required": [
+                  "@context"
+                ],
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.w3.org/ns/did/v1.1"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset Schema was certified successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "asset_schema": {
+                      "type": "object",
+                      "description": "Structure of a valid Asset Schema (JSON-LD format)",
+                      "required": [
+                        "@context"
+                      ],
+                      "properties": {
+                        "@context": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://www.w3.org/ns/did/v1.1"
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uri"
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "proof": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "proofPurpose": {
+                          "type": "string"
+                        },
+                        "verificationMethod": {
+                          "type": "string"
+                        },
+                        "jws": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "created",
+                        "proofPurpose",
+                        "verificationMethod",
+                        "jws"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "asset-schema",
+                    "proof"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification": {
+      "post": {
+        "tags": [
+          "AssetSchemaAuthority"
+        ],
+        "x-hyperledger-cacti": {
+          "http": {
+            "verbLowerCase": "post",
+            "path": "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification"
+          }
+        },
+        "summary": "Schema Profile Certification",
+        "description": "This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response.\n",
+        "operationId": "schemaProfileCertification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/ld+json": {
+              "schema": {
+                "type": "object",
+                "description": "Structure of a valid Schema Profile (JSON-LD format)",
+                "required": [
+                  "@context"
+                ],
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.w3.org/ns/did/v1.1"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Schema Profile was certified successfully",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema_profile": {
+                      "type": "object",
+                      "description": "Structure of a valid Schema Profile (JSON-LD format)",
+                      "required": [
+                        "@context"
+                      ],
+                      "properties": {
+                        "@context": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://www.w3.org/ns/did/v1.1"
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uri"
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "proof": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "proofPurpose": {
+                          "type": "string"
+                        },
+                        "verificationMethod": {
+                          "type": "string"
+                        },
+                        "jws": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "created",
+                        "proofPurpose",
+                        "verificationMethod",
+                        "jws"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "schema-profile",
+                    "proof"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TokenIssuanceAuthorizationRequest": {
+        "type": "object",
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "asset_provider": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "organization_key": {
+                "type": "object",
+                "properties": {
+                  "public_key": {
+                    "type": "string"
+                  },
+                  "issued": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            },
+            "required": [
+              "name",
+              "id",
+              "organization_key"
+            ]
+          },
+          "schema_profile": {
+            "type": "string"
+          },
+          "network_id": {
+            "type": "string"
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "@context",
+          "asset_provider",
+          "schema_profile",
+          "network_id",
+          "proof"
+        ]
+      },
+      "TokenIssuanceAuthorization": {
+        "type": "object",
+        "properties": {
+          "token_issuance_authorization_request": {
+            "type": "object",
+            "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "asset_provider": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "organization_key": {
+                    "type": "object",
+                    "properties": {
+                      "public_key": {
+                        "type": "string"
+                      },
+                      "issued": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "id",
+                  "organization_key"
+                ]
+              },
+              "schema_profile": {
+                "type": "string"
+              },
+              "network_id": {
+                "type": "string"
+              },
+              "proof": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "created": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "proofPurpose": {
+                    "type": "string"
+                  },
+                  "verificationMethod": {
+                    "type": "string"
+                  },
+                  "jws": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "created",
+                  "proofPurpose",
+                  "verificationMethod",
+                  "jws"
+                ]
+              }
+            },
+            "required": [
+              "@context",
+              "asset_provider",
+              "schema_profile",
+              "network_id",
+              "proof"
+            ]
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "token_issuance_authorization_request",
+          "proof"
+        ]
+      },
+      "TokenIssuanceAuthorizationID": {
+        "type": "object",
+        "description": "A JSON-LD response representing the DID for a registered Token Issuance Authorization.",
+        "properties": {
+          "@context": {
+            "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+            "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+            "description": "A Decentralized Identifier (DID)."
+          },
+          "type": {
+            "type": "string",
+            "example": "TokenIssuanceAuthorizationID",
+            "description": "Semantic type of the object."
+          }
+        },
+        "required": [
+          "@context",
+          "id",
+          "type"
+        ]
+      },
+      "AssetSchema": {
+        "type": "object",
+        "description": "Structure of a valid Asset Schema (JSON-LD format)",
+        "required": [
+          "@context"
+        ],
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "SignedAssetSchema": {
+        "type": "object",
+        "properties": {
+          "asset_schema": {
+            "type": "object",
+            "description": "Structure of a valid Asset Schema (JSON-LD format)",
+            "required": [
+              "@context"
+            ],
+            "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "asset-schema",
+          "proof"
+        ],
+        "additionalProperties": true
+      },
+      "CommissionedAssetSchemaID": {
+        "type": "object",
+        "description": "A JSON-LD response representing the DID for a commissioned Asset Schema.",
+        "properties": {
+          "@context": {
+            "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+            "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+            "description": "A Decentralized Identifier (DID)."
+          },
+          "type": {
+            "type": "string",
+            "example": "CommissionedAssetSchemaID",
+            "description": "Semantic type of the object."
+          }
+        },
+        "required": [
+          "@context",
+          "id",
+          "type"
+        ]
+      },
+      "SchemaProfile": {
+        "type": "object",
+        "description": "Structure of a valid Schema Profile (JSON-LD format)",
+        "required": [
+          "@context"
+        ],
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "SignedSchemaProfile": {
+        "type": "object",
+        "properties": {
+          "schema_profile": {
+            "type": "object",
+            "description": "Structure of a valid Schema Profile (JSON-LD format)",
+            "required": [
+              "@context"
+            ],
+            "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "schema-profile",
+          "proof"
+        ],
+        "additionalProperties": true
+      },
+      "CommissionedSchemaProfileID": {
+        "type": "object",
+        "description": "A JSON-LD response representing the DID for a commissioned Schema Profile.",
+        "properties": {
+          "@context": {
+            "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+            "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+            "description": "A Decentralized Identifier (DID)."
+          },
+          "type": {
+            "type": "string",
+            "example": "CommissionedSchemaProfileID",
+            "description": "Semantic type of the object."
+          }
+        },
+        "required": [
+          "@context",
+          "id",
+          "type"
+        ]
+      },
+      "TokenizedAssetRecord": {
+        "type": "object",
+        "description": "Structure of a valid Tokenized Asset Record (JSON-LD format)",
+        "required": [
+          "@context"
+        ],
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "CommissionedTokenizedAssetRecordID": {
+        "type": "object",
+        "description": "A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).",
+        "properties": {
+          "@context": {
+            "description": "The JSON-LD context IRI (or array of IRIs) referencing the DID specification.",
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^did:[a-z0-9]+:[a-zA-Z0-9.\\-_:%]+$",
+            "example": "did:ipfs:QmYwAPJzv5CZsnAztbD1kY8o1XkT27J7zZx1er8JGzNPxJ",
+            "description": "A Decentralized Identifier (DID)."
+          },
+          "type": {
+            "type": "string",
+            "example": "CommissionedTokenizedAssetRecordID",
+            "description": "Semantic type of the object."
+          }
+        },
+        "required": [
+          "@context",
+          "id",
+          "type"
+        ]
+      },
+      "AssetSchemaAuthorityCertificate": {
+        "type": "object",
+        "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+        "required": [
+          "@context",
+          "@id",
+          "type",
+          "certificate"
+        ],
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/2018/credentials/v1"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "@id": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:web:example.com",
+            "description": "The decentralized identifier (DID) of the Asset Schema Authority."
+          },
+          "type": {
+            "type": "string",
+            "example": "AssetSchemaAuthority"
+          },
+          "certificate": {
+            "type": "string",
+            "format": "byte",
+            "description": "The X.509 certificate (PEM-encoded, Base64)."
+          }
+        },
+        "additionalProperties": true
+      },
+      "RegisteredAssetSchemaAuthorityID": {
+        "type": "object",
+        "required": [
+          "@context",
+          "@id",
+          "type"
+        ],
+        "properties": {
+          "@context": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://www.w3.org/2018/credentials/v1"
+          },
+          "@id": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:web:example.com#asset-schema-authority"
+          },
+          "type": {
+            "type": "string",
+            "example": "RegisteredAssetSchemaAuthority"
+          }
+        },
+        "additionalProperties": true
+      },
+      "AssetProviderCertificate": {
+        "type": "object",
+        "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+        "required": [
+          "@context",
+          "@id",
+          "type",
+          "certificate"
+        ],
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/2018/credentials/v1"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "@id": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:web:example.com",
+            "description": "The decentralized identifier (DID) of the Asset Provider."
+          },
+          "type": {
+            "type": "string",
+            "example": "AssetProvider"
+          },
+          "certificate": {
+            "type": "string",
+            "format": "byte",
+            "description": "The X.509 certificate (PEM-encoded, Base64)."
+          }
+        },
+        "additionalProperties": true
+      },
+      "RegisteredAssetProviderID": {
+        "type": "object",
+        "required": [
+          "@context",
+          "@id",
+          "type"
+        ],
+        "properties": {
+          "@context": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://www.w3.org/2018/credentials/v1"
+          },
+          "@id": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:web:example.com#asset-provider"
+          },
+          "type": {
+            "type": "string",
+            "example": "RegisteredAssetProvider"
+          }
+        },
+        "additionalProperties": true
+      },
+      "UniqueId": {
+        "type": "string",
+        "description": "A unique identifier string for an artifact",
+        "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
+      }
+    }
+  }
+}
