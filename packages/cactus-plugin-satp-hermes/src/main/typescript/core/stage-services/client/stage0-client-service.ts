@@ -10,6 +10,8 @@ import {
   PreSATPTransferRequest,
   NewSessionRequestSchema,
   PreSATPTransferRequestSchema,
+  PreTransferVerificationRequest,
+  PreTransferVerificationRequestSchema,
 } from "../../../generated/proto/cacti/satp/v02/service/stage_0_pb";
 import { create } from "@bufbuild/protobuf";
 import { stringify as safeStableStringify } from "safe-stable-stringify";
@@ -252,6 +254,133 @@ export class Stage0ClientService extends SATPService {
       );
     }
     return session;
+  }
+
+  //INSERT CODE HERE
+  public async preTransferVerificationRequest(
+    session: SATPSession,
+  ): Promise<PreTransferVerificationRequest> {
+    const stepTag = `preTransferVerificationRequest()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+    const messageType =
+      MessageType[MessageType.PRE_TRANSFER_VERIFICATION_REQUEST];
+
+    if (session == undefined) {
+      throw new SessionError(fnTag);
+    }
+
+    session.verify(fnTag, SessionType.CLIENT, false, false, true);
+
+    const sessionData = session.getClientSessionData();
+    await this.dbLogger.persistLogEntry({
+      sessionID: sessionData.id,
+      type: messageType,
+      operation: "init",
+      data: safeStableStringify(sessionData),
+      sequenceNumber: Number(sessionData.lastSequenceNumber),
+    });
+    try {
+      this.Log.info(`exec-${messageType}`);
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: messageType,
+        operation: "exec",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+
+      if (sessionData.senderAsset?.tokenId == "") {
+        throw new LedgerAssetIdError(fnTag);
+      }
+
+      if (sessionData.senderAsset == undefined) {
+        throw new LedgerAssetError(fnTag);
+      }
+
+      if (sessionData.receiverAsset == undefined) {
+        throw new LedgerAssetError(fnTag);
+      }
+
+      const bridge = this.bridgeManager.getBridgeEndPoint(
+        {
+          id: sessionData.senderAsset?.networkId?.id,
+          ledgerType: sessionData.senderAsset?.networkId?.type,
+        } as NetworkId,
+        this.claimFormat,
+      );
+
+      if (!sessionData.senderAsset?.tokenType) {
+        throw new LedgerAssetError(`${fnTag}, tokenType is missing`);
+      }
+
+      sessionData.senderGatewayNetworkId = bridge.getApproveAddress(
+        sessionData.senderAsset?.tokenType,
+      );
+
+      const preTransferVerificationRequest = create(
+        PreTransferVerificationRequestSchema,
+        {
+          sessionId: sessionData.id,
+          contextId: sessionData.transferContextId,
+          clientTransferNumber: sessionData.clientTransferNumber,
+          senderGatewayNetworkId: sessionData.senderGatewayNetworkId,
+          senderAsset: sessionData.senderAsset,
+          receiverAsset: sessionData.receiverAsset,
+          messageType: MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        },
+      );
+
+      preTransferVerificationRequest.hashPreviousMessage = getMessageHash(
+        sessionData,
+        MessageType.NEW_SESSION_RESPONSE,
+      );
+
+      const messageSignature = bufArray2HexStr(
+        sign(this.Signer, safeStableStringify(preTransferVerificationRequest)),
+      );
+
+      preTransferVerificationRequest.clientSignature = messageSignature;
+
+      saveSignature(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        messageSignature,
+      );
+
+      saveHash(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        getHash(preTransferVerificationRequest),
+      );
+
+      saveTimestamp(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        TimestampType.PROCESSED,
+      );
+
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: String(MessageType.PRE_TRANSFER_VERIFICATION_REQUEST),
+        operation: "done",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+
+      this.Log.info(`${fnTag}, sending PreTransferVerificationRequest...`);
+
+      return preTransferVerificationRequest;
+    } catch (error) {
+      this.Log.error(`fail-${messageType}`, error);
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: messageType,
+        operation: "fail",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+      throw error;
+    }
   }
 
   public async preSATPTransferRequest(

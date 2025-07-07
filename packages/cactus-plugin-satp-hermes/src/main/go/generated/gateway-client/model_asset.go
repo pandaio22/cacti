@@ -19,6 +19,8 @@ var _ MappedNullable = &Asset{}
 
 // Asset An asset
 type Asset struct {
+	Context *TransactRequestSourceAssetContext `json:"@context,omitempty"`
+	TokenizedAssetRecord *TransactRequestSourceAssetTokenizedAssetRecord `json:"tokenizedAssetRecord,omitempty"`
 	Id string `json:"id"`
 	Owner string `json:"owner"`
 	ContractName string `json:"contractName"`
@@ -53,6 +55,70 @@ func NewAsset(id string, owner string, contractName string, networkId TransactRe
 func NewAssetWithDefaults() *Asset {
 	this := Asset{}
 	return &this
+}
+
+// GetContext returns the Context field value if set, zero value otherwise.
+func (o *Asset) GetContext() TransactRequestSourceAssetContext {
+	if o == nil || IsNil(o.Context) {
+		var ret TransactRequestSourceAssetContext
+		return ret
+	}
+	return *o.Context
+}
+
+// GetContextOk returns a tuple with the Context field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Asset) GetContextOk() (*TransactRequestSourceAssetContext, bool) {
+	if o == nil || IsNil(o.Context) {
+		return nil, false
+	}
+	return o.Context, true
+}
+
+// HasContext returns a boolean if a field has been set.
+func (o *Asset) HasContext() bool {
+	if o != nil && !IsNil(o.Context) {
+		return true
+	}
+
+	return false
+}
+
+// SetContext gets a reference to the given TransactRequestSourceAssetContext and assigns it to the Context field.
+func (o *Asset) SetContext(v TransactRequestSourceAssetContext) {
+	o.Context = &v
+}
+
+// GetTokenizedAssetRecord returns the TokenizedAssetRecord field value if set, zero value otherwise.
+func (o *Asset) GetTokenizedAssetRecord() TransactRequestSourceAssetTokenizedAssetRecord {
+	if o == nil || IsNil(o.TokenizedAssetRecord) {
+		var ret TransactRequestSourceAssetTokenizedAssetRecord
+		return ret
+	}
+	return *o.TokenizedAssetRecord
+}
+
+// GetTokenizedAssetRecordOk returns a tuple with the TokenizedAssetRecord field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Asset) GetTokenizedAssetRecordOk() (*TransactRequestSourceAssetTokenizedAssetRecord, bool) {
+	if o == nil || IsNil(o.TokenizedAssetRecord) {
+		return nil, false
+	}
+	return o.TokenizedAssetRecord, true
+}
+
+// HasTokenizedAssetRecord returns a boolean if a field has been set.
+func (o *Asset) HasTokenizedAssetRecord() bool {
+	if o != nil && !IsNil(o.TokenizedAssetRecord) {
+		return true
+	}
+
+	return false
+}
+
+// SetTokenizedAssetRecord gets a reference to the given TransactRequestSourceAssetTokenizedAssetRecord and assigns it to the TokenizedAssetRecord field.
+func (o *Asset) SetTokenizedAssetRecord(v TransactRequestSourceAssetTokenizedAssetRecord) {
+	o.TokenizedAssetRecord = &v
 }
 
 // GetId returns the Id field value
@@ -337,6 +403,12 @@ func (o Asset) MarshalJSON() ([]byte, error) {
 
 func (o Asset) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Context) {
+		toSerialize["@context"] = o.Context
+	}
+	if !IsNil(o.TokenizedAssetRecord) {
+		toSerialize["tokenizedAssetRecord"] = o.TokenizedAssetRecord
+	}
 	toSerialize["id"] = o.Id
 	toSerialize["owner"] = o.Owner
 	toSerialize["contractName"] = o.ContractName

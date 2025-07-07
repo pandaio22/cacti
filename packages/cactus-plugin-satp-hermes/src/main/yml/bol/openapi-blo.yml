@@ -52,7 +52,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/ld+json:
             schema:
               $ref: ./schemas.yml#/TransactRequest
       responses:

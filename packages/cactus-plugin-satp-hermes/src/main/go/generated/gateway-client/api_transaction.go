@@ -545,7 +545,7 @@ func (a *TransactionApiService) TransactExecute(r ApiTransactRequest) (*Transact
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{"application/ld+json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)

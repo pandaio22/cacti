@@ -205,7 +205,10 @@ Class | Method | HTTP request | Description
  - [TransactDefaultResponse](docs/TransactDefaultResponse.md)
  - [TransactRequest](docs/TransactRequest.md)
  - [TransactRequestSourceAsset](docs/TransactRequestSourceAsset.md)
+ - [TransactRequestSourceAssetContext](docs/TransactRequestSourceAssetContext.md)
+ - [TransactRequestSourceAssetContextOneOfInner](docs/TransactRequestSourceAssetContextOneOfInner.md)
  - [TransactRequestSourceAssetNetworkId](docs/TransactRequestSourceAssetNetworkId.md)
+ - [TransactRequestSourceAssetTokenizedAssetRecord](docs/TransactRequestSourceAssetTokenizedAssetRecord.md)
  - [TransactResponse](docs/TransactResponse.md)
  - [UnregisterOracleTask200Response](docs/UnregisterOracleTask200Response.md)
 

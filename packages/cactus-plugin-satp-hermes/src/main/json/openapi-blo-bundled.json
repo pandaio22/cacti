@@ -59,7 +59,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "application/ld+json": {
               "schema": {
                 "description": "Request schema for initiating a transaction. Includes details such as the transaction context, mode (data or transfer), payload, and information about the source and destination DLT networks.",
                 "type": "object",
@@ -90,6 +90,41 @@
                       "referenceId"
                     ],
                     "properties": {
+                      "@context": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "tokenizedAssetRecord": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          }
+                        ]
+                      },
                       "id": {
                         "type": "string"
                       },
@@ -166,6 +201,41 @@
                       "referenceId"
                     ],
                     "properties": {
+                      "@context": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "tokenizedAssetRecord": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://www.w3.org/ns/did/v1.1"
+                          }
+                        ]
+                      },
                       "id": {
                         "type": "string"
                       },
@@ -4536,6 +4606,41 @@
           "referenceId"
         ],
         "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "tokenizedAssetRecord": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.w3.org/ns/did/v1.1"
+              }
+            ]
+          },
           "id": {
             "type": "string"
           },
@@ -4630,6 +4735,41 @@
               "referenceId"
             ],
             "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "tokenizedAssetRecord": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  }
+                ]
+              },
               "id": {
                 "type": "string"
               },
@@ -4706,6 +4846,41 @@
               "referenceId"
             ],
             "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "tokenizedAssetRecord": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  }
+                ]
+              },
               "id": {
                 "type": "string"
               },

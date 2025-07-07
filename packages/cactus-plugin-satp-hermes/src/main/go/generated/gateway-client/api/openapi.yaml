@@ -46,7 +46,7 @@ paths:
       operationId: Transact
       requestBody:
         content:
-          application/json:
+          application/ld+json:
             schema:
               $ref: '#/components/schemas/Transact_request'
         required: true
@@ -836,6 +836,10 @@ components:
     Asset:
       description: An asset
       properties:
+        '@context':
+          $ref: '#/components/schemas/Transact_request_sourceAsset__context'
+        tokenizedAssetRecord:
+          $ref: '#/components/schemas/Transact_request_sourceAsset_tokenizedAssetRecord'
         id:
           type: string
         owner:
@@ -875,35 +879,6 @@ components:
       description: "Request schema for initiating a transaction. Includes details\
         \ such as the transaction context, mode (data or transfer), payload, and information\
         \ about the source and destination DLT networks."
-      example:
-        payload: "{\"data\":\"example payload\"}"
-        sourceAsset:
-          owner: owner
-          mspId: mspId
-          amount: amount
-          contractAddress: contractAddress
-          contractName: contractName
-          channelName: channelName
-          networkId:
-            ledgerType: BESU_1X
-            id: id
-          id: id
-          tokenType: ERC20
-          referenceId: referenceId
-        contextID: 000003e8-e0b8-21ee-ba00-325096b39f47
-        receiverAsset:
-          owner: owner
-          mspId: mspId
-          amount: amount
-          contractAddress: contractAddress
-          contractName: contractName
-          channelName: channelName
-          networkId:
-            ledgerType: BESU_1X
-            id: id
-          id: id
-          tokenType: ERC20
-          referenceId: referenceId
       properties:
         contextID:
           description: The unique identifier of the task.
@@ -2001,6 +1976,25 @@ components:
           description: The status of the request.
           type: boolean
       type: object
+    Transact_request_sourceAsset__context_oneOf_inner:
+      oneOf:
+      - format: uri
+        type: string
+      - type: object
+    Transact_request_sourceAsset__context:
+      oneOf:
+      - example: https://www.w3.org/ns/did/v1.1
+        format: uri
+        type: string
+      - type: object
+      - items:
+          $ref: '#/components/schemas/Transact_request_sourceAsset__context_oneOf_inner'
+        type: array
+    Transact_request_sourceAsset_tokenizedAssetRecord:
+      oneOf:
+      - example: https://www.w3.org/ns/did/v1.1
+        format: uri
+        type: string
     Transact_request_sourceAsset_networkId:
       description: The network of the DLT being interacted with.
       example:
@@ -2031,20 +2025,11 @@ components:
       type: object
     Transact_request_sourceAsset:
       description: An asset
-      example:
-        owner: owner
-        mspId: mspId
-        amount: amount
-        contractAddress: contractAddress
-        contractName: contractName
-        channelName: channelName
-        networkId:
-          ledgerType: BESU_1X
-          id: id
-        id: id
-        tokenType: ERC20
-        referenceId: referenceId
       properties:
+        '@context':
+          $ref: '#/components/schemas/Transact_request_sourceAsset__context'
+        tokenizedAssetRecord:
+          $ref: '#/components/schemas/Transact_request_sourceAsset_tokenizedAssetRecord'
         id:
           type: string
         owner:

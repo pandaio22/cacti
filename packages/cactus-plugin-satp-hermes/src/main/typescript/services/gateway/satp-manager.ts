@@ -76,6 +76,8 @@ import {
   NewSessionResponse,
   PreSATPTransferRequest,
   PreSATPTransferResponse,
+  PreTransferVerificationRequest,
+  PreTransferVerificationResponse,
 } from "../../generated/proto/cacti/satp/v02/service/stage_0_pb";
 import {
   CreateSATPRequestError,
@@ -594,6 +596,12 @@ export class SATPManager {
 
       let newSessionRequest: NewSessionRequest | undefined;
       let newSessionResponse: NewSessionResponse | undefined;
+      let preTransferVerificationRequest:
+        | PreTransferVerificationRequest
+        | undefined;
+      let preTransferVerificationResponse:
+        | PreTransferVerificationResponse
+        | undefined;
       let preSATPTransferRequest: PreSATPTransferRequest | undefined;
       let preSATPTransferResponse: PreSATPTransferResponse | undefined;
       let transferProposalRequest: TransferProposalRequest | undefined;
@@ -661,6 +669,75 @@ export class SATPManager {
             throw new RetrieveSATPMessageError(
               fnTag,
               getMessageTypeName(MessageType.NEW_SESSION_RESPONSE),
+            );
+          }
+        // INSERT CODE HERE
+
+        case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+          if (!newSessionResponse) {
+            this.logger.debug(
+              `${fnTag}, Recovering from Stage 0, NewSessionResponse`,
+            );
+            newSessionResponse = getMessageInSessionData(
+              sessionData,
+              MessageType.NEW_SESSION_RESPONSE,
+            ) as NewSessionResponse;
+
+            if (!newSessionResponse) {
+              throw new RecoverMessageError(
+                fnTag,
+                getMessageTypeName(MessageType.NEW_SESSION_RESPONSE),
+              );
+            }
+          }
+
+          preTransferVerificationRequest = await (
+            this.getSATPHandler(SATPHandlerType.STAGE0) as Stage0SATPHandler
+          ).PreTransferVerificationRequest(
+            newSessionResponse,
+            session.getSessionId(),
+          );
+
+          if (!preTransferVerificationRequest) {
+            throw new CreateSATPRequestError(
+              fnTag,
+              getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_REQUEST),
+            );
+          }
+
+        case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+          if (!preTransferVerificationRequest) {
+            this.logger.debug(
+              `${fnTag}, Recovering from Stage 0, PreTransferVerificationRequest`,
+            );
+
+            preTransferVerificationRequest = getMessageInSessionData(
+              sessionData,
+              MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+            ) as PreTransferVerificationRequest;
+
+            if (!preTransferVerificationRequest) {
+              throw new RecoverMessageError(
+                fnTag,
+                getMessageTypeName(
+                  MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+                ),
+              );
+            }
+          }
+          preTransferVerificationResponse =
+            await clientSatpStage0.preTransferVerification(
+              preTransferVerificationRequest,
+            );
+
+          this.logger.debug(
+            `${fnTag}, preTransferVerificationResponse: ${safeStableStringify(preTransferVerificationResponse)}`,
+          );
+
+          if (!preTransferVerificationResponse) {
+            throw new RetrieveSATPMessageError(
+              fnTag,
+              getMessageTypeName(MessageType.PRE_SATP_TRANSFER_RESPONSE),
             );
           }
 
@@ -760,6 +837,7 @@ export class SATPManager {
             );
           }
         case MessageType.INIT_RECEIPT:
+
         case MessageType.INIT_REJECT:
           if (!transferProposalRequest) {
             this.logger.debug(
@@ -1003,7 +1081,6 @@ export class SATPManager {
               getMessageTypeName(MessageType.COMMIT_FINAL),
             );
           }
-
         case MessageType.ACK_COMMIT_FINAL:
           if (!commitFinalAssertionRequest) {
             this.logger.debug(

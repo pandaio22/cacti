@@ -261,6 +261,18 @@ export interface AddCounterpartyRequestCounterpartyVersionInner {
 export interface Asset {
     /**
      * 
+     * @type {TransactRequestSourceAssetContext}
+     * @memberof Asset
+     */
+    '@context'?: TransactRequestSourceAssetContext;
+    /**
+     * 
+     * @type {TransactRequestSourceAssetTokenizedAssetRecord}
+     * @memberof Asset
+     */
+    'tokenizedAssetRecord'?: TransactRequestSourceAssetTokenizedAssetRecord;
+    /**
+     * 
      * @type {string}
      * @memberof Asset
      */
@@ -3732,6 +3744,18 @@ export interface TransactRequest {
 export interface TransactRequestSourceAsset {
     /**
      * 
+     * @type {TransactRequestSourceAssetContext}
+     * @memberof TransactRequestSourceAsset
+     */
+    '@context'?: TransactRequestSourceAssetContext;
+    /**
+     * 
+     * @type {TransactRequestSourceAssetTokenizedAssetRecord}
+     * @memberof TransactRequestSourceAsset
+     */
+    'tokenizedAssetRecord'?: TransactRequestSourceAssetTokenizedAssetRecord;
+    /**
+     * 
      * @type {string}
      * @memberof TransactRequestSourceAsset
      */
@@ -3803,6 +3827,18 @@ export const TransactRequestSourceAssetTokenTypeEnum = {
 export type TransactRequestSourceAssetTokenTypeEnum = typeof TransactRequestSourceAssetTokenTypeEnum[keyof typeof TransactRequestSourceAssetTokenTypeEnum];
 
 /**
+ * @type TransactRequestSourceAssetContext
+ * @export
+ */
+export type TransactRequestSourceAssetContext = Array<TransactRequestSourceAssetContextOneOfInner> | object | string;
+
+/**
+ * @type TransactRequestSourceAssetContextOneOfInner
+ * @export
+ */
+export type TransactRequestSourceAssetContextOneOfInner = object | string;
+
+/**
  * The network of the DLT being interacted with.
  * @export
  * @interface TransactRequestSourceAssetNetworkId
@@ -3833,6 +3869,12 @@ export const TransactRequestSourceAssetNetworkIdLedgerTypeEnum = {
 } as const;
 
 export type TransactRequestSourceAssetNetworkIdLedgerTypeEnum = typeof TransactRequestSourceAssetNetworkIdLedgerTypeEnum[keyof typeof TransactRequestSourceAssetNetworkIdLedgerTypeEnum];
+
+/**
+ * @type TransactRequestSourceAssetTokenizedAssetRecord
+ * @export
+ */
+export type TransactRequestSourceAssetTokenizedAssetRecord = string;
 
 /**
  * Response schema for a transaction request. Includes the session ID and the current status of the transaction.
@@ -5047,7 +5089,7 @@ export const TransactionApiAxiosParamCreator = function (configuration?: Configu
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};

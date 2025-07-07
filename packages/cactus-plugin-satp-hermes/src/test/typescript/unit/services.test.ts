@@ -65,6 +65,8 @@ import {
   NewSessionResponse,
   PreSATPTransferRequest,
   PreSATPTransferResponse,
+  PreTransferVerificationRequest,
+  PreTransferVerificationResponse,
   STATUS,
 } from "../../../main/typescript/generated/proto/cacti/satp/v02/service/stage_0_pb";
 import { TokenType } from "../../../main/typescript/generated/proto/cacti/satp/v02/common/message_pb";
@@ -128,6 +130,8 @@ let satpServerService3: Stage3ServerService;
 
 let newSessionRequestMessage: NewSessionRequest;
 let newSessionResponseMessage: NewSessionResponse;
+let preTransferVerificationRequestMessage: PreTransferVerificationRequest;
+let preTransferVerificationResponseMessage: PreTransferVerificationResponse;
 let preSATPTransferRequestMessage: PreSATPTransferRequest;
 let preSATPTransferResponseMessage: PreSATPTransferResponse;
 let transferProposalRequestMessage: TransferProposalRequest;
@@ -387,6 +391,70 @@ describe("SATP Services Testing", () => {
       sessionIDs,
     );
   });
+  it("Service0Client preTransferVerificationRequest", async () => {
+    //Given
+    const sessionData = mockSession.getClientSessionData();
+
+    //When
+    preTransferVerificationRequestMessage =
+      await satpClientService0.preTransferVerificationRequest(mockSession);
+
+    //Then
+    expect(persistLogEntrySpy).toHaveBeenCalledTimes(3);
+
+    expect(preTransferVerificationRequestMessage).toBeDefined();
+    expect(preTransferVerificationRequestMessage.sessionId).toBe(
+      sessionData.id,
+    );
+    expect(preTransferVerificationRequestMessage.contextId).toBe(
+      sessionData.transferContextId,
+    );
+    expect(preTransferVerificationRequestMessage.senderGatewayNetworkId).toBe(
+      sessionData.senderGatewayNetworkId,
+    );
+    expect(preTransferVerificationRequestMessage.senderAsset).toBeDefined();
+    expect(preTransferVerificationRequestMessage.receiverAsset).toBeDefined();
+    expect(
+      preTransferVerificationRequestMessage.hashPreviousMessage,
+    ).toBeDefined();
+    expect(preTransferVerificationRequestMessage.clientSignature).toBeDefined();
+  });
+
+  it("Service0Server preTransferVerificationResponse", async () => {
+    //Given
+    const sessionData = mockSession.getServerSessionData();
+    console.log("This is SessionData:", sessionData);
+
+    //When
+    preTransferVerificationResponseMessage =
+      await satpServerService0.preTransferVerificationResponse(
+        preTransferVerificationRequestMessage,
+        mockSession,
+      );
+
+    //Then
+    expect(persistLogEntrySpy).toHaveBeenCalledTimes(3);
+    expect(preTransferVerificationResponseMessage).toBeDefined();
+    expect(preTransferVerificationResponseMessage.sessionId).toBe(
+      sessionData.id,
+    );
+    expect(preTransferVerificationResponseMessage.contextId).toBe(
+      sessionData.transferContextId,
+    );
+    expect(
+      preTransferVerificationResponseMessage.recipientGatewayNetworkId,
+    ).toBe(sessionData.senderGatewayNetworkId);
+    expect(
+      preTransferVerificationResponseMessage.recipientTokenId,
+    ).toBeDefined();
+    expect(
+      preTransferVerificationResponseMessage.hashPreviousMessage,
+    ).toBeDefined();
+    expect(
+      preTransferVerificationResponseMessage.serverSignature,
+    ).toBeDefined();
+  });
+
   it("Service0Client preSATPTransferRequest", async () => {
     expect(satpClientService0).toBeDefined();
     expect(satpClientService0.getServiceIdentifier()).toBe(
@@ -442,6 +510,7 @@ describe("SATP Services Testing", () => {
   });
   it("Service0Server preSATPTransferResponse", async () => {
     const sessionData = mockSession.getServerSessionData();
+    console.log("This is SessionData:", sessionData);
     if (!sessionData) {
       throw new Error("Session data not found");
     }

@@ -4,6 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Context** | Pointer to [**TransactRequestSourceAssetContext**](TransactRequestSourceAssetContext.md) |  | [optional] 
+**TokenizedAssetRecord** | Pointer to [**TransactRequestSourceAssetTokenizedAssetRecord**](TransactRequestSourceAssetTokenizedAssetRecord.md) |  | [optional] 
 **Id** | **string** |  | 
 **Owner** | **string** |  | 
 **ContractName** | **string** |  | 
@@ -33,6 +35,56 @@ will change when the set of required properties is changed
 NewTransactRequestSourceAssetWithDefaults instantiates a new TransactRequestSourceAsset object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetContext
+
+`func (o *TransactRequestSourceAsset) GetContext() TransactRequestSourceAssetContext`
+
+GetContext returns the Context field if non-nil, zero value otherwise.
+
+### GetContextOk
+
+`func (o *TransactRequestSourceAsset) GetContextOk() (*TransactRequestSourceAssetContext, bool)`
+
+GetContextOk returns a tuple with the Context field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetContext
+
+`func (o *TransactRequestSourceAsset) SetContext(v TransactRequestSourceAssetContext)`
+
+SetContext sets Context field to given value.
+
+### HasContext
+
+`func (o *TransactRequestSourceAsset) HasContext() bool`
+
+HasContext returns a boolean if a field has been set.
+
+### GetTokenizedAssetRecord
+
+`func (o *TransactRequestSourceAsset) GetTokenizedAssetRecord() TransactRequestSourceAssetTokenizedAssetRecord`
+
+GetTokenizedAssetRecord returns the TokenizedAssetRecord field if non-nil, zero value otherwise.
+
+### GetTokenizedAssetRecordOk
+
+`func (o *TransactRequestSourceAsset) GetTokenizedAssetRecordOk() (*TransactRequestSourceAssetTokenizedAssetRecord, bool)`
+
+GetTokenizedAssetRecordOk returns a tuple with the TokenizedAssetRecord field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTokenizedAssetRecord
+
+`func (o *TransactRequestSourceAsset) SetTokenizedAssetRecord(v TransactRequestSourceAssetTokenizedAssetRecord)`
+
+SetTokenizedAssetRecord sets TokenizedAssetRecord field to given value.
+
+### HasTokenizedAssetRecord
+
+`func (o *TransactRequestSourceAsset) HasTokenizedAssetRecord() bool`
+
+HasTokenizedAssetRecord returns a boolean if a field has been set.
 
 ### GetId
 

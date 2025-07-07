@@ -4,6 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Context** | Pointer to [**TransactRequestSourceAssetContext**](TransactRequestSourceAssetContext.md) |  | [optional] 
+**TokenizedAssetRecord** | Pointer to [**TransactRequestSourceAssetTokenizedAssetRecord**](TransactRequestSourceAssetTokenizedAssetRecord.md) |  | [optional] 
 **Id** | **string** |  | 
 **Owner** | **string** |  | 
 **ContractName** | **string** |  | 
@@ -33,6 +35,56 @@ will change when the set of required properties is changed
 NewAssetWithDefaults instantiates a new Asset object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetContext
+
+`func (o *Asset) GetContext() TransactRequestSourceAssetContext`
+
+GetContext returns the Context field if non-nil, zero value otherwise.
+
+### GetContextOk
+
+`func (o *Asset) GetContextOk() (*TransactRequestSourceAssetContext, bool)`
+
+GetContextOk returns a tuple with the Context field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetContext
+
+`func (o *Asset) SetContext(v TransactRequestSourceAssetContext)`
+
+SetContext sets Context field to given value.
+
+### HasContext
+
+`func (o *Asset) HasContext() bool`
+
+HasContext returns a boolean if a field has been set.
+
+### GetTokenizedAssetRecord
+
+`func (o *Asset) GetTokenizedAssetRecord() TransactRequestSourceAssetTokenizedAssetRecord`
+
+GetTokenizedAssetRecord returns the TokenizedAssetRecord field if non-nil, zero value otherwise.
+
+### GetTokenizedAssetRecordOk
+
+`func (o *Asset) GetTokenizedAssetRecordOk() (*TransactRequestSourceAssetTokenizedAssetRecord, bool)`
+
+GetTokenizedAssetRecordOk returns a tuple with the TokenizedAssetRecord field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTokenizedAssetRecord
+
+`func (o *Asset) SetTokenizedAssetRecord(v TransactRequestSourceAssetTokenizedAssetRecord)`
+
+SetTokenizedAssetRecord sets TokenizedAssetRecord field to given value.
+
+### HasTokenizedAssetRecord
+
+`func (o *Asset) HasTokenizedAssetRecord() bool`
+
+HasTokenizedAssetRecord returns a boolean if a field has been set.
 
 ### GetId
 

@@ -23,6 +23,8 @@ import {
   PreSATPTransferRequestSchema,
   PreSATPTransferResponse,
   PreSATPTransferResponseSchema,
+  PreTransferVerificationRequest,
+  PreTransferVerificationResponse,
 } from "../generated/proto/cacti/satp/v02/service/stage_0_pb";
 import {
   TransferProposalRequest,
@@ -905,6 +907,8 @@ export function saveMessageInSessionData(
   message:
     | NewSessionRequest
     | NewSessionResponse
+    | PreTransferVerificationRequest
+    | PreTransferVerificationResponse
     | PreSATPTransferRequest
     | PreSATPTransferResponse
     | TransferProposalRequest
@@ -978,6 +982,8 @@ export function getMessageInSessionData(
 ):
   | NewSessionRequest
   | NewSessionResponse
+  | PreTransferVerificationRequest
+  | PreTransferVerificationResponse
   | PreSATPTransferRequest
   | PreSATPTransferResponse
   | TransferProposalRequest

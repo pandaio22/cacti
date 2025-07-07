@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CheckRequest, CheckResponse, NewSessionRequest, NewSessionResponse, PreSATPTransferRequest, PreSATPTransferResponse } from "./stage_0_pb.js";
+import { CheckRequest, CheckResponse, NewSessionRequest, NewSessionResponse, PreSATPTransferRequest, PreSATPTransferResponse, PreTransferVerificationRequest, PreTransferVerificationResponse } from "./stage_0_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,15 @@ export const SatpStage0Service = {
       name: "NewSession",
       I: NewSessionRequest,
       O: NewSessionResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc cacti.satp.v02.service.SatpStage0Service.PreTransferVerification
+     */
+    preTransferVerification: {
+      name: "PreTransferVerification",
+      I: PreTransferVerificationRequest,
+      O: PreTransferVerificationResponse,
       kind: MethodKind.Unary,
     },
     /**

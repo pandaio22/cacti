@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file cacti/satp/v02/service/stage_0.proto.
  */
 export const file_cacti_satp_v02_service_stage_0: GenFile = /*@__PURE__*/
-  fileDesc("CiRjYWN0aS9zYXRwL3YwMi9zZXJ2aWNlL3N0YWdlXzAucHJvdG8SFmNhY3RpLnNhdHAudjAyLnNlcnZpY2UiqQIKEU5ld1Nlc3Npb25SZXF1ZXN0EhIKCnNlc3Npb25faWQYASABKAkSEgoKY29udGV4dF9pZBgCIAEoCRIeChZjbGllbnRfdHJhbnNmZXJfbnVtYmVyGAMgASgJEhIKCmdhdGV3YXlfaWQYBSABKAkSGAoQY2xpZW50X3NpZ25hdHVyZRgGIAEoCRINCgVlcnJvchgHIAEoCBIwCgplcnJvcl9jb2RlGAggASgOMhwuY2FjdGkuc2F0cC52MDIuY29tbW9uLkVycm9yEjgKDG1lc3NhZ2VfdHlwZRgJIAEoDjIiLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5NZXNzYWdlVHlwZRIjChtzZW5kZXJfZ2F0ZXdheV9uZXR3b3JrX3R5cGUYCiABKAkixwIKEk5ld1Nlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSLgoGc3RhdHVzGAMgASgOMh4uY2FjdGkuc2F0cC52MDIuc2VydmljZS5TVEFUVVMSHQoVaGFzaF9wcmV2aW91c19tZXNzYWdlGAQgASgJEhgKEHNlcnZlcl9zaWduYXR1cmUYBSABKAkSDQoFZXJyb3IYBiABKAgSMAoKZXJyb3JfY29kZRgHIAEoDjIcLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5FcnJvchI4CgxtZXNzYWdlX3R5cGUYCCABKA4yIi5jYWN0aS5zYXRwLnYwMi5jb21tb24uTWVzc2FnZVR5cGUSJQodcmVjZWl2ZXJfZ2F0ZXdheV9uZXR3b3JrX3R5cGUYCSABKAki6gMKFlByZVNBVFBUcmFuc2ZlclJlcXVlc3QSEgoKc2Vzc2lvbl9pZBgBIAEoCRISCgpjb250ZXh0X2lkGAIgASgJEh4KFmNsaWVudF90cmFuc2Zlcl9udW1iZXIYAyABKAkSIQoZc2VuZGVyX2dhdGV3YXlfbmV0d29ya19pZBgEIAEoCRIyCgxzZW5kZXJfYXNzZXQYBSABKAsyHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uQXNzZXQSNAoOcmVjZWl2ZXJfYXNzZXQYBiABKAsyHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uQXNzZXQSRwoUd3JhcF9hc3NlcnRpb25fY2xhaW0YByABKAsyKS5jYWN0aS5zYXRwLnYwMi5jb21tb24uV3JhcEFzc2VydGlvbkNsYWltEh0KFWhhc2hfcHJldmlvdXNfbWVzc2FnZRgIIAEoCRIYChBjbGllbnRfc2lnbmF0dXJlGAkgASgJEg0KBWVycm9yGAogASgIEjAKCmVycm9yX2NvZGUYCyABKA4yHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uRXJyb3ISOAoMbWVzc2FnZV90eXBlGAwgASgOMiIuY2FjdGkuc2F0cC52MDIuY29tbW9uLk1lc3NhZ2VUeXBlIoADChdQcmVTQVRQVHJhbnNmZXJSZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSJAoccmVjaXBpZW50X2dhdGV3YXlfbmV0d29ya19pZBgDIAEoCRJHChR3cmFwX2Fzc2VydGlvbl9jbGFpbRgEIAEoCzIpLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5XcmFwQXNzZXJ0aW9uQ2xhaW0SHQoVaGFzaF9wcmV2aW91c19tZXNzYWdlGAUgASgJEhoKEnJlY2lwaWVudF90b2tlbl9pZBgGIAEoCRIYChBzZXJ2ZXJfc2lnbmF0dXJlGAcgASgJEg0KBWVycm9yGAggASgIEjAKCmVycm9yX2NvZGUYCSABKA4yHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uRXJyb3ISOAoMbWVzc2FnZV90eXBlGAogASgOMiIuY2FjdGkuc2F0cC52MDIuY29tbW9uLk1lc3NhZ2VUeXBlIh0KDENoZWNrUmVxdWVzdBINCgVjaGVjaxgBIAEoCSIeCg1DaGVja1Jlc3BvbnNlEg0KBWNoZWNrGAEgASgJKkoKBlNUQVRVUxIWChJTVEFUVVNfVU5TUEVDSUZJRUQQABITCg9TVEFUVVNfQUNDRVBURUQQARITCg9TVEFUVVNfUkVKRUNURUQQAjLIAgoRU2F0cFN0YWdlMFNlcnZpY2USZQoKTmV3U2Vzc2lvbhIpLmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuTmV3U2Vzc2lvblJlcXVlc3QaKi5jYWN0aS5zYXRwLnYwMi5zZXJ2aWNlLk5ld1Nlc3Npb25SZXNwb25zZSIAEnQKD1ByZVNBVFBUcmFuc2ZlchIuLmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuUHJlU0FUUFRyYW5zZmVyUmVxdWVzdBovLmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuUHJlU0FUUFRyYW5zZmVyUmVzcG9uc2UiABJWCgVDaGVjaxIkLmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuQ2hlY2tSZXF1ZXN0GiUuY2FjdGkuc2F0cC52MDIuc2VydmljZS5DaGVja1Jlc3BvbnNlIgBiBnByb3RvMw", [file_cacti_satp_v02_common_message]);
+  fileDesc("CiRjYWN0aS9zYXRwL3YwMi9zZXJ2aWNlL3N0YWdlXzAucHJvdG8SFmNhY3RpLnNhdHAudjAyLnNlcnZpY2UiqQIKEU5ld1Nlc3Npb25SZXF1ZXN0EhIKCnNlc3Npb25faWQYASABKAkSEgoKY29udGV4dF9pZBgCIAEoCRIeChZjbGllbnRfdHJhbnNmZXJfbnVtYmVyGAMgASgJEhIKCmdhdGV3YXlfaWQYBSABKAkSGAoQY2xpZW50X3NpZ25hdHVyZRgGIAEoCRINCgVlcnJvchgHIAEoCBIwCgplcnJvcl9jb2RlGAggASgOMhwuY2FjdGkuc2F0cC52MDIuY29tbW9uLkVycm9yEjgKDG1lc3NhZ2VfdHlwZRgJIAEoDjIiLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5NZXNzYWdlVHlwZRIjChtzZW5kZXJfZ2F0ZXdheV9uZXR3b3JrX3R5cGUYCiABKAkixwIKEk5ld1Nlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSLgoGc3RhdHVzGAMgASgOMh4uY2FjdGkuc2F0cC52MDIuc2VydmljZS5TVEFUVVMSHQoVaGFzaF9wcmV2aW91c19tZXNzYWdlGAQgASgJEhgKEHNlcnZlcl9zaWduYXR1cmUYBSABKAkSDQoFZXJyb3IYBiABKAgSMAoKZXJyb3JfY29kZRgHIAEoDjIcLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5FcnJvchI4CgxtZXNzYWdlX3R5cGUYCCABKA4yIi5jYWN0aS5zYXRwLnYwMi5jb21tb24uTWVzc2FnZVR5cGUSJQodcmVjZWl2ZXJfZ2F0ZXdheV9uZXR3b3JrX3R5cGUYCSABKAkiqQMKHlByZVRyYW5zZmVyVmVyaWZpY2F0aW9uUmVxdWVzdBISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSHgoWY2xpZW50X3RyYW5zZmVyX251bWJlchgDIAEoCRIhChlzZW5kZXJfZ2F0ZXdheV9uZXR3b3JrX2lkGAQgASgJEjIKDHNlbmRlcl9hc3NldBgFIAEoCzIcLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5Bc3NldBI0Cg5yZWNlaXZlcl9hc3NldBgGIAEoCzIcLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5Bc3NldBIdChVoYXNoX3ByZXZpb3VzX21lc3NhZ2UYByABKAkSGAoQY2xpZW50X3NpZ25hdHVyZRgIIAEoCRINCgVlcnJvchgJIAEoCBIwCgplcnJvcl9jb2RlGAogASgOMhwuY2FjdGkuc2F0cC52MDIuY29tbW9uLkVycm9yEjgKDG1lc3NhZ2VfdHlwZRgLIAEoDjIiLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5NZXNzYWdlVHlwZSK/AgofUHJlVHJhbnNmZXJWZXJpZmljYXRpb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSJAoccmVjaXBpZW50X2dhdGV3YXlfbmV0d29ya19pZBgDIAEoCRIdChVoYXNoX3ByZXZpb3VzX21lc3NhZ2UYBCABKAkSGgoScmVjaXBpZW50X3Rva2VuX2lkGAUgASgJEhgKEHNlcnZlcl9zaWduYXR1cmUYBiABKAkSDQoFZXJyb3IYByABKAgSMAoKZXJyb3JfY29kZRgIIAEoDjIcLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5FcnJvchI4CgxtZXNzYWdlX3R5cGUYCSABKA4yIi5jYWN0aS5zYXRwLnYwMi5jb21tb24uTWVzc2FnZVR5cGUi6gMKFlByZVNBVFBUcmFuc2ZlclJlcXVlc3QSEgoKc2Vzc2lvbl9pZBgBIAEoCRISCgpjb250ZXh0X2lkGAIgASgJEh4KFmNsaWVudF90cmFuc2Zlcl9udW1iZXIYAyABKAkSIQoZc2VuZGVyX2dhdGV3YXlfbmV0d29ya19pZBgEIAEoCRIyCgxzZW5kZXJfYXNzZXQYBSABKAsyHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uQXNzZXQSNAoOcmVjZWl2ZXJfYXNzZXQYBiABKAsyHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uQXNzZXQSRwoUd3JhcF9hc3NlcnRpb25fY2xhaW0YByABKAsyKS5jYWN0aS5zYXRwLnYwMi5jb21tb24uV3JhcEFzc2VydGlvbkNsYWltEh0KFWhhc2hfcHJldmlvdXNfbWVzc2FnZRgIIAEoCRIYChBjbGllbnRfc2lnbmF0dXJlGAkgASgJEg0KBWVycm9yGAogASgIEjAKCmVycm9yX2NvZGUYCyABKA4yHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uRXJyb3ISOAoMbWVzc2FnZV90eXBlGAwgASgOMiIuY2FjdGkuc2F0cC52MDIuY29tbW9uLk1lc3NhZ2VUeXBlIoADChdQcmVTQVRQVHJhbnNmZXJSZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSJAoccmVjaXBpZW50X2dhdGV3YXlfbmV0d29ya19pZBgDIAEoCRJHChR3cmFwX2Fzc2VydGlvbl9jbGFpbRgEIAEoCzIpLmNhY3RpLnNhdHAudjAyLmNvbW1vbi5XcmFwQXNzZXJ0aW9uQ2xhaW0SHQoVaGFzaF9wcmV2aW91c19tZXNzYWdlGAUgASgJEhoKEnJlY2lwaWVudF90b2tlbl9pZBgGIAEoCRIYChBzZXJ2ZXJfc2lnbmF0dXJlGAcgASgJEg0KBWVycm9yGAggASgIEjAKCmVycm9yX2NvZGUYCSABKA4yHC5jYWN0aS5zYXRwLnYwMi5jb21tb24uRXJyb3ISOAoMbWVzc2FnZV90eXBlGAogASgOMiIuY2FjdGkuc2F0cC52MDIuY29tbW9uLk1lc3NhZ2VUeXBlIh0KDENoZWNrUmVxdWVzdBINCgVjaGVjaxgBIAEoCSIeCg1DaGVja1Jlc3BvbnNlEg0KBWNoZWNrGAEgASgJKkoKBlNUQVRVUxIWChJTVEFUVVNfVU5TUEVDSUZJRUQQABITCg9TVEFUVVNfQUNDRVBURUQQARITCg9TVEFUVVNfUkVKRUNURUQQAjLXAwoRU2F0cFN0YWdlMFNlcnZpY2USZQoKTmV3U2Vzc2lvbhIpLmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuTmV3U2Vzc2lvblJlcXVlc3QaKi5jYWN0aS5zYXRwLnYwMi5zZXJ2aWNlLk5ld1Nlc3Npb25SZXNwb25zZSIAEowBChdQcmVUcmFuc2ZlclZlcmlmaWNhdGlvbhI2LmNhY3RpLnNhdHAudjAyLnNlcnZpY2UuUHJlVHJhbnNmZXJWZXJpZmljYXRpb25SZXF1ZXN0GjcuY2FjdGkuc2F0cC52MDIuc2VydmljZS5QcmVUcmFuc2ZlclZlcmlmaWNhdGlvblJlc3BvbnNlIgASdAoPUHJlU0FUUFRyYW5zZmVyEi4uY2FjdGkuc2F0cC52MDIuc2VydmljZS5QcmVTQVRQVHJhbnNmZXJSZXF1ZXN0Gi8uY2FjdGkuc2F0cC52MDIuc2VydmljZS5QcmVTQVRQVHJhbnNmZXJSZXNwb25zZSIAElYKBUNoZWNrEiQuY2FjdGkuc2F0cC52MDIuc2VydmljZS5DaGVja1JlcXVlc3QaJS5jYWN0aS5zYXRwLnYwMi5zZXJ2aWNlLkNoZWNrUmVzcG9uc2UiAGIGcHJvdG8z", [file_cacti_satp_v02_common_message]);
 
 /**
  * @generated from message cacti.satp.v02.service.NewSessionRequest
@@ -131,6 +131,130 @@ export const NewSessionResponseSchema: GenMessage<NewSessionResponse> = /*@__PUR
   messageDesc(file_cacti_satp_v02_service_stage_0, 1);
 
 /**
+ * @generated from message cacti.satp.v02.service.PreTransferVerificationRequest
+ */
+export type PreTransferVerificationRequest = Message<"cacti.satp.v02.service.PreTransferVerificationRequest"> & {
+  /**
+   * @generated from field: string session_id = 1;
+   */
+  sessionId: string;
+
+  /**
+   * @generated from field: string context_id = 2;
+   */
+  contextId: string;
+
+  /**
+   * @generated from field: string client_transfer_number = 3;
+   */
+  clientTransferNumber: string;
+
+  /**
+   * @generated from field: string sender_gateway_network_id = 4;
+   */
+  senderGatewayNetworkId: string;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.Asset sender_asset = 5;
+   */
+  senderAsset?: Asset;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.Asset receiver_asset = 6;
+   */
+  receiverAsset?: Asset;
+
+  /**
+   * @generated from field: string hash_previous_message = 7;
+   */
+  hashPreviousMessage: string;
+
+  /**
+   * @generated from field: string client_signature = 8;
+   */
+  clientSignature: string;
+
+  /**
+   * @generated from field: bool error = 9;
+   */
+  error: boolean;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.Error error_code = 10;
+   */
+  errorCode: Error;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.MessageType message_type = 11;
+   */
+  messageType: MessageType;
+};
+
+/**
+ * Describes the message cacti.satp.v02.service.PreTransferVerificationRequest.
+ * Use `create(PreTransferVerificationRequestSchema)` to create a new message.
+ */
+export const PreTransferVerificationRequestSchema: GenMessage<PreTransferVerificationRequest> = /*@__PURE__*/
+  messageDesc(file_cacti_satp_v02_service_stage_0, 2);
+
+/**
+ * @generated from message cacti.satp.v02.service.PreTransferVerificationResponse
+ */
+export type PreTransferVerificationResponse = Message<"cacti.satp.v02.service.PreTransferVerificationResponse"> & {
+  /**
+   * @generated from field: string session_id = 1;
+   */
+  sessionId: string;
+
+  /**
+   * @generated from field: string context_id = 2;
+   */
+  contextId: string;
+
+  /**
+   * @generated from field: string recipient_gateway_network_id = 3;
+   */
+  recipientGatewayNetworkId: string;
+
+  /**
+   * @generated from field: string hash_previous_message = 4;
+   */
+  hashPreviousMessage: string;
+
+  /**
+   * @generated from field: string recipient_token_id = 5;
+   */
+  recipientTokenId: string;
+
+  /**
+   * @generated from field: string server_signature = 6;
+   */
+  serverSignature: string;
+
+  /**
+   * @generated from field: bool error = 7;
+   */
+  error: boolean;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.Error error_code = 8;
+   */
+  errorCode: Error;
+
+  /**
+   * @generated from field: cacti.satp.v02.common.MessageType message_type = 9;
+   */
+  messageType: MessageType;
+};
+
+/**
+ * Describes the message cacti.satp.v02.service.PreTransferVerificationResponse.
+ * Use `create(PreTransferVerificationResponseSchema)` to create a new message.
+ */
+export const PreTransferVerificationResponseSchema: GenMessage<PreTransferVerificationResponse> = /*@__PURE__*/
+  messageDesc(file_cacti_satp_v02_service_stage_0, 3);
+
+/**
  * @generated from message cacti.satp.v02.service.PreSATPTransferRequest
  */
 export type PreSATPTransferRequest = Message<"cacti.satp.v02.service.PreSATPTransferRequest"> & {
@@ -200,7 +324,7 @@ export type PreSATPTransferRequest = Message<"cacti.satp.v02.service.PreSATPTran
  * Use `create(PreSATPTransferRequestSchema)` to create a new message.
  */
 export const PreSATPTransferRequestSchema: GenMessage<PreSATPTransferRequest> = /*@__PURE__*/
-  messageDesc(file_cacti_satp_v02_service_stage_0, 2);
+  messageDesc(file_cacti_satp_v02_service_stage_0, 4);
 
 /**
  * @generated from message cacti.satp.v02.service.PreSATPTransferResponse
@@ -262,7 +386,7 @@ export type PreSATPTransferResponse = Message<"cacti.satp.v02.service.PreSATPTra
  * Use `create(PreSATPTransferResponseSchema)` to create a new message.
  */
 export const PreSATPTransferResponseSchema: GenMessage<PreSATPTransferResponse> = /*@__PURE__*/
-  messageDesc(file_cacti_satp_v02_service_stage_0, 3);
+  messageDesc(file_cacti_satp_v02_service_stage_0, 5);
 
 /**
  * @generated from message cacti.satp.v02.service.CheckRequest
@@ -279,7 +403,7 @@ export type CheckRequest = Message<"cacti.satp.v02.service.CheckRequest"> & {
  * Use `create(CheckRequestSchema)` to create a new message.
  */
 export const CheckRequestSchema: GenMessage<CheckRequest> = /*@__PURE__*/
-  messageDesc(file_cacti_satp_v02_service_stage_0, 4);
+  messageDesc(file_cacti_satp_v02_service_stage_0, 6);
 
 /**
  * @generated from message cacti.satp.v02.service.CheckResponse
@@ -296,7 +420,7 @@ export type CheckResponse = Message<"cacti.satp.v02.service.CheckResponse"> & {
  * Use `create(CheckResponseSchema)` to create a new message.
  */
 export const CheckResponseSchema: GenMessage<CheckResponse> = /*@__PURE__*/
-  messageDesc(file_cacti_satp_v02_service_stage_0, 5);
+  messageDesc(file_cacti_satp_v02_service_stage_0, 7);
 
 /**
  * @generated from enum cacti.satp.v02.service.STATUS
@@ -335,6 +459,14 @@ export const SatpStage0Service: GenService<{
     methodKind: "unary";
     input: typeof NewSessionRequestSchema;
     output: typeof NewSessionResponseSchema;
+  },
+  /**
+   * @generated from rpc cacti.satp.v02.service.SatpStage0Service.PreTransferVerification
+   */
+  preTransferVerification: {
+    methodKind: "unary";
+    input: typeof PreTransferVerificationRequestSchema;
+    output: typeof PreTransferVerificationResponseSchema;
   },
   /**
    * @generated from rpc cacti.satp.v02.service.SatpStage0Service.PreSATPTransfer

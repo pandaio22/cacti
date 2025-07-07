@@ -110,7 +110,10 @@ docs/Transact200ResponseStatusResponseOriginNetwork.md
 docs/TransactDefaultResponse.md
 docs/TransactRequest.md
 docs/TransactRequestSourceAsset.md
+docs/TransactRequestSourceAssetContext.md
+docs/TransactRequestSourceAssetContextOneOfInner.md
 docs/TransactRequestSourceAssetNetworkId.md
+docs/TransactRequestSourceAssetTokenizedAssetRecord.md
 docs/TransactResponse.md
 docs/TransactionApi.md
 docs/UnregisterOracleTask200Response.md
@@ -214,7 +217,10 @@ model_transact_200_response_status_response_origin_network.go
 model_transact_default_response.go
 model_transact_request.go
 model_transact_request_source_asset.go
+model_transact_request_source_asset__context.go
+model_transact_request_source_asset__context_one_of_inner.go
 model_transact_request_source_asset_network_id.go
+model_transact_request_source_asset_tokenized_asset_record.go
 model_transact_response.go
 model_unregister_oracle_task_200_response.go
 response.go

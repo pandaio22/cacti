@@ -225,6 +225,43 @@ export function getTransactRequest(
   };
 }
 
+/**
+ * ADDED BY RODOLFO CARAPAU
+ * TEST
+ */
+export function getChangedTransactRequest(
+  contextID: string,
+  from: BesuTestEnvironment | EthereumTestEnvironment | FabricTestEnvironment,
+  to: BesuTestEnvironment | EthereumTestEnvironment | FabricTestEnvironment,
+  fromAmount: string,
+  toAmount: string,
+): TransactRequest {
+  return {
+    contextID,
+    sourceAsset: {
+      "@context": {
+        tokenizedAssetRecord:
+          "https:/example.com/ontology/tokenized-asset-record.jsonld",
+      },
+      tokenizedAssetRecord:
+        "https://web.tecnico.ulisboa.pt/~ist173130/ontology/person.jsonld",
+      ...from.defaultAsset,
+      amount: fromAmount,
+    },
+    receiverAsset: {
+      "@context": {
+        tokenizedAssetRecord:
+          "https:/example.com/ontology/tokenized-asset-record.jsonld",
+      },
+      tokenizedAssetRecord:
+        "https://web.tecnico.ulisboa.pt/~ist173130/ontology/person.jsonld",
+      ...to.defaultAsset,
+      amount: toAmount,
+    },
+  };
+}
+/********************************************************************************/
+
 export interface PGDatabaseConfig {
   port: number;
   toUseInDocker?: boolean;

@@ -14,6 +14,8 @@ import { SatpStage0Service } from "../../generated/proto/cacti/satp/v02/service/
 import {
   NewSessionRequest,
   NewSessionResponse,
+  PreTransferVerificationRequest,
+  PreTransferVerificationResponse,
   PreSATPTransferRequest,
   PreSATPTransferResponse,
 } from "../../generated/proto/cacti/satp/v02/service/stage_0_pb";
@@ -177,6 +179,68 @@ export class Stage0SATPHandler implements SATPHandler {
     }
   }
 
+  private async PreTransferVerificationImplementation(
+    req: PreTransferVerificationRequest,
+  ): Promise<PreTransferVerificationResponse> {
+    const stepTag = `PreTransferVerificationImplementation()`;
+    const fnTag = `${this.getHandlerIdentifier()}#${stepTag}`;
+    let session: SATPSession | undefined;
+    try {
+      this.Log.debug(`${fnTag}, PreTransferVerification...`);
+      this.Log.debug(`${fnTag}, Request: ${safeStableStringify(req)}}`);
+
+      session = this.sessions.get(req.sessionId);
+
+      if (!session) {
+        throw new SessionNotFoundError(fnTag);
+      }
+
+      //Check this!!!!
+      await this.serverService.checkPreTransferVerificationRequest(
+        req,
+        session,
+      );
+
+      saveMessageInSessionData(session.getServerSessionData(), req);
+
+      /*DO STUFFFFFFFF*/
+      await this.serverService.registryVerification();
+      await this.serverService.destinationNetworkAssetCompatibilityVerification();
+
+      //Check this!!!!
+      const message = await this.serverService.preTransferVerificationResponse(
+        req,
+        session,
+      );
+
+      if (!message) {
+        throw new FailedToCreateMessageError(
+          fnTag,
+          getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE),
+        );
+      }
+
+      this.Log.debug(`${fnTag}, Returning response: ${message}`);
+
+      saveMessageInSessionData(session.getServerSessionData(), message);
+
+      return message;
+    } catch (error) {
+      this.Log.error(
+        `${fnTag}, Error: ${new FailedToProcessError(
+          fnTag,
+          getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE),
+          error,
+        )}`,
+      );
+      setError(session, MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE, error);
+      return await this.serverService.preTransferVerificationErrorResponse(
+        error,
+        session,
+      );
+    }
+  }
+
   setupRouter(router: ConnectRouter): void {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
@@ -186,6 +250,11 @@ export class Stage0SATPHandler implements SATPHandler {
       },
       async preSATPTransfer(req): Promise<PreSATPTransferResponse> {
         return await that.PreSATPTransferImplementation(req);
+      },
+      async preTransferVerification(
+        req,
+      ): Promise<PreTransferVerificationResponse> {
+        return await that.PreTransferVerificationImplementation(req);
       },
     });
   }
@@ -234,6 +303,66 @@ export class Stage0SATPHandler implements SATPHandler {
       throw new FailedToProcessError(
         fnTag,
         getMessageTypeName(MessageType.NEW_SESSION_REQUEST),
+        error,
+      );
+    }
+  }
+  //INSERT CODE HERE
+  public async PreTransferVerificationRequest(
+    response: NewSessionResponse,
+    sessionId: string,
+  ): Promise<PreTransferVerificationRequest> {
+    const stepTag = `PreTransferVerificationRequest()`;
+    const fnTag = `${this.getHandlerIdentifier()}#${stepTag}`;
+    let session: SATPSession | undefined;
+    try {
+      this.Log.debug(`${fnTag}, Pre Transfer Verification Request...`);
+
+      session = this.sessions.get(sessionId);
+
+      if (!session) {
+        throw new SessionNotFoundError(fnTag);
+      }
+      const newSession = await this.clientService.checkNewSessionResponse(
+        response,
+        session,
+        Array.from(this.sessions.keys()),
+      );
+
+      if (newSession.getSessionId() != session.getSessionId()) {
+        this.sessions.set(newSession.getSessionId(), newSession);
+        this.sessions.delete(session.getSessionId());
+      }
+
+      saveMessageInSessionData(session.getClientSessionData(), response);
+
+      //DO STUFFFFF!!
+
+      const message =
+        await this.clientService.preTransferVerificationRequest(session);
+
+      if (!message) {
+        throw new FailedToCreateMessageError(
+          fnTag,
+          getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_REQUEST),
+        );
+      }
+
+      saveMessageInSessionData(session.getClientSessionData(), message);
+
+      return message;
+    } catch (error) {
+      this.Log.error(
+        `${fnTag}, Error: ${new FailedToProcessError(
+          fnTag,
+          getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_REQUEST),
+          error,
+        )}`,
+      );
+      setError(session, MessageType.PRE_TRANSFER_VERIFICATION_REQUEST, error);
+      throw new FailedToProcessError(
+        fnTag,
+        getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_REQUEST),
         error,
       );
     }

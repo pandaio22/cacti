@@ -13,6 +13,9 @@ import {
   type NewSessionRequest,
   type NewSessionResponse,
   NewSessionResponseSchema,
+  type PreTransferVerificationRequest,
+  type PreTransferVerificationResponse,
+  PreTransferVerificationResponseSchema,
   type PreSATPTransferRequest,
   type PreSATPTransferResponse,
   PreSATPTransferResponseSchema,
@@ -172,6 +175,115 @@ export class Stage0ServerService extends SATPService {
 
     this.Log.info(`${fnTag}, NewSessionRequest passed all checks.`);
     return session;
+  }
+
+  public async checkPreTransferVerificationRequest(
+    request: PreTransferVerificationRequest,
+    session: SATPSession,
+  ): Promise<void> {
+    const stepTag = `checkPreTransferVerificationRequest()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+
+    if (session == undefined) {
+      throw new SessionError(fnTag);
+    }
+
+    if (!session.hasServerSessionData()) {
+      throw new Error(`${fnTag}, Session Data is missing`);
+    }
+
+    const sessionData = session.getServerSessionData();
+
+    if (request.sessionId != sessionData.id) {
+      throw new Error(`${fnTag}, Session ID does not match`);
+    }
+
+    if (request.senderGatewayNetworkId == "") {
+      throw new Error(`${fnTag}, Sender Gateway Network ID does not match`);
+    }
+
+    sessionData.senderGatewayNetworkId = request.senderGatewayNetworkId;
+
+    if (request.senderAsset == undefined) {
+      throw new Error(`${fnTag}, Sender Asset is missing`);
+    }
+
+    if (request.receiverAsset == undefined) {
+      throw new Error(`${fnTag}, Receiver Asset is missing`);
+    }
+
+    if (request.messageType != MessageType.PRE_TRANSFER_VERIFICATION_REQUEST) {
+      throw new MessageTypeError(
+        fnTag,
+        request.messageType.toString(),
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST.toString(),
+      );
+    }
+
+    if (
+      request.hashPreviousMessage !=
+      getMessageHash(sessionData, MessageType.NEW_SESSION_RESPONSE)
+    ) {
+      throw new Error(`${fnTag}, Hash of previous message does not match`);
+    }
+
+    if (request.clientSignature == "") {
+      throw new Error(`${fnTag}, Client Signature is missing`);
+    }
+
+    if (
+      !verifySignature(this.Signer, request, sessionData.clientGatewayPubkey)
+    ) {
+      throw new Error(`${fnTag}, Client Signature is invalid`);
+    }
+
+    if (request.senderAsset == undefined) {
+      throw new Error(`${fnTag}, Sender Asset is missing`);
+    }
+
+    sessionData.senderAsset = request.senderAsset;
+
+    if (request.receiverAsset == undefined) {
+      throw new Error(`${fnTag}, Receiver Asset is missing`);
+    }
+
+    if (request.clientTransferNumber != "") {
+      this.Log.info(
+        `${fnTag}, Optional variable loaded: clientTransferNumber...`,
+      );
+      sessionData.clientTransferNumber = request.clientTransferNumber;
+    }
+
+    saveSignature(
+      sessionData,
+      MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+      request.clientSignature,
+    );
+
+    saveHash(
+      sessionData,
+      MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+      getHash(request),
+    );
+
+    saveTimestamp(
+      sessionData,
+      MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+      TimestampType.RECEIVED,
+    );
+
+    //TODO maybe do a hard copy, reason: after the hash because this changes the req object
+    sessionData.receiverAsset = request.receiverAsset;
+
+    sessionData.receiverAsset.tokenId = createAssetId(
+      request.contextId,
+      request.receiverAsset.tokenType,
+      sessionData.recipientGatewayNetworkId,
+    );
+
+    this.Log.info(
+      `${fnTag}, PreTransferVerificationRequest passed all checks.`,
+    );
   }
 
   public async checkPreSATPTransferRequest(
@@ -396,6 +508,165 @@ export class Stage0ServerService extends SATPService {
     newSessionResponse.serverSignature = messageSignature;
 
     return newSessionResponse;
+  }
+
+  public async preTransferVerificationResponse(
+    request: PreTransferVerificationRequest,
+    session: SATPSession,
+  ): Promise<PreTransferVerificationResponse> {
+    const stepTag = `preTransferVerificationResponse()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+    const messageType =
+      MessageType[MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE];
+    if (session == undefined) {
+      throw new SessionError(fnTag);
+    }
+
+    if (!session.hasServerSessionData()) {
+      throw new SessionDataNotAvailableError("server", fnTag);
+    }
+    console.log("This is Session:", session);
+    const sessionData = session.getServerSessionData();
+    console.log("This is SessionData:", sessionData);
+    await this.dbLogger.persistLogEntry({
+      sessionID: sessionData.id,
+      type: messageType,
+      operation: "init",
+      data: safeStableStringify(sessionData),
+      sequenceNumber: Number(sessionData.lastSequenceNumber),
+    });
+
+    try {
+      this.Log.info(`exec-${messageType}`);
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: messageType,
+        operation: "exec",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+
+      if (request.receiverAsset == undefined) {
+        throw new AssetMissing(fnTag);
+      }
+
+      const bridge = this.bridgeManager.getBridgeEndPoint(
+        {
+          id: sessionData.receiverAsset?.networkId?.id,
+          ledgerType: sessionData.receiverAsset?.networkId?.type,
+        } as NetworkId,
+        this.claimFormat,
+      );
+
+      if (!sessionData.receiverAsset?.tokenType) {
+        throw new LedgerAssetError(`${fnTag}, tokenType is missing`);
+      }
+
+      sessionData.recipientGatewayNetworkId = bridge.getApproveAddress(
+        sessionData.receiverAsset?.tokenType,
+      );
+
+      const preTransferVerificationResponse = create(
+        PreTransferVerificationResponseSchema,
+        {
+          sessionId: sessionData.id,
+          contextId: sessionData.transferContextId,
+          recipientGatewayNetworkId: sessionData.recipientGatewayNetworkId,
+          hashPreviousMessage: getMessageHash(
+            sessionData,
+            MessageType.PRE_SATP_TRANSFER_REQUEST,
+          ),
+          recipientTokenId: sessionData.receiverAsset!.tokenId,
+          messageType: MessageType.PRE_SATP_TRANSFER_RESPONSE,
+        },
+      );
+
+      const messageSignature = bufArray2HexStr(
+        sign(this.Signer, safeStableStringify(preTransferVerificationResponse)),
+      );
+
+      preTransferVerificationResponse.serverSignature = messageSignature;
+
+      saveSignature(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        messageSignature,
+      );
+
+      saveHash(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        fnTag,
+      );
+
+      saveTimestamp(
+        sessionData,
+        MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        TimestampType.PROCESSED,
+      );
+
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: messageType,
+        operation: "done",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+
+      this.Log.info(`${fnTag},  sending PreTransferVerificationResponse...`);
+
+      return preTransferVerificationResponse;
+    } catch (error) {
+      this.Log.error(`fail-${messageType}`, error);
+      await this.dbLogger.persistLogEntry({
+        sessionID: sessionData.id,
+        type: messageType,
+        operation: "fail",
+        data: safeStableStringify(sessionData),
+        sequenceNumber: Number(sessionData.lastSequenceNumber),
+      });
+      throw error;
+    }
+  }
+
+  public async preTransferVerificationErrorResponse(
+    error: SATPInternalError,
+    session?: SATPSession,
+  ): Promise<PreTransferVerificationResponse> {
+    let preTransferVerificationResponse = create(
+      PreTransferVerificationResponseSchema,
+      {
+        messageType: MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE,
+      },
+    );
+
+    preTransferVerificationResponse = this.setError(
+      preTransferVerificationResponse,
+      error,
+    ) as PreTransferVerificationResponse;
+
+    if (!(error instanceof SessionNotFoundError) && session != undefined) {
+      preTransferVerificationResponse.sessionId =
+        session.getServerSessionData().id;
+    }
+
+    const messageSignature = bufArray2HexStr(
+      sign(this.Signer, safeStableStringify(preTransferVerificationResponse)),
+    );
+
+    preTransferVerificationResponse.serverSignature = messageSignature;
+
+    return preTransferVerificationResponse;
+  }
+
+  /*INSERT REQUEST TO REGISTRY*/
+  public async registryVerification(): Promise<void> {
+    console.log("registryVerification() CALLED HERE");
+  }
+
+  /*INSERT REQUEST TO NETWORK*/
+  public async destinationNetworkAssetCompatibilityVerification(): Promise<void> {
+    console.log("destinationNetworkAssetCompatibilityVerification()");
   }
 
   public async preSATPTransferErrorResponse(
@@ -636,10 +907,17 @@ export class Stage0ServerService extends SATPService {
       throw new FailedToProcessError(fnTag, "WrapAsset", error);
     }
   }
+
   private setError(
-    message: NewSessionResponse | PreSATPTransferResponse,
+    message:
+      | NewSessionResponse
+      | PreTransferVerificationResponse
+      | PreSATPTransferResponse,
     error: SATPInternalError,
-  ): NewSessionResponse | PreSATPTransferResponse {
+  ):
+    | NewSessionResponse
+    | PreTransferVerificationResponse
+    | PreSATPTransferResponse {
     message.error = true;
     message.errorCode = error.getSATPErrorType();
     return message;
