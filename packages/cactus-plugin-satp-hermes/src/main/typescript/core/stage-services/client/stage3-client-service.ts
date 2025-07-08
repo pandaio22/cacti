@@ -666,6 +666,9 @@ export class Stage3ClientService extends SATPService {
     );
 
     this.Log.info(`${fnTag}, TransferCompleteRequest passed all checks.`);
+
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
   }
 
   async burnAsset(session: SATPSession): Promise<void> {

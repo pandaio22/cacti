@@ -24,7 +24,9 @@ import {
   PreSATPTransferResponse,
   PreSATPTransferResponseSchema,
   PreTransferVerificationRequest,
+  PreTransferVerificationRequestSchema,
   PreTransferVerificationResponse,
+  PreTransferVerificationResponseSchema,
 } from "../generated/proto/cacti/satp/v02/service/stage_0_pb";
 import {
   TransferProposalRequest,
@@ -302,6 +304,14 @@ export function saveTimestamp(
     case MessageType.NEW_SESSION_RESPONSE:
       timestamps.stage0.newSessionResponseMessageTimestamp = timestamp;
       break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      timestamps.stage0.preTransferVerificationRequestMessageTimestamp =
+        timestamp;
+      break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      timestamps.stage0.preTransferVerificationResponseMessageTimestamp =
+        timestamp;
+      break;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       timestamps.stage0.preSatpTransferRequestMessageTimestamp = timestamp;
       break;
@@ -379,6 +389,12 @@ export function saveHash(
     case MessageType.NEW_SESSION_RESPONSE:
       hashes.stage0.newSessionResponseMessageHash = hash;
       break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      hashes.stage0.preTransferVerificationRequestMessageHash = hash;
+      break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      hashes.stage0.preTransferVerificationResponseMessageHash = hash;
+      break;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       hashes.stage0.preSatpTransferRequestMessageHash = hash;
       break;
@@ -455,6 +471,14 @@ export function saveSignature(
     case MessageType.NEW_SESSION_RESPONSE:
       signatures.stage0.newSessionResponseMessageSignature = signature;
       break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      signatures.stage0.preTransferVerificationRequestMessageSignature =
+        signature;
+      break;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      signatures.stage0.preTransferVerificationResponseMessageSignature =
+        signature;
+      break;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       signatures.stage0.preSatpTransferRequestMessageSignature = signature;
       break;
@@ -513,8 +537,22 @@ export function getPreviousMessageType(
   }
 
   switch (type) {
+    // Stage 0
+    case MessageType.NEW_SESSION_REQUEST:
+      return MessageType.UNSPECIFIED;
+    case MessageType.NEW_SESSION_RESPONSE:
+      return MessageType.NEW_SESSION_REQUEST;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      return MessageType.NEW_SESSION_RESPONSE;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      return MessageType.PRE_TRANSFER_VERIFICATION_REQUEST;
+    case MessageType.PRE_SATP_TRANSFER_REQUEST:
+      return MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE;
+    case MessageType.PRE_SATP_TRANSFER_RESPONSE:
+      return MessageType.PRE_SATP_TRANSFER_REQUEST;
+    // Stage 1
     case MessageType.INIT_PROPOSAL:
-      MessageType.UNSPECIFIED;
+      MessageType.PRE_SATP_TRANSFER_RESPONSE;
     case MessageType.INIT_RECEIPT:
       return MessageType.INIT_PROPOSAL;
     case MessageType.INIT_REJECT:
@@ -526,10 +564,12 @@ export function getPreviousMessageType(
       return MessageType.INIT_RECEIPT;
     case MessageType.TRANSFER_COMMENCE_RESPONSE:
       return MessageType.TRANSFER_COMMENCE_REQUEST;
+    // Stage 2
     case MessageType.LOCK_ASSERT:
       return MessageType.TRANSFER_COMMENCE_RESPONSE;
     case MessageType.ASSERTION_RECEIPT:
       return MessageType.LOCK_ASSERT;
+    // Stage 3
     case MessageType.COMMIT_PREPARE:
       return MessageType.ASSERTION_RECEIPT;
     case MessageType.COMMIT_READY:
@@ -570,6 +610,12 @@ export function getMessageHash(
       return sessionData.hashes.stage0.newSessionRequestMessageHash;
     case MessageType.NEW_SESSION_RESPONSE:
       return sessionData.hashes.stage0.newSessionResponseMessageHash;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      return sessionData.hashes.stage0
+        .preTransferVerificationRequestMessageHash;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      return sessionData.hashes.stage0
+        .preTransferVerificationResponseMessageHash;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       return sessionData.hashes.stage0.preSatpTransferRequestMessageHash;
     case MessageType.PRE_SATP_TRANSFER_RESPONSE:
@@ -639,6 +685,10 @@ export function getMessageTimestamp(
       return timestamps.stage0.newSessionRequestMessageTimestamp;
     case MessageType.NEW_SESSION_RESPONSE:
       return timestamps.stage0.newSessionResponseMessageTimestamp;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      return timestamps.stage0.preTransferVerificationRequestMessageTimestamp;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      return timestamps.stage0.preTransferVerificationResponseMessageTimestamp;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       return timestamps.stage0.preSatpTransferRequestMessageTimestamp;
     case MessageType.PRE_SATP_TRANSFER_RESPONSE:
@@ -685,6 +735,7 @@ export function setError(
   let sessionData: SessionData | undefined;
   switch (stageMessage) {
     case MessageType.NEW_SESSION_REQUEST:
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
     case MessageType.INIT_PROPOSAL:
     case MessageType.TRANSFER_COMMENCE_REQUEST:
@@ -695,6 +746,7 @@ export function setError(
       sessionData = session.getClientSessionData();
       break;
     case MessageType.NEW_SESSION_RESPONSE:
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
     case MessageType.PRE_SATP_TRANSFER_RESPONSE:
     case MessageType.INIT_RECEIPT:
     case MessageType.INIT_REJECT:
@@ -732,6 +784,7 @@ export function setErrorChecking(
   let sessionData: SessionData | undefined;
   switch (stageMessage) {
     case MessageType.NEW_SESSION_REQUEST:
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
     case MessageType.INIT_PROPOSAL:
     case MessageType.TRANSFER_COMMENCE_REQUEST:
@@ -742,6 +795,7 @@ export function setErrorChecking(
       sessionData = session.getServerSessionData();
       break;
     case MessageType.NEW_SESSION_RESPONSE:
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
     case MessageType.PRE_SATP_TRANSFER_RESPONSE:
     case MessageType.INIT_RECEIPT:
     case MessageType.INIT_REJECT:
@@ -785,6 +839,12 @@ export function getSessionActualStage(
     }
     if (sessionData.hashes.stage0.newSessionResponseMessageHash) {
       messageType = MessageType.NEW_SESSION_RESPONSE;
+    }
+    if (sessionData.hashes.stage0.preTransferVerificationRequestMessageHash) {
+      messageType = MessageType.PRE_TRANSFER_VERIFICATION_REQUEST;
+    }
+    if (sessionData.hashes.stage0.preTransferVerificationResponseMessageHash) {
+      messageType = MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE;
     }
     if (sessionData.hashes.stage0.preSatpTransferRequestMessageHash) {
       messageType = MessageType.PRE_SATP_TRANSFER_REQUEST;
@@ -857,6 +917,8 @@ export function getCrashedStage(sessionData: SessionData): SATPStage {
   const isStage0Complete = !!(
     hashes.stage0?.newSessionRequestMessageHash &&
     hashes.stage0?.newSessionResponseMessageHash &&
+    hashes.stage0?.preTransferVerificationRequestMessageHash &&
+    hashes.stage0?.preTransferVerificationResponseMessageHash &&
     hashes.stage0?.preSatpTransferRequestMessageHash &&
     hashes.stage0?.preSatpTransferResponseMessageHash
   );
@@ -941,6 +1003,12 @@ export function saveMessageInSessionData(
     sessionData.satpMessages.stage0.newSessionRequestMessage = message;
   } else if (isMessage(message, NewSessionResponseSchema)) {
     sessionData.satpMessages.stage0.newSessionResponseMessage = message;
+  } else if (isMessage(message, PreTransferVerificationRequestSchema)) {
+    sessionData.satpMessages.stage0.preTransferVerificationRequestMessage =
+      message;
+  } else if (isMessage(message, PreTransferVerificationResponseSchema)) {
+    sessionData.satpMessages.stage0.preTransferVerificationResponseMessage =
+      message;
   } else if (isMessage(message, PreSATPTransferRequestSchema)) {
     sessionData.satpMessages.stage0.preSatpTransferRequestMessage = message;
   } else if (isMessage(message, PreSATPTransferResponseSchema)) {
@@ -1016,6 +1084,12 @@ export function getMessageInSessionData(
       return sessionData.satpMessages.stage0.newSessionRequestMessage;
     case MessageType.NEW_SESSION_RESPONSE:
       return sessionData.satpMessages.stage0.newSessionResponseMessage;
+    case MessageType.PRE_TRANSFER_VERIFICATION_REQUEST:
+      return sessionData.satpMessages.stage0
+        .preTransferVerificationRequestMessage;
+    case MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE:
+      return sessionData.satpMessages.stage0
+        .preTransferVerificationResponseMessage;
     case MessageType.PRE_SATP_TRANSFER_REQUEST:
       return sessionData.satpMessages.stage0.preSatpTransferRequestMessage;
     case MessageType.PRE_SATP_TRANSFER_RESPONSE:

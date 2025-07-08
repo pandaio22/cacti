@@ -107,8 +107,10 @@ message SATPMessages {
 message Stage0Messages {
     cacti.satp.v02.service.NewSessionRequest new_session_request_message = 1;
     cacti.satp.v02.service.NewSessionResponse new_session_response_message = 2;
-    cacti.satp.v02.service.PreSATPTransferRequest pre_satp_transfer_request_message = 3;
-    cacti.satp.v02.service.PreSATPTransferResponse pre_satp_transfer_response_message = 4;
+    cacti.satp.v02.service.PreTransferVerificationRequest pre_transfer_verification_request_message = 3;
+    cacti.satp.v02.service.PreTransferVerificationResponse pre_transfer_verification_response_message = 4;
+    cacti.satp.v02.service.PreSATPTransferRequest pre_satp_transfer_request_message = 5;
+    cacti.satp.v02.service.PreSATPTransferResponse pre_satp_transfer_response_message = 6;
 }
 
 message Stage1Messages {
@@ -142,8 +144,10 @@ message MessageStagesHashes {
 message Stage0Hashes {
     string new_session_request_message_hash = 1;
     string new_session_response_message_hash = 2;
-    string pre_satp_transfer_request_message_hash = 3;
-    string pre_satp_transfer_response_message_hash = 4;
+    string pre_transfer_verification_request_message_hash = 3;
+    string pre_transfer_verification_response_message_hash = 4;
+    string pre_satp_transfer_request_message_hash = 5;
+    string pre_satp_transfer_response_message_hash = 6;
 }
 
 message Stage1Hashes {
@@ -178,8 +182,10 @@ message MessageStagesSignatures {
 message Stage0Signatures {
     string new_session_request_message_signature = 1;
     string new_session_response_message_signature = 2;
-    string pre_satp_transfer_request_message_signature = 3;
-    string pre_satp_transfer_response_message_signature = 4;
+    string pre_transfer_verification_request_message_signature = 3;
+    string pre_transfer_verification_response_message_signature = 4;
+    string pre_satp_transfer_request_message_signature = 5;
+    string pre_satp_transfer_response_message_signature = 6;
 }
 
 message Stage1Signatures {
@@ -214,8 +220,10 @@ message MessageStagesTimestamps {
 message Stage0Timestamps {
     string new_session_request_message_timestamp = 1;
     string new_session_response_message_timestamp = 2;
-    string pre_satp_transfer_request_message_timestamp = 3;
-    string pre_satp_transfer_response_message_timestamp = 4;
+    string pre_transfer_verification_request_message_timestamp = 3;
+    string pre_transfer_verification_response_message_timestamp = 4;
+    string pre_satp_transfer_request_message_timestamp = 5;
+    string pre_satp_transfer_response_message_timestamp = 6;
 }
 
 message Stage1Timestamps {

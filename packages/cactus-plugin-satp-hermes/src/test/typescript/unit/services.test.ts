@@ -419,11 +419,22 @@ describe("SATP Services Testing", () => {
     ).toBeDefined();
     expect(preTransferVerificationRequestMessage.clientSignature).toBeDefined();
   });
+  it("Service0Server checkPreTransferVerificationRequest", async () => {
+    //When
+    await satpServerService0.checkPreTransferVerificationRequest(
+      preTransferVerificationRequestMessage,
+      mockSession,
+    );
 
+    //Then
+    expect(mockSession.getClientSessionData()).toBeDefined();
+    expect(mockSession.getClientSessionData()?.transferContextId).toBe(
+      preTransferVerificationRequestMessage.contextId,
+    );
+  });
   it("Service0Server preTransferVerificationResponse", async () => {
     //Given
     const sessionData = mockSession.getServerSessionData();
-    console.log("This is SessionData:", sessionData);
 
     //When
     preTransferVerificationResponseMessage =
@@ -454,7 +465,17 @@ describe("SATP Services Testing", () => {
       preTransferVerificationResponseMessage.serverSignature,
     ).toBeDefined();
   });
-
+  it("Service0Client checkPreTransferVerificationResponse", async () => {
+    //When
+    const checked =
+      await satpClientService0.checkPreTransferVerificationResponse(
+        preTransferVerificationResponseMessage,
+        mockSession,
+        sessionIDs,
+      );
+    //Then
+    expect(checked).toBeDefined();
+  });
   it("Service0Client preSATPTransferRequest", async () => {
     expect(satpClientService0).toBeDefined();
     expect(satpClientService0.getServiceIdentifier()).toBe(
@@ -510,7 +531,7 @@ describe("SATP Services Testing", () => {
   });
   it("Service0Server preSATPTransferResponse", async () => {
     const sessionData = mockSession.getServerSessionData();
-    console.log("This is SessionData:", sessionData);
+
     if (!sessionData) {
       throw new Error("Session data not found");
     }
@@ -711,7 +732,6 @@ describe("SATP Services Testing", () => {
       transferCommenceRequestMessage.common?.hashPreviousMessage,
     ).toBeDefined();
   });
-
   it("Service1Server checkTransferCommenceRequest", async () => {
     expect(satpServerService1).toBeDefined();
     expect(satpServerService1.getServiceIdentifier()).toBe(
@@ -723,7 +743,6 @@ describe("SATP Services Testing", () => {
       mockSession,
     );
   });
-
   it("Service1Server transferCommenceResponse", async () => {
     transferCommenceResponseMessage =
       (await satpServerService1.transferCommenceResponse(

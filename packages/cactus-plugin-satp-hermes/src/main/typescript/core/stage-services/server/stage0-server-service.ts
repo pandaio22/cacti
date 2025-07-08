@@ -174,13 +174,17 @@ export class Stage0ServerService extends SATPService {
     );
 
     this.Log.info(`${fnTag}, NewSessionRequest passed all checks.`);
+
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
+
     return session;
   }
 
   public async checkPreTransferVerificationRequest(
     request: PreTransferVerificationRequest,
     session: SATPSession,
-  ): Promise<void> {
+  ): Promise<SATPSession> {
     const stepTag = `checkPreTransferVerificationRequest()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
 
@@ -284,6 +288,11 @@ export class Stage0ServerService extends SATPService {
     this.Log.info(
       `${fnTag}, PreTransferVerificationRequest passed all checks.`,
     );
+
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
+
+    return session;
   }
 
   public async checkPreSATPTransferRequest(
@@ -395,6 +404,9 @@ export class Stage0ServerService extends SATPService {
     );
 
     this.Log.info(`${fnTag}, PreSATPTransferRequest passed all checks.`);
+
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
   }
 
   public async newSessionResponse(
@@ -457,7 +469,7 @@ export class Stage0ServerService extends SATPService {
         messageSignature,
       );
 
-      saveHash(sessionData, MessageType.NEW_SESSION_REQUEST, fnTag);
+      saveHash(sessionData, MessageType.NEW_SESSION_REQUEST, getHash(request));
 
       saveTimestamp(
         sessionData,
@@ -474,6 +486,9 @@ export class Stage0ServerService extends SATPService {
       });
 
       this.Log.info(`${fnTag}, sending NewSessionRequest...`);
+
+      console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+      console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
 
       return newSessionResponse;
     } catch (error) {
@@ -574,10 +589,10 @@ export class Stage0ServerService extends SATPService {
           recipientGatewayNetworkId: sessionData.recipientGatewayNetworkId,
           hashPreviousMessage: getMessageHash(
             sessionData,
-            MessageType.PRE_SATP_TRANSFER_REQUEST,
+            MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
           ),
           recipientTokenId: sessionData.receiverAsset!.tokenId,
-          messageType: MessageType.PRE_SATP_TRANSFER_RESPONSE,
+          messageType: MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE,
         },
       );
 
@@ -596,7 +611,7 @@ export class Stage0ServerService extends SATPService {
       saveHash(
         sessionData,
         MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
-        fnTag,
+        getHash(request),
       );
 
       saveTimestamp(
@@ -614,6 +629,8 @@ export class Stage0ServerService extends SATPService {
       });
 
       this.Log.info(`${fnTag},  sending PreTransferVerificationResponse...`);
+      console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+      console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
 
       return preTransferVerificationResponse;
     } catch (error) {
@@ -775,7 +792,11 @@ export class Stage0ServerService extends SATPService {
         messageSignature,
       );
 
-      saveHash(sessionData, MessageType.PRE_SATP_TRANSFER_REQUEST, fnTag);
+      saveHash(
+        sessionData,
+        MessageType.PRE_SATP_TRANSFER_REQUEST,
+        getHash(request),
+      );
 
       saveTimestamp(
         sessionData,
@@ -792,6 +813,9 @@ export class Stage0ServerService extends SATPService {
       });
 
       this.Log.info(`${fnTag},  sending PreSATPTransferResponse...`);
+
+      console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+      console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
 
       return preSATPTransferResponse;
     } catch (error) {

@@ -369,7 +369,7 @@ export class Stage0SATPHandler implements SATPHandler {
   }
 
   public async PreSATPTransferRequest(
-    response: NewSessionResponse,
+    response: PreTransferVerificationResponse,
     sessionId: string,
   ): Promise<PreSATPTransferRequest> {
     const stepTag = `PreSATPTransferRequest()`;
@@ -384,12 +384,12 @@ export class Stage0SATPHandler implements SATPHandler {
         throw new SessionNotFoundError(fnTag);
       }
 
-      const newSession = await this.clientService.checkNewSessionResponse(
-        response,
-        session,
-        Array.from(this.sessions.keys()),
-      );
-
+      const newSession =
+        await this.clientService.checkPreTransferVerificationResponse(
+          response,
+          session,
+          Array.from(this.sessions.keys()),
+        );
       if (newSession.getSessionId() != session.getSessionId()) {
         this.sessions.set(newSession.getSessionId(), newSession);
         this.sessions.delete(session.getSessionId());

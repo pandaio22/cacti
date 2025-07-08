@@ -12,6 +12,7 @@ import {
   PreSATPTransferRequestSchema,
   PreTransferVerificationRequest,
   PreTransferVerificationRequestSchema,
+  PreTransferVerificationResponse,
 } from "../../../generated/proto/cacti/satp/v02/service/stage_0_pb";
 import { create } from "@bufbuild/protobuf";
 import { stringify as safeStableStringify } from "safe-stable-stringify";
@@ -253,10 +254,104 @@ export class Stage0ClientService extends SATPService {
         response.contextId,
       );
     }
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
+
     return session;
   }
 
   //INSERT CODE HERE
+  public async checkPreTransferVerificationResponse(
+    response: PreTransferVerificationResponse,
+    session: SATPSession,
+    sessionIds: string[],
+  ): Promise<SATPSession> {
+    const stepTag = `checkPreTransferVerificationResponse()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+
+    if (session == undefined) {
+      throw new SessionError(fnTag);
+    }
+
+    session.verify(fnTag, SessionType.CLIENT, false, false, true);
+
+    const sessionData = session.getClientSessionData();
+
+    if (response.sessionId == "") {
+      throw new SessionIdError(fnTag);
+    }
+
+    if (
+      response.contextId == "" ||
+      response.contextId != sessionData.transferContextId
+    ) {
+      throw new TransferContextIdError(
+        fnTag,
+        response.contextId,
+        sessionData.transferContextId,
+      );
+    }
+
+    if (response.serverSignature == "") {
+      throw new SignatureVerificationError(fnTag);
+    }
+
+    if (
+      response.messageType != MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE
+    ) {
+      throw new MessageTypeError(
+        fnTag,
+        getMessageTypeName(response.messageType),
+        getMessageTypeName(MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE),
+      );
+    }
+
+    if (
+      response.hashPreviousMessage !=
+      getMessageHash(sessionData, MessageType.PRE_TRANSFER_VERIFICATION_REQUEST)
+    ) {
+      throw new HashError(
+        fnTag,
+        response.hashPreviousMessage,
+        getMessageHash(
+          sessionData,
+          MessageType.PRE_TRANSFER_VERIFICATION_REQUEST,
+        ),
+      );
+    }
+
+    signatureVerifier(fnTag, this.Signer, response, sessionData);
+
+    saveTimestamp(
+      sessionData,
+      MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE,
+      TimestampType.RECEIVED,
+    );
+
+    if (sessionData.id != response.sessionId) {
+      if (sessionIds.includes(response.sessionId)) {
+        throw new SessionMissMatchError(fnTag);
+      }
+
+      session = new SATPSession({
+        contextID: response.contextId,
+        sessionID: response.sessionId,
+        server: false,
+        client: true,
+      });
+
+      copySessionDataAttributes(
+        sessionData,
+        session.getClientSessionData(),
+        response.sessionId,
+        response.contextId,
+      );
+    }
+    console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+    console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
+    return session;
+  }
+
   public async preTransferVerificationRequest(
     session: SATPSession,
   ): Promise<PreTransferVerificationRequest> {
@@ -368,6 +463,9 @@ export class Stage0ClientService extends SATPService {
       });
 
       this.Log.info(`${fnTag}, sending PreTransferVerificationRequest...`);
+
+      console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+      console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
 
       return preTransferVerificationRequest;
     } catch (error) {
@@ -491,6 +589,9 @@ export class Stage0ClientService extends SATPService {
       });
 
       this.Log.info(`${fnTag}, sending PreSATPTransferRequest...`);
+
+      console.log(`${fnTag} ClientSessionData`, session.getClientSessionData());
+      console.log(`${fnTag} ServerSessionData`, session.getServerSessionData());
 
       return preSATPTransferRequest;
     } catch (error) {

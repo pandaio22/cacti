@@ -742,26 +742,31 @@ export class SATPManager {
           }
 
         case MessageType.PRE_SATP_TRANSFER_REQUEST:
-          if (!newSessionResponse) {
+          if (!preTransferVerificationResponse) {
             this.logger.debug(
-              `${fnTag}, Recovering from Stage 0, NewSessionResponse`,
+              `${fnTag}, Recovering from Stage 0, PreTransferVerificationResponse`,
             );
-            newSessionResponse = getMessageInSessionData(
+            preTransferVerificationResponse = getMessageInSessionData(
               sessionData,
-              MessageType.NEW_SESSION_RESPONSE,
-            ) as NewSessionResponse;
+              MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE,
+            ) as PreTransferVerificationResponse;
 
-            if (!newSessionResponse) {
+            if (!preTransferVerificationResponse) {
               throw new RecoverMessageError(
                 fnTag,
-                getMessageTypeName(MessageType.NEW_SESSION_RESPONSE),
+                getMessageTypeName(
+                  MessageType.PRE_TRANSFER_VERIFICATION_RESPONSE,
+                ),
               );
             }
           }
 
           preSATPTransferRequest = await (
             this.getSATPHandler(SATPHandlerType.STAGE0) as Stage0SATPHandler
-          ).PreSATPTransferRequest(newSessionResponse, session.getSessionId());
+          ).PreSATPTransferRequest(
+            preTransferVerificationResponse,
+            session.getSessionId(),
+          );
 
           if (!preSATPTransferRequest) {
             throw new CreateSATPRequestError(
