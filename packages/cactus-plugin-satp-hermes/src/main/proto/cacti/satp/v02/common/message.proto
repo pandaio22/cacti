@@ -1,6 +1,9 @@
 syntax = "proto3";
 package cacti.satp.v02.common;
 
+import "google/protobuf/struct.proto";
+
+
 enum STATUS {
   STATUS_UNSPECIFIED = 0;
   STATUS_OK = 1;
@@ -299,10 +302,31 @@ message Asset {
   string msp_id = 8;
   string channel_name = 9;
   NetworkId network_id = 10;
+  optional string tokenizedAssetRecord = 11;
+  JsonLdContext context = 12;
 }
 
 message NetworkId {
   string id = 1;
   string type = 2;
+}
+
+message JsonLdContext {
+  oneof context {
+    string uri = 1;
+    google.protobuf.Struct object = 2;
+    ContextArray array = 3;
+  }
+}
+
+message ContextArray {
+  repeated ContextItem items = 1;
+}
+
+message ContextItem {
+  oneof value {
+    string uri = 1;
+    google.protobuf.Struct object = 2;
+  }
 }
 

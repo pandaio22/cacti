@@ -7928,6 +7928,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hyperledger/cacti-asset-schema-architecture-plugin-satp@npm:2.1.0, @hyperledger/cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp":
+  version: 0.0.0-use.local
+  resolution: "@hyperledger/cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp"
+  dependencies:
+    "@digitalcredentials/jsonld": "npm:9.0.0"
+    "@helia/json": "npm:4.0.6"
+    "@helia/strings": "npm:4.0.6"
+    "@hyperledger/cactus-api-client": "workspace:^"
+    "@hyperledger/cactus-cmd-api-server": "workspace:^"
+    "@hyperledger/cactus-common": "workspace:^"
+    "@hyperledger/cactus-core": "workspace:^"
+    "@hyperledger/cactus-core-api": "workspace:^"
+    "@hyperledger/cactus-plugin-object-store-ipfs": "workspace:^"
+    "@hyperledger/cactus-plugin-satp-hermes": "workspace:^"
+    "@openapitools/openapi-generator-cli": "npm:^2.20.2"
+    "@peculiar/webcrypto": "npm:1.5.0"
+    "@types/express": "npm:5"
+    "@types/jest": "npm:29.5.14"
+    "@types/jsonld": "npm:1.5.15"
+    "@types/node": "npm:22.15.21"
+    "@types/node-forge": "npm:1"
+    "@types/supertest": "npm:^6.0.3"
+    asn1js: "npm:3.0.6"
+    body-parser: "npm:2.2.0"
+    class-validator: "npm:^0.14.2"
+    crypto: "npm:1.0.1"
+    express: "npm:5.1.0"
+    helia: "npm:5.4.2"
+    jest: "npm:29.7.0"
+    jose: "npm:5"
+    jsonld: "npm:8.3.3"
+    jsonld-signatures: "npm:11.5.0"
+    kubo-rpc-client: "npm:5.1.0"
+    multiformats: "npm:13.3.6"
+    node-forge: "npm:1.3.1"
+    pkijs: "npm:3.2.5"
+    pvutils: "npm:1.1.3"
+    safe-stable-stringify: "npm:2.5.0"
+    supertest: "npm:^7.1.1"
+    swagger-cli: "npm:4.0.4"
+    ts-jest: "npm:29.3.4"
+    ts-node: "npm:10.9.2"
+    typescript: "npm:5.8.3"
+    uuid: "npm:11.1.0"
+    zod: "npm:3.24.4"
+    zod-to-json-schema: "npm:3.24.5"
+  languageName: unknown
+  linkType: soft
+
 "@hyperledger/cacti-example-cbdc-bridging-frontend@workspace:examples/cactus-example-cbdc-bridging-frontend":
   version: 0.0.0-use.local
   resolution: "@hyperledger/cacti-example-cbdc-bridging-frontend@workspace:examples/cactus-example-cbdc-bridging-frontend"
@@ -9663,6 +9712,7 @@ __metadata:
     "@foundry-rs/hardhat-forge": "npm:0.1.17"
     "@grpc/grpc-js": "npm:1.12.4"
     "@grpc/proto-loader": "npm:0.7.13"
+    "@hyperledger/cacti-asset-schema-architecture-plugin-satp": "npm:2.1.0"
     "@hyperledger/cactus-api-client": "npm:2.1.0"
     "@hyperledger/cactus-cmd-api-server": "npm:2.1.0"
     "@hyperledger/cactus-common": "npm:2.1.0"
@@ -23441,55 +23491,6 @@ __metadata:
   checksum: 10/7e7ca628511ab18c86eea1231834d2591de29a13ae771a7d9ab85be8c6e53e45c5a5b0d0d95d4a3274fc4f26c16956a98162e40c191c131204b5d5aa949660b5
   languageName: node
   linkType: hard
-
-"cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp":
-  version: 0.0.0-use.local
-  resolution: "cacti-asset-schema-architecture-plugin-satp@workspace:packages/cacti-asset-schema-architecture-plugin-satp"
-  dependencies:
-    "@digitalcredentials/jsonld": "npm:9.0.0"
-    "@helia/json": "npm:4.0.6"
-    "@helia/strings": "npm:4.0.6"
-    "@hyperledger/cactus-api-client": "workspace:^"
-    "@hyperledger/cactus-cmd-api-server": "workspace:^"
-    "@hyperledger/cactus-common": "workspace:^"
-    "@hyperledger/cactus-core": "workspace:^"
-    "@hyperledger/cactus-core-api": "workspace:^"
-    "@hyperledger/cactus-plugin-object-store-ipfs": "workspace:^"
-    "@hyperledger/cactus-plugin-satp-hermes": "workspace:^"
-    "@openapitools/openapi-generator-cli": "npm:^2.20.2"
-    "@peculiar/webcrypto": "npm:1.5.0"
-    "@types/express": "npm:5"
-    "@types/jest": "npm:29.5.14"
-    "@types/jsonld": "npm:1.5.15"
-    "@types/node": "npm:22.15.21"
-    "@types/node-forge": "npm:1"
-    "@types/supertest": "npm:^6.0.3"
-    asn1js: "npm:3.0.6"
-    body-parser: "npm:2.2.0"
-    class-validator: "npm:^0.14.2"
-    crypto: "npm:1.0.1"
-    express: "npm:5.1.0"
-    helia: "npm:5.4.2"
-    jest: "npm:29.7.0"
-    jose: "npm:5"
-    jsonld: "npm:8.3.3"
-    jsonld-signatures: "npm:11.5.0"
-    kubo-rpc-client: "npm:5.1.0"
-    multiformats: "npm:13.3.6"
-    node-forge: "npm:1.3.1"
-    pkijs: "npm:3.2.5"
-    pvutils: "npm:1.1.3"
-    safe-stable-stringify: "npm:2.5.0"
-    supertest: "npm:^7.1.1"
-    swagger-cli: "npm:4.0.4"
-    ts-jest: "npm:29.3.4"
-    ts-node: "npm:10.9.2"
-    typescript: "npm:5.8.3"
-    uuid: "npm:11.1.0"
-    zod: "npm:3.24.4"
-    zod-to-json-schema: "npm:3.24.5"
-  languageName: unknown
-  linkType: soft
 
 "cacti-test-asset-schema-architecture-plugin-satp@workspace:packages/cacti-test-asset-schema-architecture-plugin-satp":
   version: 0.0.0-use.local

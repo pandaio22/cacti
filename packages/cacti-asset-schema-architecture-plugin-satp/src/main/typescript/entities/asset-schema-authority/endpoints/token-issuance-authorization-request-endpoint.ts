@@ -10,7 +10,6 @@ import {
   IWebServiceEndpoint,
 } from "@hyperledger/cactus-core-api";
 import type { Express, Request, Response } from "express";
-import type { IRequestOptions } from "@hyperledger/cactus-plugin-satp-hermes/dist/lib/main/typescript/core/types";
 import {
   handleRestEndpointException,
   registerWebServiceEndpoint,

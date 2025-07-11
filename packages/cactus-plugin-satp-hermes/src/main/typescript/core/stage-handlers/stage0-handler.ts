@@ -204,7 +204,7 @@ export class Stage0SATPHandler implements SATPHandler {
       saveMessageInSessionData(session.getServerSessionData(), req);
 
       /*DO STUFFFFFFFF*/
-      await this.serverService.registryVerification();
+      await this.serverService.registryVerification(req, session);
       await this.serverService.destinationNetworkAssetCompatibilityVerification();
 
       //Check this!!!!

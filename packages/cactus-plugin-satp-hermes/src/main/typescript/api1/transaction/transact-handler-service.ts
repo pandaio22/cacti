@@ -78,6 +78,7 @@ export async function executeTransact(
     req.sourceAsset.referenceId,
     req.sourceAsset.networkId.ledgerType,
     req.sourceAsset.tokenType,
+    req.sourceAsset.tokenizedAssetRecord,
     req.receiverAsset.networkId.id,
     req.receiverAsset.referenceId,
     req.receiverAsset.networkId.ledgerType,

@@ -65,6 +65,9 @@ import { create } from "@bufbuild/protobuf";
 import { type BridgeManagerClientInterface } from "../../../cross-chain-mechanisms/bridge/interfaces/bridge-manager-client-interface";
 import { LedgerType } from "@hyperledger/cactus-core-api";
 import { NetworkId } from "../../../public-api";
+import { Configuration } from "@hyperledger/cactus-core-api";
+import { RegistryApi } from "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api";
+
 export class Stage0ServerService extends SATPService {
   public static readonly SATP_STAGE = "0";
   public static readonly SERVICE_TYPE = SATPServiceType.Server;
@@ -676,14 +679,131 @@ export class Stage0ServerService extends SATPService {
     return preTransferVerificationResponse;
   }
 
-  /*INSERT REQUEST TO REGISTRY*/
-  public async registryVerification(): Promise<void> {
-    console.log("registryVerification() CALLED HERE");
+  public async registryVerification(
+    request: PreTransferVerificationRequest,
+    session: SATPSession,
+  ): Promise<boolean> {
+    const stepTag = `registryVerification`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+    const REGISTRY_API_SERVER: string = "http://localhost:3000";
+
+    const config = new Configuration({
+      basePath: REGISTRY_API_SERVER,
+    });
+
+    const registryApi = new RegistryApi(config);
+
+    this.Log.debug("registryVerification() CALLED HERE");
+
+    if (
+      await !this.validateTokenizedAssetRecord(request, session, registryApi)
+    ) {
+      throw new SignatureVerificationError(
+        fnTag,
+        "Tokenized Asset Record validation failed",
+      );
+    }
+
+    if (!this.validateSchemaProfile(request, session, registryApi)) {
+      throw new SignatureVerificationError(
+        fnTag,
+        "Schema Profile validation failed",
+      );
+    }
+
+    return true;
   }
 
-  /*INSERT REQUEST TO NETWORK*/
+  /*
+   *Validating Tokenized Asset Record (TAR1) corresponding to asset-token AT1:
+   *Upon receiving the reference to the Tokenized Asset Record,
+   *the gateway G2 must resolve (de-reference) the reference to the correct
+   *Registry Service (RG1) where the Tokenized Asset Record (TAR1) is stored.
+   *Gateway G2 then fetches a copy of the TAR1 from the Registry Service (RG1) and
+   *validates the signature of on TAR1.
+   */
+  public async validateTokenizedAssetRecord(
+    request: PreTransferVerificationRequest,
+    session: SATPSession,
+    registryApi: RegistryApi,
+  ): Promise<boolean> {
+    const stepTag = `validateTokenizedAssetRecord()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+
+    console.log("validateTokenizedAssetRecord() CALLED HERE");
+
+    try {
+      if (request.senderAsset?.tokenizedAssetRecord == undefined) {
+        throw new AssetMissing(fnTag);
+      }
+      if (session == undefined) {
+        throw new SessionError(fnTag);
+      }
+
+      const getTokenizedAssetRecordEndpoint =
+        await registryApi.getTokenizedAssetRecord(
+          request.senderAsset?.tokenizedAssetRecord,
+        );
+
+      if (getTokenizedAssetRecordEndpoint == undefined) {
+        throw new AssetMissing(
+          fnTag,
+          `Failed to fetch Tokenized Asset Record from Registry Service`,
+        );
+      }
+
+      console.log(
+        `${fnTag}, Tokenized Asset Record fetched successfully:`,
+        getTokenizedAssetRecordEndpoint.data,
+      );
+
+      return true;
+    } catch (error) {
+      this.Log.error(`Error in ${fnTag}`, error);
+      throw new FailedToProcessError(
+        fnTag,
+        "validateTokenizedAssetRecord",
+        error,
+      );
+    }
+  }
+
+  /**
+   * Validating Schema Profile (SP1) corresponding to Tokenized Asset Record (TAR1):
+   * Since the Tokenized Asset Record (TAR1) carries a reference to the Schema Profile (SP1),
+   * gateway G2 must use that reference to fetch a copy of the Schema Profile SP1 from the
+   * correct Registry Service (RG0).
+   */
+  public async validateSchemaProfile(
+    request: PreTransferVerificationRequest,
+    session: SATPSession,
+    registryApi: RegistryApi,
+  ): Promise<boolean> {
+    const stepTag = `validateSchemaProfile()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+
+    this.Log.debug("registryVerification() CALLED HERE");
+
+    if (request.senderAsset?.tokenizedAssetRecord == undefined) {
+      throw new AssetMissing(fnTag);
+    }
+
+    if (session == undefined) {
+      throw new SessionError(fnTag);
+    }
+
+    return true;
+  }
+
+  /*Policy Verification of Schema Profile SP1: Using the Schema Profile SP1 obtained
+   *from Registry Service RG0 the gateway G2 is now able to compare the asset definitions
+   *found in SP1 against its own network-wide policies regarding asset types and classes
+   *permitted to enter the destination network NW2.
+   */
   public async destinationNetworkAssetCompatibilityVerification(): Promise<void> {
-    console.log("destinationNetworkAssetCompatibilityVerification()");
+    const stepTag = `destinationNetworkAssetCompatibilityVerification()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+    console.log("destinationNetworkAssetCompatibilityVerification()", fnTag);
   }
 
   public async preSATPTransferErrorResponse(

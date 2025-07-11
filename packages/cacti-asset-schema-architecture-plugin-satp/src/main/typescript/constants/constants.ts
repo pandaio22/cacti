@@ -36,7 +36,7 @@ const PRIVATE_KEYS_PEM = {
  * API SERVERS
  */
 const REGISTRY_API_SERVER: string = "http://localhost:3000";
-const ASSET_SCHEMA_AUTHORITY_API_SERVER: string = "http://localhost:3010";
+const ASSET_SCHEMA_AUTHORITY_API_SERVER: string = "http://localhost:3002";
 const ASSET_PROVIDER_API_SERVER: string = "http://localhost:3020";
 /**
  * API ENDPOINTS

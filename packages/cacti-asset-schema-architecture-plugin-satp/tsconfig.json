@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
       "composite": true,
-      "module": "ES2022",
+      "module": "CommonJS",
       "target": "ES2021",
       "outDir": "./dist/lib/",
       "declarationDir": "dist/lib",
@@ -14,7 +14,7 @@
     },
     "ts-node": {
       "files": true,
-      "esm": true
+      "esm": false
     },
     "include": [
       "./src",

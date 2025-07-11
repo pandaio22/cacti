@@ -34,7 +34,7 @@ servers:
       host:
         default: localhost
       port:
-        default: '3010'
+        default: '3002'
   - url: http://{host}:{port}/api/@hyperledger/cacti-asset-schema-architecture/asset-provider
     description: Asset Provider server
     variables:

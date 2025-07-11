@@ -23,7 +23,7 @@ const ENTITY_SERVER_DEFINITIONS: EntityServerDefinition[] = [
     type: "assetSchemaAuthority",
     description: "Asset Schema Authority server",
     defaultHost: "localhost",
-    defaultPort: 3010,
+    defaultPort: 3002,
     basePath:
       "/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority",
   },

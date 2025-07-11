@@ -1,9 +1,13 @@
 {
-  "name": "cacti-asset-schema-architecture-plugin-satp",
-  "version": "1.0.0",
+  "name": "@hyperledger/cacti-asset-schema-architecture-plugin-satp",
+  "version": "2.1.0",
   "description": "An implementation of the asset schema architecture used to setup assets to transfer using SATP",
-  "main": "index.js",
-  "type": "module",
+  "main": "dist/lib/main/typescript/index.js",
+  "module": "dist/lib/main/typescript/index.js",
+  "types": "dist/lib/main/typescript/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pandaio22/cacti.git#satp-dev-thesis"
@@ -24,6 +28,7 @@
     "bundle-openapi-json": "swagger-cli bundle ./src/main/yml/openapi-asset-schema-architecture.yml -o ./src/main/json/openapi-asset-schema-architecture-bundled.json -r -t json",
     "bundle-openapi-yml": "swagger-cli bundle ./src/main/yml/openapi-asset-schema-architecture.yml -o ./src/main/yml/openapi-asset-schema-architecture-bundled.yml -r -t yaml",
     "codegen:openapi": "yarn bundle-openapi-yml && yarn bundle-openapi-json && npx openapi-generator-cli generate -i ./src/main/yml/openapi-asset-schema-architecture-bundled.yml -g typescript-axios -o ./src/main/typescript/generated/asset-schema-architecture/typescript-axios/ --reserved-words-mappings protected=protected --enable-post-process-file",
+    "start:plugin": "node ./dist/lib/main/typescript/plugin-asset-schema-architecture-cli.js",
     "test:unit": "npx jest ./src/test/typescript/unit --detectOpenHandles --runInBand",
     "test:integration": "npx jest ./src/test/typescript/integration/entities --detectOpenHandles --runInBand",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
@@ -74,5 +79,30 @@
     "ts-jest": "29.3.4",
     "ts-node": "10.9.2",
     "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "watch": {
+    "tsc": {
+      "patterns": [
+        "src/",
+        "src/*/yml/**/*"
+      ],
+      "ignore": [
+        "src/**/generated/*"
+      ],
+      "extensions": [
+        "ts",
+        "yml"
+      ],
+      "quiet": true,
+      "verbose": false,
+      "runOnChangeOnly": true
+    }
   }
 }

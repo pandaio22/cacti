@@ -556,6 +556,12 @@ describe("SATPGateway sending a token from Besu to Ethereum", () => {
       "100",
     );
 
+    /*
+     * ADDED HERE TO TEST THE ASSET SCHEMA ARCHITECTURE
+     */
+    req.sourceAsset.tokenizedAssetRecord =
+      "did:ipfs:QmRxbR5U8pw6bCtU3Gj3fjgn69zvQSScEVWkKUqY18trKj";
+    /************************************************/
     const res = await dispatcher?.Transact(req);
     log.info(res?.statusResponse);
 
