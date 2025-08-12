@@ -12,9 +12,20 @@ import {
   ValidationErrorType,
   ValidationResult,
 } from "../../../../../../types/asset-schema-architecture-types.type";
+import { createCustomLoader } from "../../../../../../utils/custom-loader";
 import { IValidationService } from "../interfaces/validation-service.interface";
 
 export class ValidationService implements IValidationService {
+  private localContexts: Record<string, any> | undefined;
+
+  constructor(localContexts?: Record<string, any>) {
+    this.localContexts = localContexts;
+
+    if (this.localContexts) {
+      (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
+    }
+  }
+
   public async validateJson(jsonInput: any): Promise<ValidationResult> {
     try {
       // If input is string, parse it; if object, stringify and parse again to confirm validity
@@ -43,6 +54,7 @@ export class ValidationService implements IValidationService {
       };
     }
   }
+
   public async validateJsonLdSyntax(
     jsonLdObject: any,
   ): Promise<ValidationResult> {
@@ -68,6 +80,7 @@ export class ValidationService implements IValidationService {
       };
     }
   }
+
   public async validateJsonLdSemantics(
     jsonLdObject: any,
   ): Promise<ValidationResult> {
@@ -99,6 +112,7 @@ export class ValidationService implements IValidationService {
       };
     }
   }
+
   public async validateAssetSchema(
     signedAssetSchema: SignedAssetSchema,
   ): Promise<ValidationResult> {
@@ -108,6 +122,7 @@ export class ValidationService implements IValidationService {
       details: signedAssetSchema, // Example detail, could be expanded
     };
   }
+
   public async validateSchemaProfile(
     signedSchemaProfile: SignedSchemaProfile,
   ): Promise<ValidationResult> {
@@ -117,6 +132,7 @@ export class ValidationService implements IValidationService {
       details: signedSchemaProfile, // Example detail, could be expanded
     };
   }
+
   public async validateTokenizedAssetRecord(
     tokenizedAssetRecord: TokenizedAssetRecord,
   ): Promise<ValidationResult> {
@@ -126,6 +142,7 @@ export class ValidationService implements IValidationService {
       details: tokenizedAssetRecord, // Example detail, could be expanded
     };
   }
+
   public async validateTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<ValidationResult> {
@@ -135,15 +152,203 @@ export class ValidationService implements IValidationService {
       details: tokenIssuanceAuthorization, // Example detail, could be expanded
     };
   }
+
+  public async validateDidDocument(
+    assetSchemaAuthorityCertificate: any,
+  ): Promise<ValidationResult> {
+    try {
+      if (
+        !(await this.validateJsonLdSyntax(assetSchemaAuthorityCertificate))
+          .valid
+      ) {
+        throw new Error(
+          "Invalid JSON-LD syntax in Asset Schema Authority Certificate.",
+        );
+      }
+      // 1. Basic DID semantic validation (reuse or inline)
+      if (!assetSchemaAuthorityCertificate["@context"]) {
+        throw new Error("Missing '@context' in DID Document.");
+      }
+
+      if (
+        !assetSchemaAuthorityCertificate.id ||
+        !/^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$/.test(
+          assetSchemaAuthorityCertificate.id,
+        )
+      ) {
+        throw new Error("Invalid or missing DID in 'id' field.");
+      }
+
+      // Check allowed properties - you can customize this list
+      const allowedProps = new Set([
+        "@context",
+        "id",
+        "type",
+        "verificationMethod",
+        "authentication",
+        "assertionMethod",
+        "keyAgreement",
+        "capabilityInvocation",
+        "capabilityDelegation",
+        "service",
+        "controller",
+        "alsoKnownAs",
+      ]);
+      const invalidProps = Object.keys(assetSchemaAuthorityCertificate).filter(
+        (p) => !allowedProps.has(p),
+      );
+      if (invalidProps.length > 0) {
+        throw new Error(
+          `Invalid top-level properties: ${invalidProps.join(", ")}`,
+        );
+      }
+
+      // 2. Check "type" field exact match
+      if (
+        !assetSchemaAuthorityCertificate.type ||
+        assetSchemaAuthorityCertificate.type !== "AssetSchemaArchitecture"
+      ) {
+        throw new Error(
+          `Missing or invalid 'type' field. Expected 'AssetSchemaArchitecture'`,
+        );
+      }
+
+      // 3. Verify verificationMethod semantics if present
+      if (assetSchemaAuthorityCertificate.verificationMethod) {
+        if (
+          !Array.isArray(assetSchemaAuthorityCertificate.verificationMethod)
+        ) {
+          throw new Error("'verificationMethod' must be an array.");
+        }
+        for (const vm of assetSchemaAuthorityCertificate.verificationMethod) {
+          if (!vm.id || !vm.type || !vm.controller) {
+            throw new Error(
+              `Verification method missing required fields: ${JSON.stringify(vm)}`,
+            );
+          }
+        }
+      }
+
+      // Additional domain-specific checks can go here...
+
+      return {
+        valid: true,
+        details: "Asset Schema Authority Certificate semantics are valid",
+      };
+    } catch (error: any) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.SEMANTIC_ERROR,
+        message: error.message,
+      };
+      return {
+        valid: false,
+        errors: [errorDetail],
+        details: `Validation error: ${error.message}`,
+      };
+    }
+  }
+
   public async validateAssetSchemaAuthorityCertificate(
     assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate,
   ): Promise<ValidationResult> {
-    // Placeholder for Asset Schema Authority Certificate validation logic
-    return {
-      valid: true,
-      details: assetSchemaAuthorityCertificate, // Example detail, could be expanded
-    };
+    try {
+      if (
+        !(await this.validateJsonLdSyntax(assetSchemaAuthorityCertificate))
+          .valid
+      ) {
+        throw new Error(
+          "Invalid JSON-LD syntax in Asset Schema Authority Certificate.",
+        );
+      }
+      // 1. Basic DID semantic validation (reuse or inline)
+      if (!assetSchemaAuthorityCertificate["@context"]) {
+        throw new Error("Missing '@context' in DID Document.");
+      }
+
+      if (
+        !assetSchemaAuthorityCertificate.id ||
+        !/^did:[a-z0-9]+:[a-zA-Z0-9.\-_:%]+$/.test(
+          assetSchemaAuthorityCertificate.id,
+        )
+      ) {
+        throw new Error("Invalid or missing DID in 'id' field.");
+      }
+
+      // Check allowed properties - you can customize this list
+      const allowedProps = new Set([
+        "@context",
+        "id",
+        "entity",
+        "name",
+        "description",
+        "verificationMethod",
+        "authentication",
+        "assertionMethod",
+        "keyAgreement",
+        "capabilityInvocation",
+        "capabilityDelegation",
+        "service",
+        "controller",
+        "alsoKnownAs",
+      ]);
+      const invalidProps = Object.keys(assetSchemaAuthorityCertificate).filter(
+        (p) => !allowedProps.has(p),
+      );
+      if (invalidProps.length > 0) {
+        throw new Error(
+          `Invalid top-level properties: ${invalidProps.join(", ")}`,
+        );
+      }
+
+      // 2. Check "entity" field exact match
+      console.debug(
+        "Asset Schema Authority Certificate:",
+        assetSchemaAuthorityCertificate,
+      );
+      if (
+        !assetSchemaAuthorityCertificate.entity ||
+        assetSchemaAuthorityCertificate.entity !== "AssetSchemaAuthority"
+      ) {
+        throw new Error(
+          `Missing or invalid 'entity' field. Expected 'AssetSchemaAuthority'`,
+        );
+      }
+
+      // 3. Verify verificationMethod semantics if present
+      if (assetSchemaAuthorityCertificate.verificationMethod) {
+        if (
+          !Array.isArray(assetSchemaAuthorityCertificate.verificationMethod)
+        ) {
+          throw new Error("'verificationMethod' must be an array.");
+        }
+        for (const vm of assetSchemaAuthorityCertificate.verificationMethod) {
+          if (!vm.id || !vm.type || !vm.controller) {
+            throw new Error(
+              `Verification method missing required fields: ${JSON.stringify(vm)}`,
+            );
+          }
+        }
+      }
+
+      // Additional domain-specific checks can go here...
+
+      return {
+        valid: true,
+        details: "Asset Schema Authority Certificate semantics are valid",
+      };
+    } catch (error: any) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.SEMANTIC_ERROR,
+        message: error.message,
+      };
+      return {
+        valid: false,
+        errors: [errorDetail],
+        details: `Validation error: ${error.message}`,
+      };
+    }
   }
+
   public async validateAssetProviderCertificate(
     assetProviderCertificate: AssetProviderCertificate,
   ): Promise<ValidationResult> {

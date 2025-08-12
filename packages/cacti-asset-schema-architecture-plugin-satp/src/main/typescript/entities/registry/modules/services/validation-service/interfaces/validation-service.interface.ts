@@ -15,18 +15,14 @@ export interface IValidationService {
    * @returns A promise that resolves to a ValidationResult.
    */
   validateJson(jsonLdObject: any): Promise<ValidationResult>;
+
   /**
    * Validates the syntax of a JSON-LD object.
    * @param jsonLdObject The JSON-LD object to validate.
    * @returns A promise that resolves to a ValidationResult indicating syntax validity.
    */
   validateJsonLdSyntax(jsonLdObject: any): Promise<ValidationResult>;
-  /**
-   * Validates the semantics of a JSON-LD object.
-   * @param jsonLdObject The JSON-LD object to validate.
-   * @returns A promise that resolves to a ValidationResult indicating semantic validity.
-   */
-  //validateJsonLdSemantics(jsonLdObject: any): Promise<ValidationResult>;
+
   /**
    * Validates an Asset Schema.
    * @param signedAssetSchema The Asset Schema to validate.
@@ -44,6 +40,7 @@ export interface IValidationService {
   validateSchemaProfile(
     signedSchemaProfile: SignedSchemaProfile,
   ): Promise<ValidationResult>;
+
   /**
    * Validates a Tokenized Asset Record.
    * @param tokenizedAssetRecord The Tokenized Asset Record to validate.
@@ -52,6 +49,7 @@ export interface IValidationService {
   validateTokenizedAssetRecord(
     tokenizedAssetRecord: TokenizedAssetRecord,
   ): Promise<ValidationResult>;
+
   /**
    * Validates a Token Issuance Authorization.
    * @param tokenIssuanceAuthorization The Token Issuance Authorization to validate.
@@ -60,6 +58,7 @@ export interface IValidationService {
   validateTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<ValidationResult>;
+
   /**
    * Validates an Asset Schema Authority Certificate.
    * @param assetSchemaAuthorityCertificate The Asset Schema Authority Certificate to validate.
@@ -68,6 +67,7 @@ export interface IValidationService {
   validateAssetSchemaAuthorityCertificate(
     assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate,
   ): Promise<ValidationResult>;
+
   /**
    * Validates an Asset Provider Certificate.
    * @param assetProviderCertificate The Asset Provider Certificate to validate.

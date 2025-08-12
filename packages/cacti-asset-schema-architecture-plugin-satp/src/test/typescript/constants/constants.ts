@@ -95,6 +95,64 @@ const INVALID_JSON_LD_EXAMPLE = {
   homepage: "http://manu.sporny.org/",
   image: "http://manu.sporny.org/images/manu.png",
 };
+
+/**
+ * DID DOCUMENT EXAMPLES
+ */
+const VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE = {
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://example.org/AssetSchemaAuthority",
+  ],
+  id: "did:example:123456789abcdefghi",
+  entity: "AssetSchemaAuthority",
+  name: "Example Asset Schema Authority",
+  description: "An example Asset Schema Authority DID Document",
+  verificationMethod: [
+    {
+      id: "did:example:123456789abcdefghi#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:example:123456789abcdefghi",
+      publicKeyBase58: "H3C2AVvLMfjaNqsw1Jd96YQz9Y3X1bB",
+    },
+  ],
+  authentication: ["did:example:123456789abcdefghi#key-1"],
+  service: [
+    {
+      id: "did:example:123456789abcdefghi#linked-domain",
+      type: "LinkedDomains",
+      serviceEndpoint: "https://example.com",
+    },
+  ],
+};
+
+const INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE = {
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://example.org/AssetSchemaAuthority",
+  ],
+  id: "did:example:123456789abcdefghi",
+  entity: "AssetProvider", // Invalid entity type
+  name: "Example Asset Schema Authority",
+  description: "An example Asset Schema Authority DID Document",
+  verificationMethod: [
+    {
+      id: "did:example:123456789abcdefghi#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:example:123456789abcdefghi",
+      publicKeyBase58: "H3C2AVvLMfjaNqsw1Jd96YQz9Y3X1bB",
+    },
+  ],
+  authentication: ["did:example:123456789abcdefghi#key-1"],
+  service: [
+    {
+      id: "did:example:123456789abcdefghi#linked-domain",
+      type: "LinkedDomains",
+      serviceEndpoint: "https://example.com",
+    },
+  ],
+};
+
 /**
  * SCHEMAS
  */
@@ -335,6 +393,7 @@ export {
   INVALID_JSON_EXAMPLE,
   VALID_JSON_LD_EXAMPLE,
   INVALID_JSON_LD_EXAMPLE,
+  VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
