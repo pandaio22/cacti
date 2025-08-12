@@ -56,6 +56,10 @@ const API_ENDPOINTS = {
 };
 
 /**
+ * JSON EXAMPLES
+ */
+const INVALID_JSON_EXAMPLE = 123123;
+/**
  * JSON-LD EXAMPLES
  */
 const VALID_JSON_LD_EXAMPLE = {
@@ -72,7 +76,7 @@ const VALID_JSON_LD_EXAMPLE = {
   },
   name: "Manu Sporny",
   homepage: "http://manu.sporny.org/",
-  image: "http://manu.sporny.org/images/manu.png"
+  image: "http://manu.sporny.org/images/manu.png",
 };
 
 const INVALID_JSON_LD_EXAMPLE = {
@@ -89,7 +93,7 @@ const INVALID_JSON_LD_EXAMPLE = {
   },
   name: "Manu Sporny",
   homepage: "http://manu.sporny.org/",
-  image: "http://manu.sporny.org/images/manu.png"
+  image: "http://manu.sporny.org/images/manu.png",
 };
 /**
  * SCHEMAS
@@ -328,6 +332,7 @@ export {
   ASSET_SCHEMA_AUTHORITY_API_SERVER,
   ASSET_PROVIDER_API_SERVER,
   API_ENDPOINTS,
+  INVALID_JSON_EXAMPLE,
   VALID_JSON_LD_EXAMPLE,
   INVALID_JSON_LD_EXAMPLE,
   VALID_ASSET_SCHEMA_EXAMPLE,
