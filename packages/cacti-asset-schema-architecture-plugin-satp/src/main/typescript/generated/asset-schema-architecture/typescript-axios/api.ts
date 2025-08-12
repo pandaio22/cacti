@@ -24,7 +24,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+ * A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.
  * @export
  * @interface AssetProviderCertificate
  */
@@ -33,28 +33,34 @@ export interface AssetProviderCertificate {
 
     /**
      * 
-     * @type {RegisterAssetProviderRequestContext}
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
      * @memberof AssetProviderCertificate
      */
-    '@context': RegisterAssetProviderRequestContext;
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
     /**
      * The decentralized identifier (DID) of the Asset Provider.
      * @type {string}
      * @memberof AssetProviderCertificate
      */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof AssetProviderCertificate
      */
-    'type': string;
+    'entity': string;
     /**
-     * The X.509 certificate (PEM-encoded, Base64).
+     * 
      * @type {string}
      * @memberof AssetProviderCertificate
      */
-    'certificate': string;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetProviderCertificate
+     */
+    'description': string;
 }
 /**
  * Structure of a valid Asset Schema (JSON-LD format)
@@ -72,7 +78,7 @@ export interface AssetSchema {
     '@context': CommissionAssetSchemaRequestAssetSchemaContext;
 }
 /**
- * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+ * A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.
  * @export
  * @interface AssetSchemaAuthorityCertificate
  */
@@ -90,19 +96,25 @@ export interface AssetSchemaAuthorityCertificate {
      * @type {string}
      * @memberof AssetSchemaAuthorityCertificate
      */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof AssetSchemaAuthorityCertificate
      */
-    'type': string;
+    'entity': string;
     /**
-     * The X.509 certificate (PEM-encoded, Base64).
+     * 
      * @type {string}
      * @memberof AssetSchemaAuthorityCertificate
      */
-    'certificate': string;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaAuthorityCertificate
+     */
+    'description': string;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -169,8 +181,39 @@ export interface CommissionAssetSchemaRequestAssetSchema {
  * @type CommissionAssetSchemaRequestAssetSchemaContext
  * @export
  */
-export type CommissionAssetSchemaRequestAssetSchemaContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+export type CommissionAssetSchemaRequestAssetSchemaContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | CommissionAssetSchemaRequestAssetSchemaContextOneOf | string;
 
+/**
+ * 
+ * @export
+ * @interface CommissionAssetSchemaRequestAssetSchemaContextOneOf
+ */
+export interface CommissionAssetSchemaRequestAssetSchemaContextOneOf {
+    /**
+     * JSON-LD version.
+     * @type {number}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaContextOneOf
+     */
+    '@version': number;
+    /**
+     * 
+     * @type {object}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaContextOneOf
+     */
+    'fungible': object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaContextOneOf
+     */
+    'facets': object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaContextOneOf
+     */
+    'organization_key': object;
+}
 /**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
  * @export
@@ -227,10 +270,71 @@ export interface CommissionSchemaProfileRequestSchemaProfile {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
      * @memberof CommissionSchemaProfileRequestSchemaProfile
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    '@id': string;
+    /**
+     * Human-readable title of the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    'title': string;
+    /**
+     * Reference to the Asset Schema associated with this Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    'asset_schema': string;
+    /**
+     * Indicates if the asset is fungible.
+     * @type {boolean}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    'fungible': boolean;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileOrganizationKey}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    'organization_key': CommissionSchemaProfileRequestSchemaProfileOrganizationKey;
+    /**
+     * Additional facets or properties of the Schema Profile.
+     * @type {object}
+     * @memberof CommissionSchemaProfileRequestSchemaProfile
+     */
+    'facets': object;
+}
+/**
+ * @type CommissionSchemaProfileRequestSchemaProfileContext
+ * @export
+ */
+export type CommissionSchemaProfileRequestSchemaProfileContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface CommissionSchemaProfileRequestSchemaProfileOrganizationKey
+ */
+export interface CommissionSchemaProfileRequestSchemaProfileOrganizationKey {
+    /**
+     * URI of the public key for the organization.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileOrganizationKey
+     */
+    'public_key'?: string;
+    /**
+     * Timestamp when the public key was issued.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileOrganizationKey
+     */
+    'issued'?: string;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).
@@ -267,10 +371,10 @@ export interface CommissionTokenizedAssetRecordRequest {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
      * @memberof CommissionTokenizedAssetRecordRequest
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -360,13 +464,7 @@ export interface RegisterAssetProvider200Response {
      * @type {string}
      * @memberof RegisterAssetProvider200Response
      */
-    '@context': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAssetProvider200Response
-     */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -375,7 +473,7 @@ export interface RegisterAssetProvider200Response {
     'type': string;
 }
 /**
- * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+ * A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.
  * @export
  * @interface RegisterAssetProviderRequest
  */
@@ -384,35 +482,35 @@ export interface RegisterAssetProviderRequest {
 
     /**
      * 
-     * @type {RegisterAssetProviderRequestContext}
+     * @type {RegisterAssetSchemaAuthorityRequestContext}
      * @memberof RegisterAssetProviderRequest
      */
-    '@context': RegisterAssetProviderRequestContext;
+    '@context': RegisterAssetSchemaAuthorityRequestContext;
     /**
      * The decentralized identifier (DID) of the Asset Provider.
      * @type {string}
      * @memberof RegisterAssetProviderRequest
      */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof RegisterAssetProviderRequest
      */
-    'type': string;
+    'entity': string;
     /**
-     * The X.509 certificate (PEM-encoded, Base64).
+     * 
      * @type {string}
      * @memberof RegisterAssetProviderRequest
      */
-    'certificate': string;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetProviderRequest
+     */
+    'description': string;
 }
-/**
- * @type RegisterAssetProviderRequestContext
- * @export
- */
-export type RegisterAssetProviderRequestContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | string;
-
 /**
  * 
  * @export
@@ -426,13 +524,7 @@ export interface RegisterAssetSchemaAuthority200Response {
      * @type {string}
      * @memberof RegisterAssetSchemaAuthority200Response
      */
-    '@context': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAssetSchemaAuthority200Response
-     */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -441,7 +533,7 @@ export interface RegisterAssetSchemaAuthority200Response {
     'type': string;
 }
 /**
- * A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+ * A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.
  * @export
  * @interface RegisterAssetSchemaAuthorityRequest
  */
@@ -459,19 +551,25 @@ export interface RegisterAssetSchemaAuthorityRequest {
      * @type {string}
      * @memberof RegisterAssetSchemaAuthorityRequest
      */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof RegisterAssetSchemaAuthorityRequest
      */
-    'type': string;
+    'entity': string;
     /**
-     * The X.509 certificate (PEM-encoded, Base64).
+     * 
      * @type {string}
      * @memberof RegisterAssetSchemaAuthorityRequest
      */
-    'certificate': string;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAssetSchemaAuthorityRequest
+     */
+    'description': string;
 }
 /**
  * @type RegisterAssetSchemaAuthorityRequestContext
@@ -680,13 +778,7 @@ export interface RegisteredAssetProviderID {
      * @type {string}
      * @memberof RegisteredAssetProviderID
      */
-    '@context': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisteredAssetProviderID
-     */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -707,13 +799,7 @@ export interface RegisteredAssetSchemaAuthorityID {
      * @type {string}
      * @memberof RegisteredAssetSchemaAuthorityID
      */
-    '@context': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisteredAssetSchemaAuthorityID
-     */
-    '@id': string;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -731,10 +817,46 @@ export interface SchemaProfile {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
      * @memberof SchemaProfile
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfile
+     */
+    '@id': string;
+    /**
+     * Human-readable title of the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfile
+     */
+    'title': string;
+    /**
+     * Reference to the Asset Schema associated with this Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfile
+     */
+    'asset_schema': string;
+    /**
+     * Indicates if the asset is fungible.
+     * @type {boolean}
+     * @memberof SchemaProfile
+     */
+    'fungible': boolean;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileOrganizationKey}
+     * @memberof SchemaProfile
+     */
+    'organization_key': CommissionSchemaProfileRequestSchemaProfileOrganizationKey;
+    /**
+     * Additional facets or properties of the Schema Profile.
+     * @type {object}
+     * @memberof SchemaProfile
+     */
+    'facets': object;
 }
 /**
  * 
@@ -869,10 +991,10 @@ export interface TokenizedAssetRecord {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchemaContext}
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
      * @memberof TokenizedAssetRecord
      */
-    '@context': CommissionAssetSchemaRequestAssetSchemaContext;
+    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
 }
 
 /**

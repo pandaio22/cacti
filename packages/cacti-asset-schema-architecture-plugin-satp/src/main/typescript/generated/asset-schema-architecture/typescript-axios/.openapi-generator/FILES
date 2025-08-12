@@ -12,9 +12,12 @@ docs/CommissionAssetSchema200Response.md
 docs/CommissionAssetSchemaRequest.md
 docs/CommissionAssetSchemaRequestAssetSchema.md
 docs/CommissionAssetSchemaRequestAssetSchemaContext.md
+docs/CommissionAssetSchemaRequestAssetSchemaContextOneOf.md
 docs/CommissionSchemaProfile200Response.md
 docs/CommissionSchemaProfileRequest.md
 docs/CommissionSchemaProfileRequestSchemaProfile.md
+docs/CommissionSchemaProfileRequestSchemaProfileContext.md
+docs/CommissionSchemaProfileRequestSchemaProfileOrganizationKey.md
 docs/CommissionTokenizedAssetRecord200Response.md
 docs/CommissionTokenizedAssetRecordRequest.md
 docs/CommissionedAssetSchemaID.md
@@ -22,7 +25,6 @@ docs/CommissionedSchemaProfileID.md
 docs/CommissionedTokenizedAssetRecordID.md
 docs/RegisterAssetProvider200Response.md
 docs/RegisterAssetProviderRequest.md
-docs/RegisterAssetProviderRequestContext.md
 docs/RegisterAssetSchemaAuthority200Response.md
 docs/RegisterAssetSchemaAuthorityRequest.md
 docs/RegisterAssetSchemaAuthorityRequestContext.md

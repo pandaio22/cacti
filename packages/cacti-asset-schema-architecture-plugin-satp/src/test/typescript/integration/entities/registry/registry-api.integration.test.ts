@@ -13,9 +13,9 @@ import {
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
-  VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
-  VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
-} from "../../../../../main/typescript/constants/constants";
+  VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+} from "../../../constants/constants";
 
 describe("Registry API Integration Tests", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
@@ -125,7 +125,7 @@ describe("Registry API Integration Tests", () => {
     //Given & When
     const registerAssetSchemaAuthorityEndpoint =
       await registryApi.registerAssetSchemaAuthority(
-        VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+        VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
       );
 
     //Then
@@ -140,7 +140,7 @@ describe("Registry API Integration Tests", () => {
     //Given & When
     const registerAssetProviderEndpoint =
       await registryApi.registerAssetProvider(
-        VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+        VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
       );
 
     //Then
@@ -344,9 +344,9 @@ describe("Registry API Integration Tests", () => {
       //Given
       const registerAssetSchemaAuthorityEndpoint =
         await registryApi.registerAssetSchemaAuthority(
-          VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+          VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
         );
-      const uid: string = registerAssetSchemaAuthorityEndpoint.data["@id"];
+      const uid: string = registerAssetSchemaAuthorityEndpoint.data["id"];
 
       //When
       const getAssetSchemaAuthorityEndpoint =
@@ -370,9 +370,9 @@ describe("Registry API Integration Tests", () => {
         //Given
         const registerAssetSchemaAuthorityEndpoint =
           await registryApi.registerAssetSchemaAuthority(
-            VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
+            VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
           );
-        const uid: string = registerAssetSchemaAuthorityEndpoint.data["@id"];
+        const uid: string = registerAssetSchemaAuthorityEndpoint.data["id"];
 
         const badRegistryApi = new RegistryApi(
           new Configuration({
@@ -411,9 +411,9 @@ describe("Registry API Integration Tests", () => {
       //Given
       const registerAssetProviderEndpoint =
         await registryApi.registerAssetProvider(
-          VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+          VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
         );
-      const uid: string = registerAssetProviderEndpoint.data["@id"];
+      const uid: string = registerAssetProviderEndpoint.data["id"];
 
       //When
       const getAssetProviderEndpoint = await registryApi.getAssetProvider(uid);
@@ -432,9 +432,9 @@ describe("Registry API Integration Tests", () => {
         //Given
         const registerAssetProviderEndpoint =
           await registryApi.registerAssetProvider(
-            VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+            VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
           );
-        const uid: string = registerAssetProviderEndpoint.data["@id"];
+        const uid: string = registerAssetProviderEndpoint.data["id"];
 
         const badRegistryApi = new RegistryApi(
           new Configuration({

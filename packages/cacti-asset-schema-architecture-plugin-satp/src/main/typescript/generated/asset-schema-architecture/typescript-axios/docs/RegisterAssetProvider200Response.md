@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | **string** |  | [default to undefined]
 **id** | **string** |  | [default to undefined]
 **type** | **string** |  | [default to undefined]
 
@@ -15,7 +14,6 @@ Name | Type | Description | Notes
 import { RegisterAssetProvider200Response } from './api';
 
 const instance: RegisterAssetProvider200Response = {
-    context,
     id,
     type,
 };

@@ -1,4 +1,4 @@
-# CommissionAssetSchemaRequestAssetSchemaContext
+# CommissionAssetSchemaRequestAssetSchemaContextOneOf
 
 
 ## Properties
@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CommissionAssetSchemaRequestAssetSchemaContext } from './api';
+import { CommissionAssetSchemaRequestAssetSchemaContextOneOf } from './api';
 
-const instance: CommissionAssetSchemaRequestAssetSchemaContext = {
+const instance: CommissionAssetSchemaRequestAssetSchemaContextOneOf = {
     version,
     fungible,
     facets,

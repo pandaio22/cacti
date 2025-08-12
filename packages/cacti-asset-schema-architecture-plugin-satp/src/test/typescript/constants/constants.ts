@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { title } from "process";
 
 /**
  * DATABASE CONNECTION
@@ -153,10 +154,108 @@ const INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE = {
   ],
 };
 
+const VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE = {
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://example.org/AssetProvider",
+  ],
+  id: "did:example:123456789abcdefghi",
+  entity: "AssetProvider",
+  name: "Example Asset Provider",
+  description: "An example Asset Provider DID Document",
+  verificationMethod: [
+    {
+      id: "did:example:123456789abcdefghi#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:example:123456789abcdefghi",
+      publicKeyBase58: "H3C2AVvLMfjaNqsw1Jd96YQz9Y3X1bB",
+    },
+  ],
+  authentication: ["did:example:123456789abcdefghi#key-1"],
+  service: [
+    {
+      id: "did:example:123456789abcdefghi#linked-domain",
+      type: "LinkedDomains",
+      serviceEndpoint: "https://example.com",
+    },
+  ],
+};
+
+const INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE = {
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://example.org/AssetProvider",
+  ],
+  id: "did:example:123456789abcdefghi",
+  entity: "Not an AssetProvider",
+  name: "Example Asset Provider",
+  description: "An example Asset Provider DID Document",
+  verificationMethod: [
+    {
+      id: "did:example:123456789abcdefghi#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:example:123456789abcdefghi",
+      publicKeyBase58: "H3C2AVvLMfjaNqsw1Jd96YQz9Y3X1bB",
+    },
+  ],
+  authentication: ["did:example:123456789abcdefghi#key-1"],
+  service: [
+    {
+      id: "did:example:123456789abcdefghi#linked-domain",
+      type: "LinkedDomains",
+      serviceEndpoint: "https://example.com",
+    },
+  ],
+};
+
 /**
  * SCHEMAS
  */
 const VALID_ASSET_SCHEMA_EXAMPLE = {
+  "@context": {
+    "@version": 1.1,
+    asset_schema: "https://schema.org/assetSchema",
+    schema_version: {
+      "@id": "https://schema.org/schemaVersion",
+      "@type": "@id",
+    },
+    foaf: "http://xmlns.com/foaf/0.1/",
+    schema: "http://schema.org/",
+    skos: "http://www.w3.org/2004/02/skos/core#",
+    xsd: "http://www.w3.org/2001/XMLSchema#",
+    rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    title: {
+      "@id": "https://schema.org/title",
+      "@type": "schema:string",
+    },
+    fungible: {
+      "@id": "https://example.org/fungibility",
+      "@type": "https://schema.org/Boolean",
+    },
+    organization_key: {
+      "@id": "https://satp.example.org/asset_schema_org_key",
+      "@context": {
+        "@protected": true,
+        id: "@id",
+        type: "@type",
+        public_key: {
+          "@id": "https://gateway.satp.ietf.org/asset_schema_pub_key",
+          "@type": "schema:string",
+        },
+        issued: {
+          "@id": "https://gateway.satp.ietf.org/asset_schema_key_issued",
+          "@type": "schema:string",
+        },
+      },
+    },
+    facets: {
+      "@id": "https://satp.example.org/asset_schema_facets",
+    },
+  },
+  "@id": "did:example:123456789abcdefghi#",
+};
+
+const INVALID_ASSET_SCHEMA_EXAMPLE = {
   "@context": {
     "@version": 1.1,
     schema_version: {
@@ -168,10 +267,6 @@ const VALID_ASSET_SCHEMA_EXAMPLE = {
     skos: "http://www.w3.org/2004/02/skos/core#",
     xsd: "http://www.w3.org/2001/XMLSchema#",
     rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    fungible: {
-      "@id": "https://example.org/fungibility",
-      "@type": "https://schema.org/Boolean",
-    },
     organization_key: {
       "@id": "https://satp.example.org/asset_schema_org_key",
       "@context": {
@@ -189,20 +284,21 @@ const VALID_ASSET_SCHEMA_EXAMPLE = {
       "@id": "https://satp.example.org/asset_schema_facets",
     },
   },
-  "@id": "https://satp.example.org/asset_schema/organization/12345",
-  "foaf:name": "Example Corp",
-  organization_key: {
-    public_key: "0xabcdef1234567890",
-    issued: "2025-05-31T10:00:00Z",
-  },
-  facets: {
-    "skos:note": "A sample asset representing an organization with a key",
-    "schema:category": "financial",
-  },
-  description: "An example asset schema for an organization",
-  fungible: true,
-  schema_version: 1.0,
+  "@id": "did:example:123456789abcdefghi#asset-schema",
 };
+
+const VALID_ASSET_SCHEMA_DID_DOCUMENT = {
+  "@context": "https://w3id.org/did/v1",
+  id: "did:example:123456789abcdefghi",
+  service: [
+    {
+      id: "#assetSchema",
+      type: "AssetSchema",
+      serviceEndpoint: "https://example.org/asset-schema.jsonld",
+    },
+  ],
+};
+
 const VALID_SIGNED_ASSET_SCHEMA_EXAMPLE = {
   asset_schema: { ...VALID_ASSET_SCHEMA_EXAMPLE },
   proof: {
@@ -214,10 +310,121 @@ const VALID_SIGNED_ASSET_SCHEMA_EXAMPLE = {
   },
 };
 
+const INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE = {
+  asset_schema: { ...INVALID_ASSET_SCHEMA_EXAMPLE },
+  proof: {
+    type: "EcdsaSecp256k1VerificationKey2019", // example proof type
+    created: "2025-06-27T12:00:00Z", // ISO 8601 date string
+    proofPurpose: "assertionMethod", // purpose of proof, e.g., authentication or assertion
+    verificationMethod: "https://example.org/keys/1", // URL or DID key identifier
+    jws: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...", // a JSON Web Signature string (example)
+  },
+};
+
 const VALID_SCHEMA_PROFILE_EXAMPLE = {
+  "@context": [
+    { "@version": 1.1 },
+    "did:example:123456789abcdefghi#",
+    {
+      dcap: {
+        "@id": "https://www.culture.example.org/asset_profile/dcap",
+        "@context": {
+          rwa: {
+            "@id": "https://www.culture.example.org/asset_profile/rwa",
+            "@context": {
+              digital_carrier_id: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/digital_carrier_id",
+                "@type": "schema:string",
+              },
+              digital_carrier_type: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/digital_carrier_type",
+                "@type": "schema:string",
+              },
+              rwa_kind: {
+                "@id": "https://www.culture.example.org/asset_profile/rwa_kind",
+                "@container": "@language",
+              },
+              rwa_description: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/rwa_description",
+                "@container": "@language",
+              },
+              rwa_current_storage: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/rwa_current_storage",
+                "@container": "@language",
+              },
+              rwa_storage_location: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/rwa_storage_location",
+                "@container": "@language",
+              },
+            },
+          },
+          dar: {
+            "@id": "https://www.culture.example.org/asset_profile/dar",
+            "@context": {
+              dar_id: {
+                "@id": "https://www.culture.example.org/asset_profile/dar_id",
+                "@type": "schema:string",
+              },
+              dar_system_id: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/dar_system_id",
+                "@type": "schema:string",
+              },
+              dar_url: {
+                "@id": "https://www.culture.example.org/asset_profile/dar_url",
+                "@type": "schema:url",
+              },
+              dar_description: {
+                "@id":
+                  "https://www.culture.example.org/asset_profile/dar_description",
+                "@container": "@language",
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      tokenized_issuance_authorization:
+        "https://example.org/tokenissuanceauthorization",
+    },
+    {
+      schema_profile: "https://example.org/schemaprofile",
+    },
+  ],
+  "@id": "did:example:56745689abcdefghi",
+  title: "Asset Profile for Cultural Assets",
+  asset_schema: "did:example:123456789abcdefghi#assetSchema",
+  fungible: false,
+  organization_key: {
+    public_key: "did:example:abc123#keys-1",
+    issued: "2025-08-12T12:00:00Z",
+  },
+  facets: {
+    owner_transferability: "non-transferable",
+    network_transferability: "evm_compatible_network",
+    jurisdiction: {
+      ownerJurisdictionScope: {
+        law: "https://www.officialjoutrnal.example.org/eli/law/yyyy/nnnn/enacted/data.json",
+        territory: "Some country",
+      },
+    },
+  },
+};
+
+const XVALID_SCHEMA_PROFILE_EXAMPLE = {
   "@context": {
     "@version": 1.1,
-    asset_schema: "did:ipfs:QmYdfWp9FKS1EshoKeyjZHwRXgn6ognPFV9EbN25qhAWfP",
+    asset_schema: "did:example:123456789abcdefghi#",
+    assetschema: {
+      "@id": "did:example:123456789abcdefghi#",
+      "@prefix": true,
+    },
     dcap: {
       "@id": "https://www.culture.example.org/asset_profile/dcap",
       "@context": {
@@ -280,20 +487,20 @@ const VALID_SCHEMA_PROFILE_EXAMPLE = {
         },
       },
     },
+    description: "https://schema.org/description",
+    title: "https://schema.org/title",
+    token_issuance_authorization:
+      "https://example.org/tokenissuanceauthorization",
   },
-  "@id": "https://www.culture.example.org/asset_profile",
+  "@id": "did:example:56745689abcdefghi#schema-profile",
   "schema:title": "Asset Profile for Cultural Assets",
-  "schema:organization": {
-    "@id": "https://www.culture.example.org/",
-    "schema:email": "info@culture.example.org",
-    "asset_schema:organization_key": {
-      public_key:
-        "did:v1:test:nym:JApJf12r82Pe6PBJ3gJAAwo8F7uDnae6B4ab9EFQ7XXk#authn-key-1",
-      issued: "2018-03-15T00:00:00Z",
-    },
+  "asset_schema:fungible": false,
+  "asset_schema:organization_key": {
+    public_key: "did:example:abc123#keys-1",
+    issued: "2025-08-12T12:00:00Z",
   },
   "asset_schema:facets": {
-    owmner_transferability: "non-transferable",
+    owner_transferability: "non-transferable",
     network_transferability: "evm_compatible_network",
     jurisdiction: {
       ownerJurisdictionScope: {
@@ -303,6 +510,7 @@ const VALID_SCHEMA_PROFILE_EXAMPLE = {
     },
   },
 };
+
 const VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE = {
   schema_profile: { ...VALID_SCHEMA_PROFILE_EXAMPLE },
   proof: {
@@ -337,7 +545,8 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
   },
 };
 const VALID_TOKENIZED_ASSET_RECORD_EXAMPLE = {
-  "@context": "urn:tar:eip155.137:0x517BBF0c9B71f64b5807f644E1F1bacD3Afb3ec2",
+  "@context": [{ "@version": 1.1 }, "did:example:56745689abcdefghi#"],
+  schema_profile: "did:example:56745689abcdefghi#schema-profile",
   dcap: {
     rwa: {
       digital_carrier_id: "E492069BT491278256346325",
@@ -394,8 +603,14 @@ export {
   VALID_JSON_LD_EXAMPLE,
   INVALID_JSON_LD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+  INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_SCHEMA_EXAMPLE,
+  INVALID_ASSET_SCHEMA_EXAMPLE,
+  VALID_ASSET_SCHEMA_DID_DOCUMENT,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+  INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,

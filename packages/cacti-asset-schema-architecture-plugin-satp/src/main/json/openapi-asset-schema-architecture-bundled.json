@@ -38,7 +38,7 @@
           "default": "localhost"
         },
         "port": {
-          "default": "3010"
+          "default": "3002"
         }
       }
     },
@@ -313,7 +313,8 @@
                     "type": "object",
                     "description": "Structure of a valid Asset Schema (JSON-LD format)",
                     "required": [
-                      "@context"
+                      "@context",
+                      "@id"
                     ],
                     "properties": {
                       "@context": {
@@ -324,7 +325,30 @@
                             "example": "https://www.w3.org/ns/did/v1.1"
                           },
                           {
-                            "type": "object"
+                            "type": "object",
+                            "required": [
+                              "@version",
+                              "fungible",
+                              "facets",
+                              "organization_key"
+                            ],
+                            "properties": {
+                              "@version": {
+                                "type": "number",
+                                "format": "float",
+                                "description": "JSON-LD version.",
+                                "example": 1.1
+                              },
+                              "fungible": {
+                                "type": "object"
+                              },
+                              "facets": {
+                                "type": "object"
+                              },
+                              "organization_key": {
+                                "type": "object"
+                              }
+                            }
                           },
                           {
                             "type": "array",
@@ -471,7 +495,13 @@
                     "type": "object",
                     "description": "Structure of a valid Schema Profile (JSON-LD format)",
                     "required": [
-                      "@context"
+                      "@context",
+                      "@id",
+                      "title",
+                      "asset_schema",
+                      "fungible",
+                      "organization_key",
+                      "facets"
                     ],
                     "properties": {
                       "@context": {
@@ -499,6 +529,49 @@
                             }
                           }
                         ]
+                      },
+                      "@id": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "did:example:56745689abcdefghi#schema-profile",
+                        "description": "Unique identifier for the Schema Profile."
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Example Schema Profile",
+                        "description": "Human-readable title of the Schema Profile."
+                      },
+                      "asset_schema": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "did:example:123456789abcdefghi#asset-schema",
+                        "description": "Reference to the Asset Schema associated with this Schema Profile."
+                      },
+                      "fungible": {
+                        "type": "boolean",
+                        "description": "Indicates if the asset is fungible.",
+                        "example": true
+                      },
+                      "organization_key": {
+                        "type": "object",
+                        "properties": {
+                          "public_key": {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://example.com/public-key",
+                            "description": "URI of the public key for the organization."
+                          },
+                          "issued": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-10-01T12:00:00Z",
+                            "description": "Timestamp when the public key was issued."
+                          }
+                        }
+                      },
+                      "facets": {
+                        "type": "object",
+                        "description": "Additional facets or properties of the Schema Profile."
                       }
                     },
                     "additionalProperties": true
@@ -744,12 +817,14 @@
             "application/ld+json": {
               "schema": {
                 "type": "object",
-                "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+                "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.",
                 "required": [
                   "@context",
-                  "@id",
-                  "type",
-                  "certificate"
+                  "id",
+                  "entity",
+                  "name",
+                  "description",
+                  "verificationMethod"
                 ],
                 "properties": {
                   "@context": {
@@ -778,20 +853,23 @@
                       }
                     ]
                   },
-                  "@id": {
+                  "id": {
                     "type": "string",
                     "format": "uri",
                     "example": "did:web:example.com",
                     "description": "The decentralized identifier (DID) of the Asset Schema Authority."
                   },
-                  "type": {
+                  "entity": {
                     "type": "string",
                     "example": "AssetSchemaAuthority"
                   },
-                  "certificate": {
+                  "name": {
                     "type": "string",
-                    "format": "byte",
-                    "description": "The X.509 certificate (PEM-encoded, Base64)."
+                    "example": "Example Asset Schema Authority"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "An example Asset Schema Authority DID Document"
                   }
                 },
                 "additionalProperties": true
@@ -807,17 +885,11 @@
                 "schema": {
                   "type": "object",
                   "required": [
-                    "@context",
-                    "@id",
+                    "id",
                     "type"
                   ],
                   "properties": {
-                    "@context": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://www.w3.org/2018/credentials/v1"
-                    },
-                    "@id": {
+                    "id": {
                       "type": "string",
                       "format": "uri",
                       "example": "did:web:example.com#asset-schema-authority"
@@ -861,12 +933,14 @@
             "application/ld+json": {
               "schema": {
                 "type": "object",
-                "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+                "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.",
                 "required": [
                   "@context",
-                  "@id",
-                  "type",
-                  "certificate"
+                  "id",
+                  "entity",
+                  "name",
+                  "description",
+                  "verificationMethod"
                 ],
                 "properties": {
                   "@context": {
@@ -875,6 +949,9 @@
                         "type": "string",
                         "format": "uri",
                         "example": "https://www.w3.org/2018/credentials/v1"
+                      },
+                      {
+                        "type": "object"
                       },
                       {
                         "type": "array",
@@ -892,20 +969,23 @@
                       }
                     ]
                   },
-                  "@id": {
+                  "id": {
                     "type": "string",
                     "format": "uri",
                     "example": "did:web:example.com",
                     "description": "The decentralized identifier (DID) of the Asset Provider."
                   },
-                  "type": {
+                  "entity": {
                     "type": "string",
                     "example": "AssetProvider"
                   },
-                  "certificate": {
+                  "name": {
                     "type": "string",
-                    "format": "byte",
-                    "description": "The X.509 certificate (PEM-encoded, Base64)."
+                    "example": "Example Asset Provider"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "An example Asset Provider DID Document"
                   }
                 },
                 "additionalProperties": true
@@ -921,17 +1001,11 @@
                 "schema": {
                   "type": "object",
                   "required": [
-                    "@context",
-                    "@id",
+                    "id",
                     "type"
                   ],
                   "properties": {
-                    "@context": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://www.w3.org/2018/credentials/v1"
-                    },
-                    "@id": {
+                    "id": {
                       "type": "string",
                       "format": "uri",
                       "example": "did:web:example.com#asset-provider"
@@ -994,7 +1068,8 @@
                       "type": "object",
                       "description": "Structure of a valid Asset Schema (JSON-LD format)",
                       "required": [
-                        "@context"
+                        "@context",
+                        "@id"
                       ],
                       "properties": {
                         "@context": {
@@ -1005,7 +1080,30 @@
                               "example": "https://www.w3.org/ns/did/v1.1"
                             },
                             {
-                              "type": "object"
+                              "type": "object",
+                              "required": [
+                                "@version",
+                                "fungible",
+                                "facets",
+                                "organization_key"
+                              ],
+                              "properties": {
+                                "@version": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "description": "JSON-LD version.",
+                                  "example": 1.1
+                                },
+                                "fungible": {
+                                  "type": "object"
+                                },
+                                "facets": {
+                                  "type": "object"
+                                },
+                                "organization_key": {
+                                  "type": "object"
+                                }
+                              }
                             },
                             {
                               "type": "array",
@@ -1112,7 +1210,13 @@
                       "type": "object",
                       "description": "Structure of a valid Schema Profile (JSON-LD format)",
                       "required": [
-                        "@context"
+                        "@context",
+                        "@id",
+                        "title",
+                        "asset_schema",
+                        "fungible",
+                        "organization_key",
+                        "facets"
                       ],
                       "properties": {
                         "@context": {
@@ -1140,6 +1244,49 @@
                               }
                             }
                           ]
+                        },
+                        "@id": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "did:example:56745689abcdefghi#schema-profile",
+                          "description": "Unique identifier for the Schema Profile."
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Example Schema Profile",
+                          "description": "Human-readable title of the Schema Profile."
+                        },
+                        "asset_schema": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "did:example:123456789abcdefghi#asset-schema",
+                          "description": "Reference to the Asset Schema associated with this Schema Profile."
+                        },
+                        "fungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the asset is fungible.",
+                          "example": true
+                        },
+                        "organization_key": {
+                          "type": "object",
+                          "properties": {
+                            "public_key": {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://example.com/public-key",
+                              "description": "URI of the public key for the organization."
+                            },
+                            "issued": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-10-01T12:00:00Z",
+                              "description": "Timestamp when the public key was issued."
+                            }
+                          }
+                        },
+                        "facets": {
+                          "type": "object",
+                          "description": "Additional facets or properties of the Schema Profile."
                         }
                       },
                       "additionalProperties": true
@@ -1305,12 +1452,14 @@
               "application/ld+json": {
                 "schema": {
                   "type": "object",
-                  "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+                  "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.",
                   "required": [
                     "@context",
-                    "@id",
-                    "type",
-                    "certificate"
+                    "id",
+                    "entity",
+                    "name",
+                    "description",
+                    "verificationMethod"
                   ],
                   "properties": {
                     "@context": {
@@ -1339,20 +1488,23 @@
                         }
                       ]
                     },
-                    "@id": {
+                    "id": {
                       "type": "string",
                       "format": "uri",
                       "example": "did:web:example.com",
                       "description": "The decentralized identifier (DID) of the Asset Schema Authority."
                     },
-                    "type": {
+                    "entity": {
                       "type": "string",
                       "example": "AssetSchemaAuthority"
                     },
-                    "certificate": {
+                    "name": {
                       "type": "string",
-                      "format": "byte",
-                      "description": "The X.509 certificate (PEM-encoded, Base64)."
+                      "example": "Example Asset Schema Authority"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "An example Asset Schema Authority DID Document"
                     }
                   },
                   "additionalProperties": true
@@ -1403,12 +1555,14 @@
               "application/ld+json": {
                 "schema": {
                   "type": "object",
-                  "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+                  "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.",
                   "required": [
                     "@context",
-                    "@id",
-                    "type",
-                    "certificate"
+                    "id",
+                    "entity",
+                    "name",
+                    "description",
+                    "verificationMethod"
                   ],
                   "properties": {
                     "@context": {
@@ -1417,6 +1571,9 @@
                           "type": "string",
                           "format": "uri",
                           "example": "https://www.w3.org/2018/credentials/v1"
+                        },
+                        {
+                          "type": "object"
                         },
                         {
                           "type": "array",
@@ -1434,20 +1591,23 @@
                         }
                       ]
                     },
-                    "@id": {
+                    "id": {
                       "type": "string",
                       "format": "uri",
                       "example": "did:web:example.com",
                       "description": "The decentralized identifier (DID) of the Asset Provider."
                     },
-                    "type": {
+                    "entity": {
                       "type": "string",
                       "example": "AssetProvider"
                     },
-                    "certificate": {
+                    "name": {
                       "type": "string",
-                      "format": "byte",
-                      "description": "The X.509 certificate (PEM-encoded, Base64)."
+                      "example": "Example Asset Provider"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "An example Asset Provider DID Document"
                     }
                   },
                   "additionalProperties": true
@@ -1755,7 +1915,8 @@
                 "type": "object",
                 "description": "Structure of a valid Asset Schema (JSON-LD format)",
                 "required": [
-                  "@context"
+                  "@context",
+                  "@id"
                 ],
                 "properties": {
                   "@context": {
@@ -1766,7 +1927,30 @@
                         "example": "https://www.w3.org/ns/did/v1.1"
                       },
                       {
-                        "type": "object"
+                        "type": "object",
+                        "required": [
+                          "@version",
+                          "fungible",
+                          "facets",
+                          "organization_key"
+                        ],
+                        "properties": {
+                          "@version": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "JSON-LD version.",
+                            "example": 1.1
+                          },
+                          "fungible": {
+                            "type": "object"
+                          },
+                          "facets": {
+                            "type": "object"
+                          },
+                          "organization_key": {
+                            "type": "object"
+                          }
+                        }
                       },
                       {
                         "type": "array",
@@ -1802,7 +1986,8 @@
                       "type": "object",
                       "description": "Structure of a valid Asset Schema (JSON-LD format)",
                       "required": [
-                        "@context"
+                        "@context",
+                        "@id"
                       ],
                       "properties": {
                         "@context": {
@@ -1813,7 +1998,30 @@
                               "example": "https://www.w3.org/ns/did/v1.1"
                             },
                             {
-                              "type": "object"
+                              "type": "object",
+                              "required": [
+                                "@version",
+                                "fungible",
+                                "facets",
+                                "organization_key"
+                              ],
+                              "properties": {
+                                "@version": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "description": "JSON-LD version.",
+                                  "example": 1.1
+                                },
+                                "fungible": {
+                                  "type": "object"
+                                },
+                                "facets": {
+                                  "type": "object"
+                                },
+                                "organization_key": {
+                                  "type": "object"
+                                }
+                              }
                             },
                             {
                               "type": "array",
@@ -1903,7 +2111,13 @@
                 "type": "object",
                 "description": "Structure of a valid Schema Profile (JSON-LD format)",
                 "required": [
-                  "@context"
+                  "@context",
+                  "@id",
+                  "title",
+                  "asset_schema",
+                  "fungible",
+                  "organization_key",
+                  "facets"
                 ],
                 "properties": {
                   "@context": {
@@ -1931,6 +2145,49 @@
                         }
                       }
                     ]
+                  },
+                  "@id": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:example:56745689abcdefghi#schema-profile",
+                    "description": "Unique identifier for the Schema Profile."
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Example Schema Profile",
+                    "description": "Human-readable title of the Schema Profile."
+                  },
+                  "asset_schema": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:example:123456789abcdefghi#asset-schema",
+                    "description": "Reference to the Asset Schema associated with this Schema Profile."
+                  },
+                  "fungible": {
+                    "type": "boolean",
+                    "description": "Indicates if the asset is fungible.",
+                    "example": true
+                  },
+                  "organization_key": {
+                    "type": "object",
+                    "properties": {
+                      "public_key": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://example.com/public-key",
+                        "description": "URI of the public key for the organization."
+                      },
+                      "issued": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-10-01T12:00:00Z",
+                        "description": "Timestamp when the public key was issued."
+                      }
+                    }
+                  },
+                  "facets": {
+                    "type": "object",
+                    "description": "Additional facets or properties of the Schema Profile."
                   }
                 },
                 "additionalProperties": true
@@ -1950,7 +2207,13 @@
                       "type": "object",
                       "description": "Structure of a valid Schema Profile (JSON-LD format)",
                       "required": [
-                        "@context"
+                        "@context",
+                        "@id",
+                        "title",
+                        "asset_schema",
+                        "fungible",
+                        "organization_key",
+                        "facets"
                       ],
                       "properties": {
                         "@context": {
@@ -1978,6 +2241,49 @@
                               }
                             }
                           ]
+                        },
+                        "@id": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "did:example:56745689abcdefghi#schema-profile",
+                          "description": "Unique identifier for the Schema Profile."
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Example Schema Profile",
+                          "description": "Human-readable title of the Schema Profile."
+                        },
+                        "asset_schema": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "did:example:123456789abcdefghi#asset-schema",
+                          "description": "Reference to the Asset Schema associated with this Schema Profile."
+                        },
+                        "fungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the asset is fungible.",
+                          "example": true
+                        },
+                        "organization_key": {
+                          "type": "object",
+                          "properties": {
+                            "public_key": {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://example.com/public-key",
+                              "description": "URI of the public key for the organization."
+                            },
+                            "issued": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-10-01T12:00:00Z",
+                              "description": "Timestamp when the public key was issued."
+                            }
+                          }
+                        },
+                        "facets": {
+                          "type": "object",
+                          "description": "Additional facets or properties of the Schema Profile."
                         }
                       },
                       "additionalProperties": true
@@ -2313,7 +2619,8 @@
         "type": "object",
         "description": "Structure of a valid Asset Schema (JSON-LD format)",
         "required": [
-          "@context"
+          "@context",
+          "@id"
         ],
         "properties": {
           "@context": {
@@ -2324,7 +2631,30 @@
                 "example": "https://www.w3.org/ns/did/v1.1"
               },
               {
-                "type": "object"
+                "type": "object",
+                "required": [
+                  "@version",
+                  "fungible",
+                  "facets",
+                  "organization_key"
+                ],
+                "properties": {
+                  "@version": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "JSON-LD version.",
+                    "example": 1.1
+                  },
+                  "fungible": {
+                    "type": "object"
+                  },
+                  "facets": {
+                    "type": "object"
+                  },
+                  "organization_key": {
+                    "type": "object"
+                  }
+                }
               },
               {
                 "type": "array",
@@ -2352,7 +2682,8 @@
             "type": "object",
             "description": "Structure of a valid Asset Schema (JSON-LD format)",
             "required": [
-              "@context"
+              "@context",
+              "@id"
             ],
             "properties": {
               "@context": {
@@ -2363,7 +2694,30 @@
                     "example": "https://www.w3.org/ns/did/v1.1"
                   },
                   {
-                    "type": "object"
+                    "type": "object",
+                    "required": [
+                      "@version",
+                      "fungible",
+                      "facets",
+                      "organization_key"
+                    ],
+                    "properties": {
+                      "@version": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "JSON-LD version.",
+                        "example": 1.1
+                      },
+                      "fungible": {
+                        "type": "object"
+                      },
+                      "facets": {
+                        "type": "object"
+                      },
+                      "organization_key": {
+                        "type": "object"
+                      }
+                    }
                   },
                   {
                     "type": "array",
@@ -2469,7 +2823,13 @@
         "type": "object",
         "description": "Structure of a valid Schema Profile (JSON-LD format)",
         "required": [
-          "@context"
+          "@context",
+          "@id",
+          "title",
+          "asset_schema",
+          "fungible",
+          "organization_key",
+          "facets"
         ],
         "properties": {
           "@context": {
@@ -2497,6 +2857,49 @@
                 }
               }
             ]
+          },
+          "@id": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:example:56745689abcdefghi#schema-profile",
+            "description": "Unique identifier for the Schema Profile."
+          },
+          "title": {
+            "type": "string",
+            "example": "Example Schema Profile",
+            "description": "Human-readable title of the Schema Profile."
+          },
+          "asset_schema": {
+            "type": "string",
+            "format": "uri",
+            "example": "did:example:123456789abcdefghi#asset-schema",
+            "description": "Reference to the Asset Schema associated with this Schema Profile."
+          },
+          "fungible": {
+            "type": "boolean",
+            "description": "Indicates if the asset is fungible.",
+            "example": true
+          },
+          "organization_key": {
+            "type": "object",
+            "properties": {
+              "public_key": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://example.com/public-key",
+                "description": "URI of the public key for the organization."
+              },
+              "issued": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-10-01T12:00:00Z",
+                "description": "Timestamp when the public key was issued."
+              }
+            }
+          },
+          "facets": {
+            "type": "object",
+            "description": "Additional facets or properties of the Schema Profile."
           }
         },
         "additionalProperties": true
@@ -2508,7 +2911,13 @@
             "type": "object",
             "description": "Structure of a valid Schema Profile (JSON-LD format)",
             "required": [
-              "@context"
+              "@context",
+              "@id",
+              "title",
+              "asset_schema",
+              "fungible",
+              "organization_key",
+              "facets"
             ],
             "properties": {
               "@context": {
@@ -2536,6 +2945,49 @@
                     }
                   }
                 ]
+              },
+              "@id": {
+                "type": "string",
+                "format": "uri",
+                "example": "did:example:56745689abcdefghi#schema-profile",
+                "description": "Unique identifier for the Schema Profile."
+              },
+              "title": {
+                "type": "string",
+                "example": "Example Schema Profile",
+                "description": "Human-readable title of the Schema Profile."
+              },
+              "asset_schema": {
+                "type": "string",
+                "format": "uri",
+                "example": "did:example:123456789abcdefghi#asset-schema",
+                "description": "Reference to the Asset Schema associated with this Schema Profile."
+              },
+              "fungible": {
+                "type": "boolean",
+                "description": "Indicates if the asset is fungible.",
+                "example": true
+              },
+              "organization_key": {
+                "type": "object",
+                "properties": {
+                  "public_key": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://example.com/public-key",
+                    "description": "URI of the public key for the organization."
+                  },
+                  "issued": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-10-01T12:00:00Z",
+                    "description": "Timestamp when the public key was issued."
+                  }
+                }
+              },
+              "facets": {
+                "type": "object",
+                "description": "Additional facets or properties of the Schema Profile."
               }
             },
             "additionalProperties": true
@@ -2705,12 +3157,14 @@
       },
       "AssetSchemaAuthorityCertificate": {
         "type": "object",
-        "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.",
+        "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.",
         "required": [
           "@context",
-          "@id",
-          "type",
-          "certificate"
+          "id",
+          "entity",
+          "name",
+          "description",
+          "verificationMethod"
         ],
         "properties": {
           "@context": {
@@ -2739,20 +3193,23 @@
               }
             ]
           },
-          "@id": {
+          "id": {
             "type": "string",
             "format": "uri",
             "example": "did:web:example.com",
             "description": "The decentralized identifier (DID) of the Asset Schema Authority."
           },
-          "type": {
+          "entity": {
             "type": "string",
             "example": "AssetSchemaAuthority"
           },
-          "certificate": {
+          "name": {
             "type": "string",
-            "format": "byte",
-            "description": "The X.509 certificate (PEM-encoded, Base64)."
+            "example": "Example Asset Schema Authority"
+          },
+          "description": {
+            "type": "string",
+            "example": "An example Asset Schema Authority DID Document"
           }
         },
         "additionalProperties": true
@@ -2760,17 +3217,11 @@
       "RegisteredAssetSchemaAuthorityID": {
         "type": "object",
         "required": [
-          "@context",
-          "@id",
+          "id",
           "type"
         ],
         "properties": {
-          "@context": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://www.w3.org/2018/credentials/v1"
-          },
-          "@id": {
+          "id": {
             "type": "string",
             "format": "uri",
             "example": "did:web:example.com#asset-schema-authority"
@@ -2784,12 +3235,14 @@
       },
       "AssetProviderCertificate": {
         "type": "object",
-        "description": "A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.",
+        "description": "A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.",
         "required": [
           "@context",
-          "@id",
-          "type",
-          "certificate"
+          "id",
+          "entity",
+          "name",
+          "description",
+          "verificationMethod"
         ],
         "properties": {
           "@context": {
@@ -2798,6 +3251,9 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.w3.org/2018/credentials/v1"
+              },
+              {
+                "type": "object"
               },
               {
                 "type": "array",
@@ -2815,20 +3271,23 @@
               }
             ]
           },
-          "@id": {
+          "id": {
             "type": "string",
             "format": "uri",
             "example": "did:web:example.com",
             "description": "The decentralized identifier (DID) of the Asset Provider."
           },
-          "type": {
+          "entity": {
             "type": "string",
             "example": "AssetProvider"
           },
-          "certificate": {
+          "name": {
             "type": "string",
-            "format": "byte",
-            "description": "The X.509 certificate (PEM-encoded, Base64)."
+            "example": "Example Asset Provider"
+          },
+          "description": {
+            "type": "string",
+            "example": "An example Asset Provider DID Document"
           }
         },
         "additionalProperties": true
@@ -2836,17 +3295,11 @@
       "RegisteredAssetProviderID": {
         "type": "object",
         "required": [
-          "@context",
-          "@id",
+          "id",
           "type"
         ],
         "properties": {
-          "@context": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://www.w3.org/2018/credentials/v1"
-          },
-          "@id": {
+          "id": {
             "type": "string",
             "format": "uri",
             "example": "did:web:example.com#asset-provider"

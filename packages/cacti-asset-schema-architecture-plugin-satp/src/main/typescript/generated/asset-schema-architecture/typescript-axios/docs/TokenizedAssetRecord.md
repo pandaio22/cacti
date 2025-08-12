@@ -6,7 +6,7 @@ Structure of a valid Tokenized Asset Record (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionAssetSchemaRequestAssetSchemaContext**](CommissionAssetSchemaRequestAssetSchemaContext.md) |  | [default to undefined]
+**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [default to undefined]
 
 ## Example
 

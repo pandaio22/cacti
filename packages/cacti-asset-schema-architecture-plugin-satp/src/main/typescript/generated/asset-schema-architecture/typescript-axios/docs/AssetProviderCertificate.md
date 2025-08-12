@@ -1,15 +1,16 @@
 # AssetProviderCertificate
 
-A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Provider.
+A W3C-compliant JSON-LD object containing a DID Document representing an Asset Provider.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**RegisterAssetProviderRequestContext**](RegisterAssetProviderRequestContext.md) |  | [default to undefined]
+**context** | [**RegisterAssetSchemaAuthorityRequestContext**](RegisterAssetSchemaAuthorityRequestContext.md) |  | [default to undefined]
 **id** | **string** | The decentralized identifier (DID) of the Asset Provider. | [default to undefined]
-**type** | **string** |  | [default to undefined]
-**certificate** | **string** | The X.509 certificate (PEM-encoded, Base64). | [default to undefined]
+**entity** | **string** |  | [default to undefined]
+**name** | **string** |  | [default to undefined]
+**description** | **string** |  | [default to undefined]
 
 ## Example
 
@@ -19,8 +20,9 @@ import { AssetProviderCertificate } from './api';
 const instance: AssetProviderCertificate = {
     context,
     id,
-    type,
-    certificate,
+    entity,
+    name,
+    description,
 };
 ```
 

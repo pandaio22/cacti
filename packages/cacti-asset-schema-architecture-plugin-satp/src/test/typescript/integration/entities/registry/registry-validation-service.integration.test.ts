@@ -1,7 +1,3 @@
-import { LogLevelDesc } from "@hyperledger/cactus-common";
-import { PluginRegistry } from "@hyperledger/cactus-core";
-import { Configuration } from "@hyperledger/cactus-core-api";
-import { after } from "node:test";
 import fs from "fs";
 import path from "path";
 
@@ -10,13 +6,17 @@ import {
   VALID_JSON_LD_EXAMPLE,
   INVALID_JSON_LD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+  INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+  INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
   VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
 } from "../../../constants/constants";
-import { createCustomLoader } from "../../../../../main/typescript/utils/custom-loader";
 import { ValidationService } from "../../../../../main/typescript/entities/registry/modules/services/validation-service/implementations/validation-service";
 
 describe("Registry Validation Service", () => {
@@ -35,6 +35,30 @@ describe("Registry Validation Service", () => {
       path.join(
         __dirname,
         "../../../../json-ld/contexts/asset-schema-authority-certificate.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
+  const assetProviderContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/asset-provider-certificate.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
+  const assetSchemaContext = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "../../../../json-ld/contexts/asset-schema.jsonld"),
+      "utf-8",
+    ),
+  );
+  const schemaProfileContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/schema-profile.jsonld",
       ),
       "utf-8",
     ),
@@ -106,12 +130,15 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should validate JSON-LD semantics: Given a semantically correct JSON-LD, When executing validateJsonLdSemantics, Then return Valid", async () => {
-    //Given: Valid JSON-LD example
+  it("should validate Asset Schema: Given a valid signed Asset Schema, When executing validateAssetSchema, Then return Valid", async () => {
+    //Given
+    registryValidationService = new ValidationService();
+
     //When
-    const result = await registryValidationService.validateJsonLdSemantics(
-      VALID_JSON_LD_EXAMPLE,
+    const result = await registryValidationService.validateAssetSchema(
+      VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
     );
+
     //Then
     console.debug("Validation Result:", result);
     expect(result.valid).toBe(true);
@@ -119,12 +146,21 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should fail JSON-LD semantics validation: Given a semantically incorrect JSON-LD, When executing validateJsonLdSemantics, Then return Invalid", async () => {
-    //Given: Invalid JSON-LD example
+  it("should fail Asset Schema validation: Given an invalid signed Asset Schema, When executing validateAssetSchema, Then return Invalid", async () => {
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://example.org/AssetSchemaAuthority":
+        assetSchemaAuthorityCertificateContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+    registryValidationService = new ValidationService(contexts);
+
     //When
-    const result = await registryValidationService.validateJsonLdSemantics(
-      INVALID_JSON_LD_EXAMPLE,
+    const result = await registryValidationService.validateAssetSchema(
+      null as unknown as typeof VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
     );
+
     //Then
     console.debug("Validation Result:", result);
     expect(result.valid).toBe(false);
@@ -132,28 +168,88 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should validate Asset Schema: Given a valid signed Asset Schema, When executing validateAssetSchema, Then return Valid", async () => {
-    // TODO: implement passing test
-  });
-
-  it("should fail Asset Schema validation: Given an invalid signed Asset Schema, When executing validateAssetSchema, Then return Invalid", async () => {
-    // TODO: implement failing test
-  });
-
   it("should validate Schema Profile: Given a valid signed Schema Profile, When executing validateSchemaProfile, Then return Valid", async () => {
-    // TODO: implement passing test
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateSchemaProfile(
+      VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should fail Schema Profile validation: Given an invalid signed Schema Profile, When executing validateSchemaProfile, Then return Invalid", async () => {
-    // TODO: implement failing test
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateSchemaProfile(
+      null as unknown as typeof VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should validate Tokenized Asset Record: Given a valid Tokenized Asset Record, When executing validateTokenizedAssetRecord, Then return Valid", async () => {
-    // TODO: implement passing test
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateTokenizedAssetRecord(
+      VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should fail Tokenized Asset Record validation: Given an invalid Tokenized Asset Record, When executing validateTokenizedAssetRecord, Then return Invalid", async () => {
-    // TODO: implement failing test
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateTokenizedAssetRecord(
+      null as unknown as typeof VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should validate Token Issuance Authorization: Given a valid Token Issuance Authorization, When executing validateTokenIssuanceAuthorization, Then return Valid", async () => {
@@ -188,14 +284,69 @@ describe("Registry Validation Service", () => {
   });
 
   it("should fail Asset Schema Authority Certificate validation: Given an invalid Asset Schema Authority Certificate, When executing validateAssetSchemaAuthorityCertificate, Then return Invalid", async () => {
-    // TODO: implement failing test
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://example.org/AssetSchemaAuthority":
+        assetSchemaAuthorityCertificateContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result =
+      await registryValidationService.validateAssetSchemaAuthorityCertificate(
+        INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+      );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should validate Asset Provider Certificate: Given a valid Asset Provider Certificate, When executing validateAssetProviderCertificate, Then return Valid", async () => {
-    // TODO: implement passing test
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://example.org/AssetProvider": assetProviderContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result =
+      await registryValidationService.validateAssetProviderCertificate(
+        VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+      );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should fail Asset Provider Certificate validation: Given an invalid Asset Provider Certificate, When executing validateAssetProviderCertificate, Then return Invalid", async () => {
-    // TODO: implement failing test
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://example.org/AssetProvider": assetProviderContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result =
+      await registryValidationService.validateAssetProviderCertificate(
+        INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+      );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
   });
 });

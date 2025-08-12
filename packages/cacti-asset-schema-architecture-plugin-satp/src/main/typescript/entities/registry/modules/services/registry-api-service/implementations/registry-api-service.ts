@@ -248,8 +248,7 @@ export class RegistryApiService implements IRegistryApiService {
     }
     
     return { 
-      '@context': "https://www.w3.org/ns/did/v1.1",
-      '@id': registeredAssetSchemaAuthorityID,
+      'id': registeredAssetSchemaAuthorityID,
       type: "RegisteredAssetSchemaAuthority",
     };
   }
@@ -263,8 +262,7 @@ export class RegistryApiService implements IRegistryApiService {
     }
     
     return { 
-      '@context': "https://www.w3.org/ns/did/v1.1",
-      '@id': registeredAssetProviderID,
+      id: registeredAssetProviderID,
       type: "RegisteredAssetProvider",
     };    
   }

@@ -1,6 +1,6 @@
 # RegisterAssetSchemaAuthorityRequest
 
-A W3C-compliant JSON-LD object containing an X.509 certificate representing an Asset Schema Authority.
+A W3C-compliant JSON-LD object containing a DID Document representing an Asset Schema Authority.
 
 ## Properties
 
@@ -8,8 +8,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | [**RegisterAssetSchemaAuthorityRequestContext**](RegisterAssetSchemaAuthorityRequestContext.md) |  | [default to undefined]
 **id** | **string** | The decentralized identifier (DID) of the Asset Schema Authority. | [default to undefined]
-**type** | **string** |  | [default to undefined]
-**certificate** | **string** | The X.509 certificate (PEM-encoded, Base64). | [default to undefined]
+**entity** | **string** |  | [default to undefined]
+**name** | **string** |  | [default to undefined]
+**description** | **string** |  | [default to undefined]
 
 ## Example
 
@@ -19,8 +20,9 @@ import { RegisterAssetSchemaAuthorityRequest } from './api';
 const instance: RegisterAssetSchemaAuthorityRequest = {
     context,
     id,
-    type,
-    certificate,
+    entity,
+    name,
+    description,
 };
 ```
 
