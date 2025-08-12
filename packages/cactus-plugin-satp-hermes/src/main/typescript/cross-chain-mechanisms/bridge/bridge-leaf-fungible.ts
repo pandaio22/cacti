@@ -21,6 +21,13 @@ export abstract class BridgeLeafFungible {
   public abstract getDeployFungibleWrapperContractReceipt(): unknown;
 
   /**
+   * Returns the schema profile ID for a given asset.
+   * @param asset - The asset for which to retrieve the schema profile ID.
+   * @returns A promise that resolves with the schema profile ID.
+   */
+  public abstract getSchemaProfileId(asset: Asset): void;
+
+  /**
    * Wraps an asset into the fungible wrapper.
    * @param asset - The asset to be wrapped.
    * @returns A promise that resolves with the transaction response.

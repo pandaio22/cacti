@@ -83,6 +83,8 @@ export class SATPBridgeExecutionLayerImpl implements SATPBridgeExecutionLayer {
     if (instanceOfFungibleAsset(asset)) {
       const fungibleBridgeEndPoint = this
         .bridgeEndPoint as unknown as BridgeLeafFungible;
+      //added by rodolfo
+      await fungibleBridgeEndPoint.getSchemaProfileId(asset);
       const response = await fungibleBridgeEndPoint.wrapAsset(asset);
 
       if (response.transactionId == undefined) {

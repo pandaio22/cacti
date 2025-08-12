@@ -52,6 +52,7 @@ import {
 } from "../../common/errors";
 import { ISignerKeyPair } from "@hyperledger/cactus-common";
 import SATPWrapperContract from "../../../../solidity/generated/SATPWrapperContract.sol/SATPWrapperContract.json";
+import SATPTokenContract from "../../../../../test/solidity/generated/SATPTokenContractSchemaProfile.sol/SATPTokenContract.json";
 import { Asset } from "../ontology/assets/asset";
 import { TokenResponse } from "../../../generated/SATPWrapperContract";
 import { NetworkId } from "../../../public-api";
@@ -318,7 +319,36 @@ export class EthereumLeaf
     //TODO implement
     throw new Error("Method not implemented.");
   }
+  /**
+   * Returns the schema profile ID.
+   * WHERE TO ACCESS THE DESTINATION CONTRACT ABI?
+   *
+   * */
+  public async getSchemaProfileId(asset: EvmAsset): Promise<void> {
+    const fnTag = `${EthereumLeaf.CLASS_NAME}#getSchemaProfileId`;
+    this.log.debug(`${fnTag}, Getting SchemaProfileId`);
 
+    const response = (await this.connector.invokeContract({
+      contract: {
+        contractJSON: {
+          contractName: asset.contractName,
+          abi: SATPTokenContract.abi,
+          bytecode: SATPTokenContract.bytecode.object,
+        },
+        contractAddress: asset.contractAddress,
+      },
+      invocationType: EthContractInvocationType.Call,
+      methodName: "assetType",
+      params: [],
+      web3SigningCredential: this.signingCredential,
+      gasConfig: this.gasConfig,
+    })) as EthereumResponse;
+
+    if (!response.success) {
+      throw new TransactionError(fnTag);
+    }
+    console.log("I CALLED THE SMART CONTRACT!!!", response.callOutput);
+  }
   /**
    * Deploys a non-fungible wrapper contract.
    *

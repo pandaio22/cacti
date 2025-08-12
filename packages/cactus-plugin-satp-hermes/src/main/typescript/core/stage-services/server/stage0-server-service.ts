@@ -715,12 +715,12 @@ export class Stage0ServerService extends SATPService {
   }
 
   /*
-   *Validating Tokenized Asset Record (TAR1) corresponding to asset-token AT1:
+   *Validating Tokenized Asset Record (TAR) corresponding to asset-token AT:
    *Upon receiving the reference to the Tokenized Asset Record,
    *the gateway G2 must resolve (de-reference) the reference to the correct
-   *Registry Service (RG1) where the Tokenized Asset Record (TAR1) is stored.
-   *Gateway G2 then fetches a copy of the TAR1 from the Registry Service (RG1) and
-   *validates the signature of on TAR1.
+   *Registry Service (RG) where the Tokenized Asset Record (TAR) is stored.
+   *Gateway G2 then fetches a copy of the TAR1 from the Registry Service (RG) and
+   *validates the signature of on TAR.
    */
   public async validateTokenizedAssetRecord(
     request: PreTransferVerificationRequest,
@@ -730,8 +730,6 @@ export class Stage0ServerService extends SATPService {
     const stepTag = `validateTokenizedAssetRecord()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
 
-    console.log("validateTokenizedAssetRecord() CALLED HERE");
-
     try {
       if (request.senderAsset?.tokenizedAssetRecord == undefined) {
         throw new AssetMissing(fnTag);
@@ -739,24 +737,23 @@ export class Stage0ServerService extends SATPService {
       if (session == undefined) {
         throw new SessionError(fnTag);
       }
+      //1st - Fetch Tokenized Asset Record from Registry Service
+      const getTokenizedAssetRecord = await registryApi.getTokenizedAssetRecord(
+        request.senderAsset?.tokenizedAssetRecord,
+      );
 
-      const getTokenizedAssetRecordEndpoint =
-        await registryApi.getTokenizedAssetRecord(
-          request.senderAsset?.tokenizedAssetRecord,
-        );
-
-      if (getTokenizedAssetRecordEndpoint == undefined) {
+      if (getTokenizedAssetRecord == undefined) {
         throw new AssetMissing(
           fnTag,
           `Failed to fetch Tokenized Asset Record from Registry Service`,
         );
       }
-
       console.log(
         `${fnTag}, Tokenized Asset Record fetched successfully:`,
-        getTokenizedAssetRecordEndpoint.data,
+        getTokenizedAssetRecord.data,
       );
 
+      //Validate Tokenized Asset Record signature
       return true;
     } catch (error) {
       this.Log.error(`Error in ${fnTag}`, error);
@@ -769,10 +766,10 @@ export class Stage0ServerService extends SATPService {
   }
 
   /**
-   * Validating Schema Profile (SP1) corresponding to Tokenized Asset Record (TAR1):
-   * Since the Tokenized Asset Record (TAR1) carries a reference to the Schema Profile (SP1),
-   * gateway G2 must use that reference to fetch a copy of the Schema Profile SP1 from the
-   * correct Registry Service (RG0).
+   * Validating Schema Profile (SP) corresponding to Tokenized Asset Record (TAR):
+   * Since the Tokenized Asset Record (TAR) carries a reference to the Schema Profile (SP),
+   * gateway G2 must use that reference to fetch a copy of the Schema Profile from the
+   * correct Registry Service (RG).
    */
   public async validateSchemaProfile(
     request: PreTransferVerificationRequest,
@@ -782,21 +779,45 @@ export class Stage0ServerService extends SATPService {
     const stepTag = `validateSchemaProfile()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
 
-    this.Log.debug("registryVerification() CALLED HERE");
+    try {
+      if (request.senderAsset?.tokenizedAssetRecord == undefined) {
+        throw new AssetMissing(fnTag);
+      }
 
-    if (request.senderAsset?.tokenizedAssetRecord == undefined) {
-      throw new AssetMissing(fnTag);
+      if (session == undefined) {
+        throw new SessionError(fnTag);
+      }
+
+      //1st - Get Identifier of the Schema Profile from Tokenized Asset Record
+
+      //2nd - Fetch Schema Profile from Registry Service
+      const getSchemaProfile = await registryApi.getTokenizedAssetRecord(
+        request.senderAsset?.tokenizedAssetRecord,
+      );
+
+      if (getSchemaProfile == undefined) {
+        throw new AssetMissing(
+          fnTag,
+          `Failed to fetch Tokenized Asset Record from Registry Service`,
+        );
+      }
+
+      console.log(
+        `${fnTag}, Tokenized Asset Record fetched successfully:`,
+        getSchemaProfile.data,
+      );
+
+      //3rd - Validate Schema Profile signature
+
+      return true;
+    } catch (error) {
+      this.Log.error(`Error in ${fnTag}`, error);
+      throw new FailedToProcessError(fnTag, "validateSchemaProfile", error);
     }
-
-    if (session == undefined) {
-      throw new SessionError(fnTag);
-    }
-
-    return true;
   }
 
-  /*Policy Verification of Schema Profile SP1: Using the Schema Profile SP1 obtained
-   *from Registry Service RG0 the gateway G2 is now able to compare the asset definitions
+  /*Policy Verification of Schema Profile SP: Using the Schema Profile SP obtained
+   *from Registry Service RG the gateway G2 is now able to compare the asset definitions
    *found in SP1 against its own network-wide policies regarding asset types and classes
    *permitted to enter the destination network NW2.
    */
@@ -804,6 +825,10 @@ export class Stage0ServerService extends SATPService {
     const stepTag = `destinationNetworkAssetCompatibilityVerification()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
     console.log("destinationNetworkAssetCompatibilityVerification()", fnTag);
+
+    //1st - Send Schema Profile to destination smart contract
+
+    //2nd - Receive response from destination smart contract
   }
 
   public async preSATPTransferErrorResponse(

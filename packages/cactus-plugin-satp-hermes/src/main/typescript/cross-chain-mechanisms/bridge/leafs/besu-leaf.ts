@@ -438,6 +438,15 @@ export class BesuLeaf
   }
 
   /**
+   * Returns the schema profile ID.
+   * WHERE TO ACCESS THE DESTINATION CONTRACT ABI?
+   *
+   * */
+  public async getSchemaProfileId(asset: EvmAsset): Promise<void> {
+    const fnTag = `${BesuLeaf.CLASS_NAME}#getSchemaProfileId`;
+    this.log.debug(`${fnTag}, Getting SchemaProfileId`);
+  }
+  /**
    * Wraps an asset.
    *
    * @param {EvmAsset} asset - The asset to be wrapped.

@@ -13,7 +13,7 @@ import {
   Web3SigningCredential,
   Web3SigningCredentialType as Web3SigningCredentialTypeBesu,
 } from "@hyperledger/cactus-plugin-ledger-connector-besu";
-import SATPTokenContract from "../../solidity/generated/SATPTokenContract.sol/SATPTokenContract.json";
+import SATPTokenContract from "../../solidity/generated/SATPTokenContractSchemaProfile.sol/SATPTokenContract.json";
 import Web3 from "web3";
 import { PluginKeychainMemory } from "@hyperledger/cactus-plugin-keychain-memory";
 import { PluginRegistry } from "@hyperledger/cactus-core";

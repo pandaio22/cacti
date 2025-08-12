@@ -3,7 +3,7 @@ import {
   LoggerProvider,
   LogLevelDesc,
 } from "@hyperledger/cactus-common";
-import SATPTokenContract from "../../solidity/generated/SATPTokenContract.sol/SATPTokenContract.json";
+import SATPTokenContract from "../../solidity/generated/SATPTokenContractSchemaProfile.sol/SATPTokenContract.json";
 import SATPWrapperContract from "../../../main/solidity/generated/SATPWrapperContract.sol/SATPWrapperContract.json";
 import { PluginKeychainMemory } from "@hyperledger/cactus-plugin-keychain-memory";
 import { PluginRegistry } from "@hyperledger/cactus-core";
