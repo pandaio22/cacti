@@ -1,9 +1,9 @@
 import jsonld from "jsonld";
 import {
-  SignedAssetSchema,
+  AssetSchema,
   TokenIssuanceAuthorization,
-  TokenizedAssetRecord,
-  SignedSchemaProfile,
+  TokenIssuanceAuthorizationRequest,
+  SchemaProfile,
   AssetSchemaAuthorityCertificate,
   AssetProviderCertificate,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
@@ -23,35 +23,6 @@ export class ValidationService implements IValidationService {
 
     if (this.localContexts) {
       (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
-    }
-  }
-
-  public async validateJson(jsonInput: any): Promise<ValidationResult> {
-    try {
-      // If input is string, parse it; if object, stringify and parse again to confirm validity
-      const jsonString =
-        typeof jsonInput === "string" ? jsonInput : JSON.stringify(jsonInput);
-
-      const parsedJson = JSON.parse(jsonString);
-      console.debug("Parsed JSON:", parsedJson);
-
-      if (typeof parsedJson !== "object" || parsedJson === null) {
-        throw new Error("Parsed value is not a valid JSON object or array.");
-      }
-      return {
-        valid: true,
-        details: "JSON syntax is valid",
-      };
-    } catch (error: any) {
-      const errorDetail: ValidationErrorDetail = {
-        type: ValidationErrorType.PARSING_ERROR,
-        message: error.message,
-      };
-      return {
-        valid: false,
-        errors: [errorDetail],
-        details: `JSON syntax error: ${error.message}`,
-      };
     }
   }
 
@@ -82,49 +53,16 @@ export class ValidationService implements IValidationService {
       };
     }
   }
-  /* DEAD CODE
-  public async validateJsonLdSemantics(
-    jsonLdObject: any,
-  ): Promise<ValidationResult> {
-    try {
-      const expandedJsonld = await jsonld.expand(jsonLdObject);
-      console.debug("Expanded JSON-LD:", expandedJsonld);
-      if (!expandedJsonld || expandedJsonld.length === 0) {
-        throw new Error("Expanded JSON-LD is empty or invalid.");
-      }
 
-      const nquads = await jsonld.toRDF(jsonLdObject, {
-        format: "application/n-quads",
-      });
-      console.debug("JSON-LD to RDF:", nquads);
-
-      return {
-        valid: true,
-        details: "JSON-LD syntax is valid",
-      };
-    } catch (error: any) {
-      const errorDetail: ValidationErrorDetail = {
-        type: ValidationErrorType.PARSING_ERROR,
-        message: error.message,
-      };
-      return {
-        valid: false,
-        errors: [errorDetail],
-        details: `JSON-LD syntax error: ${error.message}`,
-      };
-    }
-  }
-  */
   public async validateAssetSchema(
-    signedAssetSchema: SignedAssetSchema,
+    assetSchema: AssetSchema,
   ): Promise<ValidationResult> {
     try {
-      console.debug("Validating Asset Schema:", signedAssetSchema);
-      if (!signedAssetSchema.asset_schema) {
+      console.debug("Validating Asset Schema:", assetSchema);
+
+      if (!assetSchema) {
         throw new Error("Asset Schema is missing in signed asset schema.");
       }
-
-      const assetSchema = signedAssetSchema.asset_schema;
 
       // Validate @context object structure (if applicable)
       if (
@@ -167,15 +105,13 @@ export class ValidationService implements IValidationService {
   }
 
   public async validateSchemaProfile(
-    signedSchemaProfile: SignedSchemaProfile,
+    schemaProfile: SchemaProfile,
   ): Promise<ValidationResult> {
     try {
-      console.debug("Validating Schema Profile:", signedSchemaProfile);
-      if (!signedSchemaProfile.schema_profile) {
+      console.debug("Validating Schema Profile:", schemaProfile);
+      if (!schemaProfile) {
         throw new Error("Schema Profile is missing in signed asset schema.");
       }
-
-      const schemaProfile = signedSchemaProfile.schema_profile;
 
       const syntaxResult = await this.validateJsonLdSyntax(schemaProfile);
 
@@ -186,39 +122,6 @@ export class ValidationService implements IValidationService {
       return {
         valid: true,
         details: "Schema Profile semantics are valid",
-      };
-    } catch (error: any) {
-      const errorDetail: ValidationErrorDetail = {
-        type: ValidationErrorType.SEMANTIC_ERROR,
-        message: error.message,
-      };
-      return {
-        valid: false,
-        errors: [errorDetail],
-        details: `Validation error: ${error.message}`,
-      };
-    }
-  }
-
-  public async validateTokenizedAssetRecord(
-    tokenizedAssetRecord: TokenizedAssetRecord,
-  ): Promise<ValidationResult> {
-    try {
-      console.debug("Validating Tokenized Asset Record:", tokenizedAssetRecord);
-      if (!tokenizedAssetRecord) {
-        throw new Error("TokenizedAssetRecord is missing.");
-      }
-
-      const syntaxResult =
-        await this.validateJsonLdSyntax(tokenizedAssetRecord);
-
-      if (!syntaxResult.valid) {
-        return syntaxResult;
-      }
-
-      return {
-        valid: true,
-        details: "Tokenized Asset Record semantics are valid",
       };
     } catch (error: any) {
       const errorDetail: ValidationErrorDetail = {
@@ -256,6 +159,43 @@ export class ValidationService implements IValidationService {
       return {
         valid: true,
         details: "Tokenized Issuance Authorization semantics are valid",
+      };
+    } catch (error: any) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.SEMANTIC_ERROR,
+        message: error.message,
+      };
+      return {
+        valid: false,
+        errors: [errorDetail],
+        details: `Validation error: ${error.message}`,
+      };
+    }
+  }
+
+  public async validateTokenIssuanceAuthorizationRequest(
+    tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
+  ): Promise<ValidationResult> {
+    try {
+      console.debug(
+        "Validating Token Issuance Authorization Request:",
+        tokenIssuanceAuthorizationRequest,
+      );
+      if (!tokenIssuanceAuthorizationRequest) {
+        throw new Error("tokenIssuanceAuthorizationRequest is missing.");
+      }
+
+      const syntaxResult = await this.validateJsonLdSyntax(
+        tokenIssuanceAuthorizationRequest,
+      );
+
+      if (!syntaxResult.valid) {
+        return syntaxResult;
+      }
+
+      return {
+        valid: true,
+        details: "Tokenized Issuance Authorization Request semantics are valid",
       };
     } catch (error: any) {
       const errorDetail: ValidationErrorDetail = {
