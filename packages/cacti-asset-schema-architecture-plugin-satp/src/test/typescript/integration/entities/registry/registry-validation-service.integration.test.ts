@@ -9,13 +9,10 @@ import {
   INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
-  VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
-  INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
-  VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
-  VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION,
 } from "../../../constants/constants";
 import { ValidationService } from "../../../../../main/typescript/entities/registry/modules/services/validation-service/implementations/validation-service";
 
@@ -63,20 +60,30 @@ describe("Registry Validation Service", () => {
       "utf-8",
     ),
   );
+  const verifiableCredentialsContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/verifiable-credentials-v2.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
 
-  beforeAll(async () => {});
+  const tokenIssuanceAuthorizationContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/token-issuance-authorization.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
 
   beforeEach(async () => {
     registryValidationService = new ValidationService();
   }, TIMEOUT);
 
-  afterEach(async () => {
-    //placeholder
-  }, TIMEOUT);
-
-  afterAll(async () => {
-    //Placeholder
-  });
   it("should validate JSON syntax: Given a valid JSON, When executing validateJson and validateJson, Then return Valid", async () => {
     //Given: Valid JSON-LD example
     //When
@@ -253,11 +260,53 @@ describe("Registry Validation Service", () => {
   });
 
   it("should validate Token Issuance Authorization: Given a valid Token Issuance Authorization, When executing validateTokenIssuanceAuthorization, Then return Valid", async () => {
-    // TODO: implement passing test
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
+      "https://example.org/contexts/token-issuance-authorization/v1":
+        tokenIssuanceAuthorizationContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result =
+      await registryValidationService.validateTokenIssuanceAuthorization(
+        VALID_TOKEN_ISSUANCE_AUTHORIZATION,
+      );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should fail Token Issuance Authorization validation: Given an invalid Token Issuance Authorization, When executing validateTokenIssuanceAuthorization, Then return Invalid", async () => {
-    // TODO: implement failing test
+    //Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
+      "https://example.org/contexts/token-issuance-authorization/v1":
+        tokenIssuanceAuthorizationContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result =
+      await registryValidationService.validateTokenIssuanceAuthorization(
+        null as unknown as typeof VALID_TOKEN_ISSUANCE_AUTHORIZATION,
+      );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
   });
 
   it("should validate Asset Schema Authority Certificate: Given a valid Asset Schema Authority Certificate, When executing validateAssetSchemaAuthorityCertificate, Then return Valid", async () => {

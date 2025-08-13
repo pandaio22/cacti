@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "id": "@id",
+    "type": "@type",
+    "TokenIssuanceAuthorizationRequest": "https://example.org/terms#TokenIssuanceAuthorizationRequest",
+    "assetProvider": "https://example.org/terms#assetProvider",
+    "name": "https://schema.org/name",
+    "organizationKey": "https://example.org/terms#organizationKey",
+    "publicKey": "https://w3id.org/security#publicKeyMultibase",
+    "issued": "https://purl.org/dc/terms/issued",
+    "schemaProfile": "https://example.org/terms#schemaProfile",
+    "networkId": "https://example.org/terms#networkId"
+  }
+}

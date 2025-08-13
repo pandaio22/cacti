@@ -69,89 +69,176 @@ paths:
             schema:
               type: object
               properties:
-                token_issuance_authorization_request:
-                  type: object
-                  properties:
-                    '@context':
-                      oneOf:
-                        - type: string
-                        - type: object
-                        - type: array
-                          items:
-                            anyOf:
-                              - type: string
-                              - type: object
-                    asset_provider:
-                      type: object
-                      properties:
-                        name:
+                '@context':
+                  oneOf:
+                    - type: string
+                    - type: object
+                    - type: array
+                      items:
+                        anyOf:
+                          - type: string
+                          - type: object
+                  description: |
+                    Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+                type:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  description: |
+                    Includes "VerifiablePresentation" and optionally "TokenIssuanceAuthorization".
+                issuer:
+                  type: string
+                  description: |
+                    DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
+                holder:
+                  type: string
+                  description: |
+                    DID or URI of the Asset Provider for whom this TIA VP is issued.
+                verifiableCredential:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      '@context':
+                        oneOf:
+                          - type: string
+                          - type: object
+                          - type: array
+                            items:
+                              anyOf:
+                                - type: string
+                                - type: object
+                      id:
+                        type: string
+                        format: uri
+                      type:
+                        type: array
+                        items:
                           type: string
-                        id:
-                          type: string
-                        organization_key:
-                          type: object
-                          properties:
-                            public_key:
-                              type: string
-                            issued:
-                              type: string
-                              format: date-time
-                      required:
-                        - name
-                        - id
-                        - organization_key
-                    schema_profile:
-                      type: string
-                    network_id:
-                      type: string
-                    proof:
-                      type: object
-                      properties:
-                        type:
-                          type: string
-                        created:
-                          type: string
-                          format: date-time
-                        proofPurpose:
-                          type: string
-                        verificationMethod:
-                          type: string
-                        jws:
-                          type: string
-                      required:
-                        - type
-                        - created
-                        - proofPurpose
-                        - verificationMethod
-                        - jws
-                  required:
-                    - '@context'
-                    - asset_provider
-                    - schema_profile
-                    - network_id
-                    - proof
+                        minItems: 1
+                        description: |
+                          Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+                      issuer:
+                        type: string
+                        description: |
+                          DID or URI of the Asset Provider issuing this TIAR.
+                      validFrom:
+                        type: string
+                        format: date-time
+                      validUntil:
+                        type: string
+                        format: date-time
+                      credentialSubject:
+                        type: object
+                        properties:
+                          assetProvider:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              id:
+                                type: string
+                                description: DID or URI of the Asset Provider issuing this TIAR.
+                              organizationKey:
+                                type: object
+                                properties:
+                                  publicKey:
+                                    type: string
+                                  issued:
+                                    type: string
+                                    format: date-time
+                                required:
+                                  - publicKey
+                                  - issued
+                            required:
+                              - name
+                              - id
+                              - organizationKey
+                          schemaProfile:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uri
+                          networkId:
+                            type: string
+                        required:
+                          - assetProvider
+                          - schemaProfile
+                          - networkId
+                      proof:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          verificationMethod:
+                            type: string
+                          cryptosuite:
+                            type: string
+                            description: |
+                              The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                          created:
+                            type: string
+                            format: date-time
+                          proofPurpose:
+                            type: string
+                          proofValue:
+                            type: string
+                            description: |
+                              The cryptographic proof value, typically a JWS or similar signature.
+                        required:
+                          - type
+                          - verificationMethod
+                          - cryptosuite
+                          - created
+                          - proofPurpose
+                          - ProofValue
+                    required:
+                      - '@context'
+                      - id
+                      - type
+                      - issuer
+                      - validFrom
+                      - validUntil
+                      - credentialSubject
+                      - proof
+                  minItems: 1
+                  description: |
+                    Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
                 proof:
                   type: object
                   properties:
                     type:
                       type: string
+                    verificationMethod:
+                      type: string
+                    cryptosuite:
+                      type: string
+                      description: |
+                        The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
                     created:
                       type: string
                       format: date-time
                     proofPurpose:
                       type: string
-                    verificationMethod:
+                    proofValue:
                       type: string
-                    jws:
-                      type: string
+                      description: |
+                        The cryptographic proof value, typically a JWS or similar signature.
                   required:
                     - type
+                    - verificationMethod
+                    - cryptosuite
                     - created
                     - proofPurpose
-                    - verificationMethod
-                    - jws
+                    - proofValue
               required:
-                - token_issuance_authorization_request
+                - '@context'
+                - type
+                - issuer
+                - holder
+                - verifiableCredential
                 - proof
       responses:
         '200':
@@ -1099,54 +1186,99 @@ paths:
                         anyOf:
                           - type: string
                           - type: object
-                asset_provider:
+                id:
+                  type: string
+                  format: uri
+                type:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  description: |
+                    Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+                issuer:
+                  type: string
+                  description: |
+                    DID or URI of the Asset Provider issuing this TIAR.
+                validFrom:
+                  type: string
+                  format: date-time
+                validUntil:
+                  type: string
+                  format: date-time
+                credentialSubject:
                   type: object
                   properties:
-                    name:
-                      type: string
-                    id:
-                      type: string
-                    organization_key:
+                    assetProvider:
                       type: object
                       properties:
-                        public_key:
+                        name:
                           type: string
-                        issued:
+                        id:
                           type: string
-                          format: date-time
+                          description: DID or URI of the Asset Provider issuing this TIAR.
+                        organizationKey:
+                          type: object
+                          properties:
+                            publicKey:
+                              type: string
+                            issued:
+                              type: string
+                              format: date-time
+                          required:
+                            - publicKey
+                            - issued
+                      required:
+                        - name
+                        - id
+                        - organizationKey
+                    schemaProfile:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uri
+                    networkId:
+                      type: string
                   required:
-                    - name
-                    - id
-                    - organization_key
-                schema_profile:
-                  type: string
-                network_id:
-                  type: string
+                    - assetProvider
+                    - schemaProfile
+                    - networkId
                 proof:
                   type: object
                   properties:
                     type:
                       type: string
+                    verificationMethod:
+                      type: string
+                    cryptosuite:
+                      type: string
+                      description: |
+                        The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
                     created:
                       type: string
                       format: date-time
                     proofPurpose:
                       type: string
-                    verificationMethod:
+                    proofValue:
                       type: string
-                    jws:
-                      type: string
+                      description: |
+                        The cryptographic proof value, typically a JWS or similar signature.
                   required:
                     - type
+                    - verificationMethod
+                    - cryptosuite
                     - created
                     - proofPurpose
-                    - verificationMethod
-                    - jws
+                    - ProofValue
               required:
                 - '@context'
-                - asset_provider
-                - schema_profile
-                - network_id
+                - id
+                - type
+                - issuer
+                - validFrom
+                - validUntil
+                - credentialSubject
                 - proof
       responses:
         '200':
@@ -1156,89 +1288,176 @@ paths:
               schema:
                 type: object
                 properties:
-                  token_issuance_authorization_request:
-                    type: object
-                    properties:
-                      '@context':
-                        oneOf:
-                          - type: string
-                          - type: object
-                          - type: array
-                            items:
-                              anyOf:
-                                - type: string
-                                - type: object
-                      asset_provider:
-                        type: object
-                        properties:
-                          name:
+                  '@context':
+                    oneOf:
+                      - type: string
+                      - type: object
+                      - type: array
+                        items:
+                          anyOf:
+                            - type: string
+                            - type: object
+                    description: |
+                      Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+                  type:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
+                    description: |
+                      Includes "VerifiablePresentation" and optionally "TokenIssuanceAuthorization".
+                  issuer:
+                    type: string
+                    description: |
+                      DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
+                  holder:
+                    type: string
+                    description: |
+                      DID or URI of the Asset Provider for whom this TIA VP is issued.
+                  verifiableCredential:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        '@context':
+                          oneOf:
+                            - type: string
+                            - type: object
+                            - type: array
+                              items:
+                                anyOf:
+                                  - type: string
+                                  - type: object
+                        id:
+                          type: string
+                          format: uri
+                        type:
+                          type: array
+                          items:
                             type: string
-                          id:
-                            type: string
-                          organization_key:
-                            type: object
-                            properties:
-                              public_key:
-                                type: string
-                              issued:
-                                type: string
-                                format: date-time
-                        required:
-                          - name
-                          - id
-                          - organization_key
-                      schema_profile:
-                        type: string
-                      network_id:
-                        type: string
-                      proof:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                          created:
-                            type: string
-                            format: date-time
-                          proofPurpose:
-                            type: string
-                          verificationMethod:
-                            type: string
-                          jws:
-                            type: string
-                        required:
-                          - type
-                          - created
-                          - proofPurpose
-                          - verificationMethod
-                          - jws
-                    required:
-                      - '@context'
-                      - asset_provider
-                      - schema_profile
-                      - network_id
-                      - proof
+                          minItems: 1
+                          description: |
+                            Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+                        issuer:
+                          type: string
+                          description: |
+                            DID or URI of the Asset Provider issuing this TIAR.
+                        validFrom:
+                          type: string
+                          format: date-time
+                        validUntil:
+                          type: string
+                          format: date-time
+                        credentialSubject:
+                          type: object
+                          properties:
+                            assetProvider:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                id:
+                                  type: string
+                                  description: DID or URI of the Asset Provider issuing this TIAR.
+                                organizationKey:
+                                  type: object
+                                  properties:
+                                    publicKey:
+                                      type: string
+                                    issued:
+                                      type: string
+                                      format: date-time
+                                  required:
+                                    - publicKey
+                                    - issued
+                              required:
+                                - name
+                                - id
+                                - organizationKey
+                            schemaProfile:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uri
+                            networkId:
+                              type: string
+                          required:
+                            - assetProvider
+                            - schemaProfile
+                            - networkId
+                        proof:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            verificationMethod:
+                              type: string
+                            cryptosuite:
+                              type: string
+                              description: |
+                                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                            created:
+                              type: string
+                              format: date-time
+                            proofPurpose:
+                              type: string
+                            proofValue:
+                              type: string
+                              description: |
+                                The cryptographic proof value, typically a JWS or similar signature.
+                          required:
+                            - type
+                            - verificationMethod
+                            - cryptosuite
+                            - created
+                            - proofPurpose
+                            - ProofValue
+                      required:
+                        - '@context'
+                        - id
+                        - type
+                        - issuer
+                        - validFrom
+                        - validUntil
+                        - credentialSubject
+                        - proof
+                    minItems: 1
+                    description: |
+                      Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
                   proof:
                     type: object
                     properties:
                       type:
                         type: string
+                      verificationMethod:
+                        type: string
+                      cryptosuite:
+                        type: string
+                        description: |
+                          The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
                       created:
                         type: string
                         format: date-time
                       proofPurpose:
                         type: string
-                      verificationMethod:
+                      proofValue:
                         type: string
-                      jws:
-                        type: string
+                        description: |
+                          The cryptographic proof value, typically a JWS or similar signature.
                     required:
                       - type
+                      - verificationMethod
+                      - cryptosuite
                       - created
                       - proofPurpose
-                      - verificationMethod
-                      - jws
+                      - proofValue
                 required:
-                  - token_issuance_authorization_request
+                  - '@context'
+                  - type
+                  - issuer
+                  - holder
+                  - verifiableCredential
                   - proof
         '400':
           description: Bad Request
@@ -1542,7 +1761,7 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    TokenIssuanceAuthorizationRequest:
+    OLDTokenIssuanceAuthorizationRequest:
       type: object
       properties:
         '@context':
@@ -1603,7 +1822,287 @@ components:
         - schema_profile
         - network_id
         - proof
+    TokenIssuanceAuthorizationRequest:
+      type: object
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+            - type: object
+            - type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: object
+        id:
+          type: string
+          format: uri
+        type:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+        issuer:
+          type: string
+          description: |
+            DID or URI of the Asset Provider issuing this TIAR.
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        credentialSubject:
+          type: object
+          properties:
+            assetProvider:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+                  description: DID or URI of the Asset Provider issuing this TIAR.
+                organizationKey:
+                  type: object
+                  properties:
+                    publicKey:
+                      type: string
+                    issued:
+                      type: string
+                      format: date-time
+                  required:
+                    - publicKey
+                    - issued
+              required:
+                - name
+                - id
+                - organizationKey
+            schemaProfile:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uri
+            networkId:
+              type: string
+          required:
+            - assetProvider
+            - schemaProfile
+            - networkId
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            verificationMethod:
+              type: string
+            cryptosuite:
+              type: string
+              description: |
+                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            proofValue:
+              type: string
+              description: |
+                The cryptographic proof value, typically a JWS or similar signature.
+          required:
+            - type
+            - verificationMethod
+            - cryptosuite
+            - created
+            - proofPurpose
+            - ProofValue
+      required:
+        - '@context'
+        - id
+        - type
+        - issuer
+        - validFrom
+        - validUntil
+        - credentialSubject
+        - proof
     TokenIssuanceAuthorization:
+      type: object
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+            - type: object
+            - type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: object
+          description: |
+            Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+        type:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            Includes "VerifiablePresentation" and optionally "TokenIssuanceAuthorization".
+        issuer:
+          type: string
+          description: |
+            DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
+        holder:
+          type: string
+          description: |
+            DID or URI of the Asset Provider for whom this TIA VP is issued.
+        verifiableCredential:
+          type: array
+          items:
+            type: object
+            properties:
+              '@context':
+                oneOf:
+                  - type: string
+                  - type: object
+                  - type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: object
+              id:
+                type: string
+                format: uri
+              type:
+                type: array
+                items:
+                  type: string
+                minItems: 1
+                description: |
+                  Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+              issuer:
+                type: string
+                description: |
+                  DID or URI of the Asset Provider issuing this TIAR.
+              validFrom:
+                type: string
+                format: date-time
+              validUntil:
+                type: string
+                format: date-time
+              credentialSubject:
+                type: object
+                properties:
+                  assetProvider:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      id:
+                        type: string
+                        description: DID or URI of the Asset Provider issuing this TIAR.
+                      organizationKey:
+                        type: object
+                        properties:
+                          publicKey:
+                            type: string
+                          issued:
+                            type: string
+                            format: date-time
+                        required:
+                          - publicKey
+                          - issued
+                    required:
+                      - name
+                      - id
+                      - organizationKey
+                  schemaProfile:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uri
+                  networkId:
+                    type: string
+                required:
+                  - assetProvider
+                  - schemaProfile
+                  - networkId
+              proof:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  verificationMethod:
+                    type: string
+                  cryptosuite:
+                    type: string
+                    description: |
+                      The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                  created:
+                    type: string
+                    format: date-time
+                  proofPurpose:
+                    type: string
+                  proofValue:
+                    type: string
+                    description: |
+                      The cryptographic proof value, typically a JWS or similar signature.
+                required:
+                  - type
+                  - verificationMethod
+                  - cryptosuite
+                  - created
+                  - proofPurpose
+                  - ProofValue
+            required:
+              - '@context'
+              - id
+              - type
+              - issuer
+              - validFrom
+              - validUntil
+              - credentialSubject
+              - proof
+          minItems: 1
+          description: |
+            Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            verificationMethod:
+              type: string
+            cryptosuite:
+              type: string
+              description: |
+                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            proofValue:
+              type: string
+              description: |
+                The cryptographic proof value, typically a JWS or similar signature.
+          required:
+            - type
+            - verificationMethod
+            - cryptosuite
+            - created
+            - proofPurpose
+            - proofValue
+      required:
+        - '@context'
+        - type
+        - issuer
+        - holder
+        - verifiableCredential
+        - proof
+    OLDTokenIssuanceAuthorization:
       type: object
       properties:
         token_issuance_authorization_request:
@@ -1618,54 +2117,99 @@ components:
                     anyOf:
                       - type: string
                       - type: object
-            asset_provider:
+            id:
+              type: string
+              format: uri
+            type:
+              type: array
+              items:
+                type: string
+              minItems: 1
+              description: |
+                Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+            issuer:
+              type: string
+              description: |
+                DID or URI of the Asset Provider issuing this TIAR.
+            validFrom:
+              type: string
+              format: date-time
+            validUntil:
+              type: string
+              format: date-time
+            credentialSubject:
               type: object
               properties:
-                name:
-                  type: string
-                id:
-                  type: string
-                organization_key:
+                assetProvider:
                   type: object
                   properties:
-                    public_key:
+                    name:
                       type: string
-                    issued:
+                    id:
                       type: string
-                      format: date-time
+                      description: DID or URI of the Asset Provider issuing this TIAR.
+                    organizationKey:
+                      type: object
+                      properties:
+                        publicKey:
+                          type: string
+                        issued:
+                          type: string
+                          format: date-time
+                      required:
+                        - publicKey
+                        - issued
+                  required:
+                    - name
+                    - id
+                    - organizationKey
+                schemaProfile:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uri
+                networkId:
+                  type: string
               required:
-                - name
-                - id
-                - organization_key
-            schema_profile:
-              type: string
-            network_id:
-              type: string
+                - assetProvider
+                - schemaProfile
+                - networkId
             proof:
               type: object
               properties:
                 type:
                   type: string
+                verificationMethod:
+                  type: string
+                cryptosuite:
+                  type: string
+                  description: |
+                    The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
                 created:
                   type: string
                   format: date-time
                 proofPurpose:
                   type: string
-                verificationMethod:
+                proofValue:
                   type: string
-                jws:
-                  type: string
+                  description: |
+                    The cryptographic proof value, typically a JWS or similar signature.
               required:
                 - type
+                - verificationMethod
+                - cryptosuite
                 - created
                 - proofPurpose
-                - verificationMethod
-                - jws
+                - ProofValue
           required:
             - '@context'
-            - asset_provider
-            - schema_profile
-            - network_id
+            - id
+            - type
+            - issuer
+            - validFrom
+            - validUntil
+            - credentialSubject
             - proof
         proof:
           type: object

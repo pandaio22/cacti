@@ -157,10 +157,10 @@ export interface CommissionAssetSchemaRequest {
     'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {CommissionAssetSchemaRequestProof}
      * @memberof CommissionAssetSchemaRequest
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * Structure of a valid Asset Schema (JSON-LD format)
@@ -215,6 +215,43 @@ export interface CommissionAssetSchemaRequestAssetSchemaContextOneOf {
     'organization_key': object;
 }
 /**
+ * 
+ * @export
+ * @interface CommissionAssetSchemaRequestProof
+ */
+export interface CommissionAssetSchemaRequestProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestProof
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestProof
+     */
+    'created': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestProof
+     */
+    'proofPurpose': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestProof
+     */
+    'verificationMethod': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestProof
+     */
+    'jws': string;
+}
+/**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
  * @export
  * @interface CommissionSchemaProfile200Response
@@ -255,10 +292,10 @@ export interface CommissionSchemaProfileRequest {
     'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {CommissionAssetSchemaRequestProof}
      * @memberof CommissionSchemaProfileRequest
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * Structure of a valid Schema Profile (JSON-LD format)
@@ -454,6 +491,106 @@ export interface CommissionedTokenizedAssetRecordID {
 /**
  * 
  * @export
+ * @interface OLDTokenIssuanceAuthorization
+ */
+export interface OLDTokenIssuanceAuthorization {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'token_issuance_authorization_request': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestProof}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'proof': CommissionAssetSchemaRequestProof;
+}
+/**
+ * 
+ * @export
+ * @interface OLDTokenIssuanceAuthorizationRequest
+ */
+export interface OLDTokenIssuanceAuthorizationRequest {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
+     * @memberof OLDTokenIssuanceAuthorizationRequest
+     */
+    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
+    /**
+     * 
+     * @type {OLDTokenIssuanceAuthorizationRequestAssetProvider}
+     * @memberof OLDTokenIssuanceAuthorizationRequest
+     */
+    'asset_provider': OLDTokenIssuanceAuthorizationRequestAssetProvider;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequest
+     */
+    'schema_profile': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequest
+     */
+    'network_id': string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestProof}
+     * @memberof OLDTokenIssuanceAuthorizationRequest
+     */
+    'proof': CommissionAssetSchemaRequestProof;
+}
+/**
+ * 
+ * @export
+ * @interface OLDTokenIssuanceAuthorizationRequestAssetProvider
+ */
+export interface OLDTokenIssuanceAuthorizationRequestAssetProvider {
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequestAssetProvider
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequestAssetProvider
+     */
+    'id': string;
+    /**
+     * 
+     * @type {OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey}
+     * @memberof OLDTokenIssuanceAuthorizationRequestAssetProvider
+     */
+    'organization_key': OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey;
+}
+/**
+ * 
+ * @export
+ * @interface OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
+ */
+export interface OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey {
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
+     */
+    'public_key'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
+     */
+    'issued'?: string;
+}
+/**
+ * 
+ * @export
  * @interface RegisterAssetProvider200Response
  */
 export interface RegisterAssetProvider200Response {
@@ -623,147 +760,283 @@ export type RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner = obj
 export interface RegisterTokenIssuanceAuthorizationRequest {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest}
+     * @type {RegisterTokenIssuanceAuthorizationRequestContext}
      * @memberof RegisterTokenIssuanceAuthorizationRequest
      */
-    'token_issuance_authorization_request': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest;
+    '@context': RegisterTokenIssuanceAuthorizationRequestContext;
     /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\". 
+     * @type {Array<string>}
      * @memberof RegisterTokenIssuanceAuthorizationRequest
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing (signing) this TIA VP. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'issuer': string;
+    /**
+     * DID or URI of the Asset Provider for whom this TIA VP is issued. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'holder': string;
+    /**
+     * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
+     * @type {Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'verifiableCredential': Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestProof}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'proof': RegisterTokenIssuanceAuthorizationRequestProof;
 }
 /**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
- */
-export interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest {
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
-     */
-    '@context': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
-     */
-    'asset_provider': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
-     */
-    'schema_profile': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
-     */
-    'network_id': string;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
-     */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider
- */
-export interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider
-     */
-    'id': string;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider
-     */
-    'organization_key': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
- */
-export interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
-     */
-    'public_key'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProviderOrganizationKey
-     */
-    'issued'?: string;
-}
-/**
- * @type RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext
+ * @type RegisterTokenIssuanceAuthorizationRequestContext
+ * Typically includes \"https://www.w3.org/2018/credentials/v1\" and may include domain-specific contexts. 
  * @export
  */
-export type RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext = Array<RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContextOneOfInner> | object | string;
+export type RegisterTokenIssuanceAuthorizationRequestContext = Array<RegisterTokenIssuanceAuthorizationRequestContextOneOfInner> | object | string;
 
 /**
  * 
  * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContextOneOfInner
+ * @interface RegisterTokenIssuanceAuthorizationRequestContextOneOfInner
  */
-export interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContextOneOfInner {
+export interface RegisterTokenIssuanceAuthorizationRequestContextOneOfInner {
 }
 /**
  * 
  * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+ * @interface RegisterTokenIssuanceAuthorizationRequestProof
  */
-export interface RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof {
+export interface RegisterTokenIssuanceAuthorizationRequestProof {
     /**
      * 
      * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
     'type': string;
     /**
      * 
      * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
+     */
+    'verificationMethod': string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
+     */
+    'cryptosuite': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
     'created': string;
     /**
      * 
      * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
     'proofPurpose': string;
     /**
-     * 
+     * The cryptographic proof value, typically a JWS or similar signature. 
      * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+     * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
-    'verificationMethod': string;
+    'proofValue': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
     /**
      * 
      * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    'jws': string;
+    'id': string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\". 
+     * @type {Array<string>}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this TIAR. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'issuer': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'validFrom': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'validUntil': string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'proof': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof;
+}
+/**
+ * @type RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext
+ * @export
+ */
+export type RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext = Array<RegisterTokenIssuanceAuthorizationRequestContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
+     */
+    'assetProvider': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
+     */
+    'schemaProfile': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
+     */
+    'networkId': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
+     */
+    'name': string;
+    /**
+     * DID or URI of the Asset Provider issuing this TIAR.
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
+     */
+    'id': string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
+     */
+    'organizationKey': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
+     */
+    'publicKey': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
+     */
+    'issued': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'verificationMethod': string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'cryptosuite': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'created': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'proofPurpose': string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
+     */
+    'proofValue'?: string;
 }
 /**
  * 
@@ -874,10 +1147,10 @@ export interface SignedAssetSchema {
     'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {CommissionAssetSchemaRequestProof}
      * @memberof SignedAssetSchema
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * 
@@ -895,10 +1168,10 @@ export interface SignedSchemaProfile {
     'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {CommissionAssetSchemaRequestProof}
      * @memberof SignedSchemaProfile
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * 
@@ -908,16 +1181,40 @@ export interface SignedSchemaProfile {
 export interface TokenIssuanceAuthorization {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest}
+     * @type {RegisterTokenIssuanceAuthorizationRequestContext}
      * @memberof TokenIssuanceAuthorization
      */
-    'token_issuance_authorization_request': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest;
+    '@context': RegisterTokenIssuanceAuthorizationRequestContext;
+    /**
+     * Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\". 
+     * @type {Array<string>}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing (signing) this TIA VP. 
+     * @type {string}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'issuer': string;
+    /**
+     * DID or URI of the Asset Provider for whom this TIA VP is issued. 
+     * @type {string}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'holder': string;
+    /**
+     * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
+     * @type {Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'verifiableCredential': Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {RegisterTokenIssuanceAuthorizationRequestProof}
      * @memberof TokenIssuanceAuthorization
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'proof': RegisterTokenIssuanceAuthorizationRequestProof;
 }
 /**
  * A JSON-LD response representing the DID for a registered Token Issuance Authorization.
@@ -952,34 +1249,52 @@ export interface TokenIssuanceAuthorizationID {
 export interface TokenIssuanceAuthorizationRequest {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext}
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    '@context': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestContext;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider}
-     * @memberof TokenIssuanceAuthorizationRequest
-     */
-    'asset_provider': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestAssetProvider;
+    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
     /**
      * 
      * @type {string}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'schema_profile': string;
+    'id': string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\". 
+     * @type {Array<string>}
+     * @memberof TokenIssuanceAuthorizationRequest
+     */
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this TIAR. 
+     * @type {string}
+     * @memberof TokenIssuanceAuthorizationRequest
+     */
+    'issuer': string;
     /**
      * 
      * @type {string}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'network_id': string;
+    'validFrom': string;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof}
+     * @type {string}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof;
+    'validUntil': string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}
+     * @memberof TokenIssuanceAuthorizationRequest
+     */
+    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof}
+     * @memberof TokenIssuanceAuthorizationRequest
+     */
+    'proof': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof;
 }
 /**
  * Structure of a valid Tokenized Asset Record (JSON-LD format)
@@ -1042,13 +1357,13 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
         /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
-         * @param {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest} registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest 
+         * @param {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner} registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestTokenIssuanceAuthorization: async (registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest' is not null or undefined
-            assertParamExists('requestTokenIssuanceAuthorization', 'registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest', registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest)
+        requestTokenIssuanceAuthorization: async (registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner' is not null or undefined
+            assertParamExists('requestTokenIssuanceAuthorization', 'registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner', registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner)
             const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/token-issuance-authorization-request`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1068,7 +1383,7 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1137,12 +1452,12 @@ export const AssetSchemaAuthorityApiFp = function(configuration?: Configuration)
         /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
-         * @param {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest} registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest 
+         * @param {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner} registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterTokenIssuanceAuthorizationRequest>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options);
+        async requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegisterTokenIssuanceAuthorizationRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetSchemaAuthorityApi.requestTokenIssuanceAuthorization']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1183,12 +1498,12 @@ export const AssetSchemaAuthorityApiFactory = function (configuration?: Configur
         /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
          * @summary Request Token Issuance Authorization
-         * @param {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest} registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest 
+         * @param {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner} registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig): AxiosPromise<RegisterTokenIssuanceAuthorizationRequest> {
-            return localVarFp.requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options).then((request) => request(axios, basePath));
+        requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options?: RawAxiosRequestConfig): AxiosPromise<RegisterTokenIssuanceAuthorizationRequest> {
+            return localVarFp.requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
@@ -1225,13 +1540,13 @@ export class AssetSchemaAuthorityApi extends BaseAPI {
     /**
      * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
      * @summary Request Token Issuance Authorization
-     * @param {RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest} registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest 
+     * @param {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner} registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetSchemaAuthorityApi
      */
-    public requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig) {
-        return AssetSchemaAuthorityApiFp(this.configuration).requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest, options).then((request) => request(this.axios, this.basePath));
+    public requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options?: RawAxiosRequestConfig) {
+        return AssetSchemaAuthorityApiFp(this.configuration).requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

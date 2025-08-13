@@ -5,8 +5,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**token_issuance_authorization_request** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest.md) |  | [default to undefined]
-**proof** | [**RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
+**context** | [**RegisterTokenIssuanceAuthorizationRequestContext**](RegisterTokenIssuanceAuthorizationRequestContext.md) |  | [default to undefined]
+**type** | **Array&lt;string&gt;** | Includes \&quot;VerifiablePresentation\&quot; and optionally \&quot;TokenIssuanceAuthorization\&quot;.  | [default to undefined]
+**issuer** | **string** | DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.  | [default to undefined]
+**holder** | **string** | DID or URI of the Asset Provider for whom this TIA VP is issued.  | [default to undefined]
+**verifiableCredential** | [**Array&lt;RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner&gt;**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md) | Contains the Token Issuance Authorization Request VC issued by the Asset Provider.  | [default to undefined]
+**proof** | [**RegisterTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 
@@ -14,7 +18,11 @@ Name | Type | Description | Notes
 import { RegisterTokenIssuanceAuthorizationRequest } from './api';
 
 const instance: RegisterTokenIssuanceAuthorizationRequest = {
-    token_issuance_authorization_request,
+    context,
+    type,
+    issuer,
+    holder,
+    verifiableCredential,
     proof,
 };
 ```

@@ -1,4 +1,4 @@
-# TokenIssuanceAuthorizationRequest
+# RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
 
 
 ## Properties
@@ -17,9 +17,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { TokenIssuanceAuthorizationRequest } from './api';
+import { RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner } from './api';
 
-const instance: TokenIssuanceAuthorizationRequest = {
+const instance: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner = {
     context,
     id,
     type,

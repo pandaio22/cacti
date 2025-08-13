@@ -1,20 +1,20 @@
-# SignedAssetSchema
+# OLDTokenIssuanceAuthorization
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [optional] [default to undefined]
+**token_issuance_authorization_request** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md) |  | [default to undefined]
 **proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SignedAssetSchema } from './api';
+import { OLDTokenIssuanceAuthorization } from './api';
 
-const instance: SignedAssetSchema = {
-    asset_schema,
+const instance: OLDTokenIssuanceAuthorization = {
+    token_issuance_authorization_request,
     proof,
 };
 ```

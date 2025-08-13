@@ -204,7 +204,7 @@ export class ValidationService implements IValidationService {
     tokenizedAssetRecord: TokenizedAssetRecord,
   ): Promise<ValidationResult> {
     try {
-      console.debug("Validating Schema Profile:", tokenizedAssetRecord);
+      console.debug("Validating Tokenized Asset Record:", tokenizedAssetRecord);
       if (!tokenizedAssetRecord) {
         throw new Error("TokenizedAssetRecord is missing.");
       }
@@ -236,11 +236,38 @@ export class ValidationService implements IValidationService {
   public async validateTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<ValidationResult> {
-    // Placeholder for Token Issuance Authorization validation logic
-    return {
-      valid: true,
-      details: tokenIssuanceAuthorization, // Example detail, could be expanded
-    };
+    try {
+      console.debug(
+        "Validating Token Issuance Authorization:",
+        tokenIssuanceAuthorization,
+      );
+      if (!tokenIssuanceAuthorization) {
+        throw new Error("tokenIssuanceAuthorization is missing.");
+      }
+
+      const syntaxResult = await this.validateJsonLdSyntax(
+        tokenIssuanceAuthorization,
+      );
+
+      if (!syntaxResult.valid) {
+        return syntaxResult;
+      }
+
+      return {
+        valid: true,
+        details: "Tokenized Issuance Authorization semantics are valid",
+      };
+    } catch (error: any) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.SEMANTIC_ERROR,
+        message: error.message,
+      };
+      return {
+        valid: false,
+        errors: [errorDetail],
+        details: `Validation error: ${error.message}`,
+      };
+    }
   }
 
   public async validateDidDocument(

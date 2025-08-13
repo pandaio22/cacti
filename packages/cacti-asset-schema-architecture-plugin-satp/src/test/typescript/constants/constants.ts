@@ -523,27 +523,92 @@ const VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE = {
 };
 
 const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
-  "@context": "https://web.tecnico.ulisboa.pt/ist173130/asset-schema.jsonld",
-  asset_provider: {
-    name: "Acme Asset Provider",
-    id: "https://example.org/asset-providers/acme",
-    organization_key: {
-      public_key: "MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEp...xyz",
-      issued: "2025-06-14T10:20:30.000Z",
+  "@context": [
+    "https://www.w3.org/2018/credentials/v2",
+    "https://example.org/contexts/token-issuance-authorization/v1",
+  ],
+  id: "urn:uuid:5d58e6a2-38f7-4d92-9f4e-1b5d56f6c981",
+  type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+  issuer: "did:example:asset-schema-authority-123",
+  validFrom: "2025-08-13T10:15:00Z",
+  validUntil: "2025-09-13T10:15:00Z",
+  credentialSubject: {
+    assetProvider: {
+      name: "Example Asset Provider Ltd.",
+      id: "did:example:asset-provider-123",
+      organizationKey: {
+        publicKey: "z6MktY1rYQ2pF7bL5vJxVnAf3uC4oM2rTfq2aX6rQf8xPz",
+        issued: "2025-08-01T08:00:00Z",
+      },
     },
+    schemaProfile: {
+      id: "https://example.org/schema-profiles/real-estate-v1",
+    },
+    networkId: "mainnet-registry-01",
   },
-  schema_profile:
-    "https://web.tecnico.ulisboa.pt/ist173130/asset-schema.jsonld",
-  network_id: "testnet-12345",
   proof: {
-    type: "JwsSignature2020",
-    created: "2025-06-14T12:34:56.789Z",
+    type: "DataIntegrityProof",
+    verificationMethod: "did:example:asset-provider-123#org-key",
+    cryptosuite: "eddsa-rdfc-2022",
+    created: "2025-08-13T10:16:00Z",
     proofPurpose: "assertionMethod",
-    verificationMethod:
-      "https://web.tecnico.ulisboa.pt/ist173130/asset-schema.jsonld",
-    jws: "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..abc123",
+    proofValue: "z4Z7eTtRC3kBb9zN8...",
   },
 };
+
+const VALID_TOKEN_ISSUANCE_AUTHORIZATION = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v2",
+    "https://example.org/contexts/token-issuance-authorization/v1",
+  ],
+  type: ["VerifiablePresentation", "TokenIssuanceAuthorization"],
+  issuer: "did:example:asset-schema-authority-456",
+  holder: "did:example:asset-provider-123",
+  verifiableCredential: [
+    {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v2",
+        "https://example.org/contexts/token-issuance-authorization/v1",
+      ],
+      id: "urn:uuid:5d58e6a2-38f7-4d92-9f4e-1b5d56f6c981",
+      type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+      issuer: "did:example:asset-provider-123",
+      validFrom: "2025-08-13T10:15:00Z",
+      validUntil: "2025-09-13T10:15:00Z",
+      credentialSubject: {
+        assetProvider: {
+          name: "Example Asset Provider Ltd.",
+          id: "did:example:asset-provider-123",
+          organizationKey: {
+            publicKey: "z6MktY1rYQ2pF7bL5vJxVnAf3uC4oM2rTfq2aX6rQf8xPz",
+            issued: "2025-08-01T08:00:00Z",
+          },
+        },
+        schemaProfile: {
+          id: "https://example.org/schema-profiles/real-estate-v1",
+        },
+        networkId: "mainnet-registry-01",
+      },
+      proof: {
+        type: "DataIntegrityProof",
+        verificationMethod: "did:example:asset-provider-123#org-key",
+        cryptosuite: "eddsa-rdfc-2022",
+        created: "2025-08-13T10:16:00Z",
+        proofPurpose: "assertionMethod",
+        proofValue: "z4Z7eTtRC3kBb9zN8...",
+      },
+    },
+  ],
+  proof: {
+    type: "DataIntegrityProof",
+    verificationMethod: "did:example:asset-schema-authority-456#auth-key",
+    cryptosuite: "eddsa-rdfc-2022",
+    created: "2025-08-13T10:20:00Z",
+    proofPurpose: "assertionMethod",
+    proofValue: "z9Y2eUhXkV3qPa2nM...",
+  },
+};
+
 const VALID_TOKENIZED_ASSET_RECORD_EXAMPLE = {
   "@context": [{ "@version": 1.1 }, "did:example:56745689abcdefghi#"],
   schema_profile: "did:example:56745689abcdefghi#schema-profile",
@@ -614,6 +679,7 @@ export {
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
   VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,

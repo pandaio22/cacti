@@ -63,7 +63,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **requestTokenIssuanceAuthorization**
-> RegisterTokenIssuanceAuthorizationRequest requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest)
+> RegisterTokenIssuanceAuthorizationRequest requestTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner)
 
 This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
 
@@ -73,16 +73,16 @@ This endpoint allows a client to send a token issuance authorization request (TI
 import {
     AssetSchemaAuthorityApi,
     Configuration,
-    RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
+    RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new AssetSchemaAuthorityApi(configuration);
 
-let registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest; //
+let registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner; //
 
 const { status, data } = await apiInstance.requestTokenIssuanceAuthorization(
-    registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest
+    registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner
 );
 ```
 
@@ -90,7 +90,7 @@ const { status, data } = await apiInstance.requestTokenIssuanceAuthorization(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **registerTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest** | **RegisterTokenIssuanceAuthorizationRequestTokenIssuanceAuthorizationRequest**|  | |
+| **registerTokenIssuanceAuthorizationRequestVerifiableCredentialInner** | **RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner**|  | |
 
 
 ### Return type
