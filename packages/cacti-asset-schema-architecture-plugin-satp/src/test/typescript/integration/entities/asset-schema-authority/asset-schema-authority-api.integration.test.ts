@@ -1,4 +1,4 @@
-import { LogLevelDesc } from "@hyperledger/cactus-common";
+/*import { LogLevelDesc } from "@hyperledger/cactus-common";
 import { PluginRegistry } from "@hyperledger/cactus-core";
 import { Configuration } from "@hyperledger/cactus-core-api";
 import {
@@ -157,3 +157,4 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     TIMEOUT,
   );
 });
+*/

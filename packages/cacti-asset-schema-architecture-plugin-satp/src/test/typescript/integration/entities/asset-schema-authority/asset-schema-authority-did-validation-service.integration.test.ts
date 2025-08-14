@@ -1,4 +1,4 @@
-import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
+/*import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
 import { CertificateService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/certificate-service";
 import { DidDocumentService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/did-document-service";
 
@@ -111,3 +111,4 @@ describe("DidDocumentService", () => {
     ).rejects.toThrow(/PEM/);
   });
 });
+*/

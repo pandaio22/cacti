@@ -117,6 +117,231 @@ export interface AssetSchemaAuthorityCertificate {
     'description': string;
 }
 /**
+ * Structure of a valid Asset Schema DID Document (JSON-LD format)
+ * @export
+ * @interface AssetSchemaDidDocument
+ */
+export interface AssetSchemaDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaDidDocumentContext}
+     * @memberof AssetSchemaDidDocument
+     */
+    '@context': AssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Asset Schema DID Document.
+     * @type {string}
+     * @memberof AssetSchemaDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"AssetSchemaDidDocument\". 
+     * @type {Array<string>}
+     * @memberof AssetSchemaDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<AssetSchemaDidDocumentVerificationMethodInner>}
+     * @memberof AssetSchemaDidDocument
+     */
+    'verificationMethod': Array<AssetSchemaDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof AssetSchemaDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof AssetSchemaDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * @type AssetSchemaDidDocumentContext
+ * @export
+ */
+export type AssetSchemaDidDocumentContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface AssetSchemaDidDocumentVerificationMethodInner
+ */
+export interface AssetSchemaDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof AssetSchemaDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof AssetSchemaDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Asset Schema DID.
+     * @type {string}
+     * @memberof AssetSchemaDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof AssetSchemaDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
+ * Structure of a valid Asset Schema Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface AssetSchemaVerifiableCredential
+ */
+export interface AssetSchemaVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Asset Schema Verifiable Credential.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialCredentialSubject}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'credentialSubject'?: AssetSchemaVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaVerifiableCredentialCredentialSubject
+ */
+export interface AssetSchemaVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * DID or URI of the entity that created the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * DID or URI of the entity that commissioned the Asset Schema Authority.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'commissionedBy'?: string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaVerifiableCredentialProof
+ */
+export interface AssetSchemaVerifiableCredentialProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'verificationMethod'?: string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'cryptosuite'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'created'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'proofPurpose'?: string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialProof
+     */
+    'proofValue'?: string;
+}
+/**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
  * @export
  * @interface CommissionAssetSchema200Response
@@ -1130,6 +1355,82 @@ export interface SchemaProfile {
      * @memberof SchemaProfile
      */
     'facets': object;
+}
+/**
+ * Structure of a valid Schema Profile DID Document (JSON-LD format)
+ * @export
+ * @interface SchemaProfileDidDocument
+ */
+export interface SchemaProfileDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaDidDocumentContext}
+     * @memberof SchemaProfileDidDocument
+     */
+    '@context': AssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Schema Profile DID Document.
+     * @type {string}
+     * @memberof SchemaProfileDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"SchemaProfileDidDocument\". 
+     * @type {Array<string>}
+     * @memberof SchemaProfileDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<SchemaProfileDidDocumentVerificationMethodInner>}
+     * @memberof SchemaProfileDidDocument
+     */
+    'verificationMethod': Array<SchemaProfileDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof SchemaProfileDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof SchemaProfileDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface SchemaProfileDidDocumentVerificationMethodInner
+ */
+export interface SchemaProfileDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof SchemaProfileDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof SchemaProfileDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Schema Profile DID.
+     * @type {string}
+     * @memberof SchemaProfileDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof SchemaProfileDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
 }
 /**
  * 

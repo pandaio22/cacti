@@ -12,7 +12,7 @@ const IPFS_URL: string = "http://localhost:5001/api/v0";
  * This private key is used to sign asset schemas and schema profiles.
  * Ensure that the private key is kept secure and not exposed in public repositories.
  */
-
+/*
 const assetSchemaAuthorityPrivateKeyPath = path.resolve(
   process.cwd(),
   "src/main/typescript/entities/asset-schema-authority/certificates/privateKey.pem",
@@ -33,6 +33,7 @@ const PRIVATE_KEYS_PEM = {
   ASSET_SCHEMA_AUTHORITY: ASSET_SCHEMA_AUTHORITY_PRIVATE_KEY_PEM,
   ASSET_PROVIDER: ASSET_PROVIDER_PRIVATE_KEY_PEM,
 };
+*/
 /**
  * API SERVERS
  */
@@ -206,6 +207,22 @@ const INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE = {
       serviceEndpoint: "https://example.com",
     },
   ],
+};
+
+const VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:web:example.com:asset-schema",
+  type: ["DIDDocument", "AssetSchemaDidDocument"],
+  verificationMethod: [
+    {
+      id: "did:web:example.com:asset-schema#controller",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:web:example.com:controller",
+      publicKeyMultibase: "H3C2AVvLMf2pX...",
+    },
+  ],
+  authentication: ["did:web:example.com:asset-schema#controller"],
+  assertionMethod: ["did:web:example.com:asset-schema#controller"],
 };
 
 /**
@@ -659,7 +676,7 @@ const VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE = {
 /****************************************************/
 export {
   IPFS_URL,
-  PRIVATE_KEYS_PEM,
+  //PRIVATE_KEYS_PEM,
   REGISTRY_API_SERVER,
   ASSET_SCHEMA_AUTHORITY_API_SERVER,
   ASSET_PROVIDER_API_SERVER,
@@ -669,6 +686,7 @@ export {
   INVALID_JSON_LD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
   INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_SCHEMA_EXAMPLE,

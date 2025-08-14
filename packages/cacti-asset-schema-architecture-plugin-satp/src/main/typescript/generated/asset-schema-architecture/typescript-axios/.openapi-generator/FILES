@@ -8,6 +8,12 @@ docs/AssetProviderCertificate.md
 docs/AssetSchema.md
 docs/AssetSchemaAuthorityApi.md
 docs/AssetSchemaAuthorityCertificate.md
+docs/AssetSchemaDidDocument.md
+docs/AssetSchemaDidDocumentContext.md
+docs/AssetSchemaDidDocumentVerificationMethodInner.md
+docs/AssetSchemaVerifiableCredential.md
+docs/AssetSchemaVerifiableCredentialCredentialSubject.md
+docs/AssetSchemaVerifiableCredentialProof.md
 docs/CommissionAssetSchema200Response.md
 docs/CommissionAssetSchemaRequest.md
 docs/CommissionAssetSchemaRequestAssetSchema.md
@@ -51,6 +57,8 @@ docs/RegisteredAssetProviderID.md
 docs/RegisteredAssetSchemaAuthorityID.md
 docs/RegistryApi.md
 docs/SchemaProfile.md
+docs/SchemaProfileDidDocument.md
+docs/SchemaProfileDidDocumentVerificationMethodInner.md
 docs/SignedAssetSchema.md
 docs/SignedSchemaProfile.md
 docs/TokenIssuanceAuthorization.md
