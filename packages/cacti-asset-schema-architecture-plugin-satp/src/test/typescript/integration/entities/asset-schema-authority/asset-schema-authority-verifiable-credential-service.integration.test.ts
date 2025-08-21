@@ -42,12 +42,35 @@ describe("Verifiable Credential Service", () => {
     ),
   );
 
+  const verifiableCredentialsContextTest = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "../../../../json-ld/contexts/test-vc-1.jsonld"),
+      "utf-8",
+    ),
+  );
+  const verifiableCredentialsContextV1 = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/verifiable-credentials-v1.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
+
   const verifiableCredentialsContext = JSON.parse(
     fs.readFileSync(
       path.join(
         __dirname,
         "../../../../json-ld/contexts/verifiable-credentials-v2.jsonld",
       ),
+      "utf-8",
+    ),
+  );
+
+  const ed255192020 = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "../../../../json-ld/contexts/ed25519-2020.jsonld"),
       "utf-8",
     ),
   );
@@ -82,7 +105,7 @@ describe("Verifiable Credential Service", () => {
   // ------------------------
   // Asset Schema VC
   // ------------------------
-  it("should create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
+  /*it("MOCKshould create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
     // Given
     console.log("Starting Asset Schema VC creation test...");
     const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
@@ -96,6 +119,57 @@ describe("Verifiable Credential Service", () => {
         "https://www.w3.org/ns/did/v1": didV1Context,
         "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
         "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When
+    const assetSchemaVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
+        assetSchema,
+        assetSchemaDidDocument,
+      );
+
+    // Then
+    expect(assetSchemaVerifiableCredential).toBeDefined();
+    expect(assetSchemaVerifiableCredential).toHaveProperty("@context");
+    expect(assetSchemaVerifiableCredential).toHaveProperty("id");
+    expect(assetSchemaVerifiableCredential).toHaveProperty("type");
+    expect(assetSchemaVerifiableCredential.type).toContain(
+      "VerifiableCredential",
+    );
+    expect(assetSchemaVerifiableCredential).toHaveProperty("credentialSubject");
+    expect(assetSchemaVerifiableCredential).toHaveProperty("proof");
+    expect(assetSchemaVerifiableCredential.proof).toHaveProperty("type");
+  });*/
+  it("Test to VC library", async () => {
+    // Given
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService();
+    // When
+    await assetSchemaAuthorityVerifiableCredentialService.vcIssueAndVerifyTest();
+    // Then
+    expect(true).toBe(true); // Placeholder for actual test logic
+  });
+
+  it("should create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
+    // Given
+    console.log("Starting Asset Schema VC creation test...");
+    const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
+    const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
+    //const contexts: Record<string, any> = {
+    //  "https://www.w3.org/ns/did/v1": didV1Context,
+    //  "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
+    //};
+    const localContextsMap = new Map(
+      Object.entries({
+        //"https://www.w3.org/ns/did/v1": didV1Context,
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        //"https://www.w3.org/ns/credentials/v2": verifiableCredentialsContext,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        //"did:example:123456789abcdefghi#": assetSchemaContext,
       }),
     );
     assetSchemaAuthorityVerifiableCredentialService =

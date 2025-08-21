@@ -32,10 +32,13 @@ import jsonld from "jsonld";
 //import * as Ed25519Multikey from "@digitalbazaar/ed25519-multikey";
 //import { DataIntegrityProof } from "@digitalbazaar/data-integrity";
 //import { cryptosuite as eddsaRdfc2022CryptoSuite } from "@digitalbazaar/eddsa-rdfc-2022-cryptosuite";
+import * as vc from "@digitalbazaar/vc";
 
-//import { Ed25519VerificationKey2020 } from "@digitalbazaar/ed25519-verification-key-2020";
-//import { Ed25519Signature2020 } from "@digitalbazaar/ed25519-signature-2020";
-//import * as vc from "@digitalbazaar/vc";
+import { Ed25519VerificationKey2020 } from "@digitalbazaar/ed25519-verification-key-2020";
+import { Ed25519Signature2020 } from "@digitalbazaar/ed25519-signature-2020";
+import { extendContextLoader } from "jsonld-signatures";
+
+import { driver } from "@digitalbazaar/did-method-key";
 
 import {
   AssetSchema,
@@ -52,7 +55,10 @@ import {
   ValidationErrorType,
   ValidationResult,
 } from "../../../../../../types/asset-schema-architecture-types.type";
-import { createCustomLoader } from "../../../../../../utils/custom-loader";
+import {
+  createCustomLoader,
+  createCustomLoaderV2,
+} from "../../../../../../utils/custom-loader";
 import { createVeramoDocumentLoader } from "../../../../../../utils/custom-veramo-loader";
 import { IVerifiableCredentialService } from "../interfaces/verifiable-credential-service.interface";
 
@@ -63,7 +69,7 @@ type ConfiguredAgent = TAgent<
 export class VerifiableCredentialService
   implements IVerifiableCredentialService
 {
-  private localContexts: Map<string, any>;
+  private localContexts: Map<string, any> | undefined;
   private documentLoader: any;
   private contexts: [Map<string, any>];
   private localContextsObj: any;
@@ -72,8 +78,12 @@ export class VerifiableCredentialService
     "did:web:example.com:asset-schema-authority";
 
   constructor(localContexts?: Map<string, any>) {
+    // Store provided contexts
+    this.localContexts = localContexts;
+
     this.contexts = [LdDefaultContexts];
     this.agent = this.createAgent();
+    // Create a custom loader for these contexts
     this.documentLoader = localContexts
       ? createCustomLoader(localContexts)
       : undefined;
@@ -81,7 +91,7 @@ export class VerifiableCredentialService
     if (localContexts) {
       this.localContexts = localContexts;
       this.contexts = [new Map([...LdDefaultContexts, ...localContexts])];
-      console.log("Using custom contexts for Veramo agent:", this.contexts);
+      console.log("Using custom contexts for Veramo agent:\n", this.contexts);
 
       (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
     } else {
@@ -92,6 +102,168 @@ export class VerifiableCredentialService
 
   public getAgent(): ConfiguredAgent {
     return this.agent;
+  }
+
+  public async vcIssueAndVerifyTest(): Promise<void> {
+    console.log("Running small test...");
+
+    const didKeyDriver = driver();
+    didKeyDriver.use({
+      multibaseMultikeyHeader: "z6Mk",
+      fromMultibase: Ed25519VerificationKey2020.from,
+    });
+
+    // A very simple "local context" map for testing
+    const testLocalContexts = new Map<string, any>([
+      [
+        "https://www.w3.org/2018/credentials/v1",
+        {
+          "@context": {
+            id: "@id",
+            type: "@type",
+            VerifiableCredential:
+              "https://www.w3.org/2018/credentials#VerifiableCredential",
+            AlumniCredential: "https://example.com/AlumniCredential",
+          },
+        },
+      ],
+      [
+        "https://w3id.org/security/suites/ed25519-2020/v1",
+        {
+          "@context": {
+            "@version": 1.1,
+            id: "@id",
+            type: "@type",
+            Ed25519VerificationKey2020:
+              "https://w3id.org/security#Ed25519VerificationKey2020",
+            Ed25519Signature2020:
+              "https://w3id.org/security#Ed25519Signature2020",
+            proof: {
+              "@id": "https://w3id.org/security#proof",
+              "@type": "@id",
+              "@context": {
+                created: "http://purl.org/dc/terms/created",
+                verificationMethod: {
+                  "@id": "https://w3id.org/security#verificationMethod",
+                  "@type": "@id",
+                },
+                proofPurpose: {
+                  "@id": "https://w3id.org/security#proofPurpose",
+                  "@type": "@id",
+                },
+                jws: "https://w3id.org/security#jws",
+              },
+            },
+          },
+        },
+      ],
+    ]);
+
+    // Minimal loader
+    const testDocumentLoader = extendContextLoader(async (url: string) => {
+      console.log(
+        ">>> documentLoader raw input:",
+        JSON.stringify(url, null, 2),
+      );
+      if (!url) {
+        throw new Error("documentLoader called with undefined URL");
+      }
+      if (testLocalContexts.has(url)) {
+        return {
+          contextUrl: null,
+          documentUrl: url,
+          document: testLocalContexts.get(url),
+          tag: "local",
+        };
+      }
+      if (url.startsWith("did:key:")) {
+        const didDoc = await didKeyDriver.get({ did: url });
+        return {
+          contextUrl: null,
+          documentUrl: url,
+          document: didDoc,
+        };
+      }
+      // fallback to VC default loader
+      return vc.defaultDocumentLoader(url);
+    });
+
+    const keyPair = await Ed25519VerificationKey2020.generate();
+    const controller = `did:key:${keyPair.fingerprint()}`;
+    keyPair.controller = controller;
+    keyPair.id = `${controller}#${keyPair.fingerprint()}`;
+    const suite = new Ed25519Signature2020({ key: keyPair });
+
+    console.log("Generated key pair:", keyPair);
+    console.log("Using suite:", suite);
+
+    // Sample unsigned credential
+    const credential = {
+      "@context": ["https://www.w3.org/2018/credentials/v1"],
+      id: "https://example.com/credentials/1872",
+      type: ["VerifiableCredential", "AlumniCredential"],
+      issuer: controller,
+      issuanceDate: "2010-01-01T19:23:24Z",
+      credentialSubject: {
+        id: "did:example:ebfeb1f712ebc6f1c276e12ec21",
+        alumniOf: "Example University",
+      },
+    };
+    //suite.verificationMethod = keyPair.id;
+    //console.log(suite.verificationMethod);
+    const signedVC = await vc.issue({
+      credential,
+      suite,
+      documentLoader: testDocumentLoader,
+    });
+    console.log(JSON.stringify(signedVC, null, 2));
+
+    const did = "did:key:z6MknCCLeeHBUaHu4aHSVLDCYQW9gjVJ7a63FpMvtuVMy53T";
+    const didDocument = await didKeyDriver.get({ did });
+    console.log("The generated DID Document:\n", didDocument);
+
+    testLocalContexts.set(did, didDocument);
+
+    const testDocumentLoader2 = extendContextLoader(async (url: string) => {
+      console.log(
+        ">>> documentLoader raw input:",
+        JSON.stringify(url, null, 2),
+      );
+      if (!url) {
+        throw new Error("documentLoader called with undefined URL");
+      }
+      if (testLocalContexts.has(url)) {
+        return {
+          contextUrl: null,
+          documentUrl: url,
+          document: testLocalContexts.get(url),
+          tag: "local",
+        };
+      }
+      if (url.startsWith("did:key:")) {
+        const didDoc = await didKeyDriver.get({ did: url });
+        return {
+          contextUrl: null,
+          documentUrl: url,
+          document: didDoc,
+        };
+      }
+      // fallback to VC default loader
+      return vc.defaultDocumentLoader(url);
+    });
+
+    const loggingLoader = async (url: string) => {
+      console.log("DocumentLoader called for URL:", url);
+      const doc = await testDocumentLoader2(url);
+      console.log("DocumentLoader returned:", doc ? "OK" : "undefined");
+      return doc;
+    };
+    const result = await vc.verifyCredential({
+      credential: signedVC,
+      suite,
+      documentLoader: loggingLoader,
+    });
+    console.log("Verification Result:\n", JSON.stringify(result, null, 2));
   }
 
   private createAgent(): ConfiguredAgent {
@@ -157,7 +329,7 @@ export class VerifiableCredentialService
       return identifier.did;
     }
   }
-/*
+  /*
   public async createMinimalVC() {
     const customContexts = new Map([
       ["https://www.w3.org/2018/credentials/v1", { "@context": {} }],
@@ -198,8 +370,7 @@ export class VerifiableCredentialService
     console.log(JSON.stringify(vc, null, 2));
   }*/
 
-  // Implementation of the methods defined in the interface
-  public async createAssetSchemaVerifiableCredential(
+  public async OLDcreateAssetSchemaVerifiableCredential(
     assetSchema: AssetSchema,
     assetSchemaDidDocument: AssetSchemaDidDocument,
   ): Promise<AssetSchemaVerifiableCredential> {
@@ -278,6 +449,86 @@ export class VerifiableCredentialService
         proofFormat: "jwt",
         //proofFormat: "lds", // Use JSON-LD signatures to support custom contexts
         //...(this.documentLoader && { documentLoader: this.documentLoader }),
+      });
+
+      console.log(
+        "Verifiable Credential created:",
+        JSON.stringify(verifiableCredential, null, 2),
+      );
+
+      return verifiableCredential as AssetSchemaVerifiableCredential;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.VERIFIABLE_CREDENTIAL_CREATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
+  }
+
+  // Implementation of the methods defined in the interface
+  public async createAssetSchemaVerifiableCredential(
+    assetSchema: AssetSchema,
+    assetSchemaDidDocument: AssetSchemaDidDocument,
+  ): Promise<AssetSchemaVerifiableCredential> {
+    try {
+      if (!assetSchema || !assetSchemaDidDocument) {
+        throw new Error("Asset Schema and DID Document are required.");
+      }
+
+      // Setting up the credential
+      const credentialSubject = {
+        id: assetSchemaDidDocument.id,
+        name: assetSchema.name || "Asset Schema",
+        version: assetSchema.version || "1.0.0",
+        hash: assetSchema.hash || "TODO",
+        createdBy: assetSchemaDidDocument.authentication,
+        //schema: assetSchema,
+      };
+
+      const unsignedCredential = {
+        "@context": ["https://www.w3.org/2018/credentials/v1"],
+        id: assetSchemaDidDocument.id,
+        type: ["VerifiableCredential", "AssetSchemaVerifiableCredential"],
+        issuer: this.ASSET_SCHEMA_AUTHORITY_DID,
+        issuanceDate: new Date().toISOString(),
+        credentialSubject,
+      };
+
+      console.log("Unsigned Credential:\n:", unsignedCredential);
+
+      // Cryptosuite
+      const keyPair = await Ed25519VerificationKey2020.generate();
+      keyPair.id = `did:key:${keyPair.fingerprint()}`;
+      const suite = new Ed25519Signature2020({ key: keyPair });
+
+      console.log("Generated key pair:\n", keyPair);
+      console.log("Using suite:\n", suite);
+
+      // Document Loader
+      console.log("Local Contexts:\n", this.localContexts);
+
+      const documentLoader = extendContextLoader(async (url: string) => {
+        if (this.localContexts && this.localContexts.has(url)) {
+          return {
+            contextUrl: null,
+            documentUrl: url,
+            document: this.localContexts.get(url),
+            tag: "local",
+          };
+        }
+        // fallback to VC default loader
+        return vc.defaultDocumentLoader(url);
+      });
+
+      // Create the verifiable credential
+      console.log("Creating Verifiable Credential...");
+
+      const verifiableCredential = await vc.issue({
+        credential: unsignedCredential,
+        suite,
+        documentLoader,
       });
 
       console.log(

@@ -1,3 +1,4 @@
-declare module "@digitalbazaar/data-integrity" {
+/*declare module "@digitalbazaar/data-integrity" {
   export const DataIntegrityProof: any;
 }
+*/

@@ -10,7 +10,8 @@
       "rootDir": "./src/",
       "tsBuildInfoFile": "../../.build-cache/cacti-asset-schema-architecture-plugin-satp.tsbuildinfo",
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
+      "typeRoots": ["./src/main/typescript/types", "./node_modules/@types"]
     },
     "ts-node": {
       "files": true,

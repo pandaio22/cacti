@@ -13,3 +13,18 @@ export function createCustomLoader(localContexts: Record<string, any>) {
     return (jsonld as any).documentLoader.documentLoader(url);
   };
 }
+
+export function createCustomLoaderV2(localContexts: Record<string, any>) {
+  return async function customLoader(url: string) {
+    if (localContexts[url]) {
+      return {
+        contextUrl: null,
+        documentUrl: url,
+        document: localContexts[url],
+      };
+    }
+
+    // fallback to default jsonld loader (network fetch)
+    return (jsonld as any).documentLoader(url);
+  };
+}
