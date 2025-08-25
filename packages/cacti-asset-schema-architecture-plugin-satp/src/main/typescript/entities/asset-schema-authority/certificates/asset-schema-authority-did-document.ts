@@ -2,7 +2,7 @@ const VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020 = {
   type: "Ed25519Signature2020",
   contextUrl: "https://w3id.org/security/suites/ed25519-2020/v1",
   verificationMethod:
-    "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+    "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
   key: {
     id: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
     controller: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",

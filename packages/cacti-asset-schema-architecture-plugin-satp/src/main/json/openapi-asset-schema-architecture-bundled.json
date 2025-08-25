@@ -3586,17 +3586,16 @@
                 "example": "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ",
                 "description": "Unique hash representing the Asset Schema, typically a CID or similar identifier.\n"
               },
+              "nonce": {
+                "type": "string",
+                "example": "e8774f35ba50616e371649579860b0a8",
+                "description": "Unique number used once to ensure freshness, preventing replay attacks.\n"
+              },
               "createdBy": {
                 "type": "string",
                 "format": "uri",
                 "example": "did:web:example.com#asset-schema-authority",
                 "description": "DID or URI of the entity that created the Asset Schema."
-              },
-              "commissionedBy": {
-                "type": "string",
-                "format": "uri",
-                "example": "did:web:example.com#asset-schema-authority",
-                "description": "DID or URI of the entity that commissioned the Asset Schema Authority."
               },
               "asset_schema": {
                 "type": "object",

@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **name** | **string** | Human-readable name of the Asset Schema. | [optional] [default to undefined]
 **version** | **string** | Version of the Asset Schema. | [optional] [default to undefined]
 **hash** | **string** | Unique hash representing the Asset Schema, typically a CID or similar identifier.  | [optional] [default to undefined]
+**nonce** | **string** | Unique number used once to ensure freshness, preventing replay attacks.  | [optional] [default to undefined]
 **createdBy** | **string** | DID or URI of the entity that created the Asset Schema. | [optional] [default to undefined]
-**commissionedBy** | **string** | DID or URI of the entity that commissioned the Asset Schema Authority. | [optional] [default to undefined]
 **asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [optional] [default to undefined]
 
 ## Example
@@ -23,8 +23,8 @@ const instance: AssetSchemaVerifiableCredentialCredentialSubject = {
     name,
     version,
     hash,
+    nonce,
     createdBy,
-    commissionedBy,
     asset_schema,
 };
 ```

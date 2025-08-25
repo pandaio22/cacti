@@ -1,8 +1,4 @@
-import {
-  CredentialIssuerLD,
-  LdDefaultContexts,
-  VeramoEd25519Signature2020,
-} from "@veramo/credential-ld";
+import { LdDefaultContexts } from "@veramo/credential-ld";
 
 import jsonld from "jsonld";
 
@@ -38,23 +34,25 @@ import {
 } from "../../../../../../utils/custom-loader";
 import {
   normalizeCredential,
-  prepareSuiteAndLoader,
   setupCryptoSuite,
   setupLoader,
+  generateNonce,
+  hashJsonLd,
 } from "../../../../../../utils/vc-helpers";
 import { IVerifiableCredentialService } from "../interfaces/verifiable-credential-service.interface";
 import {
   VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT,
   VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020,
 } from "../../../../certificates/asset-schema-authority-did-document";
+import { canonize } from "jsonld";
 
 export class VerifiableCredentialService
   implements IVerifiableCredentialService
 {
   private localContexts: Map<string, any> | undefined;
-  private ASSET_SCHEMA_AUTHORITY_DID =
-    "did:web:example.com:asset-schema-authority";
   private asaDidDocument: any;
+  private contexts: any;
+  private documentLoader: any;
 
   constructor(localContexts?: Map<string, any>) {
     this.asaDidDocument = VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT;
@@ -246,8 +244,38 @@ export class VerifiableCredentialService
     });
     console.log("Verification Result:\n", JSON.stringify(result, null, 2));
   }
+  /**
+   * Verify that the hash inside a VC matches the JSON-LD content of the assetSchema.
+   * @param vc - The AssetSchemaVerifiableCredential to verify
+   * @param assetSchema - The original JSON-LD of the Asset Schema
+   * @returns true if the hash is valid, false otherwise
+   */
+  private async verifyAssetSchemaHash(
+    vc: AssetSchemaVerifiableCredential,
+    assetSchema: Record<string, any>,
+  ): Promise<boolean> {
+    if (!vc.credentialSubject?.hash) {
+      throw new Error("VC does not contain a hash in credentialSubject");
+    }
 
-  // Implementation of the methods defined in the interface
+    // Extract nonce if present
+    const nonce = vc.credentialSubject.nonce;
+
+    // Compute the hash over the JSON-LD and nonce
+    const computedHash = await hashJsonLd(assetSchema, nonce);
+
+    // Compare with VC's hash
+    return computedHash === vc.credentialSubject.hash;
+  }
+
+  /***********************************************************INTERFACE METHODS*/
+
+  /**
+   * Creates the Asset Schema Verifiable Credential
+   * @param assetSchema
+   * @param assetSchemaDidDocument
+   * @returns
+   */
   public async createAssetSchemaVerifiableCredential(
     assetSchema: AssetSchema,
     assetSchemaDidDocument: AssetSchemaDidDocument,
@@ -255,27 +283,37 @@ export class VerifiableCredentialService
     try {
       console.debug("Issuing Verifiable Credential...\n");
       if (!assetSchema || !assetSchemaDidDocument) {
-        throw new Error("Asset Schema and DID Document are required.");
+        throw new Error(
+          "Missing Required Inputs: Asset Schema and DID Document are required.",
+        );
       }
       if (!this.localContexts) {
         console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
 
       // Setting up the credential
+      const nonce = generateNonce();
+      const hash = await hashJsonLd(assetSchema, nonce);
+
       const credentialSubject = {
         id: assetSchemaDidDocument.id,
         name: assetSchema.name || "Asset Schema",
         version: assetSchema.version || "1.0.0",
-        hash: assetSchema.hash || "TODO",
+        hash: hash,
+        nonce: nonce,
         createdBy: assetSchemaDidDocument.authentication,
-        //schema: assetSchema,
+        schema: assetSchema,
       };
 
       const unsignedCredential = {
-        "@context": ["https://www.w3.org/2018/credentials/v1"],
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.example.org/asset-schema/vc/v1",
+        ],
         id: assetSchemaDidDocument.id,
         type: ["VerifiableCredential", "AssetSchemaVerifiableCredential"],
-        issuer: this.ASSET_SCHEMA_AUTHORITY_DID,
+        issuer:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
         issuanceDate: new Date().toISOString(),
         credentialSubject,
       };
@@ -283,14 +321,6 @@ export class VerifiableCredentialService
       console.debug("Unsigned Credential:\n:", unsignedCredential);
 
       // Cryptosuite
-      /*
-      const keyPair = await Ed25519VerificationKey2020.generate(); // THIS MUST BE REMOVED
-      keyPair.id = `did:key:${keyPair.fingerprint()}`; // THIS MUST BE REMOVED
-      const Oldsuite = new Ed25519Signature2020({ key: keyPair }); // THIS MUST BE REMOVED
-
-      console.debug("Generated key pair:\n", keyPair); // THIS MUST BE REMOVED
-      console.debug("Using suite:\n", Oldsuite); // THIS MUST BE REMOVED
-      */
       const assetSchemaAuthorityKeyPair = new Ed25519VerificationKey2020({
         id: VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.id,
         controller:
@@ -347,6 +377,11 @@ export class VerifiableCredentialService
     }
   }
 
+  /**
+   * Verifies the Asset Schema Verifiable Credential
+   * @param assetSchemaVerifiableCredential
+   * @returns
+   */
   public async verifyAssetSchemaVerifiableCredential(
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<ValidationResult> {
@@ -385,6 +420,16 @@ export class VerifiableCredentialService
       }
       console.debug("normalizedVC:\n", normalizedVC);
 
+      /*UNCOMMENT FOR DEBUGGING 
+      const nquads = await canonize(normalizedVC, {
+        algorithm: "URDNA2015",
+        format: "application/n-quads",
+        documentLoader: loader,
+      });
+
+      console.debug(nquads);
+      /************************/
+
       const result = await vc.verifyCredential({
         credential: normalizedVC,
         suite,
@@ -395,6 +440,12 @@ export class VerifiableCredentialService
       if (!result.verified) {
         throw new Error("Proof verification failed");
       }
+
+      const isValidHash = await this.verifyAssetSchemaHash(
+        normalizedVC,
+        normalizedVC.credentialSubject.schema,
+      );
+      console.log("Hash is valid:", isValidHash);
 
       return {
         valid: result.verified,

@@ -5,6 +5,55 @@ import { VerifiableCredential } from "@digitalbazaar/vc";
 import { extendContextLoader } from "jsonld-signatures";
 import { AssetSchemaVerifiableCredential } from "../generated/asset-schema-architecture/typescript-axios/api";
 import * as vc from "@digitalbazaar/vc";
+import { canonize } from "jsonld";
+import crypto from "crypto";
+
+/**
+ * Compute a stable SHA-256 hash of a JSON-LD object.
+ * Canonicalizes the document using URDNA2015 to ensure consistent hashes.
+ *
+ * @param jsonldDoc - The JSON-LD object to hash.
+ * @param nonce - Unique number (optional)
+ * @returns SHA-256 hash as a hex string.
+ */
+export async function hashJsonLd(
+  jsonLd: Record<string, any>,
+  nonce?: string,
+): Promise<string> {
+  if (!jsonLd["@context"]) {
+    throw new Error(
+      "JSON-LD document must have an @context to compute a stable hash.",
+    );
+  }
+
+  // Clone the object to avoid mutating the original
+  const docToHash = { ...jsonLd };
+
+  if (nonce) {
+    docToHash.nonce = nonce;
+  }
+
+  // Canonicalize JSON-LD to N-Quads using URDNA2015
+  const nquads = await canonize(docToHash, {
+    algorithm: "URDNA2015",
+    format: "application/n-quads",
+  });
+
+  // Compute SHA-256 hash of canonicalized N-Quads
+  const hash = crypto.createHash("sha256").update(nquads).digest("hex");
+
+  return hash;
+}
+
+/**
+ * Generate a cryptographically secure random nonce as a hex string.
+ * @param length - Length of the nonce in bytes (default 16)
+ */
+export function generateNonce(length = 16): string {
+  const array = new Uint8Array(length);
+  crypto.webcrypto.getRandomValues(array);
+  return Buffer.from(array).toString("hex");
+}
 
 /**
  * Normalize the @context property of a VC so it's always compatible

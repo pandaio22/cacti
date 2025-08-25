@@ -286,17 +286,17 @@ export interface AssetSchemaVerifiableCredentialCredentialSubject {
      */
     'hash'?: string;
     /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
      * DID or URI of the entity that created the Asset Schema.
      * @type {string}
      * @memberof AssetSchemaVerifiableCredentialCredentialSubject
      */
     'createdBy'?: string;
-    /**
-     * DID or URI of the entity that commissioned the Asset Schema Authority.
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'commissionedBy'?: string;
     /**
      * 
      * @type {CommissionAssetSchemaRequestAssetSchema}

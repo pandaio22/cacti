@@ -4,12 +4,14 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 import {
   VALID_ASSET_SCHEMA_EXAMPLE,
+  INVALID_ASSET_SCHEMA_EXAMPLE,
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   //VALID_SCHEMA_PROFILE_EXAMPLE,
   //VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
 } from "../../../constants/constants";
+import { ValidationErrorType } from "../../../../../main/typescript/types/asset-schema-architecture-types.type";
 
 import { VerifiableCredentialService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/verifiable-credential-service/implementations/verifiable-credential-service";
 
@@ -28,6 +30,16 @@ describe("Verifiable Credential Service", () => {
   const assetSchemaContext = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../../../../json-ld/contexts/asset-schema.jsonld"),
+      "utf-8",
+    ),
+  );
+
+  const assetSchemaVerifiableCredentialContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/asset-schema-verifiable-credential.jsonld",
+      ),
       "utf-8",
     ),
   );
@@ -170,6 +182,8 @@ describe("Verifiable Credential Service", () => {
         //"https://www.w3.org/ns/credentials/v2": verifiableCredentialsContext,
         "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
         //"did:example:123456789abcdefghi#": assetSchemaContext,
+        "https://www.example.org/asset-schema/vc/v1":
+          assetSchemaVerifiableCredentialContext,
       }),
     );
     assetSchemaAuthorityVerifiableCredentialService =
@@ -197,8 +211,31 @@ describe("Verifiable Credential Service", () => {
 
   it("should fail to create an Asset Schema VC: Given an invalid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then should throw an exception", async () => {
     // Given
-    // When
-    // Then
+    const invalidAssetSchema = { ...VALID_ASSET_SCHEMA_EXAMPLE, name: null };
+    const invalidDidDocument = {
+      ...VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
+      id: null,
+    };
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/asset-schema/vc/v1":
+          assetSchemaVerifiableCredentialContext,
+      }),
+    );
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
+        invalidAssetSchema as any,
+        invalidDidDocument as any,
+      ),
+    ).rejects.toThrowError(/Missing Required Inputs|Invalid/); // match the relevant error message
   });
 
   it("should verify an Asset Schema VC: Given a valid Asset Schema VC, When executing verifyAssetSchemaVerifiableCredential, Then return a valid ValidationResult", async () => {
@@ -210,6 +247,8 @@ describe("Verifiable Credential Service", () => {
         "https://www.w3.org/2018/credentials/v1":
           verifiableCredentialsContextTest,
         "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/asset-schema/vc/v1":
+          assetSchemaVerifiableCredentialContext,
       }),
     );
     assetSchemaAuthorityVerifiableCredentialService =
@@ -238,20 +277,65 @@ describe("Verifiable Credential Service", () => {
 
   it("should fail to verify an Asset Schema VC: Given a tampered Asset Schema VC, When executing verifyAssetSchemaVerifiableCredential, Then return an invalid ValidationResult", async () => {
     // Given
-    // When
-    // Then
+    const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
+    const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/asset-schema/vc/v1":
+          assetSchemaVerifiableCredentialContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const assetSchemaVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
+        assetSchema,
+        assetSchemaDidDocument,
+      );
+
+    const tamperedVC = {
+      ...assetSchemaVerifiableCredential,
+      credentialSubject: {
+        ...assetSchemaVerifiableCredential.credentialSubject,
+        name: "HACKED-NAME",
+      },
+    };
+    console.debug("Tampered VC:\n", tamperedVC);
+
+    localContextsMap.set(assetSchemaDidDocument.id, assetSchemaDidDocument);
+    console.debug("Context Map:\n", localContextsMap);
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.verifyAssetSchemaVerifiableCredential(
+        tamperedVC,
+      ),
+    ).rejects.toMatchObject({
+      type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+      message: expect.stringMatching(
+        /invalid signature|proof verification failed/i,
+      ),
+    });
   });
 
   it("should revoke an Asset Schema VC: Given a valid Asset Schema VC, When executing revokeAssetSchemaVerifiableCredential, Then the VC should be revoked successfully", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to revoke an Asset Schema VC: Given a non-existent Asset Schema VC, When executing revokeAssetSchemaVerifiableCredential, Then should throw an exception", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   // ------------------------
@@ -261,36 +345,42 @@ describe("Verifiable Credential Service", () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to create a Schema Profile VC: Given an invalid Schema Profile, When executing createSchemaProfileVerifiableCredential, Then should throw an exception", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should verify a Schema Profile VC: Given a valid Schema Profile VC, When executing verifySchemaProfileVerifiableCredential, Then return a valid ValidationResult", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to verify a Schema Profile VC: Given a tampered Schema Profile VC, When executing verifySchemaProfileVerifiableCredential, Then return an invalid ValidationResult", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should revoke a Schema Profile VC: Given a valid Schema Profile VC, When executing revokeSchemaProfileVerifiableCredential, Then the VC should be revoked successfully", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to revoke a Schema Profile VC: Given a non-existent Schema Profile VC, When executing revokeSchemaProfileVerifiableCredential, Then should throw an exception", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   // ------------------------
@@ -300,35 +390,41 @@ describe("Verifiable Credential Service", () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to create a Token Issuance Authorization: Given an invalid request, When executing createTokenIssuanceAuthorization, Then should throw an exception", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should verify a Token Issuance Authorization: Given a valid Token Issuance Authorization VC, When executing verifyTokenIssuanceAuthorization, Then return a valid ValidationResult", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to verify a Token Issuance Authorization: Given a tampered Token Issuance Authorization VC, When executing verifyTokenIssuanceAuthorization, Then return an invalid ValidationResult", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should revoke a Token Issuance Authorization: Given a valid Token Issuance Authorization VC, When executing revokeTokenIssuanceAuthorization, Then the VC should be revoked successfully", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 
   it("should fail to revoke a Token Issuance Authorization: Given a non-existent Token Issuance Authorization VC, When executing revokeTokenIssuanceAuthorization, Then should throw an exception", async () => {
     // Given
     // When
     // Then
+    expect(true).toBe(false); // Placeholder for actual test logic
   });
 });
