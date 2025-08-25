@@ -143,7 +143,7 @@ describe("Verifiable Credential Service", () => {
     expect(assetSchemaVerifiableCredential).toHaveProperty("proof");
     expect(assetSchemaVerifiableCredential.proof).toHaveProperty("type");
   });*/
-  it("Test to VC library", async () => {
+  it("Test for VC library", async () => {
     // Given
     assetSchemaAuthorityVerifiableCredentialService =
       new VerifiableCredentialService();
@@ -203,8 +203,37 @@ describe("Verifiable Credential Service", () => {
 
   it("should verify an Asset Schema VC: Given a valid Asset Schema VC, When executing verifyAssetSchemaVerifiableCredential, Then return a valid ValidationResult", async () => {
     // Given
+    const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
+    const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const assetSchemaVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
+        assetSchema,
+        assetSchemaDidDocument,
+      );
+
+    localContextsMap.set(assetSchemaDidDocument.id, assetSchemaDidDocument);
+    console.debug("Context Map:\n", localContextsMap);
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
     // When
+    const result =
+      await assetSchemaAuthorityVerifiableCredentialService.verifyAssetSchemaVerifiableCredential(
+        assetSchemaVerifiableCredential,
+      );
+
     // Then
+    expect(result.valid).toBe(true);
   });
 
   it("should fail to verify an Asset Schema VC: Given a tampered Asset Schema VC, When executing verifyAssetSchemaVerifiableCredential, Then return an invalid ValidationResult", async () => {

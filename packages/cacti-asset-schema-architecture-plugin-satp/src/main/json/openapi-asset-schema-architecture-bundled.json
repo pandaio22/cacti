@@ -3554,6 +3554,12 @@
             "type": "string",
             "format": "date-time",
             "example": "2023-10-01T12:00:00Z",
+            "description": "Timestamp stating VC starting validity."
+          },
+          "issuanceDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
             "description": "Timestamp when the VC was issued."
           },
           "credentialSubject": {

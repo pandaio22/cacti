@@ -231,11 +231,17 @@ export interface AssetSchemaVerifiableCredential {
      */
     'issuer'?: string;
     /**
-     * Timestamp when the VC was issued.
+     * Timestamp stating VC starting validity.
      * @type {string}
      * @memberof AssetSchemaVerifiableCredential
      */
     'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof AssetSchemaVerifiableCredential
+     */
+    'issuanceDate'?: string;
     /**
      * 
      * @type {AssetSchemaVerifiableCredentialCredentialSubject}

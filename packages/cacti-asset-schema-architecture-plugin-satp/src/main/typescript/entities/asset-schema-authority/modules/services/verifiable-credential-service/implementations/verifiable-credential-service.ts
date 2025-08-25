@@ -1,31 +1,8 @@
 import {
-  createAgent,
-  ICredentialPlugin,
-  IDIDManager,
-  IKeyManager,
-  IResolver,
-  TAgent,
-  VerifiableCredential,
-} from "@veramo/core";
-import {
   CredentialIssuerLD,
   LdDefaultContexts,
   VeramoEd25519Signature2020,
 } from "@veramo/credential-ld";
-import { CredentialPlugin } from "@veramo/credential-w3c";
-import { DIDResolverPlugin } from "@veramo/did-resolver";
-import {
-  KeyManager,
-  MemoryKeyStore,
-  MemoryPrivateKeyStore,
-} from "@veramo/key-manager";
-import { KeyManagementSystem } from "@veramo/kms-local";
-import { DIDManager, MemoryDIDStore } from "@veramo/did-manager";
-import { WebDIDProvider } from "@veramo/did-provider-web";
-import { EthrDIDProvider } from "@veramo/did-provider-ethr";
-import { getResolver as ethrDidResolver } from "ethr-did-resolver";
-import { getResolver as webDidResolver } from "web-did-resolver";
-import { Resolver } from "did-resolver";
 
 import jsonld from "jsonld";
 
@@ -59,30 +36,32 @@ import {
   createCustomLoader,
   createCustomLoaderV2,
 } from "../../../../../../utils/custom-loader";
-import { createVeramoDocumentLoader } from "../../../../../../utils/custom-veramo-loader";
+import {
+  normalizeCredential,
+  prepareSuiteAndLoader,
+  setupCryptoSuite,
+  setupLoader,
+} from "../../../../../../utils/vc-helpers";
 import { IVerifiableCredentialService } from "../interfaces/verifiable-credential-service.interface";
-
-type ConfiguredAgent = TAgent<
-  IDIDManager & IKeyManager & IResolver & ICredentialPlugin
->;
+import {
+  VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT,
+  VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020,
+} from "../../../../certificates/asset-schema-authority-did-document";
 
 export class VerifiableCredentialService
   implements IVerifiableCredentialService
 {
   private localContexts: Map<string, any> | undefined;
-  private documentLoader: any;
-  private contexts: [Map<string, any>];
-  private localContextsObj: any;
-  private agent: ConfiguredAgent;
   private ASSET_SCHEMA_AUTHORITY_DID =
     "did:web:example.com:asset-schema-authority";
+  private asaDidDocument: any;
 
   constructor(localContexts?: Map<string, any>) {
+    this.asaDidDocument = VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT;
     // Store provided contexts
     this.localContexts = localContexts;
 
     this.contexts = [LdDefaultContexts];
-    this.agent = this.createAgent();
     // Create a custom loader for these contexts
     this.documentLoader = localContexts
       ? createCustomLoader(localContexts)
@@ -91,7 +70,7 @@ export class VerifiableCredentialService
     if (localContexts) {
       this.localContexts = localContexts;
       this.contexts = [new Map([...LdDefaultContexts, ...localContexts])];
-      console.log("Using custom contexts for Veramo agent:\n", this.contexts);
+      //console.log("Using custom contexts for Veramo agent:\n", this.contexts);
 
       (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
     } else {
@@ -100,10 +79,9 @@ export class VerifiableCredentialService
     }
   }
 
-  public getAgent(): ConfiguredAgent {
-    return this.agent;
-  }
-
+  /**
+   * A simple test to exercise the issue() and verify() library methods
+   */
   public async vcIssueAndVerifyTest(): Promise<void> {
     console.log("Running small test...");
 
@@ -195,7 +173,7 @@ export class VerifiableCredentialService
     const suite = new Ed25519Signature2020({ key: keyPair });
 
     console.log("Generated key pair:", keyPair);
-    console.log("Using suite:", suite);
+    console.log("Using suite:", JSON.stringify(suite, null, 2));
 
     // Sample unsigned credential
     const credential = {
@@ -211,6 +189,8 @@ export class VerifiableCredentialService
     };
     //suite.verificationMethod = keyPair.id;
     //console.log(suite.verificationMethod);
+
+    //############################################################ISSUE
     const signedVC = await vc.issue({
       credential,
       suite,
@@ -258,6 +238,7 @@ export class VerifiableCredentialService
       console.log("DocumentLoader returned:", doc ? "OK" : "undefined");
       return doc;
     };
+    //############################################################VERIFY
     const result = await vc.verifyCredential({
       credential: signedVC,
       suite,
@@ -266,215 +247,18 @@ export class VerifiableCredentialService
     console.log("Verification Result:\n", JSON.stringify(result, null, 2));
   }
 
-  private createAgent(): ConfiguredAgent {
-    return createAgent<
-      IDIDManager & IKeyManager & IResolver & ICredentialPlugin
-    >({
-      plugins: [
-        new KeyManager({
-          store: new MemoryKeyStore(),
-          kms: {
-            local: new KeyManagementSystem(new MemoryPrivateKeyStore()),
-          },
-        }),
-        new DIDManager({
-          store: new MemoryDIDStore(),
-          defaultProvider: "did:web",
-          providers: {
-            "did:web": new WebDIDProvider({
-              defaultKms: "local",
-            }),
-            "did:ethr": new EthrDIDProvider({
-              defaultKms: "local",
-              network: "mainnet",
-            }),
-          },
-        }),
-        new DIDResolverPlugin({
-          resolver: new Resolver({
-            ...ethrDidResolver({ infuraProjectId: "your-infura-project-id" }),
-            ...webDidResolver(),
-          }),
-        }),
-        new CredentialPlugin(),
-        new CredentialIssuerLD({
-          // Built-in contexts + your custom ones (if any)
-          //contextMaps: [LdDefaultContexts],
-          contextMaps: this.contexts,
-          // Use Veramo’s wrapper — no direct digitalbazaar import needed
-          suites: [new VeramoEd25519Signature2020()],
-        }),
-      ],
-    });
-  }
-
-  private async ensureIssuerDID(): Promise<string> {
-    try {
-      // Try to resolve the existing DID
-      const existingDID = await this.agent.didManagerGet({
-        did: this.ASSET_SCHEMA_AUTHORITY_DID,
-      });
-      return existingDID.did;
-    } catch (error) {
-      // DID doesn't exist, create it
-      const identifier = await this.agent.didManagerCreate({
-        provider: "did:web",
-        alias: "asset-schema-authority",
-        options: {
-          keyType: "Ed25519",
-        },
-      });
-
-      this.ASSET_SCHEMA_AUTHORITY_DID = identifier.did;
-      return identifier.did;
-    }
-  }
-  /*
-  public async createMinimalVC() {
-    const customContexts = new Map([
-      ["https://www.w3.org/2018/credentials/v1", { "@context": {} }],
-    ]);
-    const agent = createAgent({
-      plugins: [
-        new KeyManager({
-          store: new MemoryKeyStore(),
-          kms: { local: new KeyManagementSystem(new MemoryPrivateKeyStore()) },
-        }),
-        new DIDManager({
-          store: new MemoryDIDStore(),
-          defaultProvider: "did:key",
-          providers: {
-            "did:key": {},
-          },
-        }),
-        new DIDResolverPlugin({ resolver: new Resolver() }),
-        new CredentialIssuerLD({
-          contextMaps: [customContexts],
-          suites: [new VeramoEd25519Signature2020()],
-        }),
-      ],
-    });
-    // Create a DID for issuer
-    const issuer = await agent.didManagerCreate({ alias: "issuer" });
-
-    // Minimal credential
-    const vc = await agent.createVerifiableCredential({
-      credential: {
-        "@context": ["https://www.w3.org/2018/credentials/v1"],
-        issuer: { id: issuer.did },
-        type: ["VerifiableCredential"],
-      },
-      proofFormat: "lds", // JSON-LD signature
-    });
-
-    console.log(JSON.stringify(vc, null, 2));
-  }*/
-
-  public async OLDcreateAssetSchemaVerifiableCredential(
-    assetSchema: AssetSchema,
-    assetSchemaDidDocument: AssetSchemaDidDocument,
-  ): Promise<AssetSchemaVerifiableCredential> {
-    try {
-      if (!assetSchema || !assetSchemaDidDocument) {
-        throw new Error("Asset Schema and DID Document are required.");
-      }
-
-      // Ensure the issuer DID exists or create it
-      //const issuerDID = await this.ensureIssuerDID();
-      const issuerDID = await this.agent.didManagerCreate({ alias: "default" });
-      console.log("Issuer DID created:", issuerDID.did);
-      console.log("Issuer DID Document:", issuerDID);
-      // Create a did:key identifier
-      //const issuerDID = await this.agent.didManagerCreate({
-      //  provider: "did:key",
-      //});
-
-      const credentialSubject = {
-        id: assetSchemaDidDocument.id,
-        name: assetSchema.name || "Asset Schema",
-        version: assetSchema.version || "1.0.0",
-        hash: assetSchema.hash || "TODO",
-        createdBy: assetSchemaDidDocument.authentication,
-        //schema: assetSchema,
-      };
-
-      /*const unsignedVC = {
-        "@context": [
-          "https://www.w3.org/2018/credentials/v2",
-          ...(this.localContexts ? Object.values(this.localContexts) : []),
-        ],
-        id: assetSchemaDidDocument.id,
-        type: ["VerifiableCredential", "AssetSchemaVerifiableCredential"],
-        issuer: this.ASSET_SCHEMA_AUTHORITY_DID,
-        validFrom: new Date().toISOString(),
-        credentialSubject,
-      };*/
-
-      // Create the verifiable credential using Veramo
-      console.log("Creating Verifiable Credential...");
-      /*const verifiableCredential = await this.agent.createVerifiableCredential({
-        credential: {
-          issuer: { id: issuerDID.did },
-          credentialSubject: {
-            id: "did:web:example.com",
-            you: "Rock",
-          },
-        },
-        proofFormat: "jwt",
-      });*/
-      const verifiableCredential = await this.agent.createVerifiableCredential({
-        credential: {
-          //"@context": [
-          //  "https://www.w3.org/2018/credentials/v1",
-          //  "https://www.w3.org/2018/credentials/v2",
-          //  ...(this.localContexts ? Object.values(this.localContexts) : []),
-          //{
-          //  AssetSchemaVerifiableCredential:
-          //    "https://example.com/contexts/asset-schema#AssetSchemaVerifiableCredential",
-          //  AssetSchema:
-          //    "https://example.com/contexts/asset-schema#AssetSchema",
-          //},
-          //],
-          //"@context": [
-          //  "https://www.w3.org/2018/credentials/v1",
-          //  "https://www.w3.org/2018/credentials/v2",
-          //  "did:example:123456789abcdefghi#", // <-- your custom context
-          //],
-          type: ["VerifiableCredential", "AssetSchemaVerifiableCredential"],
-          id: assetSchemaDidDocument.id,
-          issuer: { id: issuerDID.did },
-          validFrom: new Date().toISOString(),
-          credentialSubject,
-        },
-        proofFormat: "jwt",
-        //proofFormat: "lds", // Use JSON-LD signatures to support custom contexts
-        //...(this.documentLoader && { documentLoader: this.documentLoader }),
-      });
-
-      console.log(
-        "Verifiable Credential created:",
-        JSON.stringify(verifiableCredential, null, 2),
-      );
-
-      return verifiableCredential as AssetSchemaVerifiableCredential;
-    } catch (error) {
-      const errorDetail: ValidationErrorDetail = {
-        type: ValidationErrorType.VERIFIABLE_CREDENTIAL_CREATION_ERROR,
-        message: error instanceof Error ? error.message : String(error),
-      };
-
-      throw errorDetail;
-    }
-  }
-
   // Implementation of the methods defined in the interface
   public async createAssetSchemaVerifiableCredential(
     assetSchema: AssetSchema,
     assetSchemaDidDocument: AssetSchemaDidDocument,
   ): Promise<AssetSchemaVerifiableCredential> {
     try {
+      console.debug("Issuing Verifiable Credential...\n");
       if (!assetSchema || !assetSchemaDidDocument) {
         throw new Error("Asset Schema and DID Document are required.");
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
 
       // Setting up the credential
@@ -496,19 +280,36 @@ export class VerifiableCredentialService
         credentialSubject,
       };
 
-      console.log("Unsigned Credential:\n:", unsignedCredential);
+      console.debug("Unsigned Credential:\n:", unsignedCredential);
 
       // Cryptosuite
-      const keyPair = await Ed25519VerificationKey2020.generate();
-      keyPair.id = `did:key:${keyPair.fingerprint()}`;
-      const suite = new Ed25519Signature2020({ key: keyPair });
+      /*
+      const keyPair = await Ed25519VerificationKey2020.generate(); // THIS MUST BE REMOVED
+      keyPair.id = `did:key:${keyPair.fingerprint()}`; // THIS MUST BE REMOVED
+      const Oldsuite = new Ed25519Signature2020({ key: keyPair }); // THIS MUST BE REMOVED
 
-      console.log("Generated key pair:\n", keyPair);
-      console.log("Using suite:\n", suite);
+      console.debug("Generated key pair:\n", keyPair); // THIS MUST BE REMOVED
+      console.debug("Using suite:\n", Oldsuite); // THIS MUST BE REMOVED
+      */
+      const assetSchemaAuthorityKeyPair = new Ed25519VerificationKey2020({
+        id: VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.id,
+        controller:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+        publicKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .publicKeyMultibase,
+        privateKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .privateKeyMultibase,
+      });
+
+      const suite = new Ed25519Signature2020({
+        key: assetSchemaAuthorityKeyPair,
+      });
+      console.debug("Cryptosuite:\n", suite);
 
       // Document Loader
-      console.log("Local Contexts:\n", this.localContexts);
-
+      console.debug("Local Contexts:\n", this.localContexts);
       const documentLoader = extendContextLoader(async (url: string) => {
         if (this.localContexts && this.localContexts.has(url)) {
           return {
@@ -522,7 +323,6 @@ export class VerifiableCredentialService
         return vc.defaultDocumentLoader(url);
       });
 
-      // Create the verifiable credential
       console.log("Creating Verifiable Credential...");
 
       const verifiableCredential = await vc.issue({
@@ -546,13 +346,70 @@ export class VerifiableCredentialService
       throw errorDetail;
     }
   }
-  /*
+
   public async verifyAssetSchemaVerifiableCredential(
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<ValidationResult> {
-    // Implementation logic
-  }
+    try {
+      console.debug("Verifying Verifiable Credential...\n");
+      if (!assetSchemaVerifiableCredential) {
+        throw new Error("Asset Schema and DID Document are required.");
+      }
+      if (!assetSchemaVerifiableCredential.proof) {
+        throw new Error("Non-existing Proof");
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
 
+      const { suite } = await setupCryptoSuite(assetSchemaVerifiableCredential);
+      const { loader } = await setupLoader(this.localContexts);
+
+      // Normalize the credential
+      const normalizedVC = normalizeCredential(assetSchemaVerifiableCredential);
+
+      if (normalizedVC.proof) {
+        let fragment = normalizedVC.proof.verificationMethod;
+        console.debug("fragment", fragment);
+        if (!fragment.includes("#")) {
+          fragment = `${fragment}#${fragment.split(":").pop()}`;
+        }
+
+        console.log("full key ID with fragment:", fragment);
+
+        // Optionally, patch the VC proof
+        normalizedVC.proof.verificationMethod = fragment;
+        normalizedVC.issuer = `did:key:${normalizedVC.proof.verificationMethod
+          .split("#")
+          .pop()}`;
+      }
+      console.debug("normalizedVC:\n", normalizedVC);
+
+      const result = await vc.verifyCredential({
+        credential: normalizedVC,
+        suite,
+        documentLoader: loader,
+      });
+      console.debug("Verification Result:\n", JSON.stringify(result, null, 2));
+
+      if (!result.verified) {
+        throw new Error("Proof verification failed");
+      }
+
+      return {
+        valid: result.verified,
+        details: "Asset Schema successfully verified",
+      } as ValidationResult;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
+  }
+  /*
   public async revokeAssetSchemaVerifiableCredential(
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<void> {

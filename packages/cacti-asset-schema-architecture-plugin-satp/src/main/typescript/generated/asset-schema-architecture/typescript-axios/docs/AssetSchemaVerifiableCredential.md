@@ -10,7 +10,8 @@ Name | Type | Description | Notes
 **id** | **string** | Unique identifier for the Asset Schema Verifiable Credential. | [optional] [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiableCredential\&quot; and \&quot;AssetSchemaVerifiableCredential\&quot;.  | [optional] [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Schema Authority issuing this VC. | [optional] [default to undefined]
-**validFrom** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
+**validFrom** | **string** | Timestamp stating VC starting validity. | [optional] [default to undefined]
+**issuanceDate** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
 **credentialSubject** | [**AssetSchemaVerifiableCredentialCredentialSubject**](AssetSchemaVerifiableCredentialCredentialSubject.md) |  | [optional] [default to undefined]
 **proof** | [**AssetSchemaVerifiableCredentialProof**](AssetSchemaVerifiableCredentialProof.md) |  | [optional] [default to undefined]
 
@@ -25,6 +26,7 @@ const instance: AssetSchemaVerifiableCredential = {
     type,
     issuer,
     validFrom,
+    issuanceDate,
     credentialSubject,
     proof,
 };
