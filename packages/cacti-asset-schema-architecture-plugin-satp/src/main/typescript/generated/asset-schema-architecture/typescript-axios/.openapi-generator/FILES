@@ -59,6 +59,8 @@ docs/RegistryApi.md
 docs/SchemaProfile.md
 docs/SchemaProfileDidDocument.md
 docs/SchemaProfileDidDocumentVerificationMethodInner.md
+docs/SchemaProfileVerifiableCredential.md
+docs/SchemaProfileVerifiableCredentialCredentialSubject.md
 docs/SignedAssetSchema.md
 docs/SignedSchemaProfile.md
 docs/TokenIssuanceAuthorization.md

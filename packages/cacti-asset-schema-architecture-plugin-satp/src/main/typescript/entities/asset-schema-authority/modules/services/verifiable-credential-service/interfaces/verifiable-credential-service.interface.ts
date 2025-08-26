@@ -3,7 +3,7 @@ import {
   AssetSchemaDidDocument,
   AssetSchemaVerifiableCredential,
   SchemaProfile,
-  //SchemaProfileVerifiableCredential,
+  SchemaProfileVerifiableCredential,
   SchemaProfileDidDocument,
   TokenIssuanceAuthorizationRequest,
   TokenIssuanceAuthorization,
@@ -26,7 +26,7 @@ export interface IVerifiableCredentialService {
    * Verifies an Asset Schema Verifiable Credential.
    * @param assetSchemaVerifiableCredential The Asset Schema Verifiable Credential to verify.
    * @returns A promise that resolves to a ValidationResult indicating the validity of the Asset Schema Verifiable Credential.
-   
+   */
   verifyAssetSchemaVerifiableCredential(
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<ValidationResult>;
@@ -35,17 +35,18 @@ export interface IVerifiableCredentialService {
    * Revokes an Asset Schema Verifiable Credential.
    * @param assetSchemaVerifiableCredential The Asset Schema Verifiable Credential to revoke.
    * @returns A promise that resolves when the revocation is complete.
-   
+  
   revokeAssetSchemaVerifiableCredential(
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<void>;
+  */
 
   /**
    * Creates a Verifiable Credential for a Schema Profile.
    * @param schemaProfile The Schema Profile to create a Verifiable Credential for.
    * @param schemaProfileDidDocument The DID Document associated with the Schema Profile.
    * @returns A promise that resolves to the created Schema Profile Verifiable Credential.
-   
+   */
   createSchemaProfileVerifiableCredential(
     schemaProfile: SchemaProfile,
     schemaProfileDidDocument: SchemaProfileDidDocument,
@@ -55,14 +56,20 @@ export interface IVerifiableCredentialService {
    * Verifies a Schema Profile Verifiable Credential.
    * @param schemaProfileVerifiableCredential The Schema Profile Verifiable Credential to verify.
    * @returns A promise that resolves to a ValidationResult indicating the validity of the Schema Profile Verifiable Credential.
-   
+   */
   verifySchemaProfileVerifiableCredential(
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<ValidationResult>;
 
+  /**
+   * Revokes an Schema Profile Verifiable Credential.
+   * @param schemaProfileVerifiableCredential The Schema Profile Verifiable Credential to revoke.
+   * @returns A promise that resolves when the revocation is complete.
+   * 
   revokeSchemaProfileVerifiableCredential(
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<void>;
+   */
 
   /**
    * Creates a Token Issuance Authorization Verifiable Credential.

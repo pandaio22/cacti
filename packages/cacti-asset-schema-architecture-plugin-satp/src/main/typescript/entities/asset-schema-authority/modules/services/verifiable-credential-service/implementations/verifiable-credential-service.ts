@@ -18,7 +18,7 @@ import {
   AssetSchemaDidDocument,
   AssetSchemaVerifiableCredential,
   SchemaProfile,
-  //SchemaProfileVerifiableCredential,
+  SchemaProfileVerifiableCredential,
   SchemaProfileDidDocument,
   TokenIssuanceAuthorizationRequest,
   TokenIssuanceAuthorization,
@@ -38,6 +38,7 @@ import {
   setupLoader,
   generateNonce,
   hashJsonLd,
+  verifyJsonLdHash,
 } from "../../../../../../utils/vc-helpers";
 import { IVerifiableCredentialService } from "../interfaces/verifiable-credential-service.interface";
 import {
@@ -76,7 +77,7 @@ export class VerifiableCredentialService
       (jsonld as any).documentLoader = LdDefaultContexts;
     }
   }
-
+  /***********************************************************TEST METHODS*/
   /**
    * A simple test to exercise the issue() and verify() library methods
    */
@@ -244,32 +245,8 @@ export class VerifiableCredentialService
     });
     console.log("Verification Result:\n", JSON.stringify(result, null, 2));
   }
-  /**
-   * Verify that the hash inside a VC matches the JSON-LD content of the assetSchema.
-   * @param vc - The AssetSchemaVerifiableCredential to verify
-   * @param assetSchema - The original JSON-LD of the Asset Schema
-   * @returns true if the hash is valid, false otherwise
-   */
-  private async verifyAssetSchemaHash(
-    vc: AssetSchemaVerifiableCredential,
-    assetSchema: Record<string, any>,
-  ): Promise<boolean> {
-    if (!vc.credentialSubject?.hash) {
-      throw new Error("VC does not contain a hash in credentialSubject");
-    }
-
-    // Extract nonce if present
-    const nonce = vc.credentialSubject.nonce;
-
-    // Compute the hash over the JSON-LD and nonce
-    const computedHash = await hashJsonLd(assetSchema, nonce);
-
-    // Compare with VC's hash
-    return computedHash === vc.credentialSubject.hash;
-  }
 
   /***********************************************************INTERFACE METHODS*/
-
   /**
    * Creates the Asset Schema Verifiable Credential
    * @param assetSchema
@@ -281,7 +258,7 @@ export class VerifiableCredentialService
     assetSchemaDidDocument: AssetSchemaDidDocument,
   ): Promise<AssetSchemaVerifiableCredential> {
     try {
-      console.debug("Issuing Verifiable Credential...\n");
+      console.debug("Issuing Asset Schema Verifiable Credential...\n");
       if (!assetSchema || !assetSchemaDidDocument) {
         throw new Error(
           "Missing Required Inputs: Asset Schema and DID Document are required.",
@@ -291,9 +268,24 @@ export class VerifiableCredentialService
         console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
 
+      // Document Loader
+      console.debug("Local Contexts:\n", this.localContexts);
+      const documentLoader = extendContextLoader(async (url: string) => {
+        if (this.localContexts && this.localContexts.has(url)) {
+          return {
+            contextUrl: null,
+            documentUrl: url,
+            document: this.localContexts.get(url),
+            tag: "local",
+          };
+        }
+        // fallback to VC default loader
+        return vc.defaultDocumentLoader(url);
+      });
+
       // Setting up the credential
       const nonce = generateNonce();
-      const hash = await hashJsonLd(assetSchema, nonce);
+      const hash = await hashJsonLd(assetSchema, nonce, documentLoader);
 
       const credentialSubject = {
         id: assetSchemaDidDocument.id,
@@ -337,21 +329,6 @@ export class VerifiableCredentialService
         key: assetSchemaAuthorityKeyPair,
       });
       console.debug("Cryptosuite:\n", suite);
-
-      // Document Loader
-      console.debug("Local Contexts:\n", this.localContexts);
-      const documentLoader = extendContextLoader(async (url: string) => {
-        if (this.localContexts && this.localContexts.has(url)) {
-          return {
-            contextUrl: null,
-            documentUrl: url,
-            document: this.localContexts.get(url),
-            tag: "local",
-          };
-        }
-        // fallback to VC default loader
-        return vc.defaultDocumentLoader(url);
-      });
 
       console.log("Creating Verifiable Credential...");
 
@@ -441,7 +418,7 @@ export class VerifiableCredentialService
         throw new Error("Proof verification failed");
       }
 
-      const isValidHash = await this.verifyAssetSchemaHash(
+      const isValidHash = await verifyJsonLdHash(
         normalizedVC,
         normalizedVC.credentialSubject.schema,
       );
@@ -465,21 +442,186 @@ export class VerifiableCredentialService
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential,
   ): Promise<void> {
     // Implementation logic
-  }
+  }*/
 
   public async createSchemaProfileVerifiableCredential(
     schemaProfile: SchemaProfile,
     schemaProfileDidDocument: SchemaProfileDidDocument,
   ): Promise<SchemaProfileVerifiableCredential> {
-    // Implementation logic
+    try {
+      console.debug("Issuing Schema Profile Verifiable Credential...\n");
+      if (!schemaProfile || !schemaProfileDidDocument) {
+        throw new Error(
+          "Missing Required Inputs: Asset Schema and DID Document are required.",
+        );
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
+
+      // Document Loader
+      console.debug("Local Contexts:\n", this.localContexts);
+      const documentLoader = extendContextLoader(async (url: string) => {
+        if (this.localContexts && this.localContexts.has(url)) {
+          return {
+            contextUrl: null,
+            documentUrl: url,
+            document: this.localContexts.get(url),
+            tag: "local",
+          };
+        }
+        // fallback to VC default loader
+        return vc.defaultDocumentLoader(url);
+      });
+
+      // Setting up the credential
+      const nonce = generateNonce();
+      const hash = await hashJsonLd(schemaProfile, nonce, documentLoader);
+
+      const credentialSubject = {
+        id: schemaProfileDidDocument.id,
+        name: schemaProfile.name || "Schema Profile",
+        version: schemaProfile.version || "1.0.0",
+        hash: hash,
+        nonce: nonce,
+        createdBy: schemaProfileDidDocument.authentication,
+        schema: schemaProfile,
+        assetSchema: "did:example:123456789abcdefghi#",
+      };
+
+      const unsignedCredential = {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.example.org/schema-profile/vc/v1",
+          "did:example:123456789abcdefghi#",
+        ],
+        id: schemaProfileDidDocument.id,
+        type: ["VerifiableCredential", "SchemaProfileVerifiableCredential"],
+        issuer:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+        issuanceDate: new Date().toISOString(),
+        credentialSubject,
+      };
+
+      console.debug("Unsigned Credential:\n:", unsignedCredential);
+
+      // Cryptosuite
+      const assetSchemaAuthorityKeyPair = new Ed25519VerificationKey2020({
+        id: VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.id,
+        controller:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+        publicKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .publicKeyMultibase,
+        privateKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .privateKeyMultibase,
+      });
+
+      const suite = new Ed25519Signature2020({
+        key: assetSchemaAuthorityKeyPair,
+      });
+      console.debug("Cryptosuite:\n", suite);
+
+      console.log("Creating Verifiable Credential...");
+
+      const verifiableCredential = await vc.issue({
+        credential: unsignedCredential,
+        suite,
+        documentLoader,
+      });
+
+      console.log(
+        "Verifiable Credential created:",
+        JSON.stringify(verifiableCredential, null, 2),
+      );
+
+      return verifiableCredential as SchemaProfileVerifiableCredential;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.VERIFIABLE_CREDENTIAL_CREATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
   }
 
   public async verifySchemaProfileVerifiableCredential(
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<ValidationResult> {
-    // Implementation logic
+    try {
+      console.debug("Verifying Verifiable Credential...\n");
+      if (!schemaProfileVerifiableCredential) {
+        throw new Error("Schema Profile and DID Document are required.");
+      }
+      if (!schemaProfileVerifiableCredential.proof) {
+        throw new Error("Non-existing Proof");
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
+
+      const { suite } = await setupCryptoSuite(
+        schemaProfileVerifiableCredential,
+      );
+      const { loader } = await setupLoader(this.localContexts);
+
+      // Normalize the credential
+      const normalizedVC = normalizeCredential(
+        schemaProfileVerifiableCredential,
+      );
+
+      if (normalizedVC.proof) {
+        let fragment = normalizedVC.proof.verificationMethod;
+        console.debug("fragment", fragment);
+        if (!fragment.includes("#")) {
+          fragment = `${fragment}#${fragment.split(":").pop()}`;
+        }
+
+        console.log("full key ID with fragment:", fragment);
+
+        // Optionally, patch the VC proof
+        normalizedVC.proof.verificationMethod = fragment;
+        normalizedVC.issuer = `did:key:${normalizedVC.proof.verificationMethod
+          .split("#")
+          .pop()}`;
+      }
+      console.debug("normalizedVC:\n", normalizedVC);
+
+      const result = await vc.verifyCredential({
+        credential: normalizedVC,
+        suite,
+        documentLoader: loader,
+      });
+      console.debug("Verification Result:\n", JSON.stringify(result, null, 2));
+
+      if (!result.verified) {
+        throw new Error("Proof verification failed");
+      }
+
+      const isValidHash = await verifyJsonLdHash(
+        normalizedVC,
+        normalizedVC.credentialSubject.schema,
+        loader,
+      );
+      console.log("Hash is valid:", isValidHash);
+
+      return {
+        valid: result.verified,
+        details: "Schema Profile successfully verified",
+      } as ValidationResult;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
   }
 
+  /*
   public async revokeSchemaProfileVerifiableCredential(
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<void> {

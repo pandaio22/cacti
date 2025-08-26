@@ -2736,6 +2736,160 @@ components:
           description: |
             List of verification method IDs allowed for asserting claims or issuing VCs.
       additionalProperties: true
+    SchemaProfileVerifiableCredential:
+      type: object
+      description: Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+              format: uri
+              example: 'https://www.w3.org/ns/did/v1.1'
+            - type: object
+            - type: array
+              items:
+                oneOf:
+                  - type: string
+                    format: uri
+                  - type: object
+        id:
+          type: string
+          format: uri
+          example: 'did:example:56745689abcdefghi#schema-profile-credential'
+          description: Unique identifier for the Schema Profile Verifiable Credential.
+        type:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            Includes "VerifiableCredential" and "SchemaProfileVerifiableCredential".
+        issuer:
+          type: string
+          format: uri
+          example: 'did:web:example.com#asset-schema-authority'
+          description: DID or URI of the Asset Schema Authority issuing this VC.
+        validFrom:
+          type: string
+          format: date-time
+          example: '2023-10-01T12:00:00Z'
+          description: Timestamp stating VC starting validity.
+        issuanceDate:
+          type: string
+          format: date-time
+          example: '2023-10-01T12:00:00Z'
+          description: Timestamp when the VC was issued.
+        credentialSubject:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uri
+              example: 'did:web:example.com#schema-profile'
+              description: DID or URI of the Schema Profile.
+            name:
+              type: string
+              example: Example Schema Profile
+              description: Human-readable name of the Schema Profile.
+            version:
+              type: string
+              example: 1.0.0
+              description: Version of the Schema Profile.
+            hash:
+              type: string
+              example: QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ
+              description: |
+                Unique hash representing the Asset Schema, typically a CID or similar identifier.
+            nonce:
+              type: string
+              example: e8774f35ba50616e371649579860b0a8
+              description: |
+                Unique number used once to ensure freshness, preventing replay attacks.
+            createdBy:
+              type: string
+              format: uri
+              example: 'did:web:example.com#asset-schema-authority'
+              description: DID or URI of the entity that created the Schema Profile.
+            asset_schema:
+              type: object
+              description: Structure of a valid Schema Profile (JSON-LD format)
+              required:
+                - '@context'
+                - '@id'
+                - title
+                - asset_schema
+                - fungible
+                - organization_key
+                - facets
+              properties:
+                '@context':
+                  oneOf:
+                    - type: string
+                      format: uri
+                      example: 'https://www.w3.org/ns/did/v1.1'
+                    - type: object
+                    - type: array
+                      items:
+                        oneOf:
+                          - type: string
+                            format: uri
+                          - type: object
+                '@id':
+                  type: string
+                  format: uri
+                  example: 'did:example:56745689abcdefghi#schema-profile'
+                  description: Unique identifier for the Schema Profile.
+                title:
+                  type: string
+                  example: Example Schema Profile
+                  description: Human-readable title of the Schema Profile.
+                asset_schema:
+                  type: string
+                  format: uri
+                  example: 'did:example:123456789abcdefghi#asset-schema'
+                  description: Reference to the Asset Schema associated with this Schema Profile.
+                fungible:
+                  type: boolean
+                  description: Indicates if the asset is fungible.
+                  example: true
+                organization_key:
+                  type: object
+                  properties:
+                    public_key:
+                      type: string
+                      format: uri
+                      example: 'https://example.com/public-key'
+                      description: URI of the public key for the organization.
+                    issued:
+                      type: string
+                      format: date-time
+                      example: '2023-10-01T12:00:00Z'
+                      description: Timestamp when the public key was issued.
+                facets:
+                  type: object
+                  description: Additional facets or properties of the Schema Profile.
+              additionalProperties: true
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            verificationMethod:
+              type: string
+            cryptosuite:
+              type: string
+              description: |
+                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            proofValue:
+              type: string
+              description: |
+                The cryptographic proof value, typically a JWS or similar signature.
+      additionalProperties: true
     SignedSchemaProfile:
       type: object
       properties:

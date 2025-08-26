@@ -3,7 +3,10 @@ import { driver } from "@digitalbazaar/did-method-key";
 import { Ed25519VerificationKey2020 } from "@digitalbazaar/ed25519-verification-key-2020";
 import { VerifiableCredential } from "@digitalbazaar/vc";
 import { extendContextLoader } from "jsonld-signatures";
-import { AssetSchemaVerifiableCredential } from "../generated/asset-schema-architecture/typescript-axios/api";
+import {
+  AssetSchemaVerifiableCredential,
+  SchemaProfileVerifiableCredential,
+} from "../generated/asset-schema-architecture/typescript-axios/api";
 import * as vc from "@digitalbazaar/vc";
 import { canonize } from "jsonld";
 import crypto from "crypto";
@@ -19,30 +22,72 @@ import crypto from "crypto";
 export async function hashJsonLd(
   jsonLd: Record<string, any>,
   nonce?: string,
+  documentLoader?: any,
 ): Promise<string> {
-  if (!jsonLd["@context"]) {
-    throw new Error(
-      "JSON-LD document must have an @context to compute a stable hash.",
-    );
+  try {
+    if (!jsonLd["@context"]) {
+      throw new Error(
+        "JSON-LD document must have an @context to compute a stable hash.",
+      );
+    }
+    if (!documentLoader) {
+      console.debug(
+        "No custom document loader. Dereferencing remote contexts...\n",
+      );
+    }
+
+    // Clone the object to avoid mutating the original
+    const docToHash = { ...jsonLd };
+
+    if (nonce) {
+      docToHash.nonce = nonce;
+    }
+
+    // Canonicalize JSON-LD to N-Quads using URDNA2015
+    const nquads = await canonize(docToHash, {
+      algorithm: "URDNA2015",
+      format: "application/n-quads",
+      documentLoader: documentLoader ? documentLoader : undefined,
+    });
+
+    // Compute SHA-256 hash of canonicalized N-Quads
+    const hash = crypto.createHash("sha256").update(nquads).digest("hex");
+
+    return hash;
+  } catch (error: any) {
+    console.error("Failed to hash JSON-LD:", error);
+    throw new Error(`Failed to hash JSON-LD: ${error.message || error}`);
   }
+}
 
-  // Clone the object to avoid mutating the original
-  const docToHash = { ...jsonLd };
+/**
+ * Verify that the hash inside a VC matches the JSON-LD content of the assetSchema.
+ * @param vc - The AssetSchemaVerifiableCredential to verify
+ * @param assetSchema - The original JSON-LD of the Asset Schema
+ * @returns true if the hash is valid, false otherwise
+ */
+export async function verifyJsonLdHash(
+  vc: any,
+  schema: Record<string, any>,
+  documentLoader?: any,
+): Promise<boolean> {
+  try {
+    if (!vc.credentialSubject?.hash) {
+      throw new Error("VC does not contain a hash in credentialSubject");
+    }
 
-  if (nonce) {
-    docToHash.nonce = nonce;
+    // Extract nonce if present
+    const nonce = vc.credentialSubject.nonce;
+
+    // Compute the hash over the JSON-LD and nonce
+    const computedHash = await hashJsonLd(schema, nonce, documentLoader);
+
+    // Compare with VC's hash
+    return computedHash === vc.credentialSubject.hash;
+  } catch (err: any) {
+    console.error("Failed to verify VC hash:", err);
+    return false;
   }
-
-  // Canonicalize JSON-LD to N-Quads using URDNA2015
-  const nquads = await canonize(docToHash, {
-    algorithm: "URDNA2015",
-    format: "application/n-quads",
-  });
-
-  // Compute SHA-256 hash of canonicalized N-Quads
-  const hash = crypto.createHash("sha256").update(nquads).digest("hex");
-
-  return hash;
 }
 
 /**
@@ -85,9 +130,7 @@ export function normalizeCredential<T extends Record<string, any>>(
 /**
  * Prepare a suite for verifying a VC.
  */
-export async function setupCryptoSuite(
-  assetVc: AssetSchemaVerifiableCredential,
-): Promise<{
+export async function setupCryptoSuite(assetVc: any): Promise<{
   suite: Ed25519Signature2020;
 }> {
   if (!assetVc.proof?.verificationMethod) {

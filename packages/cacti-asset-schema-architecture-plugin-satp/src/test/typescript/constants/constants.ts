@@ -287,6 +287,22 @@ const VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE = {
   assertionMethod: ["did:web:example.com:asset-schema#controller"],
 };
 
+const VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:web:example.com:schema-profile",
+  type: ["DIDDocument", "SchemaProfileDidDocument"],
+  verificationMethod: [
+    {
+      id: "did:web:example.com:schema-profile#controller",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:web:example.com:controller",
+      publicKeyMultibase: "H3C2AVvLMf2pX...",
+    },
+  ],
+  authentication: ["did:web:example.com:schema-profile#controller"],
+  assertionMethod: ["did:web:example.com:schema-profile#controller"],
+};
+
 /**
  * SCHEMAS
  */
@@ -759,6 +775,7 @@ export {
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
+  VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION,

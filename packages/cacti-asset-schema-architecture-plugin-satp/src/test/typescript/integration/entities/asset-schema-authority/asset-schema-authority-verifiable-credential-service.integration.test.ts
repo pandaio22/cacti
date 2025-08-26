@@ -4,10 +4,9 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 import {
   VALID_ASSET_SCHEMA_EXAMPLE,
-  INVALID_ASSET_SCHEMA_EXAMPLE,
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
-  //VALID_SCHEMA_PROFILE_EXAMPLE,
-  //VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_SCHEMA_PROFILE_EXAMPLE,
+  VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
 } from "../../../constants/constants";
@@ -19,7 +18,7 @@ describe("Verifiable Credential Service", () => {
   const TIMEOUT: number = 50000000;
   let assetSchemaAuthorityVerifiableCredentialService: VerifiableCredentialService;
 
-  /*CONTEXT SETUP*/
+  /***********************************************CONTEXT SETUP*/
   const didV1Context = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../../../../json-ld/contexts/did-v1.jsonld"),
@@ -54,12 +53,23 @@ describe("Verifiable Credential Service", () => {
     ),
   );
 
+  const schemaProfileVerifiableCredentialContext = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "../../../../json-ld/contexts/schema-profile-verifiable-credential.jsonld",
+      ),
+      "utf-8",
+    ),
+  );
+
   const verifiableCredentialsContextTest = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../../../../json-ld/contexts/test-vc-1.jsonld"),
       "utf-8",
     ),
   );
+
   const verifiableCredentialsContextV1 = JSON.parse(
     fs.readFileSync(
       path.join(
@@ -96,6 +106,7 @@ describe("Verifiable Credential Service", () => {
       "utf-8",
     ),
   );
+  /***************************************************************/
 
   beforeAll(async () => {
     //Placeholder
@@ -114,9 +125,6 @@ describe("Verifiable Credential Service", () => {
     //Placeholder
   });
 
-  // ------------------------
-  // Asset Schema VC
-  // ------------------------
   /*it("MOCKshould create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
     // Given
     console.log("Starting Asset Schema VC creation test...");
@@ -165,6 +173,9 @@ describe("Verifiable Credential Service", () => {
     expect(true).toBe(true); // Placeholder for actual test logic
   });
 
+  // ------------------------
+  // Asset Schema VC
+  // ------------------------
   it("should create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
     // Given
     console.log("Starting Asset Schema VC creation test...");
@@ -203,6 +214,9 @@ describe("Verifiable Credential Service", () => {
     expect(assetSchemaVerifiableCredential).toHaveProperty("type");
     expect(assetSchemaVerifiableCredential.type).toContain(
       "VerifiableCredential",
+    );
+    expect(assetSchemaVerifiableCredential.type).toContain(
+      "AssetSchemaVerifiableCredential",
     );
     expect(assetSchemaVerifiableCredential).toHaveProperty("credentialSubject");
     expect(assetSchemaVerifiableCredential).toHaveProperty("proof");
@@ -343,30 +357,163 @@ describe("Verifiable Credential Service", () => {
   // ------------------------
   it("should create a Schema Profile VC: Given a valid Schema Profile, When executing createSchemaProfileVerifiableCredential, Then return a valid SchemaProfileVerifiableCredential", async () => {
     // Given
+    console.log("Starting Asset Schema VC creation test...");
+    const schemProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
+    const schemProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
     // When
+    const schemProfileVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
+        schemProfile,
+        schemProfileDidDocument,
+      );
+
     // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    expect(schemProfileVerifiableCredential).toBeDefined();
+    expect(schemProfileVerifiableCredential).toHaveProperty("@context");
+    expect(schemProfileVerifiableCredential).toHaveProperty("id");
+    expect(schemProfileVerifiableCredential).toHaveProperty("type");
+    expect(schemProfileVerifiableCredential.type).toContain(
+      "VerifiableCredential",
+    );
+    expect(schemProfileVerifiableCredential).toHaveProperty(
+      "credentialSubject",
+    );
+    expect(schemProfileVerifiableCredential).toHaveProperty("proof");
+    expect(schemProfileVerifiableCredential.proof).toHaveProperty("type");
   });
 
   it("should fail to create a Schema Profile VC: Given an invalid Schema Profile, When executing createSchemaProfileVerifiableCredential, Then should throw an exception", async () => {
     // Given
-    // When
-    // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    const invalidSchemaProfile = {
+      ...VALID_SCHEMA_PROFILE_EXAMPLE,
+      name: null,
+    };
+    const invalidDidDocument = {
+      ...VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+      id: null,
+    };
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
+        invalidSchemaProfile as any,
+        invalidDidDocument as any,
+      ),
+    ).rejects.toThrowError(/Missing Required Inputs|Invalid/); // match the relevant error message
   });
 
   it("should verify a Schema Profile VC: Given a valid Schema Profile VC, When executing verifySchemaProfileVerifiableCredential, Then return a valid ValidationResult", async () => {
     // Given
+    const schemaProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
+    const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const schemaProfileVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
+        schemaProfile,
+        schemaProfileDidDocument,
+      );
+
+    localContextsMap.set(schemaProfileDidDocument.id, schemaProfileDidDocument);
+    console.debug("Context Map:\n", localContextsMap);
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
     // When
+    const result =
+      await assetSchemaAuthorityVerifiableCredentialService.verifySchemaProfileVerifiableCredential(
+        schemaProfileVerifiableCredential,
+      );
+
     // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    expect(result.valid).toBe(true);
   });
 
   it("should fail to verify a Schema Profile VC: Given a tampered Schema Profile VC, When executing verifySchemaProfileVerifiableCredential, Then return an invalid ValidationResult", async () => {
     // Given
-    // When
-    // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    const schemaProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
+    const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const schemaProfileVerifiableCredential =
+      await assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
+        schemaProfile,
+        schemaProfileDidDocument,
+      );
+
+    const tamperedVC = {
+      ...schemaProfileVerifiableCredential,
+      credentialSubject: {
+        ...schemaProfileVerifiableCredential.credentialSubject,
+        name: "HACKED-NAME",
+      },
+    };
+    console.debug("Tampered VC:\n", tamperedVC);
+
+    localContextsMap.set(schemaProfileDidDocument.id, schemaProfileDidDocument);
+    console.debug("Context Map:\n", localContextsMap);
+
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.verifySchemaProfileVerifiableCredential(
+        tamperedVC,
+      ),
+    ).rejects.toMatchObject({
+      type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+      message: expect.stringMatching(
+        /invalid signature|proof verification failed/i,
+      ),
+    });
   });
 
   it("should revoke a Schema Profile VC: Given a valid Schema Profile VC, When executing revokeSchemaProfileVerifiableCredential, Then the VC should be revoked successfully", async () => {

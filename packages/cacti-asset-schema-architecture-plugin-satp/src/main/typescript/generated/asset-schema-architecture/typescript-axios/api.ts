@@ -1439,6 +1439,112 @@ export interface SchemaProfileDidDocumentVerificationMethodInner {
     'publicKeyMultibase'?: string;
 }
 /**
+ * Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface SchemaProfileVerifiableCredential
+ */
+export interface SchemaProfileVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Schema Profile Verifiable Credential.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"SchemaProfileVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {SchemaProfileVerifiableCredentialCredentialSubject}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'credentialSubject'?: SchemaProfileVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof SchemaProfileVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface SchemaProfileVerifiableCredentialCredentialSubject
+ */
+export interface SchemaProfileVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the Schema Profile.
+     * @type {string}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'asset_schema'?: CommissionSchemaProfileRequestSchemaProfile;
+}
+/**
  * 
  * @export
  * @interface SignedAssetSchema
