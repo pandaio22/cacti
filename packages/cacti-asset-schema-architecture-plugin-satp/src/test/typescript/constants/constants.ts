@@ -625,6 +625,7 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
   id: "urn:uuid:5d58e6a2-38f7-4d92-9f4e-1b5d56f6c981",
   type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
   issuer: "did:example:asset-schema-authority-123",
+  issuanceDate: "2025-08-13T10:15:00Z",
   validFrom: "2025-08-13T10:15:00Z",
   validUntil: "2025-09-13T10:15:00Z",
   credentialSubject: {
@@ -651,6 +652,46 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST = {
   },
 };
 
+const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.example.org/schema-profile/vc/v1",
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+  ],
+  id: "https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+  type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+  issuer: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+  issuanceDate: "2025-08-26T15:32:32.797Z",
+  credentialSubject: {
+    id: "did:web:example.com:schema-profile",
+    assetProvider: {
+      name: "Example Provider",
+      id: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+      organizationKey: {
+        publicKey: "z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+        type: "Ed25519VerificationKey2020",
+      },
+    },
+    networkId: "Ethereum",
+    name: "Token Issuance Authorization Request",
+    version: "1.0.0",
+    hash: "cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+    nonce: "179e76d999fa7c6edb9f09296dc9dfbf",
+    createdBy: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+    schema: "did:web:example.com:schema-profile",
+  },
+  proof: {
+    type: "Ed25519Signature2020",
+    created: "2025-08-26T15:32:32Z",
+    verificationMethod:
+      "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+    proofPurpose: "assertionMethod",
+    proofValue:
+      "z2ViKtjuZtqF77XTT2oQTNm6SdNbu9CcDNwSes2EWN5jduUKBhaPoKwKQMNELpXzf6iEoq3ogFRQpTxhcU7dpMGiD",
+  },
+};
+
 const VALID_TOKEN_ISSUANCE_AUTHORIZATION = {
   "@context": [
     "https://www.w3.org/2018/credentials/v2",
@@ -668,6 +709,7 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION = {
       id: "urn:uuid:5d58e6a2-38f7-4d92-9f4e-1b5d56f6c981",
       type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
       issuer: "did:example:asset-provider-123",
+      issuanceDate: "2025-08-13T10:15:00Z",
       validFrom: "2025-08-13T10:15:00Z",
       validUntil: "2025-09-13T10:15:00Z",
       credentialSubject: {
@@ -778,6 +820,7 @@ export {
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
   VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,

@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **publicKey** | **string** |  | [default to undefined]
+**type** | **string** |  | [optional] [default to undefined]
 **issued** | **string** |  | [default to undefined]
 
 ## Example
@@ -15,6 +16,7 @@ import { RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCrede
 
 const instance: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey = {
     publicKey,
+    type,
     issued,
 };
 ```

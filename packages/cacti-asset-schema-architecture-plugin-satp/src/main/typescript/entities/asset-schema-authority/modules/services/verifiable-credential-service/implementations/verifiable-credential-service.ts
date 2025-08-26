@@ -45,7 +45,6 @@ import {
   VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT,
   VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020,
 } from "../../../../certificates/asset-schema-authority-did-document";
-import { canonize } from "jsonld";
 
 export class VerifiableCredentialService
   implements IVerifiableCredentialService
@@ -171,7 +170,7 @@ export class VerifiableCredentialService
     keyPair.id = `${controller}#${keyPair.fingerprint()}`;
     const suite = new Ed25519Signature2020({ key: keyPair });
 
-    console.log("Generated key pair:", keyPair);
+    console.log("Generated key pair:", JSON.stringify(keyPair, null, 2));
     console.log("Using suite:", JSON.stringify(suite, null, 2));
 
     // Sample unsigned credential
@@ -365,7 +364,7 @@ export class VerifiableCredentialService
     try {
       console.debug("Verifying Verifiable Credential...\n");
       if (!assetSchemaVerifiableCredential) {
-        throw new Error("Asset Schema and DID Document are required.");
+        throw new Error("Asset Schema VC is required.");
       }
       if (!assetSchemaVerifiableCredential.proof) {
         throw new Error("Non-existing Proof");
@@ -444,6 +443,12 @@ export class VerifiableCredentialService
     // Implementation logic
   }*/
 
+  /**
+   * Creates the Asset Schema Verifiable Credential
+   * @param assetSchema
+   * @param assetSchemaDidDocument
+   * @returns
+   */
   public async createSchemaProfileVerifiableCredential(
     schemaProfile: SchemaProfile,
     schemaProfileDidDocument: SchemaProfileDidDocument,
@@ -626,21 +631,37 @@ export class VerifiableCredentialService
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<void> {
     // Implementation logic
-  }
+  }*/
 
+  /**
+   * Creates the TokenIssuanceAuthorization
+   * @param tokenIssuanceAuthorizationRequest
+   * @param didDocument
+   * @returns TokenIssuanceAuthorization
+   * @ensures TokenIssuanceAuthorization contains the Asset Provider public key
+   * @ensures TokenIssuanceAuthorization is signed by the Asset Schema Authority
+   
   public async createTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
     didDocument: DidDocument,
   ): Promise<TokenIssuanceAuthorization> {
     // Implementation logic
   }
-
-  public async verifyTokenIssuanceAuthorization(
+  */
+  /**
+   * Verifies the TokenIssuanceAuthorization
+   * @param tokenIssuanceAuthorizationRequest
+   * @param didDocument
+   * @returns TokenIssuanceAuthorization
+   * @ensures TokenIssuanceAuthorization contains the Asset Provider public key
+   * @ensures TokenIssuanceAuthorization is signed by the Asset Schema Authority 
+   
+  /*public async verifyTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationVerifiableCredential: TokenIssuanceAuthorizationVerifiableCredential,
   ): Promise<ValidationResult> {
     // Implementation logic
-  }
-
+  }*/
+  /*
   public async revokeTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationVerifiableCredential: TokenIssuanceAuthorizationVerifiableCredential,
   ): Promise<void> {

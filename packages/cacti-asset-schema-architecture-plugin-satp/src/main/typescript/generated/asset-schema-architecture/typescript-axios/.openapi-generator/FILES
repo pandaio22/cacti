@@ -27,7 +27,9 @@ docs/CommissionSchemaProfileRequestSchemaProfileContext.md
 docs/CommissionSchemaProfileRequestSchemaProfileOrganizationKey.md
 docs/CommissionTokenizedAssetRecord200Response.md
 docs/CommissionTokenizedAssetRecordRequest.md
+docs/CommissionedAssetSchema.md
 docs/CommissionedAssetSchemaID.md
+docs/CommissionedSchemaProfile.md
 docs/CommissionedSchemaProfileID.md
 docs/CommissionedTokenizedAssetRecordID.md
 docs/OLDTokenIssuanceAuthorization.md

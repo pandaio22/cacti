@@ -81,7 +81,7 @@ export interface IVerifiableCredentialService {
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
     didDocument: AssetSchemaDidDocument,
   ): Promise<TokenIssuanceAuthorization>;
-
+*/
   /**
    * Verifies a Token Issuance Authorization Verifiable Credential.
    * @param tokenIssuanceAuthorization The Token Issuance Authorization to verify.
@@ -90,7 +90,7 @@ export interface IVerifiableCredentialService {
   verifyTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<ValidationResult>;
-
+*/
   /**
    * Revokes a Token Issuance Authorization Verifiable Credential.
    * @param tokenIssuanceAuthorization The Token Issuance Authorization to revoke.

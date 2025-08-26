@@ -89,6 +89,9 @@ TokenIssuanceAuthorizationRequest:
     validFrom:
       type: string
       format: date-time
+    issuanceDate:
+      type: string
+      format: date-time
     validUntil:
       type: string
       format: date-time
@@ -107,6 +110,8 @@ TokenIssuanceAuthorizationRequest:
               type: object
               properties:
                 publicKey:
+                  type: string
+                type:
                   type: string
                 issued:
                   type: string
@@ -162,8 +167,7 @@ TokenIssuanceAuthorizationRequest:
     - id
     - type
     - issuer
-    - validFrom
-    - validUntil
+    - issuanceDate
     - credentialSubject
     - proof
 
@@ -540,6 +544,36 @@ SignedAssetSchema:
     - proof
   additionalProperties: true
 
+CommissionedAssetSchema:
+  type: object
+  properties:
+    asset_schema: 
+      $ref: '#/AssetSchema' 
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - asset-schema
+    - proof
+  additionalProperties: true
+
 CommissionedAssetSchemaID:
   type: object
   description: A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -806,6 +840,36 @@ SchemaProfileVerifiableCredential:
   additionalProperties: true
 
 SignedSchemaProfile:
+  type: object
+  properties:
+    schema_profile: 
+      $ref: '#/SchemaProfile' 
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        verificationMethod:
+          type: string
+        jws:
+          type: string
+      required:
+        - type
+        - created
+        - proofPurpose
+        - verificationMethod
+        - jws
+  required:
+    - schema-profile
+    - proof
+  additionalProperties: true
+
+CommissionedSchemaProfile:
   type: object
   properties:
     schema_profile: 

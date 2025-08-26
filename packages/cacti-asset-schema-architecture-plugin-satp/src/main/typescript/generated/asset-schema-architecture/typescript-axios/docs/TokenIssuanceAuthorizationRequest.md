@@ -9,8 +9,9 @@ Name | Type | Description | Notes
 **id** | **string** |  | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiableCredential\&quot; and \&quot;TokenIssuanceAuthorizationRequest\&quot;.  | [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Provider issuing this TIAR.  | [default to undefined]
-**validFrom** | **string** |  | [default to undefined]
-**validUntil** | **string** |  | [default to undefined]
+**validFrom** | **string** |  | [optional] [default to undefined]
+**issuanceDate** | **string** |  | [default to undefined]
+**validUntil** | **string** |  | [optional] [default to undefined]
 **credentialSubject** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject.md) |  | [default to undefined]
 **proof** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof.md) |  | [default to undefined]
 
@@ -25,6 +26,7 @@ const instance: TokenIssuanceAuthorizationRequest = {
     type,
     issuer,
     validFrom,
+    issuanceDate,
     validUntil,
     credentialSubject,
     proof,

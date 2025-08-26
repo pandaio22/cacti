@@ -645,6 +645,27 @@ export interface CommissionTokenizedAssetRecordRequest {
     '@context': CommissionSchemaProfileRequestSchemaProfileContext;
 }
 /**
+ * 
+ * @export
+ * @interface CommissionedAssetSchema
+ */
+export interface CommissionedAssetSchema {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof CommissionedAssetSchema
+     */
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestProof}
+     * @memberof CommissionedAssetSchema
+     */
+    'proof': CommissionAssetSchemaRequestProof;
+}
+/**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
  * @export
  * @interface CommissionedAssetSchemaID
@@ -668,6 +689,27 @@ export interface CommissionedAssetSchemaID {
      * @memberof CommissionedAssetSchemaID
      */
     'type': string;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionedSchemaProfile
+ */
+export interface CommissionedSchemaProfile {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof CommissionedSchemaProfile
+     */
+    'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestProof}
+     * @memberof CommissionedSchemaProfile
+     */
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
@@ -1118,13 +1160,19 @@ export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialIn
      * @type {string}
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    'validFrom': string;
+    'validFrom'?: string;
     /**
      * 
      * @type {string}
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    'validUntil': string;
+    'issuanceDate': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+     */
+    'validUntil'?: string;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}
@@ -1206,6 +1254,12 @@ export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialIn
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
      */
     'publicKey': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
+     */
+    'type'?: string;
     /**
      * 
      * @type {string}
@@ -1689,13 +1743,19 @@ export interface TokenIssuanceAuthorizationRequest {
      * @type {string}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'validFrom': string;
+    'validFrom'?: string;
     /**
      * 
      * @type {string}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'validUntil': string;
+    'issuanceDate': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenIssuanceAuthorizationRequest
+     */
+    'validUntil'?: string;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}

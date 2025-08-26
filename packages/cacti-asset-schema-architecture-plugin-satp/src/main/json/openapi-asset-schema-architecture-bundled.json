@@ -179,6 +179,10 @@
                           "type": "string",
                           "format": "date-time"
                         },
+                        "issuanceDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
                         "validUntil": {
                           "type": "string",
                           "format": "date-time"
@@ -200,6 +204,9 @@
                                   "type": "object",
                                   "properties": {
                                     "publicKey": {
+                                      "type": "string"
+                                    },
+                                    "type": {
                                       "type": "string"
                                     },
                                     "issued": {
@@ -278,8 +285,7 @@
                         "id",
                         "type",
                         "issuer",
-                        "validFrom",
-                        "validUntil",
+                        "issuanceDate",
                         "credentialSubject",
                         "proof"
                       ]
@@ -1797,6 +1803,10 @@
                     "type": "string",
                     "format": "date-time"
                   },
+                  "issuanceDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
                   "validUntil": {
                     "type": "string",
                     "format": "date-time"
@@ -1818,6 +1828,9 @@
                             "type": "object",
                             "properties": {
                               "publicKey": {
+                                "type": "string"
+                              },
+                              "type": {
                                 "type": "string"
                               },
                               "issued": {
@@ -1896,8 +1909,7 @@
                   "id",
                   "type",
                   "issuer",
-                  "validFrom",
-                  "validUntil",
+                  "issuanceDate",
                   "credentialSubject",
                   "proof"
                 ]
@@ -2001,6 +2013,10 @@
                             "type": "string",
                             "format": "date-time"
                           },
+                          "issuanceDate": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "validUntil": {
                             "type": "string",
                             "format": "date-time"
@@ -2022,6 +2038,9 @@
                                     "type": "object",
                                     "properties": {
                                       "publicKey": {
+                                        "type": "string"
+                                      },
+                                      "type": {
                                         "type": "string"
                                       },
                                       "issued": {
@@ -2100,8 +2119,7 @@
                           "id",
                           "type",
                           "issuer",
-                          "validFrom",
-                          "validUntil",
+                          "issuanceDate",
                           "credentialSubject",
                           "proof"
                         ]
@@ -2753,6 +2771,10 @@
             "type": "string",
             "format": "date-time"
           },
+          "issuanceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
           "validUntil": {
             "type": "string",
             "format": "date-time"
@@ -2774,6 +2796,9 @@
                     "type": "object",
                     "properties": {
                       "publicKey": {
+                        "type": "string"
+                      },
+                      "type": {
                         "type": "string"
                       },
                       "issued": {
@@ -2852,8 +2877,7 @@
           "id",
           "type",
           "issuer",
-          "validFrom",
-          "validUntil",
+          "issuanceDate",
           "credentialSubject",
           "proof"
         ]
@@ -2949,6 +2973,10 @@
                   "type": "string",
                   "format": "date-time"
                 },
+                "issuanceDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
                 "validUntil": {
                   "type": "string",
                   "format": "date-time"
@@ -2970,6 +2998,9 @@
                           "type": "object",
                           "properties": {
                             "publicKey": {
+                              "type": "string"
+                            },
+                            "type": {
                               "type": "string"
                             },
                             "issued": {
@@ -3048,8 +3079,7 @@
                 "id",
                 "type",
                 "issuer",
-                "validFrom",
-                "validUntil",
+                "issuanceDate",
                 "credentialSubject",
                 "proof"
               ]
@@ -3150,6 +3180,10 @@
                 "type": "string",
                 "format": "date-time"
               },
+              "issuanceDate": {
+                "type": "string",
+                "format": "date-time"
+              },
               "validUntil": {
                 "type": "string",
                 "format": "date-time"
@@ -3171,6 +3205,9 @@
                         "type": "object",
                         "properties": {
                           "publicKey": {
+                            "type": "string"
+                          },
+                          "type": {
                             "type": "string"
                           },
                           "issued": {
@@ -3249,8 +3286,7 @@
               "id",
               "type",
               "issuer",
-              "validFrom",
-              "validUntil",
+              "issuanceDate",
               "credentialSubject",
               "proof"
             ]
@@ -3689,6 +3725,104 @@
         "additionalProperties": true
       },
       "SignedAssetSchema": {
+        "type": "object",
+        "properties": {
+          "asset_schema": {
+            "type": "object",
+            "description": "Structure of a valid Asset Schema (JSON-LD format)",
+            "required": [
+              "@context",
+              "@id"
+            ],
+            "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "@version",
+                      "fungible",
+                      "facets",
+                      "organization_key"
+                    ],
+                    "properties": {
+                      "@version": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "JSON-LD version.",
+                        "example": 1.1
+                      },
+                      "fungible": {
+                        "type": "object"
+                      },
+                      "facets": {
+                        "type": "object"
+                      },
+                      "organization_key": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "asset-schema",
+          "proof"
+        ],
+        "additionalProperties": true
+      },
+      "CommissionedAssetSchema": {
         "type": "object",
         "properties": {
           "asset_schema": {
@@ -4236,6 +4370,129 @@
         "additionalProperties": true
       },
       "SignedSchemaProfile": {
+        "type": "object",
+        "properties": {
+          "schema_profile": {
+            "type": "object",
+            "description": "Structure of a valid Schema Profile (JSON-LD format)",
+            "required": [
+              "@context",
+              "@id",
+              "title",
+              "asset_schema",
+              "fungible",
+              "organization_key",
+              "facets"
+            ],
+            "properties": {
+              "@context": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://www.w3.org/ns/did/v1.1"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "@id": {
+                "type": "string",
+                "format": "uri",
+                "example": "did:example:56745689abcdefghi#schema-profile",
+                "description": "Unique identifier for the Schema Profile."
+              },
+              "title": {
+                "type": "string",
+                "example": "Example Schema Profile",
+                "description": "Human-readable title of the Schema Profile."
+              },
+              "asset_schema": {
+                "type": "string",
+                "format": "uri",
+                "example": "did:example:123456789abcdefghi#asset-schema",
+                "description": "Reference to the Asset Schema associated with this Schema Profile."
+              },
+              "fungible": {
+                "type": "boolean",
+                "description": "Indicates if the asset is fungible.",
+                "example": true
+              },
+              "organization_key": {
+                "type": "object",
+                "properties": {
+                  "public_key": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://example.com/public-key",
+                    "description": "URI of the public key for the organization."
+                  },
+                  "issued": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-10-01T12:00:00Z",
+                    "description": "Timestamp when the public key was issued."
+                  }
+                }
+              },
+              "facets": {
+                "type": "object",
+                "description": "Additional facets or properties of the Schema Profile."
+              }
+            },
+            "additionalProperties": true
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "jws": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "verificationMethod",
+              "jws"
+            ]
+          }
+        },
+        "required": [
+          "schema-profile",
+          "proof"
+        ],
+        "additionalProperties": true
+      },
+      "CommissionedSchemaProfile": {
         "type": "object",
         "properties": {
           "schema_profile": {

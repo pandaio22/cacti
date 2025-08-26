@@ -65,6 +65,7 @@ export async function hashJsonLd(
  * @param vc - The AssetSchemaVerifiableCredential to verify
  * @param assetSchema - The original JSON-LD of the Asset Schema
  * @returns true if the hash is valid, false otherwise
+ * @disclaimer Only working when the schemas are passed inline!!!!!!
  */
 export async function verifyJsonLdHash(
   vc: any,
