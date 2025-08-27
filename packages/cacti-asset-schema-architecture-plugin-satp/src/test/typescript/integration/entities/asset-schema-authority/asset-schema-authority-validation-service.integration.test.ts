@@ -251,4 +251,66 @@ describe("Asset Schema Authority Validation Service", () => {
     expect(result.errors).toBeDefined();
     expect(result.details).toBeDefined();
   });
+
+  it("should validate DID Document: Given a valid DID Document, When executing validateDidDocument, Then return Valid", async () => {
+    // Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+    };
+    const validDidDocument = {
+      "@context": ["https://www.w3.org/ns/did/v1"],
+      id: "did:example:123456789abcdefghi",
+      verificationMethod: [
+        {
+          id: "did:example:123456789abcdefghi#key-1",
+          type: "Ed25519VerificationKey2020",
+          controller: "did:example:123456789abcdefghi",
+          publicKeyMultibase: "H3C2AVvLMf2pX...",
+        },
+      ],
+      authentication: ["did:example:123456789abcdefghi#key-1"],
+      assertionMethod: ["did:example:123456789abcdefghi#key-1"],
+    };
+
+    assetSchemaAuthorityValidationService = new ValidationService(contexts);
+
+    // When
+    const result =
+      await assetSchemaAuthorityValidationService.validateDidDocument(
+        validDidDocument,
+      );
+    console.log(result);
+    // Then
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toContain("semantics are valid");
+  });
+
+  it("should fail DID Document validation: Given an invalid DID Document, When executing validateDidDocument, Then return Invalid", async () => {
+    // Given
+    const invalidDidDocument = {
+      "@context": ["https://www.w3.org/ns/did/v1"],
+      id: "", // Invalid DID
+      type: "WrongType", // Incorrect type
+      verificationMethod: [
+        {
+          id: "", // Missing required id
+          type: "", // Missing type
+          controller: "", // Missing controller
+        },
+      ],
+    };
+
+    // When
+    const result =
+      await assetSchemaAuthorityValidationService.validateDidDocument(
+        invalidDidDocument,
+      );
+
+    // Then
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.errors![0].message).toMatch(/Invalid|Missing/);
+    expect(result.details).toContain("Validation error");
+  });
 });

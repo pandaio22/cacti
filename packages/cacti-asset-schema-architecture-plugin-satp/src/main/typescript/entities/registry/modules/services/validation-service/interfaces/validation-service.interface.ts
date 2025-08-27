@@ -8,7 +8,7 @@ import {
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import { ValidationResult } from "../../../../../../types/asset-schema-architecture-types.type";
 
-export interface IValidationService {
+export default interface IValidationService {
   /**
    * Validates a JSON-LD object against various criteria.
    * @param jsonLdObject The JSON-LD object to validate.

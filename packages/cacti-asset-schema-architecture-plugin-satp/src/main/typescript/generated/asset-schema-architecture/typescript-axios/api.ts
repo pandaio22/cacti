@@ -645,7 +645,7 @@ export interface CommissionTokenizedAssetRecordRequest {
     '@context': CommissionSchemaProfileRequestSchemaProfileContext;
 }
 /**
- * 
+ * Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
  * @export
  * @interface CommissionedAssetSchema
  */
@@ -654,16 +654,52 @@ export interface CommissionedAssetSchema {
 
     /**
      * 
-     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
      * @memberof CommissionedAssetSchema
      */
-    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Asset Schema Verifiable Credential.
+     * @type {string}
+     * @memberof CommissionedAssetSchema
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof CommissionedAssetSchema
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof CommissionedAssetSchema
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof CommissionedAssetSchema
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof CommissionedAssetSchema
+     */
+    'issuanceDate'?: string;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {AssetSchemaVerifiableCredentialCredentialSubject}
      * @memberof CommissionedAssetSchema
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'credentialSubject'?: AssetSchemaVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {CommissionedAssetSchemaProof}
+     * @memberof CommissionedAssetSchema
+     */
+    'proof'?: CommissionedAssetSchemaProof;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -689,6 +725,43 @@ export interface CommissionedAssetSchemaID {
      * @memberof CommissionedAssetSchemaID
      */
     'type': string;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionedAssetSchemaProof
+ */
+export interface CommissionedAssetSchemaProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionedAssetSchemaProof
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionedAssetSchemaProof
+     */
+    'verificationMethod'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionedAssetSchemaProof
+     */
+    'created'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionedAssetSchemaProof
+     */
+    'proofPurpose'?: string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof CommissionedAssetSchemaProof
+     */
+    'proofValue'?: string;
 }
 /**
  * 
@@ -760,6 +833,27 @@ export interface CommissionedTokenizedAssetRecordID {
      * @memberof CommissionedTokenizedAssetRecordID
      */
     'type': string;
+}
+/**
+ * 
+ * @export
+ * @interface OLDCommissionedAssetSchema
+ */
+export interface OLDCommissionedAssetSchema {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof OLDCommissionedAssetSchema
+     */
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestProof}
+     * @memberof OLDCommissionedAssetSchema
+     */
+    'proof': CommissionAssetSchemaRequestProof;
 }
 /**
  * 

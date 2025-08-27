@@ -15,7 +15,7 @@ import { TokenIssuanceAuthorization,
   AssetProviderCertificate,
   RegisteredAssetProviderID,
  } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
-import {IRegistryApiService} from "../interfaces/registry-api-service.interface";
+import { IRegistryApiService } from "../interfaces/registry-api-service.interface";
 
 
 export class RegistryApiService implements IRegistryApiService {

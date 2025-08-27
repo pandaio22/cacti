@@ -181,7 +181,9 @@ export async function setupCryptoSuite(assetVc: any): Promise<{
  * Prepare a document loader for verifying a VC.
  * Handles local contexts, did:key resolution, and optional fallback loader.
  */
-export async function setupLoader(localContexts?: Map<string, any>): Promise<{
+export async function setupLoader(
+  localContexts?: Record<string, any>,
+): Promise<{
   loader: (url: string) => Promise<any>;
 }> {
   // Initialize DID key driver
@@ -195,11 +197,11 @@ export async function setupLoader(localContexts?: Map<string, any>): Promise<{
   const loader = extendContextLoader(async (url: string) => {
     if (!url) throw new Error("documentLoader called with undefined URL");
 
-    if (localContexts?.has(url)) {
+    if (localContexts && url in localContexts) {
       return {
         contextUrl: null,
         documentUrl: url,
-        document: localContexts.get(url),
+        document: localContexts[url],
         tag: "local",
       };
     }

@@ -33,7 +33,7 @@ import {
   VALID_ASSET_PROVIDER_ED25519SIGNATURE2020,
 } from "../../../../certificates/asset-provider-did-document";
 
-import { IAssetProviderService } from "../interfaces/asset-provider-service.interface";
+import IAssetProviderService from "../interfaces/asset-provider-service.interface";
 
 export class AssetProviderService implements IAssetProviderService {
   private localContexts: Map<string, any> | undefined;

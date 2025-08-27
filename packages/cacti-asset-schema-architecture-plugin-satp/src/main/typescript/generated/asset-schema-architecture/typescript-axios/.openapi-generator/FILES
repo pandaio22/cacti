@@ -29,9 +29,11 @@ docs/CommissionTokenizedAssetRecord200Response.md
 docs/CommissionTokenizedAssetRecordRequest.md
 docs/CommissionedAssetSchema.md
 docs/CommissionedAssetSchemaID.md
+docs/CommissionedAssetSchemaProof.md
 docs/CommissionedSchemaProfile.md
 docs/CommissionedSchemaProfileID.md
 docs/CommissionedTokenizedAssetRecordID.md
+docs/OLDCommissionedAssetSchema.md
 docs/OLDOLDTokenIssuanceAuthorization.md
 docs/OLDTokenIssuanceAuthorization.md
 docs/OLDTokenIssuanceAuthorizationProof.md

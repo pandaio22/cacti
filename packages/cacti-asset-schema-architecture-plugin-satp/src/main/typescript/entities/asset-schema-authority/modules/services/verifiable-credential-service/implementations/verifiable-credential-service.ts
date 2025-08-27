@@ -1,4 +1,4 @@
-import { LdDefaultContexts } from "@veramo/credential-ld";
+//import { LdDefaultContexts } from "@veramo/credential-ld";
 
 import jsonld from "jsonld";
 import * as crypto from "crypto";
@@ -50,32 +50,35 @@ import {
 export class VerifiableCredentialService
   implements IVerifiableCredentialService
 {
-  private localContexts: Map<string, any> | undefined;
+  private localContexts: Record<string, any> | undefined;
   private asaDidDocument: any;
   private contexts: any;
   private documentLoader: any;
 
-  constructor(localContexts?: Map<string, any>) {
+  constructor(localContexts?: Record<string, any>) {
     this.asaDidDocument = VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT;
     // Store provided contexts
     this.localContexts = localContexts;
 
-    this.contexts = [LdDefaultContexts];
+    //this.contexts = [LdDefaultContexts];
     // Create a custom loader for these contexts
     this.documentLoader = localContexts
       ? createCustomLoader(localContexts)
       : undefined;
 
+    if (this.localContexts) {
+      (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
+    }
+    /*
     if (localContexts) {
       this.localContexts = localContexts;
       this.contexts = [new Map([...LdDefaultContexts, ...localContexts])];
-      //console.log("Using custom contexts for Veramo agent:\n", this.contexts);
 
       (jsonld as any).documentLoader = createCustomLoader(this.localContexts);
     } else {
       this.localContexts = LdDefaultContexts;
       (jsonld as any).documentLoader = LdDefaultContexts;
-    }
+    }*/
   }
   /***********************************************************TEST METHODS*/
   /**
@@ -246,6 +249,25 @@ export class VerifiableCredentialService
     console.log("Verification Result:\n", JSON.stringify(result, null, 2));
   }
 
+  /**
+   * Returns a reusable document loader that first checks local contexts
+   * and falls back to the default VC loader.
+   */
+  private getDocumentLoader() {
+    return extendContextLoader(async (url: string) => {
+      if (this.localContexts && url in this.localContexts) {
+        return {
+          contextUrl: null,
+          documentUrl: url,
+          document: this.localContexts[url],
+          tag: "local",
+        };
+      }
+
+      // fallback to VC default loader
+      return vc.defaultDocumentLoader(url);
+    });
+  }
   /***********************************************************INTERFACE METHODS*/
   /**
    * Creates the Asset Schema Verifiable Credential
@@ -267,21 +289,22 @@ export class VerifiableCredentialService
       if (!this.localContexts) {
         console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
-
-      // Document Loader
       console.debug("Local Contexts:\n", this.localContexts);
-      const documentLoader = extendContextLoader(async (url: string) => {
-        if (this.localContexts && this.localContexts.has(url)) {
+      // Document Loader
+      const documentLoader = this.getDocumentLoader();
+      /*const documentLoader = extendContextLoader(async (url: string) => {
+        if (this.localContexts && this.localContexts[url]) {
           return {
             contextUrl: null,
             documentUrl: url,
-            document: this.localContexts.get(url),
+            document: this.localContexts[url],
             tag: "local",
           };
         }
         // fallback to VC default loader
         return vc.defaultDocumentLoader(url);
-      });
+      });*/
+
 
       // Setting up the credential
       const nonce = generateNonce();
@@ -464,21 +487,10 @@ export class VerifiableCredentialService
       if (!this.localContexts) {
         console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
+      console.debug("Local Contexts:\n", this.localContexts);
 
       // Document Loader
-      console.debug("Local Contexts:\n", this.localContexts);
-      const documentLoader = extendContextLoader(async (url: string) => {
-        if (this.localContexts && this.localContexts.has(url)) {
-          return {
-            contextUrl: null,
-            documentUrl: url,
-            document: this.localContexts.get(url),
-            tag: "local",
-          };
-        }
-        // fallback to VC default loader
-        return vc.defaultDocumentLoader(url);
-      });
+      const documentLoader = this.getDocumentLoader();
 
       // Setting up the credential
       const nonce = generateNonce();
@@ -659,21 +671,10 @@ export class VerifiableCredentialService
       if (!this.localContexts) {
         console.debug("No Local contexts. Dereferencing remote contexts...\n");
       }
+      console.debug("Local Contexts:\n", this.localContexts);
 
       // Document Loader
-      console.debug("Local Contexts:\n", this.localContexts);
-      const documentLoader = extendContextLoader(async (url: string) => {
-        if (this.localContexts && this.localContexts.has(url)) {
-          return {
-            contextUrl: null,
-            documentUrl: url,
-            document: this.localContexts.get(url),
-            tag: "local",
-          };
-        }
-        // fallback to VC default loader
-        return vc.defaultDocumentLoader(url);
-      });
+      const documentLoader = this.getDocumentLoader();
 
       // Setting up the credential
       const nonce = generateNonce();

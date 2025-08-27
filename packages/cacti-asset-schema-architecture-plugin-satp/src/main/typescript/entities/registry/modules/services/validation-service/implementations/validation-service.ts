@@ -13,7 +13,7 @@ import {
   ValidationResult,
 } from "../../../../../../types/asset-schema-architecture-types.type";
 import { createCustomLoader } from "../../../../../../utils/custom-loader";
-import { IValidationService } from "../interfaces/validation-service.interface";
+import IValidationService from "../interfaces/validation-service.interface";
 
 export class ValidationService implements IValidationService {
   private localContexts: Record<string, any> | undefined;

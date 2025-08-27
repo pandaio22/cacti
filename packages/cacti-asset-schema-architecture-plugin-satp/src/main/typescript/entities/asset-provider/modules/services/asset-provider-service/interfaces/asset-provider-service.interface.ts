@@ -6,7 +6,7 @@ import {
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import { ValidationResult } from "../../../../../../types/asset-schema-architecture-types.type";
 
-export interface IAssetProviderService {
+export default interface IAssetProviderService {
   createTokenIssuanceAuthorizationRequest(
     networkId: string,
     schemaProfileDidDocument: SchemaProfileDidDocument,

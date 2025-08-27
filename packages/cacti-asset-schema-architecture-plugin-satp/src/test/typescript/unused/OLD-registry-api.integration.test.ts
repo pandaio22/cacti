@@ -1,5 +1,5 @@
-import { RegistryApi } from "../../../../../main/typescript/entities/registry/registry-api";
-import { RegistryApiService } from "../../../../../main/typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
+import { RegistryApi } from "../../../main/typescript/entities/registry/registry-api";
+import { RegistryApiService } from "../../../main/typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
 import request from "supertest";
 import { execSync } from "child_process";
 

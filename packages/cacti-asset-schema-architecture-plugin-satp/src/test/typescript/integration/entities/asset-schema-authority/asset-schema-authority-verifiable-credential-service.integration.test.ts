@@ -126,44 +126,6 @@ describe("Verifiable Credential Service", () => {
     //Placeholder
   });
 
-  /*it("MOCKshould create an Asset Schema VC: Given a valid Asset Schema and Asset Schema DID Document, When executing createAsssetSchemaVerifiableCredential, Then return a valid AssetSchemaVerifiableCredential", async () => {
-    // Given
-    console.log("Starting Asset Schema VC creation test...");
-    const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
-    const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
-    //const contexts: Record<string, any> = {
-    //  "https://www.w3.org/ns/did/v1": didV1Context,
-    //  "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
-    //};
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
-    assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
-
-    // When
-    const assetSchemaVerifiableCredential =
-      await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
-        assetSchema,
-        assetSchemaDidDocument,
-      );
-
-    // Then
-    expect(assetSchemaVerifiableCredential).toBeDefined();
-    expect(assetSchemaVerifiableCredential).toHaveProperty("@context");
-    expect(assetSchemaVerifiableCredential).toHaveProperty("id");
-    expect(assetSchemaVerifiableCredential).toHaveProperty("type");
-    expect(assetSchemaVerifiableCredential.type).toContain(
-      "VerifiableCredential",
-    );
-    expect(assetSchemaVerifiableCredential).toHaveProperty("credentialSubject");
-    expect(assetSchemaVerifiableCredential).toHaveProperty("proof");
-    expect(assetSchemaVerifiableCredential.proof).toHaveProperty("type");
-  });*/
   it("Test for VC library", async () => {
     // Given
     assetSchemaAuthorityVerifiableCredentialService =
@@ -186,20 +148,19 @@ describe("Verifiable Credential Service", () => {
     //  "https://www.w3.org/ns/did/v1": didV1Context,
     //  "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
     //};
-    const localContextsMap = new Map(
-      Object.entries({
-        //"https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        //"https://www.w3.org/ns/credentials/v2": verifiableCredentialsContext,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        //"did:example:123456789abcdefghi#": assetSchemaContext,
-        "https://www.example.org/asset-schema/vc/v1":
-          assetSchemaVerifiableCredentialContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      //"https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      //"https://www.w3.org/ns/credentials/v2": verifiableCredentialsContext,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      //"did:example:123456789abcdefghi#": assetSchemaContext,
+      "https://www.example.org/asset-schema/vc/v1":
+        assetSchemaVerifiableCredentialContext,
+    };
+
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When
     const assetSchemaVerifiableCredential =
@@ -231,18 +192,16 @@ describe("Verifiable Credential Service", () => {
       ...VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
       id: null,
     };
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/asset-schema/vc/v1":
-          assetSchemaVerifiableCredentialContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/asset-schema/vc/v1":
+        assetSchemaVerifiableCredentialContext,
+    };
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When & Then
     await expect(
@@ -257,28 +216,26 @@ describe("Verifiable Credential Service", () => {
     // Given
     const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
     const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/asset-schema/vc/v1":
-          assetSchemaVerifiableCredentialContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/asset-schema/vc/v1":
+        assetSchemaVerifiableCredentialContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const assetSchemaVerifiableCredential =
       await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
         assetSchema,
         assetSchemaDidDocument,
       );
 
-    localContextsMap.set(assetSchemaDidDocument.id, assetSchemaDidDocument);
-    console.debug("Context Map:\n", localContextsMap);
+    localContexts[assetSchemaDidDocument.id] = assetSchemaDidDocument;
+    console.debug("Context Map:\n", localContexts);
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When
     const result =
@@ -294,17 +251,15 @@ describe("Verifiable Credential Service", () => {
     // Given
     const assetSchema = VALID_ASSET_SCHEMA_EXAMPLE;
     const assetSchemaDidDocument = VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/asset-schema/vc/v1":
-          assetSchemaVerifiableCredentialContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/asset-schema/vc/v1":
+        assetSchemaVerifiableCredentialContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const assetSchemaVerifiableCredential =
       await assetSchemaAuthorityVerifiableCredentialService.createAssetSchemaVerifiableCredential(
         assetSchema,
@@ -320,11 +275,11 @@ describe("Verifiable Credential Service", () => {
     };
     console.debug("Tampered VC:\n", tamperedVC);
 
-    localContextsMap.set(assetSchemaDidDocument.id, assetSchemaDidDocument);
-    console.debug("Context Map:\n", localContextsMap);
+    localContexts[assetSchemaDidDocument.id] = assetSchemaDidDocument;
+    console.debug("Context Map:\n", localContexts);
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When & Then
     await expect(
@@ -360,18 +315,16 @@ describe("Verifiable Credential Service", () => {
     // Given
     const schemProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
     const schemProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When
     const schemProfileVerifiableCredential =
@@ -405,19 +358,17 @@ describe("Verifiable Credential Service", () => {
       ...VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
       id: null,
     };
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When & Then
     await expect(
@@ -432,29 +383,27 @@ describe("Verifiable Credential Service", () => {
     // Given
     const schemaProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
     const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const schemaProfileVerifiableCredential =
       await assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
         schemaProfile,
         schemaProfileDidDocument,
       );
 
-    localContextsMap.set(schemaProfileDidDocument.id, schemaProfileDidDocument);
-    console.debug("Context Map:\n", localContextsMap);
+    localContexts[schemaProfileDidDocument.id] = schemaProfileDidDocument;
+    console.debug("Context Map:\n", localContexts);
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When
     const result =
@@ -470,18 +419,16 @@ describe("Verifiable Credential Service", () => {
     // Given
     const schemaProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
     const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const schemaProfileVerifiableCredential =
       await assetSchemaAuthorityVerifiableCredentialService.createSchemaProfileVerifiableCredential(
         schemaProfile,
@@ -497,11 +444,11 @@ describe("Verifiable Credential Service", () => {
     };
     console.debug("Tampered VC:\n", tamperedVC);
 
-    localContextsMap.set(schemaProfileDidDocument.id, schemaProfileDidDocument);
-    console.debug("Context Map:\n", localContextsMap);
+    localContexts[schemaProfileDidDocument.id] = schemaProfileDidDocument;
+    console.debug("Context Map:\n", localContexts);
 
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When & Then
     await expect(
@@ -537,19 +484,17 @@ describe("Verifiable Credential Service", () => {
     // Given
     const tokenIssuanceAuthorizationRequest =
       VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When
     const tokenIssuanceAuthorization =
@@ -580,19 +525,17 @@ describe("Verifiable Credential Service", () => {
       // invalidate by removing a required field (e.g., issuer or verifiableCredential)
       id: null,
     };
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
 
     // When & Then
     await expect(
@@ -606,19 +549,17 @@ describe("Verifiable Credential Service", () => {
     // Given
     const tokenIssuanceAuthorizationRequest =
       VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const tokenIssuanceAuthorization =
       await assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
         tokenIssuanceAuthorizationRequest,
@@ -638,19 +579,17 @@ describe("Verifiable Credential Service", () => {
     // Given
     const tokenIssuanceAuthorizationRequest =
       VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
     assetSchemaAuthorityVerifiableCredentialService =
-      new VerifiableCredentialService(localContextsMap);
+      new VerifiableCredentialService(localContexts);
     const tokenIssuanceAuthorization =
       await assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
         tokenIssuanceAuthorizationRequest,

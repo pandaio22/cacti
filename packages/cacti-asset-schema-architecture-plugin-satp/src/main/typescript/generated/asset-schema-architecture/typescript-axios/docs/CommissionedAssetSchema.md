@@ -1,12 +1,19 @@
 # CommissionedAssetSchema
 
+Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [optional] [default to undefined]
-**proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
+**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [optional] [default to undefined]
+**id** | **string** | Unique identifier for the Asset Schema Verifiable Credential. | [optional] [default to undefined]
+**type** | **Array&lt;string&gt;** | Includes \&quot;VerifiableCredential\&quot; and \&quot;AssetSchemaVerifiableCredential\&quot;.  | [optional] [default to undefined]
+**issuer** | **string** | DID or URI of the Asset Schema Authority issuing this VC. | [optional] [default to undefined]
+**validFrom** | **string** | Timestamp stating VC starting validity. | [optional] [default to undefined]
+**issuanceDate** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
+**credentialSubject** | [**AssetSchemaVerifiableCredentialCredentialSubject**](AssetSchemaVerifiableCredentialCredentialSubject.md) |  | [optional] [default to undefined]
+**proof** | [**CommissionedAssetSchemaProof**](CommissionedAssetSchemaProof.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -14,7 +21,13 @@ Name | Type | Description | Notes
 import { CommissionedAssetSchema } from './api';
 
 const instance: CommissionedAssetSchema = {
-    asset_schema,
+    context,
+    id,
+    type,
+    issuer,
+    validFrom,
+    issuanceDate,
+    credentialSubject,
     proof,
 };
 ```
