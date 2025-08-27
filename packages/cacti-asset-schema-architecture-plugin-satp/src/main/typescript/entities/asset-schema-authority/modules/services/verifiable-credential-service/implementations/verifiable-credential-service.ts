@@ -1,6 +1,7 @@
 import { LdDefaultContexts } from "@veramo/credential-ld";
 
 import jsonld from "jsonld";
+import * as crypto from "crypto";
 
 //import * as Ed25519Multikey from "@digitalbazaar/ed25519-multikey";
 //import { DataIntegrityProof } from "@digitalbazaar/data-integrity";
@@ -551,7 +552,11 @@ export class VerifiableCredentialService
       throw errorDetail;
     }
   }
-
+  /**
+   * Verifies the Schema Profile Verifiable Credential
+   * @param schemaProfileVerifiableCredential
+   * @returns
+   */
   public async verifySchemaProfileVerifiableCredential(
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
   ): Promise<ValidationResult> {
@@ -640,63 +645,195 @@ export class VerifiableCredentialService
    * @returns TokenIssuanceAuthorization
    * @ensures TokenIssuanceAuthorization contains the Asset Provider public key
    * @ensures TokenIssuanceAuthorization is signed by the Asset Schema Authority
-   
+   */
   public async createTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
-    didDocument: DidDocument,
   ): Promise<TokenIssuanceAuthorization> {
-    // Implementation logic
+    try {
+      console.debug("Creating Token Issuance Authorization...\n");
+      if (!tokenIssuanceAuthorizationRequest) {
+        throw new Error(
+          "Missing Required Inputs: TokenIssuanceAuthorizationRequest is required.",
+        );
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
+
+      // Document Loader
+      console.debug("Local Contexts:\n", this.localContexts);
+      const documentLoader = extendContextLoader(async (url: string) => {
+        if (this.localContexts && this.localContexts.has(url)) {
+          return {
+            contextUrl: null,
+            documentUrl: url,
+            document: this.localContexts.get(url),
+            tag: "local",
+          };
+        }
+        // fallback to VC default loader
+        return vc.defaultDocumentLoader(url);
+      });
+
+      // Setting up the credential
+      const nonce = generateNonce();
+      const hash = await hashJsonLd(
+        tokenIssuanceAuthorizationRequest,
+        nonce,
+        documentLoader,
+      );
+
+      const credentialSubject = {
+        tokenIssuanceAuthorizationRequest: tokenIssuanceAuthorizationRequest,
+        hash: hash,
+        nonce: nonce,
+        createdBy:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+      };
+
+      const unsignedCredential = {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.example.org/schema-profile/vc/v1",
+          "did:example:123456789abcdefghi#",
+        ],
+        id: `urn:uuid:${crypto.randomUUID()}`,
+        type: ["VerifiableCredential", "TokenIssuanceAuthorization"],
+        issuer:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+        issuanceDate: new Date().toISOString(),
+        credentialSubject,
+      };
+
+      console.debug("Unsigned Credential:\n:", unsignedCredential);
+
+      // Cryptosuite
+      const assetSchemaAuthorityKeyPair = new Ed25519VerificationKey2020({
+        id: VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.id,
+        controller:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key.controller,
+        publicKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .publicKeyMultibase,
+        privateKeyMultibase:
+          VALID_ASSET_SCHEMA_AUTHORITY_ED25519SIGNATURE2020.key
+            .privateKeyMultibase,
+      });
+
+      const suite = new Ed25519Signature2020({
+        key: assetSchemaAuthorityKeyPair,
+      });
+      console.debug("Cryptosuite:\n", suite);
+
+      console.debug("Creating Verifiable Credential...");
+      const verifiableCredential = await vc.issue({
+        credential: unsignedCredential,
+        suite,
+        documentLoader,
+      });
+
+      console.log(
+        "Verifiable Credential created:",
+        JSON.stringify(verifiableCredential, null, 2),
+      );
+
+      return verifiableCredential as TokenIssuanceAuthorization;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.VERIFIABLE_PRESENTATION_CREATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
   }
-  */
+
   /**
    * Verifies the TokenIssuanceAuthorization
    * @param tokenIssuanceAuthorizationRequest
    * @param didDocument
    * @returns TokenIssuanceAuthorization
    * @ensures TokenIssuanceAuthorization contains the Asset Provider public key
-   * @ensures TokenIssuanceAuthorization is signed by the Asset Schema Authority 
-   
-  /*public async verifyTokenIssuanceAuthorization(
-    tokenIssuanceAuthorizationVerifiableCredential: TokenIssuanceAuthorizationVerifiableCredential,
+   * @ensures TokenIssuanceAuthorization is signed by the Asset Schema Authority
+   */
+  public async verifyTokenIssuanceAuthorization(
+    tokenIssuanceAuthorizationVerifiableCredential: TokenIssuanceAuthorization,
   ): Promise<ValidationResult> {
-    // Implementation logic
-  }*/
+    try {
+      console.debug("Verifying Token Issuance Authorization...\n");
+      if (!tokenIssuanceAuthorizationVerifiableCredential) {
+        throw new Error("Token Issuance Authorization is required.");
+      }
+      if (!tokenIssuanceAuthorizationVerifiableCredential.proof) {
+        throw new Error("Non-existing Proof");
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
+
+      const { suite } = await setupCryptoSuite(
+        tokenIssuanceAuthorizationVerifiableCredential,
+      );
+      const { loader } = await setupLoader(this.localContexts);
+
+      // Normalize the credential
+      const normalizedVC = normalizeCredential(
+        tokenIssuanceAuthorizationVerifiableCredential,
+      );
+
+      if (normalizedVC.proof) {
+        let fragment = normalizedVC.proof.verificationMethod;
+        console.debug("fragment", fragment);
+        if (!fragment.includes("#")) {
+          fragment = `${fragment}#${fragment.split(":").pop()}`;
+        }
+
+        console.log("full key ID with fragment:", fragment);
+
+        // Optionally, patch the VC proof
+        normalizedVC.proof.verificationMethod = fragment;
+        normalizedVC.issuer = `did:key:${normalizedVC.proof.verificationMethod
+          .split("#")
+          .pop()}`;
+      }
+      console.debug("normalizedVC:\n", normalizedVC);
+
+      const result = await vc.verifyCredential({
+        credential: normalizedVC,
+        suite,
+        documentLoader: loader,
+      });
+      console.debug("Verification Result:\n", JSON.stringify(result, null, 2));
+
+      if (!result.verified) {
+        throw new Error("Proof verification failed");
+      }
+
+      const isValidHash = await verifyJsonLdHash(
+        normalizedVC,
+        normalizedVC.credentialSubject.tokenIssuanceAuthorizationRequest,
+        loader,
+      );
+      console.log("Hash is valid:", isValidHash);
+
+      return {
+        valid: result.verified,
+        details: "Token Issuance Authorization successfully verified",
+      } as ValidationResult;
+    } catch (error) {
+      const errorDetail: ValidationErrorDetail = {
+        type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+        message: error instanceof Error ? error.message : String(error),
+      };
+
+      throw errorDetail;
+    }
+  }
   /*
   public async revokeTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationVerifiableCredential: TokenIssuanceAuthorizationVerifiableCredential,
   ): Promise<void> {
     // Implementation logic
   }
-
-
-  public async createVerifiableCredential(
-    credential: any,
-    options?: any,
-  ): Promise<any>;
-
-  public async verifyVerifiableCredential(
-    credential: any,
-    options?: any,
-  ): Promise<ValidationResult>;
-
-  public async revokeVerifiableCredential(
-    credentialId: string,
-    options?: any,
-  ): Promise<any>;
-
-  public async createVerifiablePresentation(
-    presentation: any,
-    options?: any,
-  ): Promise<any>;
-
-  public async verifyVerifiablePresentation(
-    presentation: any,
-    options?: any,
-  ): Promise<ValidationResult>;
-
-  public async revokeVerifiablePresentation(
-    presentationId: string,
-    options?: any,
-  ): Promise<any>;
   */
 }

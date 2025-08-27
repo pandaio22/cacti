@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext.md) |  | [default to undefined]
+**context** | [**RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext**](RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext.md) |  | [default to undefined]
 **asset_provider** | [**OLDTokenIssuanceAuthorizationRequestAssetProvider**](OLDTokenIssuanceAuthorizationRequestAssetProvider.md) |  | [default to undefined]
 **schema_profile** | **string** |  | [default to undefined]
 **network_id** | **string** |  | [default to undefined]

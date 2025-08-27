@@ -196,6 +196,81 @@ TokenIssuanceAuthorization:
       type: string
       description: >
         DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
+    issuanceDate:
+      type: string
+      format: date-time
+      example: '2023-10-01T12:00:00Z'
+      description: Timestamp when the VC was issued.  
+    credentialSubject:
+      type: object
+      properties:
+        tokenIssuanceAuthorizationRequest:
+          $ref: '#/TokenIssuanceAuthorizationRequest'
+          description: >
+            Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
+    verifiableCredential:
+      type: array
+      items:
+        $ref: '#/TokenIssuanceAuthorizationRequest'
+      minItems: 1
+      description: >
+        Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        verificationMethod:
+          type: string
+        cryptosuite:
+          type: string
+          description: >
+            The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        proofValue:
+          type: string
+          description: >
+            The cryptographic proof value, typically a JWS or similar signature.
+      required:
+        - type
+        - created
+        - proofPurpose
+        - proofValue
+  required:
+    - "@context"
+    - type
+    - issuer
+    - proof
+
+OLDTokenIssuanceAuthorization:
+  type: object
+  properties:
+    "@context":
+      oneOf:
+        - type: string
+        - type: object
+        - type: array
+          items:
+            anyOf:
+              - type: string
+              - type: object
+      description: >
+        Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+    type:
+      type: array
+      items:
+        type: string
+      minItems: 1
+      description: >
+        Includes "VerifiablePresentation" and optionally "TokenIssuanceAuthorization".
+    issuer:
+      type: string
+      description: >
+        DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
     holder:
       type: string
       description: >
@@ -242,7 +317,7 @@ TokenIssuanceAuthorization:
     - verifiableCredential
     - proof
 
-OLDTokenIssuanceAuthorization:
+OLDOLDTokenIssuanceAuthorization:
   type: object
   properties:
     token_issuance_authorization_request:

@@ -7,6 +7,7 @@ import {
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
 } from "../../../constants/constants";
@@ -357,7 +358,6 @@ describe("Verifiable Credential Service", () => {
   // ------------------------
   it("should create a Schema Profile VC: Given a valid Schema Profile, When executing createSchemaProfileVerifiableCredential, Then return a valid SchemaProfileVerifiableCredential", async () => {
     // Given
-    console.log("Starting Asset Schema VC creation test...");
     const schemProfile = VALID_SCHEMA_PROFILE_EXAMPLE;
     const schemProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
     const localContextsMap = new Map(
@@ -535,30 +535,147 @@ describe("Verifiable Credential Service", () => {
   // ------------------------
   it("should create a Token Issuance Authorization: Given a valid request, When executing createTokenIssuanceAuthorization, Then return a valid TokenIssuanceAuthorization VC", async () => {
     // Given
+    const tokenIssuanceAuthorizationRequest =
+      VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/ns/did/v1": didV1Context,
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
     // When
+    const tokenIssuanceAuthorization =
+      await assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
+        tokenIssuanceAuthorizationRequest,
+      );
+
     // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    expect(tokenIssuanceAuthorization).toBeDefined();
+    expect(tokenIssuanceAuthorization).toHaveProperty("@context");
+    expect(tokenIssuanceAuthorization).toHaveProperty("id");
+    expect(tokenIssuanceAuthorization).toHaveProperty("type");
+    expect(tokenIssuanceAuthorization.type).toContain("VerifiableCredential");
+    expect(tokenIssuanceAuthorization.type).toContain(
+      "TokenIssuanceAuthorization",
+    );
+    expect(tokenIssuanceAuthorization.credentialSubject).toHaveProperty(
+      "tokenIssuanceAuthorizationRequest",
+    );
+    expect(tokenIssuanceAuthorization).toHaveProperty("proof");
+    expect(tokenIssuanceAuthorization.proof).toHaveProperty("type");
   });
 
   it("should fail to create a Token Issuance Authorization: Given an invalid request, When executing createTokenIssuanceAuthorization, Then should throw an exception", async () => {
     // Given
-    // When
-    // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    const invalidTokenIssuanceAuthorizationRequest = {
+      ...VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
+      // invalidate by removing a required field (e.g., issuer or verifiableCredential)
+      id: null,
+    };
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/ns/did/v1": didV1Context,
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
+        invalidTokenIssuanceAuthorizationRequest as any,
+      ),
+    ).rejects.toThrowError(/Missing Required Inputs|Invalid/); // match your error handling
   });
 
   it("should verify a Token Issuance Authorization: Given a valid Token Issuance Authorization VC, When executing verifyTokenIssuanceAuthorization, Then return a valid ValidationResult", async () => {
     // Given
+    const tokenIssuanceAuthorizationRequest =
+      VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/ns/did/v1": didV1Context,
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const tokenIssuanceAuthorization =
+      await assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
+        tokenIssuanceAuthorizationRequest,
+      );
+
     // When
+    const result =
+      await assetSchemaAuthorityVerifiableCredentialService.verifyTokenIssuanceAuthorization(
+        tokenIssuanceAuthorization,
+      );
+
     // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    expect(result.valid).toBe(true);
   });
 
   it("should fail to verify a Token Issuance Authorization: Given a tampered Token Issuance Authorization VC, When executing verifyTokenIssuanceAuthorization, Then return an invalid ValidationResult", async () => {
     // Given
-    // When
-    // Then
-    expect(true).toBe(false); // Placeholder for actual test logic
+    const tokenIssuanceAuthorizationRequest =
+      VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
+    const localContextsMap = new Map(
+      Object.entries({
+        "https://www.w3.org/ns/did/v1": didV1Context,
+        "https://www.w3.org/2018/credentials/v1":
+          verifiableCredentialsContextTest,
+        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+        "https://www.example.org/schema-profile/vc/v1":
+          schemaProfileVerifiableCredentialContext,
+        "did:example:123456789abcdefghi#": assetSchemaContext,
+      }),
+    );
+    assetSchemaAuthorityVerifiableCredentialService =
+      new VerifiableCredentialService(localContextsMap);
+    const tokenIssuanceAuthorization =
+      await assetSchemaAuthorityVerifiableCredentialService.createTokenIssuanceAuthorization(
+        tokenIssuanceAuthorizationRequest,
+      );
+
+    const tamperedVC = {
+      ...tokenIssuanceAuthorization,
+      credentialSubject: {
+        ...tokenIssuanceAuthorization.credentialSubject,
+        name: "HACKED-NAME",
+      },
+    };
+    console.debug("Tampered VC:\n", tamperedVC);
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityVerifiableCredentialService.verifyTokenIssuanceAuthorization(
+        tamperedVC,
+      ),
+    ).rejects.toMatchObject({
+      type: ValidationErrorType.PROOF_VERIFICATION_ERROR,
+      message: expect.stringMatching(
+        /invalid signature|proof verification failed/i,
+      ),
+    });
   });
 
   it("should revoke a Token Issuance Authorization: Given a valid Token Issuance Authorization VC, When executing revokeTokenIssuanceAuthorization, Then the VC should be revoked successfully", async () => {

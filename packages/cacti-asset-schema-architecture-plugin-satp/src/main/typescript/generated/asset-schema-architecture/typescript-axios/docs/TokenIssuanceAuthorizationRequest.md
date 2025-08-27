@@ -5,15 +5,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext.md) |  | [default to undefined]
+**context** | [**RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext**](RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext.md) |  | [default to undefined]
 **id** | **string** |  | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiableCredential\&quot; and \&quot;TokenIssuanceAuthorizationRequest\&quot;.  | [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Provider issuing this TIAR.  | [default to undefined]
 **validFrom** | **string** |  | [optional] [default to undefined]
 **issuanceDate** | **string** |  | [default to undefined]
 **validUntil** | **string** |  | [optional] [default to undefined]
-**credentialSubject** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject.md) |  | [default to undefined]
-**proof** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof.md) |  | [default to undefined]
+**credentialSubject** | [**RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject**](RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject.md) |  | [default to undefined]
+**proof** | [**RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
 

@@ -1,4 +1,4 @@
-# RegisterTokenIssuanceAuthorizationRequestProof
+# OLDTokenIssuanceAuthorizationProof
 
 
 ## Properties
@@ -6,8 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **string** |  | [default to undefined]
-**verificationMethod** | **string** |  | [optional] [default to undefined]
-**cryptosuite** | **string** | The cryptographic suite used for signing, e.g., \&quot;eddsa-rdfc-2022\&quot;.  | [optional] [default to undefined]
+**verificationMethod** | **string** |  | [default to undefined]
+**cryptosuite** | **string** | The cryptographic suite used for signing, e.g., \&quot;eddsa-rdfc-2022\&quot;.  | [default to undefined]
 **created** | **string** |  | [default to undefined]
 **proofPurpose** | **string** |  | [default to undefined]
 **proofValue** | **string** | The cryptographic proof value, typically a JWS or similar signature.  | [default to undefined]
@@ -15,9 +15,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { RegisterTokenIssuanceAuthorizationRequestProof } from './api';
+import { OLDTokenIssuanceAuthorizationProof } from './api';
 
-const instance: RegisterTokenIssuanceAuthorizationRequestProof = {
+const instance: OLDTokenIssuanceAuthorizationProof = {
     type,
     verificationMethod,
     cryptosuite,

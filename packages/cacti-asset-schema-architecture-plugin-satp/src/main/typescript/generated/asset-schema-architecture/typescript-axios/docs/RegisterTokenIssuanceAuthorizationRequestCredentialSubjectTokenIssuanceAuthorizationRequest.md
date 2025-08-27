@@ -1,5 +1,6 @@
-# RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
+# RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
 
+Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
 
 ## Properties
 
@@ -18,9 +19,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner } from './api';
+import { RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest } from './api';
 
-const instance: RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner = {
+const instance: RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest = {
     context,
     id,
     type,

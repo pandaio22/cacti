@@ -74,23 +74,21 @@ export interface IVerifiableCredentialService {
   /**
    * Creates a Token Issuance Authorization Verifiable Credential.
    * @param tokenIssuanceAuthorizationRequest The Token Issuance Authorization Request to create a Verifiable Credential for.
-   * @param didDocument The DID Document associated with the Token Issuance Authorization.
    * @returns A promise that resolves to the created Token Issuance Authorization Verifiable Credential.
    
   createTokenIssuanceAuthorization(
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
-    didDocument: AssetSchemaDidDocument,
   ): Promise<TokenIssuanceAuthorization>;
 */
   /**
    * Verifies a Token Issuance Authorization Verifiable Credential.
    * @param tokenIssuanceAuthorization The Token Issuance Authorization to verify.
    * @returns A promise that resolves to a ValidationResult indicating the validity of the Token Issuance Authorization.
-   
+   */
   verifyTokenIssuanceAuthorization(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
   ): Promise<ValidationResult>;
-*/
+
   /**
    * Revokes a Token Issuance Authorization Verifiable Credential.
    * @param tokenIssuanceAuthorization The Token Issuance Authorization to revoke.

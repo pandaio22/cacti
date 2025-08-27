@@ -78,36 +78,62 @@ declare module "@digitalbazaar/vc" {
   // Main API
   // ---------------------------------------------------------------------------
 
-  /**
-   * Issues a verifiable credential by digitally signing it.
-   *
-   * @param options - Credential options.
-   */
   export function issue(options: {
     credential: VerifiableCredential;
-    suite: any; // Linked data signature suite
+    suite: any;
     purpose?: ProofPurpose;
     documentLoader?: typeof defaultDocLoader;
     now?: string | Date;
     maxClockSkew?: number;
   }): Promise<VerifiableCredential>;
 
-  /**
-   * Verifies a verifiable credential:
-   * - Checks that the credential is well-formed.
-   * - Checks the proofs (e.g., digital signatures).
-   *
-   * @param options - Verification options.
-   */
   export function verifyCredential(options: {
     credential: VerifiableCredential;
-    suite: any | any[]; // One or more LinkedDataSignature suites
+    suite: any | any[];
     purpose?: ProofPurpose | CredentialIssuancePurpose;
     documentLoader?: typeof defaultDocLoader;
     checkStatus?: (credential: VerifiableCredential) => Promise<any>;
     now?: string | Date;
     maxClockSkew?: number;
   }): Promise<VerifyCredentialResult>;
+
+  /**
+   * Creates a verifiable presentation (without signing).
+   */
+  export function createPresentation(options: {
+    verifiableCredential?: VerifiableCredential[];
+    id?: string;
+    holder?: string;
+    [key: string]: any;
+  }): Presentation;
+
+  /**
+   * Signs a verifiable presentation.
+   */
+  export function signPresentation(options: {
+    presentation: Presentation;
+    suite: any;
+    purpose?: ProofPurpose;
+    documentLoader?: typeof defaultDocLoader;
+    challenge?: string;
+    domain?: string;
+    now?: string | Date;
+    maxClockSkew?: number;
+  }): Promise<VerifiablePresentation>;
+
+  /**
+   * Verifies a verifiable presentation (and included credentials).
+   */
+  export function verify(options: {
+    presentation: VerifiablePresentation;
+    suite: any | any[];
+    purpose?: ProofPurpose;
+    documentLoader?: typeof defaultDocLoader;
+    challenge?: string;
+    domain?: string;
+    now?: string | Date;
+    maxClockSkew?: number;
+  }): Promise<VerifyPresentationResult>;
 
   // ---------------------------------------------------------------------------
   // Re-export jsigs + jsonld for convenience

@@ -127,9 +127,174 @@
                     "type": "string",
                     "description": "DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.\n"
                   },
-                  "holder": {
+                  "issuanceDate": {
                     "type": "string",
-                    "description": "DID or URI of the Asset Provider for whom this TIA VP is issued.\n"
+                    "format": "date-time",
+                    "example": "2023-10-01T12:00:00Z",
+                    "description": "Timestamp when the VC was issued."
+                  },
+                  "credentialSubject": {
+                    "type": "object",
+                    "properties": {
+                      "tokenIssuanceAuthorizationRequest": {
+                        "description": "Contains the Token Issuance Authorization Request VC issued by the Asset Provider.\n",
+                        "type": "object",
+                        "properties": {
+                          "@context": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "object"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "object"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "type": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "description": "Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\".\n"
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "description": "DID or URI of the Asset Provider issuing this TIAR.\n"
+                          },
+                          "validFrom": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "issuanceDate": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "validUntil": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "credentialSubject": {
+                            "type": "object",
+                            "properties": {
+                              "assetProvider": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string",
+                                    "description": "DID or URI of the Asset Provider issuing this TIAR."
+                                  },
+                                  "organizationKey": {
+                                    "type": "object",
+                                    "properties": {
+                                      "publicKey": {
+                                        "type": "string"
+                                      },
+                                      "type": {
+                                        "type": "string"
+                                      },
+                                      "issued": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                      }
+                                    },
+                                    "required": [
+                                      "publicKey",
+                                      "issued"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "id",
+                                  "organizationKey"
+                                ]
+                              },
+                              "schemaProfile": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uri"
+                                  }
+                                }
+                              },
+                              "networkId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "assetProvider",
+                              "schemaProfile",
+                              "networkId"
+                            ]
+                          },
+                          "proof": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string"
+                              },
+                              "verificationMethod": {
+                                "type": "string"
+                              },
+                              "cryptosuite": {
+                                "type": "string",
+                                "description": "The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\".\n"
+                              },
+                              "created": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "proofPurpose": {
+                                "type": "string"
+                              },
+                              "proofValue": {
+                                "type": "string",
+                                "description": "The cryptographic proof value, typically a JWS or similar signature.\n"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "verificationMethod",
+                              "cryptosuite",
+                              "created",
+                              "proofPurpose",
+                              "ProofValue"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "@context",
+                          "id",
+                          "type",
+                          "issuer",
+                          "issuanceDate",
+                          "credentialSubject",
+                          "proof"
+                        ]
+                      }
+                    }
                   },
                   "verifiableCredential": {
                     "type": "array",
@@ -320,8 +485,6 @@
                     },
                     "required": [
                       "type",
-                      "verificationMethod",
-                      "cryptosuite",
                       "created",
                       "proofPurpose",
                       "proofValue"
@@ -332,8 +495,6 @@
                   "@context",
                   "type",
                   "issuer",
-                  "holder",
-                  "verifiableCredential",
                   "proof"
                 ]
               }
@@ -1961,9 +2122,174 @@
                       "type": "string",
                       "description": "DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.\n"
                     },
-                    "holder": {
+                    "issuanceDate": {
                       "type": "string",
-                      "description": "DID or URI of the Asset Provider for whom this TIA VP is issued.\n"
+                      "format": "date-time",
+                      "example": "2023-10-01T12:00:00Z",
+                      "description": "Timestamp when the VC was issued."
+                    },
+                    "credentialSubject": {
+                      "type": "object",
+                      "properties": {
+                        "tokenIssuanceAuthorizationRequest": {
+                          "description": "Contains the Token Issuance Authorization Request VC issued by the Asset Provider.\n",
+                          "type": "object",
+                          "properties": {
+                            "@context": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "object"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "id": {
+                              "type": "string",
+                              "format": "uri"
+                            },
+                            "type": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "minItems": 1,
+                              "description": "Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\".\n"
+                            },
+                            "issuer": {
+                              "type": "string",
+                              "description": "DID or URI of the Asset Provider issuing this TIAR.\n"
+                            },
+                            "validFrom": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "issuanceDate": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "validUntil": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "credentialSubject": {
+                              "type": "object",
+                              "properties": {
+                                "assetProvider": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "id": {
+                                      "type": "string",
+                                      "description": "DID or URI of the Asset Provider issuing this TIAR."
+                                    },
+                                    "organizationKey": {
+                                      "type": "object",
+                                      "properties": {
+                                        "publicKey": {
+                                          "type": "string"
+                                        },
+                                        "type": {
+                                          "type": "string"
+                                        },
+                                        "issued": {
+                                          "type": "string",
+                                          "format": "date-time"
+                                        }
+                                      },
+                                      "required": [
+                                        "publicKey",
+                                        "issued"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "name",
+                                    "id",
+                                    "organizationKey"
+                                  ]
+                                },
+                                "schemaProfile": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "format": "uri"
+                                    }
+                                  }
+                                },
+                                "networkId": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "assetProvider",
+                                "schemaProfile",
+                                "networkId"
+                              ]
+                            },
+                            "proof": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "verificationMethod": {
+                                  "type": "string"
+                                },
+                                "cryptosuite": {
+                                  "type": "string",
+                                  "description": "The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\".\n"
+                                },
+                                "created": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "proofPurpose": {
+                                  "type": "string"
+                                },
+                                "proofValue": {
+                                  "type": "string",
+                                  "description": "The cryptographic proof value, typically a JWS or similar signature.\n"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "verificationMethod",
+                                "cryptosuite",
+                                "created",
+                                "proofPurpose",
+                                "ProofValue"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "@context",
+                            "id",
+                            "type",
+                            "issuer",
+                            "issuanceDate",
+                            "credentialSubject",
+                            "proof"
+                          ]
+                        }
+                      }
                     },
                     "verifiableCredential": {
                       "type": "array",
@@ -2154,8 +2480,6 @@
                       },
                       "required": [
                         "type",
-                        "verificationMethod",
-                        "cryptosuite",
                         "created",
                         "proofPurpose",
                         "proofValue"
@@ -2166,8 +2490,6 @@
                     "@context",
                     "type",
                     "issuer",
-                    "holder",
-                    "verifiableCredential",
                     "proof"
                   ]
                 }
@@ -2921,6 +3243,416 @@
             "type": "string",
             "description": "DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.\n"
           },
+          "issuanceDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "Timestamp when the VC was issued."
+          },
+          "credentialSubject": {
+            "type": "object",
+            "properties": {
+              "tokenIssuanceAuthorizationRequest": {
+                "description": "Contains the Token Issuance Authorization Request VC issued by the Asset Provider.\n",
+                "type": "object",
+                "properties": {
+                  "@context": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "object"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "type": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "description": "Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\".\n"
+                  },
+                  "issuer": {
+                    "type": "string",
+                    "description": "DID or URI of the Asset Provider issuing this TIAR.\n"
+                  },
+                  "validFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "issuanceDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "validUntil": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "credentialSubject": {
+                    "type": "object",
+                    "properties": {
+                      "assetProvider": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "DID or URI of the Asset Provider issuing this TIAR."
+                          },
+                          "organizationKey": {
+                            "type": "object",
+                            "properties": {
+                              "publicKey": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "issued": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "publicKey",
+                              "issued"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "id",
+                          "organizationKey"
+                        ]
+                      },
+                      "schemaProfile": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      },
+                      "networkId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "assetProvider",
+                      "schemaProfile",
+                      "networkId"
+                    ]
+                  },
+                  "proof": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "verificationMethod": {
+                        "type": "string"
+                      },
+                      "cryptosuite": {
+                        "type": "string",
+                        "description": "The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\".\n"
+                      },
+                      "created": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "proofPurpose": {
+                        "type": "string"
+                      },
+                      "proofValue": {
+                        "type": "string",
+                        "description": "The cryptographic proof value, typically a JWS or similar signature.\n"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "verificationMethod",
+                      "cryptosuite",
+                      "created",
+                      "proofPurpose",
+                      "ProofValue"
+                    ]
+                  }
+                },
+                "required": [
+                  "@context",
+                  "id",
+                  "type",
+                  "issuer",
+                  "issuanceDate",
+                  "credentialSubject",
+                  "proof"
+                ]
+              }
+            }
+          },
+          "verifiableCredential": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "@context": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "type": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "description": "Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\".\n"
+                },
+                "issuer": {
+                  "type": "string",
+                  "description": "DID or URI of the Asset Provider issuing this TIAR.\n"
+                },
+                "validFrom": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "issuanceDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "validUntil": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "credentialSubject": {
+                  "type": "object",
+                  "properties": {
+                    "assetProvider": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string",
+                          "description": "DID or URI of the Asset Provider issuing this TIAR."
+                        },
+                        "organizationKey": {
+                          "type": "object",
+                          "properties": {
+                            "publicKey": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "issued": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          },
+                          "required": [
+                            "publicKey",
+                            "issued"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "id",
+                        "organizationKey"
+                      ]
+                    },
+                    "schemaProfile": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    },
+                    "networkId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "assetProvider",
+                    "schemaProfile",
+                    "networkId"
+                  ]
+                },
+                "proof": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "verificationMethod": {
+                      "type": "string"
+                    },
+                    "cryptosuite": {
+                      "type": "string",
+                      "description": "The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\".\n"
+                    },
+                    "created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "proofPurpose": {
+                      "type": "string"
+                    },
+                    "proofValue": {
+                      "type": "string",
+                      "description": "The cryptographic proof value, typically a JWS or similar signature.\n"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "verificationMethod",
+                    "cryptosuite",
+                    "created",
+                    "proofPurpose",
+                    "ProofValue"
+                  ]
+                }
+              },
+              "required": [
+                "@context",
+                "id",
+                "type",
+                "issuer",
+                "issuanceDate",
+                "credentialSubject",
+                "proof"
+              ]
+            },
+            "minItems": 1,
+            "description": "Contains the Token Issuance Authorization Request VC issued by the Asset Provider.\n"
+          },
+          "proof": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "verificationMethod": {
+                "type": "string"
+              },
+              "cryptosuite": {
+                "type": "string",
+                "description": "The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\".\n"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "proofPurpose": {
+                "type": "string"
+              },
+              "proofValue": {
+                "type": "string",
+                "description": "The cryptographic proof value, typically a JWS or similar signature.\n"
+              }
+            },
+            "required": [
+              "type",
+              "created",
+              "proofPurpose",
+              "proofValue"
+            ]
+          }
+        },
+        "required": [
+          "@context",
+          "type",
+          "issuer",
+          "proof"
+        ]
+      },
+      "OLDTokenIssuanceAuthorization": {
+        "type": "object",
+        "properties": {
+          "@context": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            ],
+            "description": "Typically includes \"https://www.w3.org/2018/credentials/v1\" and may include domain-specific contexts.\n"
+          },
+          "type": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\".\n"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.\n"
+          },
           "holder": {
             "type": "string",
             "description": "DID or URI of the Asset Provider for whom this TIA VP is issued.\n"
@@ -3131,7 +3863,7 @@
           "proof"
         ]
       },
-      "OLDTokenIssuanceAuthorization": {
+      "OLDOLDTokenIssuanceAuthorization": {
         "type": "object",
         "properties": {
           "token_issuance_authorization_request": {

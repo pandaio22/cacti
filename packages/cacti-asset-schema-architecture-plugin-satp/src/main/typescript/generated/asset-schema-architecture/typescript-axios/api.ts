@@ -764,21 +764,107 @@ export interface CommissionedTokenizedAssetRecordID {
 /**
  * 
  * @export
- * @interface OLDTokenIssuanceAuthorization
+ * @interface OLDOLDTokenIssuanceAuthorization
  */
-export interface OLDTokenIssuanceAuthorization {
+export interface OLDOLDTokenIssuanceAuthorization {
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner}
-     * @memberof OLDTokenIssuanceAuthorization
+     * @memberof OLDOLDTokenIssuanceAuthorization
      */
     'token_issuance_authorization_request': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner;
     /**
      * 
      * @type {CommissionAssetSchemaRequestProof}
-     * @memberof OLDTokenIssuanceAuthorization
+     * @memberof OLDOLDTokenIssuanceAuthorization
      */
     'proof': CommissionAssetSchemaRequestProof;
+}
+/**
+ * 
+ * @export
+ * @interface OLDTokenIssuanceAuthorization
+ */
+export interface OLDTokenIssuanceAuthorization {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestContext}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    '@context': RegisterTokenIssuanceAuthorizationRequestContext;
+    /**
+     * Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\". 
+     * @type {Array<string>}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing (signing) this TIA VP. 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'issuer': string;
+    /**
+     * DID or URI of the Asset Provider for whom this TIA VP is issued. 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'holder': string;
+    /**
+     * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
+     * @type {Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'verifiableCredential': Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
+    /**
+     * 
+     * @type {OLDTokenIssuanceAuthorizationProof}
+     * @memberof OLDTokenIssuanceAuthorization
+     */
+    'proof': OLDTokenIssuanceAuthorizationProof;
+}
+/**
+ * 
+ * @export
+ * @interface OLDTokenIssuanceAuthorizationProof
+ */
+export interface OLDTokenIssuanceAuthorizationProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'verificationMethod': string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'cryptosuite': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'created': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'proofPurpose': string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof OLDTokenIssuanceAuthorizationProof
+     */
+    'proofValue': string;
 }
 /**
  * 
@@ -788,10 +874,10 @@ export interface OLDTokenIssuanceAuthorization {
 export interface OLDTokenIssuanceAuthorizationRequest {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext}
      * @memberof OLDTokenIssuanceAuthorizationRequest
      */
-    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
+    '@context': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext;
     /**
      * 
      * @type {OLDTokenIssuanceAuthorizationRequestAssetProvider}
@@ -1050,17 +1136,23 @@ export interface RegisterTokenIssuanceAuthorizationRequest {
      */
     'issuer': string;
     /**
-     * DID or URI of the Asset Provider for whom this TIA VP is issued. 
+     * Timestamp when the VC was issued.
      * @type {string}
      * @memberof RegisterTokenIssuanceAuthorizationRequest
      */
-    'holder': string;
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubject}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'credentialSubject'?: RegisterTokenIssuanceAuthorizationRequestCredentialSubject;
     /**
      * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
      * @type {Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>}
      * @memberof RegisterTokenIssuanceAuthorizationRequest
      */
-    'verifiableCredential': Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
+    'verifiableCredential'?: Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestProof}
@@ -1085,6 +1177,217 @@ export interface RegisterTokenIssuanceAuthorizationRequestContextOneOfInner {
 /**
  * 
  * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubject
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubject {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubject
+     */
+    'tokenIssuanceAuthorizationRequest'?: RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest;
+}
+/**
+ * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    '@context': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'id': string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenIssuanceAuthorizationRequest\". 
+     * @type {Array<string>}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'type': Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this TIAR. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'issuer': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'validFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'issuanceDate': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'validUntil'?: string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequest
+     */
+    'proof': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof;
+}
+/**
+ * @type RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext
+ * @export
+ */
+export type RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext = Array<RegisterTokenIssuanceAuthorizationRequestContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject {
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject
+     */
+    'assetProvider': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectSchemaProfile}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject
+     */
+    'schemaProfile': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectSchemaProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject
+     */
+    'networkId': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider
+     */
+    'name': string;
+    /**
+     * DID or URI of the Asset Provider issuing this TIAR.
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider
+     */
+    'id': string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProvider
+     */
+    'organizationKey': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey
+     */
+    'publicKey': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectAssetProviderOrganizationKey
+     */
+    'issued': string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectSchemaProfile
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectSchemaProfile {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubjectSchemaProfile
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+ */
+export interface RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'verificationMethod': string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'cryptosuite': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'created': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'proofPurpose': string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof
+     */
+    'proofValue'?: string;
+}
+/**
+ * 
+ * @export
  * @interface RegisterTokenIssuanceAuthorizationRequestProof
  */
 export interface RegisterTokenIssuanceAuthorizationRequestProof {
@@ -1099,13 +1402,13 @@ export interface RegisterTokenIssuanceAuthorizationRequestProof {
      * @type {string}
      * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
-    'verificationMethod': string;
+    'verificationMethod'?: string;
     /**
      * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
      * @type {string}
      * @memberof RegisterTokenIssuanceAuthorizationRequestProof
      */
-    'cryptosuite': string;
+    'cryptosuite'?: string;
     /**
      * 
      * @type {string}
@@ -1133,10 +1436,10 @@ export interface RegisterTokenIssuanceAuthorizationRequestProof {
 export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext}
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
+    '@context': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext;
     /**
      * 
      * @type {string}
@@ -1175,153 +1478,16 @@ export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialIn
     'validUntil'?: string;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject}
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject;
+    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof}
      * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof;
-}
-/**
- * @type RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext
- * @export
- */
-export type RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext = Array<RegisterTokenIssuanceAuthorizationRequestContextOneOfInner> | object | string;
-
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
- */
-export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject {
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
-     */
-    'assetProvider': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
-     */
-    'schemaProfile': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject
-     */
-    'networkId': string;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
- */
-export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
-     */
-    'name': string;
-    /**
-     * DID or URI of the Asset Provider issuing this TIAR.
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
-     */
-    'id': string;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProvider
-     */
-    'organizationKey': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
- */
-export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
-     */
-    'publicKey': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
-     */
-    'type'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectAssetProviderOrganizationKey
-     */
-    'issued': string;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile
- */
-export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubjectSchemaProfile
-     */
-    'id'?: string;
-}
-/**
- * 
- * @export
- * @interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
- */
-export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'type': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'verificationMethod': string;
-    /**
-     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'cryptosuite': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'created': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'proofPurpose': string;
-    /**
-     * The cryptographic proof value, typically a JWS or similar signature. 
-     * @type {string}
-     * @memberof RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof
-     */
-    'proofValue'?: string;
+    'proof': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof;
 }
 /**
  * 
@@ -1665,17 +1831,23 @@ export interface TokenIssuanceAuthorization {
      */
     'issuer': string;
     /**
-     * DID or URI of the Asset Provider for whom this TIA VP is issued. 
+     * Timestamp when the VC was issued.
      * @type {string}
      * @memberof TokenIssuanceAuthorization
      */
-    'holder': string;
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubject}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'credentialSubject'?: RegisterTokenIssuanceAuthorizationRequestCredentialSubject;
     /**
      * Contains the Token Issuance Authorization Request VC issued by the Asset Provider. 
      * @type {Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>}
      * @memberof TokenIssuanceAuthorization
      */
-    'verifiableCredential': Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
+    'verifiableCredential'?: Array<RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner>;
     /**
      * 
      * @type {RegisterTokenIssuanceAuthorizationRequestProof}
@@ -1716,10 +1888,10 @@ export interface TokenIssuanceAuthorizationID {
 export interface TokenIssuanceAuthorizationRequest {
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    '@context': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerContext;
+    '@context': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestContext;
     /**
      * 
      * @type {string}
@@ -1758,16 +1930,16 @@ export interface TokenIssuanceAuthorizationRequest {
     'validUntil'?: string;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerCredentialSubject;
+    'credentialSubject': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestCredentialSubject;
     /**
      * 
-     * @type {RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof}
+     * @type {RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof}
      * @memberof TokenIssuanceAuthorizationRequest
      */
-    'proof': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInnerProof;
+    'proof': RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuthorizationRequestProof;
 }
 /**
  * Structure of a valid Tokenized Asset Record (JSON-LD format)

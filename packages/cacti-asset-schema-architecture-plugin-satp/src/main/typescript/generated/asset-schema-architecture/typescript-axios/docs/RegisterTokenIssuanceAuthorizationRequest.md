@@ -8,8 +8,9 @@ Name | Type | Description | Notes
 **context** | [**RegisterTokenIssuanceAuthorizationRequestContext**](RegisterTokenIssuanceAuthorizationRequestContext.md) |  | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiablePresentation\&quot; and optionally \&quot;TokenIssuanceAuthorization\&quot;.  | [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.  | [default to undefined]
-**holder** | **string** | DID or URI of the Asset Provider for whom this TIA VP is issued.  | [default to undefined]
-**verifiableCredential** | [**Array&lt;RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner&gt;**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md) | Contains the Token Issuance Authorization Request VC issued by the Asset Provider.  | [default to undefined]
+**issuanceDate** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
+**credentialSubject** | [**RegisterTokenIssuanceAuthorizationRequestCredentialSubject**](RegisterTokenIssuanceAuthorizationRequestCredentialSubject.md) |  | [optional] [default to undefined]
+**verifiableCredential** | [**Array&lt;RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner&gt;**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md) | Contains the Token Issuance Authorization Request VC issued by the Asset Provider.  | [optional] [default to undefined]
 **proof** | [**RegisterTokenIssuanceAuthorizationRequestProof**](RegisterTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
 
 ## Example
@@ -21,7 +22,8 @@ const instance: RegisterTokenIssuanceAuthorizationRequest = {
     context,
     type,
     issuer,
-    holder,
+    issuanceDate,
+    credentialSubject,
     verifiableCredential,
     proof,
 };

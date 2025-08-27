@@ -671,6 +671,7 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST = {
       organizationKey: {
         publicKey: "z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
         type: "Ed25519VerificationKey2020",
+        issued: "2025-08-20T15:32:32.797Z",
       },
     },
     networkId: "Ethereum",
@@ -680,9 +681,13 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST = {
     nonce: "179e76d999fa7c6edb9f09296dc9dfbf",
     createdBy: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
     schema: "did:web:example.com:schema-profile",
+    schemaProfile: {
+      id: "did:web:example.com:schema-profile",
+    },
   },
   proof: {
     type: "Ed25519Signature2020",
+    cryptosuite: "Ed25519Signature2020",
     created: "2025-08-26T15:32:32Z",
     verificationMethod:
       "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
