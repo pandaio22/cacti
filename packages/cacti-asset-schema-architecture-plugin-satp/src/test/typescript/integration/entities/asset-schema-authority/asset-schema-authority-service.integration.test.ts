@@ -7,6 +7,7 @@ import {
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
 } from "../../../constants/constants";
 
 import { AssetSchemaAuthorityService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
@@ -280,4 +281,72 @@ describe("Asset Schema Authority Service", () => {
   // ---------------------------------
   // requestTokenIssuanceAuthorization
   // ---------------------------------
+  it("should create a Token Issuance Authorization: Given a valid TokenIssuanceAuthorizationRequest, When executing requestTokenIssuanceAuthorization, Then return a valid TokenIssuanceAuthorization", async () => {
+    // Given
+    const tokenIssuanceAuthorizationRequest =
+      VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST;
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
+    assetSchemaAuthorityService = new AssetSchemaAuthorityService(
+      localContexts,
+    );
+
+    // When
+    const tokenIssuanceAuthorization =
+      await assetSchemaAuthorityService.requestTokenIssuanceAuthorization(
+        tokenIssuanceAuthorizationRequest,
+      );
+
+    // Then
+    expect(tokenIssuanceAuthorization).toBeDefined();
+    expect(tokenIssuanceAuthorization).toHaveProperty("@context");
+    expect(tokenIssuanceAuthorization).toHaveProperty("id");
+    expect(tokenIssuanceAuthorization).toHaveProperty("type");
+    expect(tokenIssuanceAuthorization.type).toContain("VerifiableCredential");
+    expect(tokenIssuanceAuthorization.type).toContain(
+      "TokenIssuanceAuthorization",
+    );
+    expect(tokenIssuanceAuthorization.credentialSubject).toHaveProperty(
+      "tokenIssuanceAuthorizationRequest",
+    );
+    expect(tokenIssuanceAuthorization).toHaveProperty("proof");
+    expect(tokenIssuanceAuthorization.proof).toHaveProperty("type");
+  });
+  it("should fail to create a Token Issuance Authorization: Given invalid inputs, When executing requestTokenIssuanceAuthorization, Then should throw ValidationErrorDetail", async () => {
+    // Given
+    const invalidTokenIssuanceAuthorizationRequest = {
+      ...VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
+      id: null,
+    };
+
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
+
+    assetSchemaAuthorityService = new AssetSchemaAuthorityService(
+      localContexts,
+    );
+
+    // When & Then
+    await expect(
+      assetSchemaAuthorityService.requestTokenIssuanceAuthorization(
+        invalidTokenIssuanceAuthorizationRequest as any,
+      ),
+    ).rejects.toMatchObject({
+      type: "REQUEST_TOKEN_ISSUANCE_AUTHORIZATION_ERROR",
+    });
+  });
 });

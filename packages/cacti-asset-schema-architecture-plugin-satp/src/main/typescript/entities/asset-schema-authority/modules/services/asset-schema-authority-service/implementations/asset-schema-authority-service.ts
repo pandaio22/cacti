@@ -99,7 +99,7 @@ export class AssetSchemaAuthorityService
       }
       //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
 
-      //###CALL REGISTRY
+      //###CALL REGISTRY - TODOOO
 
       return assetSchemaVerifiableCredential as CommissionedAssetSchema;
     } catch (error) {
@@ -184,7 +184,7 @@ export class AssetSchemaAuthorityService
       }
       //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
 
-      //###CALL REGISTRY
+      //###TODO - CALL REGISTRY
 
       return schemaProfileVerifiableCredential as CommissionedSchemaProfile;
     } catch (error) {
@@ -222,8 +222,54 @@ export class AssetSchemaAuthorityService
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
   ): Promise<TokenIssuanceAuthorization> {
     try {
-      console.log(tokenIssuanceAuthorizationRequest);
-      return {} as TokenIssuanceAuthorization;
+      //1st - Validate Inputs
+      console.debug("Creating Token Issuance Authorization...\n");
+      if (!tokenIssuanceAuthorizationRequest) {
+        throw new Error(
+          "Missing Required Inputs: Token Issuance Authorization Request is required.",
+        );
+      }
+      if (!this.localContexts) {
+        console.debug("No Local contexts. Dereferencing remote contexts...\n");
+      }
+
+      //2nd - If Valid, create VC for Asset Schema. Else, throw error
+      if (
+        !(
+          await this.validationService.validateTokenIssuanceAuthorizationRequest(
+            tokenIssuanceAuthorizationRequest,
+          )
+        ).valid
+      ) {
+        throw new Error(
+          "Invalid Input: Token Issuance Authorization Request is invalid.",
+        );
+      }
+
+      // TODO - Add verify Token Issuance Authorization Request
+
+      const tokenIssuanceAuthorization =
+        await this.verifiableCredentialService.createTokenIssuanceAuthorization(
+          tokenIssuanceAuthorizationRequest,
+        );
+      console.debug(
+        "Token Issuance Authorization:\n",
+        tokenIssuanceAuthorization,
+      );
+
+      if (
+        !this.verifiableCredentialService.verifyTokenIssuanceAuthorization(
+          tokenIssuanceAuthorization,
+        )
+      ) {
+        throw new Error(
+          "Invalid Verifiable Credential: Error when verifying Verifiable Credential.",
+        );
+      }
+
+      //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
+
+      return tokenIssuanceAuthorization as TokenIssuanceAuthorization;
     } catch (error) {
       const errorDetail: ValidationErrorDetail = {
         type: ValidationErrorType.REQUEST_TOKEN_ISSUANCE_AUTHORIZATION_ERROR,
