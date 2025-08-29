@@ -1,6 +1,6 @@
-import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
-import { CertificateService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/certificate-service";
-import { SignatureService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/signature-service";
+import { KeyService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
+import { CertificateService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/certificate-service";
+import { SignatureService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/signature-service";
 
 import fs from "fs";
 import path from "path";

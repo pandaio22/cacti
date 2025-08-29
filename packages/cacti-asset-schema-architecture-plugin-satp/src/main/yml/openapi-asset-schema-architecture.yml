@@ -420,14 +420,22 @@ paths:
         content:
           application/ld+json:
             schema:
-              $ref: '#/components/schemas/AssetSchema'
+              type: object
+              properties:
+                assetSchema:
+                  $ref: '#/components/schemas/AssetSchema'
+                assetSchemaDidDocument:
+                  $ref: '#/components/schemas/AssetSchemaDidDocument'
+              required:
+                - assetSchema
+                - assetSchemaDidDocument
       responses:
         '200':
           description: Asset Schema was certified successfully
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/SignedAssetSchema'
+                $ref: '#/components/schemas/CommissionedAssetSchema'
         '400':
           description: Bad Request
         '500':
@@ -449,14 +457,22 @@ paths:
         content:
           application/ld+json:
             schema:
-              $ref: '#/components/schemas/SchemaProfile'
+              type: object
+              properties:
+                schemaProfile:
+                  $ref: '#/components/schemas/SchemaProfile'
+                schemaProfileDidDocument:
+                  $ref: '#/components/schemas/SchemaProfileDidDocument'
+              required:
+                - schemaProfile
+                - schemaProfileDidDocument
       responses:
         '200':
           description: Schema Profile was certified successfully
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/SignedSchemaProfile'
+                $ref: '#/components/schemas/CommissionedSchemaProfile'
         '400':
           description: Bad Request
         '500':

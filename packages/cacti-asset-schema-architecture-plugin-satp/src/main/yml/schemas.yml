@@ -1116,6 +1116,194 @@ TokenizedAssetRecord:
               - type: string
                 format: uri
               - type: object
+    token_issuance_authorization:
+      oneOf:
+        - type: object
+        - type: string
+          format: uri
+          example: 'https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9'
+          description: Identifier for the Token Issuance Authorization.
+  additionalProperties: true
+
+TokenizedAssetRecordDidDocument:
+  type: object
+  description: Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
+  required:
+    - '@context'
+    - id
+    - verificationMethod
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1'
+        - type: object
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      format: uri
+      example: 'did:web:example.com:tokenized-asset-record'
+      description: Unique identifier for the TokenizedAssetRecord DID Document.
+    type:
+      type: array
+      items:
+        type: string
+      minItems: 1
+      description: >
+        Includes "DIDDocument" and "TokenizedAssetRecordDidDocument".
+    verificationMethod:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        required:
+          - id
+          - type
+          - controller
+          - publicKeyBase58
+        properties:
+          id:
+            type: string
+            format: uri
+            example: 'did:web:example.com:tokenized-asset-record#controller'
+            description: Identifier for the verification method.
+          type:
+            type: string
+            example: 'Ed25519VerificationKey2018'
+            description: Type of verification method.
+          controller:
+            type: string
+            format: uri
+            example: 'did:web:example.com:controller'
+            description: DID of the controller of this Schema Profile DID.
+          publicKeyMultibase:
+            type: string
+            description: Public key of the controller.
+    authentication:
+      type: array
+      items:
+        type: string
+      minItems: 1
+      description: >
+        List of verification method IDs allowed for authentication.
+    assertionMethod:
+      type: array
+      items:
+        type: string
+      minItems: 1
+      description: >
+        List of verification method IDs allowed for asserting claims or issuing VCs.
+  additionalProperties: true
+
+TokenizedAssetRecordVerifiableCredential:
+  type: object
+  description: Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
+  properties:
+    '@context':
+      oneOf:
+        - type: string
+          format: uri
+          example: 'https://www.w3.org/ns/did/v1.1'
+        - type: object
+        - type: array
+          items:
+            oneOf:
+              - type: string
+                format: uri
+              - type: object
+    id:
+      type: string
+      format: uri
+      example: 'did:example:56745689abcdefghi#tokenized-asset-record-credential'
+      description: Unique identifier for the TokenizedAssetRecord Verifiable Credential.
+    type:
+      type: array
+      items:
+        type: string
+      minItems: 1
+      description: >
+        Includes "VerifiableCredential" and "TokenizedAssetRecordVerifiableCredential".
+    issuer:
+      type: string
+      format: uri
+      example: 'did:web:example.com#asset-provider'
+      description: DID or URI of the Asset Provider issuing this VC.
+    validFrom:
+      type: string
+      format: date-time
+      example: '2023-10-01T12:00:00Z'
+      description: Timestamp stating VC starting validity.
+    issuanceDate:
+      type: string
+      format: date-time
+      example: '2023-10-01T12:00:00Z'
+      description: Timestamp when the VC was issued.  
+    credentialSubject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uri
+          example: 'did:web:example.com#tokenized-asset-record'
+          description: DID or URI of the TokenizedAssetRecord.
+        name:
+          type: string
+          example: 'Example Tokenized Asset Record'
+          description: Human-readable name of the TokenizedAssetRecord.
+        version:
+          type: string
+          example: '1.0.0'
+          description: Version of the TokenizedAssetRecord.
+        hash:
+          type: string
+          example: 'QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ'
+          description: >
+            Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier.
+        nonce:
+          type: string
+          example: 'e8774f35ba50616e371649579860b0a8'
+          description: >
+            Unique number used once to ensure freshness, preventing replay attacks.
+        createdBy:
+          type: string
+          format: uri
+          example: 'did:web:example.com#asset-schema-authority'
+          description: DID or URI of the entity that created the TokenizedAssetRecord.
+        schemaProfile:
+          type: string
+          format: uri
+          example: 'did:example:56745689abcdefghi#schema-profile'
+          description: Unique identifier for the Schema Profile
+        tokenizedAssetRecord:
+          $ref: '#/TokenizedAssetRecord'
+        tokenIssuanceAuthorization:
+          $ref: '#/TokenIssuanceAuthorization'
+    proof:
+      type: object
+      properties:
+        type:
+          type: string
+        verificationMethod:
+          type: string
+        cryptosuite:
+          type: string
+          description: >
+            The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+        created:
+          type: string
+          format: date-time
+        proofPurpose:
+          type: string
+        proofValue:
+          type: string
+          description: >
+            The cryptographic proof value, typically a JWS or similar signature.
   additionalProperties: true
 
 CommissionedTokenizedAssetRecordID:

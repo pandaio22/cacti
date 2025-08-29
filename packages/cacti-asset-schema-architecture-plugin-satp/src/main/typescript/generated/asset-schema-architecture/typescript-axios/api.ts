@@ -117,6 +117,250 @@ export interface AssetSchemaAuthorityCertificate {
     'description': string;
 }
 /**
+ * Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface AssetSchemaCertification200Response
+ */
+export interface AssetSchemaCertification200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof AssetSchemaCertification200Response
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Asset Schema Verifiable Credential.
+     * @type {string}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {AssetSchemaCertification200ResponseCredentialSubject}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaCertification200ResponseProof}
+     * @memberof AssetSchemaCertification200Response
+     */
+    'proof'?: AssetSchemaCertification200ResponseProof;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaCertification200ResponseCredentialSubject
+ */
+export interface AssetSchemaCertification200ResponseCredentialSubject {
+    /**
+     * DID or URI of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the Asset Schema.
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof AssetSchemaCertification200ResponseCredentialSubject
+     */
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaCertification200ResponseProof
+ */
+export interface AssetSchemaCertification200ResponseProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseProof
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseProof
+     */
+    'verificationMethod'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseProof
+     */
+    'created'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseProof
+     */
+    'proofPurpose'?: string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof AssetSchemaCertification200ResponseProof
+     */
+    'proofValue'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetSchemaCertificationRequest
+ */
+export interface AssetSchemaCertificationRequest {
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof AssetSchemaCertificationRequest
+     */
+    'assetSchema': CommissionAssetSchemaRequestAssetSchema;
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocument}
+     * @memberof AssetSchemaCertificationRequest
+     */
+    'assetSchemaDidDocument': AssetSchemaCertificationRequestAssetSchemaDidDocument;
+}
+/**
+ * Structure of a valid Asset Schema DID Document (JSON-LD format)
+ * @export
+ * @interface AssetSchemaCertificationRequestAssetSchemaDidDocument
+ */
+export interface AssetSchemaCertificationRequestAssetSchemaDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Asset Schema DID Document.
+     * @type {string}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"AssetSchemaDidDocument\". 
+     * @type {Array<string>}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    'verificationMethod': Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * @type AssetSchemaCertificationRequestAssetSchemaDidDocumentContext
+ * @export
+ */
+export type AssetSchemaCertificationRequestAssetSchemaDidDocumentContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
+ */
+export interface AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Asset Schema DID.
+     * @type {string}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
  * Structure of a valid Asset Schema DID Document (JSON-LD format)
  * @export
  * @interface AssetSchemaDidDocument
@@ -126,10 +370,10 @@ export interface AssetSchemaDidDocument {
 
     /**
      * 
-     * @type {AssetSchemaDidDocumentContext}
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
      * @memberof AssetSchemaDidDocument
      */
-    '@context': AssetSchemaDidDocumentContext;
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
     /**
      * Unique identifier for the Asset Schema DID Document.
      * @type {string}
@@ -144,10 +388,10 @@ export interface AssetSchemaDidDocument {
     'type': Array<string>;
     /**
      * 
-     * @type {Array<AssetSchemaDidDocumentVerificationMethodInner>}
+     * @type {Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>}
      * @memberof AssetSchemaDidDocument
      */
-    'verificationMethod': Array<AssetSchemaDidDocumentVerificationMethodInner>;
+    'verificationMethod': Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>;
     /**
      * List of verification method IDs allowed for authentication. 
      * @type {Array<string>}
@@ -160,43 +404,6 @@ export interface AssetSchemaDidDocument {
      * @memberof AssetSchemaDidDocument
      */
     'assertionMethod'?: Array<string>;
-}
-/**
- * @type AssetSchemaDidDocumentContext
- * @export
- */
-export type AssetSchemaDidDocumentContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
-
-/**
- * 
- * @export
- * @interface AssetSchemaDidDocumentVerificationMethodInner
- */
-export interface AssetSchemaDidDocumentVerificationMethodInner {
-    /**
-     * Identifier for the verification method.
-     * @type {string}
-     * @memberof AssetSchemaDidDocumentVerificationMethodInner
-     */
-    'id': string;
-    /**
-     * Type of verification method.
-     * @type {string}
-     * @memberof AssetSchemaDidDocumentVerificationMethodInner
-     */
-    'type': string;
-    /**
-     * DID of the controller of this Asset Schema DID.
-     * @type {string}
-     * @memberof AssetSchemaDidDocumentVerificationMethodInner
-     */
-    'controller': string;
-    /**
-     * Public key of the controller.
-     * @type {string}
-     * @memberof AssetSchemaDidDocumentVerificationMethodInner
-     */
-    'publicKeyMultibase'?: string;
 }
 /**
  * Structure of a valid Asset Schema Verifiable Credential (JSON-LD format)
@@ -244,65 +451,16 @@ export interface AssetSchemaVerifiableCredential {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {AssetSchemaVerifiableCredentialCredentialSubject}
+     * @type {AssetSchemaCertification200ResponseCredentialSubject}
      * @memberof AssetSchemaVerifiableCredential
      */
-    'credentialSubject'?: AssetSchemaVerifiableCredentialCredentialSubject;
+    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
     /**
      * 
      * @type {AssetSchemaVerifiableCredentialProof}
      * @memberof AssetSchemaVerifiableCredential
      */
     'proof'?: AssetSchemaVerifiableCredentialProof;
-}
-/**
- * 
- * @export
- * @interface AssetSchemaVerifiableCredentialCredentialSubject
- */
-export interface AssetSchemaVerifiableCredentialCredentialSubject {
-    /**
-     * DID or URI of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'id'?: string;
-    /**
-     * Human-readable name of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'name'?: string;
-    /**
-     * Version of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'version'?: string;
-    /**
-     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'hash'?: string;
-    /**
-     * Unique number used once to ensure freshness, preventing replay attacks. 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'nonce'?: string;
-    /**
-     * DID or URI of the entity that created the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'createdBy'?: string;
-    /**
-     * 
-     * @type {CommissionAssetSchemaRequestAssetSchema}
-     * @memberof AssetSchemaVerifiableCredentialCredentialSubject
-     */
-    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
 }
 /**
  * 
@@ -643,7 +801,19 @@ export interface CommissionTokenizedAssetRecordRequest {
      * @memberof CommissionTokenizedAssetRecordRequest
      */
     '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization;
 }
+/**
+ * @type CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization
+ * @export
+ */
+export type CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization = object | string;
+
 /**
  * Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
  * @export
@@ -690,16 +860,16 @@ export interface CommissionedAssetSchema {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {AssetSchemaVerifiableCredentialCredentialSubject}
+     * @type {AssetSchemaCertification200ResponseCredentialSubject}
      * @memberof CommissionedAssetSchema
      */
-    'credentialSubject'?: AssetSchemaVerifiableCredentialCredentialSubject;
+    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
     /**
      * 
-     * @type {CommissionedAssetSchemaProof}
+     * @type {AssetSchemaCertification200ResponseProof}
      * @memberof CommissionedAssetSchema
      */
-    'proof'?: CommissionedAssetSchemaProof;
+    'proof'?: AssetSchemaCertification200ResponseProof;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -725,43 +895,6 @@ export interface CommissionedAssetSchemaID {
      * @memberof CommissionedAssetSchemaID
      */
     'type': string;
-}
-/**
- * 
- * @export
- * @interface CommissionedAssetSchemaProof
- */
-export interface CommissionedAssetSchemaProof {
-    /**
-     * 
-     * @type {string}
-     * @memberof CommissionedAssetSchemaProof
-     */
-    'type'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CommissionedAssetSchemaProof
-     */
-    'verificationMethod'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CommissionedAssetSchemaProof
-     */
-    'created'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CommissionedAssetSchemaProof
-     */
-    'proofPurpose'?: string;
-    /**
-     * The cryptographic proof value, typically a JWS or similar signature. 
-     * @type {string}
-     * @memberof CommissionedAssetSchemaProof
-     */
-    'proofValue'?: string;
 }
 /**
  * 
@@ -1677,6 +1810,101 @@ export interface SchemaProfile {
     'facets': object;
 }
 /**
+ * 
+ * @export
+ * @interface SchemaProfileCertificationRequest
+ */
+export interface SchemaProfileCertificationRequest {
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof SchemaProfileCertificationRequest
+     */
+    'schemaProfile': CommissionSchemaProfileRequestSchemaProfile;
+    /**
+     * 
+     * @type {SchemaProfileCertificationRequestSchemaProfileDidDocument}
+     * @memberof SchemaProfileCertificationRequest
+     */
+    'schemaProfileDidDocument': SchemaProfileCertificationRequestSchemaProfileDidDocument;
+}
+/**
+ * Structure of a valid Schema Profile DID Document (JSON-LD format)
+ * @export
+ * @interface SchemaProfileCertificationRequestSchemaProfileDidDocument
+ */
+export interface SchemaProfileCertificationRequestSchemaProfileDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Schema Profile DID Document.
+     * @type {string}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"SchemaProfileDidDocument\". 
+     * @type {Array<string>}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    'verificationMethod': Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
+ */
+export interface SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Schema Profile DID.
+     * @type {string}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
  * Structure of a valid Schema Profile DID Document (JSON-LD format)
  * @export
  * @interface SchemaProfileDidDocument
@@ -1686,10 +1914,10 @@ export interface SchemaProfileDidDocument {
 
     /**
      * 
-     * @type {AssetSchemaDidDocumentContext}
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
      * @memberof SchemaProfileDidDocument
      */
-    '@context': AssetSchemaDidDocumentContext;
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
     /**
      * Unique identifier for the Schema Profile DID Document.
      * @type {string}
@@ -1704,10 +1932,10 @@ export interface SchemaProfileDidDocument {
     'type': Array<string>;
     /**
      * 
-     * @type {Array<SchemaProfileDidDocumentVerificationMethodInner>}
+     * @type {Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>}
      * @memberof SchemaProfileDidDocument
      */
-    'verificationMethod': Array<SchemaProfileDidDocumentVerificationMethodInner>;
+    'verificationMethod': Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>;
     /**
      * List of verification method IDs allowed for authentication. 
      * @type {Array<string>}
@@ -1720,37 +1948,6 @@ export interface SchemaProfileDidDocument {
      * @memberof SchemaProfileDidDocument
      */
     'assertionMethod'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface SchemaProfileDidDocumentVerificationMethodInner
- */
-export interface SchemaProfileDidDocumentVerificationMethodInner {
-    /**
-     * Identifier for the verification method.
-     * @type {string}
-     * @memberof SchemaProfileDidDocumentVerificationMethodInner
-     */
-    'id': string;
-    /**
-     * Type of verification method.
-     * @type {string}
-     * @memberof SchemaProfileDidDocumentVerificationMethodInner
-     */
-    'type': string;
-    /**
-     * DID of the controller of this Schema Profile DID.
-     * @type {string}
-     * @memberof SchemaProfileDidDocumentVerificationMethodInner
-     */
-    'controller': string;
-    /**
-     * Public key of the controller.
-     * @type {string}
-     * @memberof SchemaProfileDidDocumentVerificationMethodInner
-     */
-    'publicKeyMultibase'?: string;
 }
 /**
  * Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
@@ -2049,6 +2246,206 @@ export interface TokenizedAssetRecord {
      * @memberof TokenizedAssetRecord
      */
     '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization}
+     * @memberof TokenizedAssetRecord
+     */
+    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization;
+}
+/**
+ * Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
+ * @export
+ * @interface TokenizedAssetRecordDidDocument
+ */
+export interface TokenizedAssetRecordDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord DID Document.
+     * @type {string}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"TokenizedAssetRecordDidDocument\". 
+     * @type {Array<string>}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    'type'?: Array<string>;
+    /**
+     * 
+     * @type {Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    'verificationMethod': Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof TokenizedAssetRecordDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface TokenizedAssetRecordDidDocumentVerificationMethodInner
+ */
+export interface TokenizedAssetRecordDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Schema Profile DID.
+     * @type {string}
+     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
+ * Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface TokenizedAssetRecordVerifiableCredential
+ */
+export interface TokenizedAssetRecordVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord Verifiable Credential.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenizedAssetRecordVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this VC.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubject}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'credentialSubject'?: TokenizedAssetRecordVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof TokenizedAssetRecordVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface TokenizedAssetRecordVerifiableCredentialCredentialSubject
+ */
+export interface TokenizedAssetRecordVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * Unique identifier for the Schema Profile
+     * @type {string}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'schemaProfile'?: string;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequest}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'tokenizedAssetRecord'?: CommissionTokenizedAssetRecordRequest;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequest}
+     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'tokenIssuanceAuthorization'?: RegisterTokenIssuanceAuthorizationRequest;
 }
 
 /**
@@ -2060,13 +2457,13 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
         /**
          * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
          * @summary Asset Schema Certification
-         * @param {CommissionAssetSchemaRequestAssetSchema} commissionAssetSchemaRequestAssetSchema 
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetSchemaCertification: async (commissionAssetSchemaRequestAssetSchema: CommissionAssetSchemaRequestAssetSchema, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'commissionAssetSchemaRequestAssetSchema' is not null or undefined
-            assertParamExists('assetSchemaCertification', 'commissionAssetSchemaRequestAssetSchema', commissionAssetSchemaRequestAssetSchema)
+        assetSchemaCertification: async (assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assetSchemaCertificationRequest' is not null or undefined
+            assertParamExists('assetSchemaCertification', 'assetSchemaCertificationRequest', assetSchemaCertificationRequest)
             const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2086,7 +2483,7 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(commissionAssetSchemaRequestAssetSchema, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(assetSchemaCertificationRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2132,13 +2529,13 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
         /**
          * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
          * @summary Schema Profile Certification
-         * @param {CommissionSchemaProfileRequestSchemaProfile} commissionSchemaProfileRequestSchemaProfile 
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        schemaProfileCertification: async (commissionSchemaProfileRequestSchemaProfile: CommissionSchemaProfileRequestSchemaProfile, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'commissionSchemaProfileRequestSchemaProfile' is not null or undefined
-            assertParamExists('schemaProfileCertification', 'commissionSchemaProfileRequestSchemaProfile', commissionSchemaProfileRequestSchemaProfile)
+        schemaProfileCertification: async (schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'schemaProfileCertificationRequest' is not null or undefined
+            assertParamExists('schemaProfileCertification', 'schemaProfileCertificationRequest', schemaProfileCertificationRequest)
             const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2158,7 +2555,7 @@ export const AssetSchemaAuthorityApiAxiosParamCreator = function (configuration?
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(commissionSchemaProfileRequestSchemaProfile, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(schemaProfileCertificationRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2178,12 +2575,12 @@ export const AssetSchemaAuthorityApiFp = function(configuration?: Configuration)
         /**
          * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
          * @summary Asset Schema Certification
-         * @param {CommissionAssetSchemaRequestAssetSchema} commissionAssetSchemaRequestAssetSchema 
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async assetSchemaCertification(commissionAssetSchemaRequestAssetSchema: CommissionAssetSchemaRequestAssetSchema, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionAssetSchemaRequest>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.assetSchemaCertification(commissionAssetSchemaRequestAssetSchema, options);
+        async assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetSchemaCertification200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.assetSchemaCertification(assetSchemaCertificationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetSchemaAuthorityApi.assetSchemaCertification']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2204,12 +2601,12 @@ export const AssetSchemaAuthorityApiFp = function(configuration?: Configuration)
         /**
          * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
          * @summary Schema Profile Certification
-         * @param {CommissionSchemaProfileRequestSchemaProfile} commissionSchemaProfileRequestSchemaProfile 
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile: CommissionSchemaProfileRequestSchemaProfile, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionSchemaProfileRequest>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile, options);
+        async schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionSchemaProfileRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.schemaProfileCertification(schemaProfileCertificationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetSchemaAuthorityApi.schemaProfileCertification']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2227,12 +2624,12 @@ export const AssetSchemaAuthorityApiFactory = function (configuration?: Configur
         /**
          * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
          * @summary Asset Schema Certification
-         * @param {CommissionAssetSchemaRequestAssetSchema} commissionAssetSchemaRequestAssetSchema 
+         * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetSchemaCertification(commissionAssetSchemaRequestAssetSchema: CommissionAssetSchemaRequestAssetSchema, options?: RawAxiosRequestConfig): AxiosPromise<CommissionAssetSchemaRequest> {
-            return localVarFp.assetSchemaCertification(commissionAssetSchemaRequestAssetSchema, options).then((request) => request(axios, basePath));
+        assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<AssetSchemaCertification200Response> {
+            return localVarFp.assetSchemaCertification(assetSchemaCertificationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows a client to send a token issuance authorization request (TIAR). The request includes the TIAR schema and an Asset Provider signature. 
@@ -2247,12 +2644,12 @@ export const AssetSchemaAuthorityApiFactory = function (configuration?: Configur
         /**
          * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
          * @summary Schema Profile Certification
-         * @param {CommissionSchemaProfileRequestSchemaProfile} commissionSchemaProfileRequestSchemaProfile 
+         * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile: CommissionSchemaProfileRequestSchemaProfile, options?: RawAxiosRequestConfig): AxiosPromise<CommissionSchemaProfileRequest> {
-            return localVarFp.schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile, options).then((request) => request(axios, basePath));
+        schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CommissionSchemaProfileRequest> {
+            return localVarFp.schemaProfileCertification(schemaProfileCertificationRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2267,13 +2664,13 @@ export class AssetSchemaAuthorityApi extends BaseAPI {
     /**
      * This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
      * @summary Asset Schema Certification
-     * @param {CommissionAssetSchemaRequestAssetSchema} commissionAssetSchemaRequestAssetSchema 
+     * @param {AssetSchemaCertificationRequest} assetSchemaCertificationRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetSchemaAuthorityApi
      */
-    public assetSchemaCertification(commissionAssetSchemaRequestAssetSchema: CommissionAssetSchemaRequestAssetSchema, options?: RawAxiosRequestConfig) {
-        return AssetSchemaAuthorityApiFp(this.configuration).assetSchemaCertification(commissionAssetSchemaRequestAssetSchema, options).then((request) => request(this.axios, this.basePath));
+    public assetSchemaCertification(assetSchemaCertificationRequest: AssetSchemaCertificationRequest, options?: RawAxiosRequestConfig) {
+        return AssetSchemaAuthorityApiFp(this.configuration).assetSchemaCertification(assetSchemaCertificationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2291,13 +2688,13 @@ export class AssetSchemaAuthorityApi extends BaseAPI {
     /**
      * This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
      * @summary Schema Profile Certification
-     * @param {CommissionSchemaProfileRequestSchemaProfile} commissionSchemaProfileRequestSchemaProfile 
+     * @param {SchemaProfileCertificationRequest} schemaProfileCertificationRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetSchemaAuthorityApi
      */
-    public schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile: CommissionSchemaProfileRequestSchemaProfile, options?: RawAxiosRequestConfig) {
-        return AssetSchemaAuthorityApiFp(this.configuration).schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile, options).then((request) => request(this.axios, this.basePath));
+    public schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig) {
+        return AssetSchemaAuthorityApiFp(this.configuration).schemaProfileCertification(schemaProfileCertificationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -47,7 +47,7 @@ import {
   GetAssetSchemaAuthorityEndpoint,
   GetAssetProviderEndpoint,
 } from "./entities/registry/endpoints/registry-endpoints";
-import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
+import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
 import {
   EntityServerConfig,

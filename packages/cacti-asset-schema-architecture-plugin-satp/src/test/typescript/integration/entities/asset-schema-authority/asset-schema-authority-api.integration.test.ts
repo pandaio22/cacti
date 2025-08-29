@@ -1,4 +1,4 @@
-/*import { LogLevelDesc } from "@hyperledger/cactus-common";
+import { LogLevelDesc } from "@hyperledger/cactus-common";
 import { PluginRegistry } from "@hyperledger/cactus-core";
 import { Configuration } from "@hyperledger/cactus-core-api";
 import {
@@ -10,9 +10,11 @@ import { v4 as uuidv4 } from "uuid";
 import {
   ASSET_SCHEMA_AUTHORITY_API_SERVER,
   VALID_ASSET_SCHEMA_EXAMPLE,
+  VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
-  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
-} from "../../../../../main/typescript/constants/constants";
+  VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
+} from "../../../constants/constants";
 
 describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
@@ -61,7 +63,7 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
       //Given & When
       const tokenIssuanceAuthorizationRequestEndpoint =
         await assetSchemaAuthorityApi.requestTokenIssuanceAuthorization(
-          VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
+          VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
         );
 
       //Then
@@ -74,18 +76,34 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   it(
     "Tests POST /token-issuance-authorization-request: Given an Invalid Token Issuance Authorization Request (TIAR), When calling the endpoint, Then throw exception",
     async () => {
-      //Given
-      //When
-      //Then
-    },
-    TIMEOUT,
-  );
-  it(
-    "Tests POST /token-issuance-authorization-request: Given a Valid Token Issuance Authorization Request (TIAR) and an Unavailable service, When calling the endpoint, Then throw exception",
-    async () => {
-      //Given
-      //When
-      //Then
+      // Given
+      const invalidTokenIssuanceAuthorizationRequest = {
+        ...VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
+        id: null, // invalid field
+      } as any;
+
+      // When
+      const tokenIssuanceAuthorizationEndpoint = await assetSchemaAuthorityApi
+        .requestTokenIssuanceAuthorization(
+          invalidTokenIssuanceAuthorizationRequest,
+        )
+        .catch((err) => err.response);
+
+      // Then
+      console.log(
+        "Error Response Data:",
+        tokenIssuanceAuthorizationEndpoint?.data,
+      );
+
+      expect(tokenIssuanceAuthorizationEndpoint).toBeDefined();
+
+      // HTTP status
+      expect(tokenIssuanceAuthorizationEndpoint?.status).toEqual(500);
+
+      // Outer error message
+      expect(tokenIssuanceAuthorizationEndpoint?.data?.message).toEqual(
+        "InternalServerError",
+      );
     },
     TIMEOUT,
   );
@@ -95,9 +113,10 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     async () => {
       //Given & When
       const assetSchemaCertificationEndpoint =
-        await assetSchemaAuthorityApi.assetSchemaCertification(
-          VALID_ASSET_SCHEMA_EXAMPLE,
-        );
+        await assetSchemaAuthorityApi.assetSchemaCertification({
+          assetSchema: VALID_ASSET_SCHEMA_EXAMPLE,
+          assetSchemaDidDocument: VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
+        });
 
       //Then
       expect(assetSchemaCertificationEndpoint.status).toEqual(200);
@@ -106,20 +125,40 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     TIMEOUT,
   );
   it(
-    "Tests POST /asset-schema-certification: Given an Invalid Asset Schema, When calling the endpoint, Then throw exception",
+    "Tests POST /asset-schema-certification: Given an Invalid Input, When calling the endpoint, Then throw exception",
     async () => {
-      //Given
-      //When
-      //Then
-    },
-    TIMEOUT,
-  );
-  it(
-    "Tests POST /asset-schema-certification: Given a Valid Asset Schema and an Unavailable service, When calling the endpoint, Then throw exception",
-    async () => {
-      //Given
-      //When
-      //Then
+      // Given
+      const invalidAssetSchema = {
+        ...VALID_ASSET_SCHEMA_EXAMPLE,
+        name: null,
+      };
+
+      const invalidDidDocument = {
+        ...VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
+        id: null,
+      } as any;
+
+      // When
+      const assetSchemaCertificationEndpoint = await assetSchemaAuthorityApi
+        .assetSchemaCertification({
+          assetSchema: invalidAssetSchema,
+          assetSchemaDidDocument: invalidDidDocument,
+        })
+        .catch((err) => err.response);
+      // Then
+      console.log(
+        "Error Response Data:",
+        assetSchemaCertificationEndpoint.data,
+      );
+      expect(assetSchemaCertificationEndpoint).toBeDefined(); // ensure we got a response
+
+      // HTTP status
+      expect(assetSchemaCertificationEndpoint.status).toEqual(500);
+
+      // Outer error
+      expect(assetSchemaCertificationEndpoint.data.message).toEqual(
+        "InternalServerError",
+      );
     },
     TIMEOUT,
   );
@@ -128,9 +167,10 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     async () => {
       //Given & When
       const schemaProfileCertificationEndpoint =
-        await assetSchemaAuthorityApi.schemaProfileCertification(
-          VALID_SCHEMA_PROFILE_EXAMPLE,
-        );
+        await assetSchemaAuthorityApi.schemaProfileCertification({
+          schemaProfile: VALID_SCHEMA_PROFILE_EXAMPLE,
+          schemaProfileDidDocument: VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+        });
 
       //Then
       expect(schemaProfileCertificationEndpoint.status).toEqual(200);
@@ -139,22 +179,41 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
     TIMEOUT,
   );
   it(
-    "Tests POST /asset-schema-certification: Given an Invalid Asset Schema, When calling the endpoint, Then throw exception",
+    "Tests POST /schema-profile-certification: Given an Invalid Input, When calling the endpoint, Then throw exception",
     async () => {
-      //Given
-      //When
-      //Then
-    },
-    TIMEOUT,
-  );
-  it(
-    "Tests POST /asset-schema-certification: Given a Valid Asset Schema and an Unavailable service, When calling the endpoint, Then throw exception",
-    async () => {
-      //Given
-      //When
-      //Then
+      // Given
+      const invalidSchemaProfile = {
+        ...VALID_SCHEMA_PROFILE_EXAMPLE,
+        name: null, // invalid field
+      };
+
+      const invalidDidDocument = {
+        ...VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+        id: null, // invalid DID
+      } as any;
+
+      // When
+      const schemaProfileCertificationEndpoint = await assetSchemaAuthorityApi
+        .schemaProfileCertification({
+          schemaProfile: invalidSchemaProfile,
+          schemaProfileDidDocument: invalidDidDocument,
+        })
+        .catch((err) => err.response);
+
+      // Then
+      console.log(
+        "Error Response Data:",
+        schemaProfileCertificationEndpoint?.data,
+      );
+
+      expect(schemaProfileCertificationEndpoint).toBeDefined();
+
+      expect(schemaProfileCertificationEndpoint?.status).toEqual(500);
+
+      expect(schemaProfileCertificationEndpoint?.data?.message).toEqual(
+        "InternalServerError",
+      );
     },
     TIMEOUT,
   );
 });
-*/

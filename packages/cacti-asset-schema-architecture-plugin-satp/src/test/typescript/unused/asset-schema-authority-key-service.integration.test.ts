@@ -1,4 +1,4 @@
-import { KeyService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
+import { KeyService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/key-service";
 import * as crypto from "crypto";
 
 describe("KeyService", () => {

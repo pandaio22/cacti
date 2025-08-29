@@ -7,6 +7,7 @@ Structure of a valid Tokenized Asset Record (JSON-LD format)
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [default to undefined]
+**token_issuance_authorization** | [**CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization**](CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -15,6 +16,7 @@ import { CommissionTokenizedAssetRecordRequest } from './api';
 
 const instance: CommissionTokenizedAssetRecordRequest = {
     context,
+    token_issuance_authorization,
 };
 ```
 

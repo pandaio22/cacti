@@ -686,6 +686,13 @@ paths:
                           - type: string
                             format: uri
                           - type: object
+                token_issuance_authorization:
+                  oneOf:
+                    - type: object
+                    - type: string
+                      format: uri
+                      example: 'https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9'
+                      description: Identifier for the Token Issuance Authorization.
               additionalProperties: true
       responses:
         '200':
@@ -1133,6 +1140,13 @@ paths:
                             - type: string
                               format: uri
                             - type: object
+                  token_issuance_authorization:
+                    oneOf:
+                      - type: object
+                      - type: string
+                        format: uri
+                        example: 'https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9'
+                        description: Identifier for the Token Issuance Authorization.
                 additionalProperties: true
         '400':
           description: Bad Request
@@ -1717,41 +1731,123 @@ paths:
           application/ld+json:
             schema:
               type: object
-              description: Structure of a valid Asset Schema (JSON-LD format)
-              required:
-                - '@context'
-                - '@id'
               properties:
-                '@context':
-                  oneOf:
-                    - type: string
+                assetSchema:
+                  type: object
+                  description: Structure of a valid Asset Schema (JSON-LD format)
+                  required:
+                    - '@context'
+                    - '@id'
+                  properties:
+                    '@context':
+                      oneOf:
+                        - type: string
+                          format: uri
+                          example: 'https://www.w3.org/ns/did/v1.1'
+                        - type: object
+                          required:
+                            - '@version'
+                            - fungible
+                            - facets
+                            - organization_key
+                          properties:
+                            '@version':
+                              type: number
+                              format: float
+                              description: JSON-LD version.
+                              example: 1.1
+                            fungible:
+                              type: object
+                            facets:
+                              type: object
+                            organization_key:
+                              type: object
+                        - type: array
+                          items:
+                            oneOf:
+                              - type: string
+                                format: uri
+                              - type: object
+                  additionalProperties: true
+                assetSchemaDidDocument:
+                  type: object
+                  description: Structure of a valid Asset Schema DID Document (JSON-LD format)
+                  required:
+                    - '@context'
+                    - id
+                    - type
+                    - verificationMethod
+                  properties:
+                    '@context':
+                      oneOf:
+                        - type: string
+                          format: uri
+                          example: 'https://www.w3.org/ns/did/v1'
+                        - type: object
+                        - type: array
+                          items:
+                            oneOf:
+                              - type: string
+                                format: uri
+                              - type: object
+                    id:
+                      type: string
                       format: uri
-                      example: 'https://www.w3.org/ns/did/v1.1'
-                    - type: object
-                      required:
-                        - '@version'
-                        - fungible
-                        - facets
-                        - organization_key
-                      properties:
-                        '@version':
-                          type: number
-                          format: float
-                          description: JSON-LD version.
-                          example: 1.1
-                        fungible:
-                          type: object
-                        facets:
-                          type: object
-                        organization_key:
-                          type: object
-                    - type: array
+                      example: 'did:web:example.com:asset-schema'
+                      description: Unique identifier for the Asset Schema DID Document.
+                    type:
+                      type: array
                       items:
-                        oneOf:
-                          - type: string
+                        type: string
+                      minItems: 1
+                      description: |
+                        Includes "DIDDocument" and "AssetSchemaDidDocument".
+                    verificationMethod:
+                      type: array
+                      minItems: 1
+                      items:
+                        type: object
+                        required:
+                          - id
+                          - type
+                          - controller
+                          - publicKeyBase58
+                        properties:
+                          id:
+                            type: string
                             format: uri
-                          - type: object
-              additionalProperties: true
+                            example: 'did:web:example.com:asset-schema#controller'
+                            description: Identifier for the verification method.
+                          type:
+                            type: string
+                            example: Ed25519VerificationKey2018
+                            description: Type of verification method.
+                          controller:
+                            type: string
+                            format: uri
+                            example: 'did:web:example.com:controller'
+                            description: DID of the controller of this Asset Schema DID.
+                          publicKeyMultibase:
+                            type: string
+                            description: Public key of the controller.
+                    authentication:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      description: |
+                        List of verification method IDs allowed for authentication.
+                    assertionMethod:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      description: |
+                        List of verification method IDs allowed for asserting claims or issuing VCs.
+                  additionalProperties: true
+              required:
+                - assetSchema
+                - assetSchemaDidDocument
       responses:
         '200':
           description: Asset Schema was certified successfully
@@ -1759,67 +1855,131 @@ paths:
             application/ld+json:
               schema:
                 type: object
+                description: Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
                 properties:
-                  asset_schema:
+                  '@context':
+                    oneOf:
+                      - type: string
+                        format: uri
+                        example: 'https://www.w3.org/ns/did/v1.1'
+                      - type: object
+                      - type: array
+                        items:
+                          oneOf:
+                            - type: string
+                              format: uri
+                            - type: object
+                  id:
+                    type: string
+                    format: uri
+                    example: 'did:example:56745689abcdefghi#asset-schema-credential'
+                    description: Unique identifier for the Asset Schema Verifiable Credential.
+                  type:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
+                    description: |
+                      Includes "VerifiableCredential" and "AssetSchemaVerifiableCredential".
+                  issuer:
+                    type: string
+                    format: uri
+                    example: 'did:web:example.com#asset-schema-authority'
+                    description: DID or URI of the Asset Schema Authority issuing this VC.
+                  validFrom:
+                    type: string
+                    format: date-time
+                    example: '2023-10-01T12:00:00Z'
+                    description: Timestamp stating VC starting validity.
+                  issuanceDate:
+                    type: string
+                    format: date-time
+                    example: '2023-10-01T12:00:00Z'
+                    description: Timestamp when the VC was issued.
+                  credentialSubject:
                     type: object
-                    description: Structure of a valid Asset Schema (JSON-LD format)
-                    required:
-                      - '@context'
-                      - '@id'
                     properties:
-                      '@context':
-                        oneOf:
-                          - type: string
-                            format: uri
-                            example: 'https://www.w3.org/ns/did/v1.1'
-                          - type: object
-                            required:
-                              - '@version'
-                              - fungible
-                              - facets
-                              - organization_key
-                            properties:
-                              '@version':
-                                type: number
-                                format: float
-                                description: JSON-LD version.
-                                example: 1.1
-                              fungible:
-                                type: object
-                              facets:
-                                type: object
-                              organization_key:
-                                type: object
-                          - type: array
-                            items:
-                              oneOf:
-                                - type: string
-                                  format: uri
-                                - type: object
-                    additionalProperties: true
+                      id:
+                        type: string
+                        format: uri
+                        example: 'did:web:example.com#asset-schema'
+                        description: DID or URI of the Asset Schema.
+                      name:
+                        type: string
+                        example: Example Asset Schema
+                        description: Human-readable name of the Asset Schema.
+                      version:
+                        type: string
+                        example: 1.0.0
+                        description: Version of the Asset Schema.
+                      hash:
+                        type: string
+                        example: QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ
+                        description: |
+                          Unique hash representing the Asset Schema, typically a CID or similar identifier.
+                      nonce:
+                        type: string
+                        example: e8774f35ba50616e371649579860b0a8
+                        description: |
+                          Unique number used once to ensure freshness, preventing replay attacks.
+                      createdBy:
+                        type: string
+                        format: uri
+                        example: 'did:web:example.com#asset-schema-authority'
+                        description: DID or URI of the entity that created the Asset Schema.
+                      asset_schema:
+                        type: object
+                        description: Structure of a valid Asset Schema (JSON-LD format)
+                        required:
+                          - '@context'
+                          - '@id'
+                        properties:
+                          '@context':
+                            oneOf:
+                              - type: string
+                                format: uri
+                                example: 'https://www.w3.org/ns/did/v1.1'
+                              - type: object
+                                required:
+                                  - '@version'
+                                  - fungible
+                                  - facets
+                                  - organization_key
+                                properties:
+                                  '@version':
+                                    type: number
+                                    format: float
+                                    description: JSON-LD version.
+                                    example: 1.1
+                                  fungible:
+                                    type: object
+                                  facets:
+                                    type: object
+                                  organization_key:
+                                    type: object
+                              - type: array
+                                items:
+                                  oneOf:
+                                    - type: string
+                                      format: uri
+                                    - type: object
+                        additionalProperties: true
                   proof:
                     type: object
                     properties:
                       type:
+                        type: string
+                      verificationMethod:
                         type: string
                       created:
                         type: string
                         format: date-time
                       proofPurpose:
                         type: string
-                      verificationMethod:
+                      proofValue:
                         type: string
-                      jws:
-                        type: string
-                    required:
-                      - type
-                      - created
-                      - proofPurpose
-                      - verificationMethod
-                      - jws
-                required:
-                  - asset-schema
-                  - proof
+                        description: |
+                          The cryptographic proof value, typically a JWS or similar signature.
                 additionalProperties: true
         '400':
           description: Bad Request
@@ -1843,63 +2003,145 @@ paths:
           application/ld+json:
             schema:
               type: object
-              description: Structure of a valid Schema Profile (JSON-LD format)
-              required:
-                - '@context'
-                - '@id'
-                - title
-                - asset_schema
-                - fungible
-                - organization_key
-                - facets
               properties:
-                '@context':
-                  oneOf:
-                    - type: string
-                      format: uri
-                      example: 'https://www.w3.org/ns/did/v1.1'
-                    - type: object
-                    - type: array
-                      items:
-                        oneOf:
-                          - type: string
-                            format: uri
-                          - type: object
-                '@id':
-                  type: string
-                  format: uri
-                  example: 'did:example:56745689abcdefghi#schema-profile'
-                  description: Unique identifier for the Schema Profile.
-                title:
-                  type: string
-                  example: Example Schema Profile
-                  description: Human-readable title of the Schema Profile.
-                asset_schema:
-                  type: string
-                  format: uri
-                  example: 'did:example:123456789abcdefghi#asset-schema'
-                  description: Reference to the Asset Schema associated with this Schema Profile.
-                fungible:
-                  type: boolean
-                  description: Indicates if the asset is fungible.
-                  example: true
-                organization_key:
+                schemaProfile:
                   type: object
+                  description: Structure of a valid Schema Profile (JSON-LD format)
+                  required:
+                    - '@context'
+                    - '@id'
+                    - title
+                    - asset_schema
+                    - fungible
+                    - organization_key
+                    - facets
                   properties:
-                    public_key:
+                    '@context':
+                      oneOf:
+                        - type: string
+                          format: uri
+                          example: 'https://www.w3.org/ns/did/v1.1'
+                        - type: object
+                        - type: array
+                          items:
+                            oneOf:
+                              - type: string
+                                format: uri
+                              - type: object
+                    '@id':
                       type: string
                       format: uri
-                      example: 'https://example.com/public-key'
-                      description: URI of the public key for the organization.
-                    issued:
+                      example: 'did:example:56745689abcdefghi#schema-profile'
+                      description: Unique identifier for the Schema Profile.
+                    title:
                       type: string
-                      format: date-time
-                      example: '2023-10-01T12:00:00Z'
-                      description: Timestamp when the public key was issued.
-                facets:
+                      example: Example Schema Profile
+                      description: Human-readable title of the Schema Profile.
+                    asset_schema:
+                      type: string
+                      format: uri
+                      example: 'did:example:123456789abcdefghi#asset-schema'
+                      description: Reference to the Asset Schema associated with this Schema Profile.
+                    fungible:
+                      type: boolean
+                      description: Indicates if the asset is fungible.
+                      example: true
+                    organization_key:
+                      type: object
+                      properties:
+                        public_key:
+                          type: string
+                          format: uri
+                          example: 'https://example.com/public-key'
+                          description: URI of the public key for the organization.
+                        issued:
+                          type: string
+                          format: date-time
+                          example: '2023-10-01T12:00:00Z'
+                          description: Timestamp when the public key was issued.
+                    facets:
+                      type: object
+                      description: Additional facets or properties of the Schema Profile.
+                  additionalProperties: true
+                schemaProfileDidDocument:
                   type: object
-                  description: Additional facets or properties of the Schema Profile.
-              additionalProperties: true
+                  description: Structure of a valid Schema Profile DID Document (JSON-LD format)
+                  required:
+                    - '@context'
+                    - id
+                    - type
+                    - verificationMethod
+                  properties:
+                    '@context':
+                      oneOf:
+                        - type: string
+                          format: uri
+                          example: 'https://www.w3.org/ns/did/v1'
+                        - type: object
+                        - type: array
+                          items:
+                            oneOf:
+                              - type: string
+                                format: uri
+                              - type: object
+                    id:
+                      type: string
+                      format: uri
+                      example: 'did:web:example.com:asset-schema'
+                      description: Unique identifier for the Schema Profile DID Document.
+                    type:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      description: |
+                        Includes "DIDDocument" and "SchemaProfileDidDocument".
+                    verificationMethod:
+                      type: array
+                      minItems: 1
+                      items:
+                        type: object
+                        required:
+                          - id
+                          - type
+                          - controller
+                          - publicKeyBase58
+                        properties:
+                          id:
+                            type: string
+                            format: uri
+                            example: 'did:web:example.com:schema-profile#controller'
+                            description: Identifier for the verification method.
+                          type:
+                            type: string
+                            example: Ed25519VerificationKey2018
+                            description: Type of verification method.
+                          controller:
+                            type: string
+                            format: uri
+                            example: 'did:web:example.com:controller'
+                            description: DID of the controller of this Schema Profile DID.
+                          publicKeyMultibase:
+                            type: string
+                            description: Public key of the controller.
+                    authentication:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      description: |
+                        List of verification method IDs allowed for authentication.
+                    assertionMethod:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      description: |
+                        List of verification method IDs allowed for asserting claims or issuing VCs.
+                  additionalProperties: true
+              required:
+                - schemaProfile
+                - schemaProfileDidDocument
       responses:
         '200':
           description: Schema Profile was certified successfully
@@ -3839,6 +4081,504 @@ components:
                   - type: string
                     format: uri
                   - type: object
+        token_issuance_authorization:
+          oneOf:
+            - type: object
+            - type: string
+              format: uri
+              example: 'https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9'
+              description: Identifier for the Token Issuance Authorization.
+      additionalProperties: true
+    TokenizedAssetRecordDidDocument:
+      type: object
+      description: Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
+      required:
+        - '@context'
+        - id
+        - verificationMethod
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+              format: uri
+              example: 'https://www.w3.org/ns/did/v1'
+            - type: object
+            - type: array
+              items:
+                oneOf:
+                  - type: string
+                    format: uri
+                  - type: object
+        id:
+          type: string
+          format: uri
+          example: 'did:web:example.com:tokenized-asset-record'
+          description: Unique identifier for the TokenizedAssetRecord DID Document.
+        type:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            Includes "DIDDocument" and "TokenizedAssetRecordDidDocument".
+        verificationMethod:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+              - type
+              - controller
+              - publicKeyBase58
+            properties:
+              id:
+                type: string
+                format: uri
+                example: 'did:web:example.com:tokenized-asset-record#controller'
+                description: Identifier for the verification method.
+              type:
+                type: string
+                example: Ed25519VerificationKey2018
+                description: Type of verification method.
+              controller:
+                type: string
+                format: uri
+                example: 'did:web:example.com:controller'
+                description: DID of the controller of this Schema Profile DID.
+              publicKeyMultibase:
+                type: string
+                description: Public key of the controller.
+        authentication:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            List of verification method IDs allowed for authentication.
+        assertionMethod:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            List of verification method IDs allowed for asserting claims or issuing VCs.
+      additionalProperties: true
+    TokenizedAssetRecordVerifiableCredential:
+      type: object
+      description: Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
+      properties:
+        '@context':
+          oneOf:
+            - type: string
+              format: uri
+              example: 'https://www.w3.org/ns/did/v1.1'
+            - type: object
+            - type: array
+              items:
+                oneOf:
+                  - type: string
+                    format: uri
+                  - type: object
+        id:
+          type: string
+          format: uri
+          example: 'did:example:56745689abcdefghi#tokenized-asset-record-credential'
+          description: Unique identifier for the TokenizedAssetRecord Verifiable Credential.
+        type:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: |
+            Includes "VerifiableCredential" and "TokenizedAssetRecordVerifiableCredential".
+        issuer:
+          type: string
+          format: uri
+          example: 'did:web:example.com#asset-provider'
+          description: DID or URI of the Asset Provider issuing this VC.
+        validFrom:
+          type: string
+          format: date-time
+          example: '2023-10-01T12:00:00Z'
+          description: Timestamp stating VC starting validity.
+        issuanceDate:
+          type: string
+          format: date-time
+          example: '2023-10-01T12:00:00Z'
+          description: Timestamp when the VC was issued.
+        credentialSubject:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uri
+              example: 'did:web:example.com#tokenized-asset-record'
+              description: DID or URI of the TokenizedAssetRecord.
+            name:
+              type: string
+              example: Example Tokenized Asset Record
+              description: Human-readable name of the TokenizedAssetRecord.
+            version:
+              type: string
+              example: 1.0.0
+              description: Version of the TokenizedAssetRecord.
+            hash:
+              type: string
+              example: QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ
+              description: |
+                Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier.
+            nonce:
+              type: string
+              example: e8774f35ba50616e371649579860b0a8
+              description: |
+                Unique number used once to ensure freshness, preventing replay attacks.
+            createdBy:
+              type: string
+              format: uri
+              example: 'did:web:example.com#asset-schema-authority'
+              description: DID or URI of the entity that created the TokenizedAssetRecord.
+            schemaProfile:
+              type: string
+              format: uri
+              example: 'did:example:56745689abcdefghi#schema-profile'
+              description: Unique identifier for the Schema Profile
+            tokenizedAssetRecord:
+              type: object
+              description: Structure of a valid Tokenized Asset Record (JSON-LD format)
+              required:
+                - '@context'
+              properties:
+                '@context':
+                  oneOf:
+                    - type: string
+                      format: uri
+                      example: 'https://www.w3.org/ns/did/v1.1'
+                    - type: object
+                    - type: array
+                      items:
+                        oneOf:
+                          - type: string
+                            format: uri
+                          - type: object
+                token_issuance_authorization:
+                  oneOf:
+                    - type: object
+                    - type: string
+                      format: uri
+                      example: 'https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9'
+                      description: Identifier for the Token Issuance Authorization.
+              additionalProperties: true
+            tokenIssuanceAuthorization:
+              type: object
+              properties:
+                '@context':
+                  oneOf:
+                    - type: string
+                    - type: object
+                    - type: array
+                      items:
+                        anyOf:
+                          - type: string
+                          - type: object
+                  description: |
+                    Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+                type:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  description: |
+                    Includes "VerifiablePresentation" and optionally "TokenIssuanceAuthorization".
+                issuer:
+                  type: string
+                  description: |
+                    DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.
+                issuanceDate:
+                  type: string
+                  format: date-time
+                  example: '2023-10-01T12:00:00Z'
+                  description: Timestamp when the VC was issued.
+                credentialSubject:
+                  type: object
+                  properties:
+                    tokenIssuanceAuthorizationRequest:
+                      description: |
+                        Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
+                      type: object
+                      properties:
+                        '@context':
+                          oneOf:
+                            - type: string
+                            - type: object
+                            - type: array
+                              items:
+                                anyOf:
+                                  - type: string
+                                  - type: object
+                        id:
+                          type: string
+                          format: uri
+                        type:
+                          type: array
+                          items:
+                            type: string
+                          minItems: 1
+                          description: |
+                            Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+                        issuer:
+                          type: string
+                          description: |
+                            DID or URI of the Asset Provider issuing this TIAR.
+                        validFrom:
+                          type: string
+                          format: date-time
+                        issuanceDate:
+                          type: string
+                          format: date-time
+                        validUntil:
+                          type: string
+                          format: date-time
+                        credentialSubject:
+                          type: object
+                          properties:
+                            assetProvider:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                id:
+                                  type: string
+                                  description: DID or URI of the Asset Provider issuing this TIAR.
+                                organizationKey:
+                                  type: object
+                                  properties:
+                                    publicKey:
+                                      type: string
+                                    type:
+                                      type: string
+                                    issued:
+                                      type: string
+                                      format: date-time
+                                  required:
+                                    - publicKey
+                                    - issued
+                              required:
+                                - name
+                                - id
+                                - organizationKey
+                            schemaProfile:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uri
+                            networkId:
+                              type: string
+                          required:
+                            - assetProvider
+                            - schemaProfile
+                            - networkId
+                        proof:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            verificationMethod:
+                              type: string
+                            cryptosuite:
+                              type: string
+                              description: |
+                                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                            created:
+                              type: string
+                              format: date-time
+                            proofPurpose:
+                              type: string
+                            proofValue:
+                              type: string
+                              description: |
+                                The cryptographic proof value, typically a JWS or similar signature.
+                          required:
+                            - type
+                            - verificationMethod
+                            - cryptosuite
+                            - created
+                            - proofPurpose
+                            - ProofValue
+                      required:
+                        - '@context'
+                        - id
+                        - type
+                        - issuer
+                        - issuanceDate
+                        - credentialSubject
+                        - proof
+                verifiableCredential:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      '@context':
+                        oneOf:
+                          - type: string
+                          - type: object
+                          - type: array
+                            items:
+                              anyOf:
+                                - type: string
+                                - type: object
+                      id:
+                        type: string
+                        format: uri
+                      type:
+                        type: array
+                        items:
+                          type: string
+                        minItems: 1
+                        description: |
+                          Includes "VerifiableCredential" and "TokenIssuanceAuthorizationRequest".
+                      issuer:
+                        type: string
+                        description: |
+                          DID or URI of the Asset Provider issuing this TIAR.
+                      validFrom:
+                        type: string
+                        format: date-time
+                      issuanceDate:
+                        type: string
+                        format: date-time
+                      validUntil:
+                        type: string
+                        format: date-time
+                      credentialSubject:
+                        type: object
+                        properties:
+                          assetProvider:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              id:
+                                type: string
+                                description: DID or URI of the Asset Provider issuing this TIAR.
+                              organizationKey:
+                                type: object
+                                properties:
+                                  publicKey:
+                                    type: string
+                                  type:
+                                    type: string
+                                  issued:
+                                    type: string
+                                    format: date-time
+                                required:
+                                  - publicKey
+                                  - issued
+                            required:
+                              - name
+                              - id
+                              - organizationKey
+                          schemaProfile:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uri
+                          networkId:
+                            type: string
+                        required:
+                          - assetProvider
+                          - schemaProfile
+                          - networkId
+                      proof:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          verificationMethod:
+                            type: string
+                          cryptosuite:
+                            type: string
+                            description: |
+                              The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                          created:
+                            type: string
+                            format: date-time
+                          proofPurpose:
+                            type: string
+                          proofValue:
+                            type: string
+                            description: |
+                              The cryptographic proof value, typically a JWS or similar signature.
+                        required:
+                          - type
+                          - verificationMethod
+                          - cryptosuite
+                          - created
+                          - proofPurpose
+                          - ProofValue
+                    required:
+                      - '@context'
+                      - id
+                      - type
+                      - issuer
+                      - issuanceDate
+                      - credentialSubject
+                      - proof
+                  minItems: 1
+                  description: |
+                    Contains the Token Issuance Authorization Request VC issued by the Asset Provider.
+                proof:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    verificationMethod:
+                      type: string
+                    cryptosuite:
+                      type: string
+                      description: |
+                        The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+                    created:
+                      type: string
+                      format: date-time
+                    proofPurpose:
+                      type: string
+                    proofValue:
+                      type: string
+                      description: |
+                        The cryptographic proof value, typically a JWS or similar signature.
+                  required:
+                    - type
+                    - created
+                    - proofPurpose
+                    - proofValue
+              required:
+                - '@context'
+                - type
+                - issuer
+                - proof
+        proof:
+          type: object
+          properties:
+            type:
+              type: string
+            verificationMethod:
+              type: string
+            cryptosuite:
+              type: string
+              description: |
+                The cryptographic suite used for signing, e.g., "eddsa-rdfc-2022".
+            created:
+              type: string
+              format: date-time
+            proofPurpose:
+              type: string
+            proofValue:
+              type: string
+              description: |
+                The cryptographic proof value, typically a JWS or similar signature.
       additionalProperties: true
     CommissionedTokenizedAssetRecordID:
       type: object

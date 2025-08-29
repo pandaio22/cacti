@@ -3,10 +3,12 @@ import {
   TokenIssuanceAuthorization,
   SchemaProfileDidDocument,
   TokenizedAssetRecord,
+  TokenizedAssetRecordDidDocument,
+  TokenizedAssetRecordVerifiableCredential,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import { ValidationResult } from "../../../../../../types/asset-schema-architecture-types.type";
 
-export default interface IAssetProviderService {
+export interface IAssetProviderService {
   createTokenIssuanceAuthorizationRequest(
     networkId: string,
     schemaProfileDidDocument: SchemaProfileDidDocument,
@@ -16,8 +18,15 @@ export default interface IAssetProviderService {
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
   ): Promise<ValidationResult>;
 
-  /*createTokenizedAssetRecord(
+  createTokenizedAssetRecord(
     tokenIssuanceAuthorization: TokenIssuanceAuthorization,
-  ): Promise<TokenizedAssetRecord>;
-  */
+  ): Promise<{
+    tokenizedAssetRecord: TokenizedAssetRecord;
+    tokenizedAssetRecordVerifiableCredential: TokenizedAssetRecordVerifiableCredential;
+    tokenizedAssetRecordDidDocument: TokenizedAssetRecordDidDocument;
+  }>;
+
+  verifyTokenizedAssetRecord(
+    tokenizedAssetRecordVerifiableCredential: TokenizedAssetRecordVerifiableCredential,
+  ): Promise<ValidationResult>;
 }

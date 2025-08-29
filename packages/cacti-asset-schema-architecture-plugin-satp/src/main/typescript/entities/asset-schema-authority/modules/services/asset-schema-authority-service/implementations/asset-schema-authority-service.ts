@@ -15,7 +15,17 @@ import {
   ValidationErrorType,
 } from "../../../../../../types/asset-schema-architecture-types.type";
 import { IAssetSchemaAuthorityService } from "../interfaces/asset-schema-authority-service.interface";
+import { DEFAULT_LOCAL_CONTEXTS } from "../../../../../../utils/defaultLocalContexts";
 
+/**
+ * AssetSchemaAuthorityService
+ * -----------------
+ * Service responsible for certifying Asset Schemas, Schema Profiles, and issuing
+ * Token Issuance Authorizations (TIA) as Verifiable Credentials (VCs), signed by
+ * the Asset Schema Authority.
+ *
+ * Implements the IAssetSchemaAuthorityService interface.
+ */
 export class AssetSchemaAuthorityService
   implements IAssetSchemaAuthorityService
 {
@@ -23,11 +33,17 @@ export class AssetSchemaAuthorityService
   private validationService: ValidationService;
   private verifiableCredentialService: VerifiableCredentialService;
 
+  /**
+   * Constructs an instance of AssetSchemaAuthorityService.
+   * Initializes the validation and verifiable credential services with optional local contexts.
+   *
+   * @param localContexts - Optional local JSON-LD contexts for VC processing.
+   */
   constructor(localContexts?: Record<string, any>) {
-    this.localContexts = localContexts;
-    this.validationService = new ValidationService(localContexts);
+    this.localContexts = localContexts ?? DEFAULT_LOCAL_CONTEXTS;
+    this.validationService = new ValidationService(this.localContexts);
     this.verifiableCredentialService = new VerifiableCredentialService(
-      localContexts,
+      this.localContexts,
     );
   }
   /**

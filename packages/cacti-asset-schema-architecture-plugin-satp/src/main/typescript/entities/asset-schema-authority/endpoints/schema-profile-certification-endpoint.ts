@@ -14,8 +14,11 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { SchemaProfile } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service";
+import {
+  SchemaProfile,
+  CommissionedSchemaProfile,
+} from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 
 export class SchemaProfileCertificationEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "SchemaProfileCertificationEndpoint";
@@ -81,12 +84,20 @@ export class SchemaProfileCertificationEndpoint implements IWebServiceEndpoint {
     const fnTag = `${this.className}#handleRequest()`;
     const reqTag = `${this.getVerbLowerCase()} - ${this.getPath()}`;
     try {
-      const schemaProfile: SchemaProfile = req.body;
+      const { schemaProfile, schemaProfileDidDocument } = req.body;
+      const commissionedSchemaProfile: CommissionedSchemaProfile =
+        await this.assetSchemaAuthorityService.certifySchemaProfile(
+          schemaProfile,
+          schemaProfileDidDocument,
+        );
+      console.log(commissionedSchemaProfile);
+      res.json(commissionedSchemaProfile);
+      /*const schemaProfile: SchemaProfile = req.body;
       const signedSchemaProfile =
         await this.assetSchemaAuthorityService.handleAssetSchemaCertification(
           schemaProfile,
         );
-      res.json(signedSchemaProfile);
+      res.json(signedSchemaProfile);*/
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
       handleRestEndpointException({

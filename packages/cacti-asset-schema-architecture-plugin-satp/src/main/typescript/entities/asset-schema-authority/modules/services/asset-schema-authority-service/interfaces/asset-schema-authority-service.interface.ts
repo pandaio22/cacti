@@ -9,6 +9,19 @@ import {
   TokenIssuanceAuthorizationRequest,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 
+/**
+ * IAssetSchemaAuthorityService
+ * -----------------------------
+ * Interface defining the operations of an Asset Schema Authority Service.
+ *
+ * Responsibilities:
+ * - Certify Asset Schemas by issuing Verifiable Credentials (VCs).
+ * - Certify Schema Profiles by issuing Verifiable Credentials (VCs).
+ * - Issue Token Issuance Authorizations (TIAs) to authorized Asset Providers.
+ *
+ * All issued credentials are valid, signed, and verifiable. Implementers ensure
+ * that all inputs (DID documents, public keys, schema references) meet required specifications.
+ */
 export interface IAssetSchemaAuthorityService {
   /**
    * Certifies an Asset Schema by wrapping it into a Verifiable Credential (VC),

@@ -163,6 +163,7 @@ const VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT = {
     },
   ],
 };
+
 const VALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE = {
   "@context": [
     "https://www.w3.org/ns/did/v1",
@@ -303,6 +304,437 @@ const VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE = {
   assertionMethod: ["did:web:example.com:schema-profile#controller"],
 };
 
+const VALID_TOKENIZED_ASSET_RECORD_DID_DOCUMENT = {
+  "@context": "https://www.w3.org/ns/did/v1",
+  id: "did:example:tar:123456789abcdef",
+  controller: "did:example:provider:abcdef123456",
+  verificationMethod: [
+    {
+      id: "did:example:asset:123456789abcdef#key-1",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:example:asset:123456789abcdef",
+      publicKeyMultibase: "z6Mkj…",
+    },
+  ],
+  authentication: ["did:example:tar:123456789abcdef"],
+  assertionMethod: ["did:example:tar:123456789abcdef"],
+};
+/**
+ * VERIFIABLE CREDENTIALS (VCs)
+ */
+
+const VALID_ASSET_SCHEMA_VERIFIABLE_CREDENTIAL = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.example.org/asset-schema/vc/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+  ],
+  id: "did:web:example.com:asset-schema",
+  type: ["VerifiableCredential", "AssetSchemaVerifiableCredential"],
+  issuer: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+  issuanceDate: "2025-08-29T11:07:37.442Z",
+  credentialSubject: {
+    id: "did:web:example.com:asset-schema",
+    name: "Asset Schema",
+    version: "1.0.0",
+    hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    nonce: "86ec6b8374aeffea52ca3d712a7b70ce",
+    createdBy: "did:web:example.com:asset-schema#controller",
+    schema: {
+      "@context": {
+        "@version": 1.1,
+        asset_schema: "https://schema.org/assetSchema",
+        schema_version: {
+          "@id": "https://schema.org/schemaVersion",
+          "@type": "@id",
+        },
+        foaf: "http://xmlns.com/foaf/0.1/",
+        schema: "http://schema.org/",
+        skos: "http://www.w3.org/2004/02/skos/core#",
+        xsd: "http://www.w3.org/2001/XMLSchema#",
+        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        title: {
+          "@id": "https://schema.org/title",
+          "@type": "schema:string",
+        },
+        fungible: {
+          "@id": "https://example.org/fungibility",
+          "@type": "https://schema.org/Boolean",
+        },
+        organization_key: {
+          "@id": "https://satp.example.org/asset_schema_org_key",
+          "@context": {
+            "@protected": true,
+            id: "@id",
+            type: "@type",
+            public_key: {
+              "@id": "https://gateway.satp.ietf.org/asset_schema_pub_key",
+              "@type": "schema:string",
+            },
+            issued: {
+              "@id": "https://gateway.satp.ietf.org/asset_schema_key_issued",
+              "@type": "schema:string",
+            },
+          },
+        },
+        facets: {
+          "@id": "https://satp.example.org/asset_schema_facets",
+        },
+      },
+      "@id": "did:example:123456789abcdefghi#",
+    },
+  },
+  proof: {
+    type: "Ed25519Signature2020",
+    created: "2025-08-29T11:07:37Z",
+    verificationMethod:
+      "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+    proofPurpose: "assertionMethod",
+    proofValue:
+      "z2wWrrxWxtB5e12ekSPXpstVigNxtfXRxFMYeFGVCti9vKLX6DzAtQk6zYmVmHK2AJrS9RosWRVZReygViTcyDgB1",
+  },
+};
+
+const VALID_SCHEMA_PROFILE_VERIFIABLE_CREDENTIAL = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.example.org/schema-profile/vc/v1",
+    "did:example:123456789abcdefghi#",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+  ],
+  id: "did:web:example.com:schema-profile",
+  type: ["VerifiableCredential", "SchemaProfileVerifiableCredential"],
+  issuer: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+  issuanceDate: "2025-08-29T14:06:13.969Z",
+  credentialSubject: {
+    id: "did:web:example.com:schema-profile",
+    name: "Schema Profile",
+    version: "1.0.0",
+    hash: "2abcb843aa5fcb73522fa94cf703d6d6896f0e0fe3f7a9dfd9c4a6857604345e",
+    nonce: "c975e2f9c5e003b77892bc445c14a38b",
+    createdBy: "did:web:example.com:schema-profile#controller",
+    schema: {
+      "@context": [
+        {
+          "@version": 1.1,
+        },
+        "did:example:123456789abcdefghi#",
+        {
+          dcap: {
+            "@id": "https://www.culture.example.org/asset_profile/dcap",
+            "@context": {
+              rwa: {
+                "@id": "https://www.culture.example.org/asset_profile/rwa",
+                "@context": {
+                  digital_carrier_id: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/digital_carrier_id",
+                    "@type": "schema:string",
+                  },
+                  digital_carrier_type: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/digital_carrier_type",
+                    "@type": "schema:string",
+                  },
+                  rwa_kind: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/rwa_kind",
+                    "@container": "@language",
+                  },
+                  rwa_description: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/rwa_description",
+                    "@container": "@language",
+                  },
+                  rwa_current_storage: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/rwa_current_storage",
+                    "@container": "@language",
+                  },
+                  rwa_storage_location: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/rwa_storage_location",
+                    "@container": "@language",
+                  },
+                },
+              },
+              dar: {
+                "@id": "https://www.culture.example.org/asset_profile/dar",
+                "@context": {
+                  dar_id: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/dar_id",
+                    "@type": "schema:string",
+                  },
+                  dar_system_id: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/dar_system_id",
+                    "@type": "schema:string",
+                  },
+                  dar_url: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/dar_url",
+                    "@type": "schema:url",
+                  },
+                  dar_description: {
+                    "@id":
+                      "https://www.culture.example.org/asset_profile/dar_description",
+                    "@container": "@language",
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          tokenized_issuance_authorization:
+            "https://example.org/tokenissuanceauthorization",
+        },
+        {
+          schema_profile: "https://example.org/schemaprofile",
+        },
+      ],
+      "@id": "did:example:56745689abcdefghi",
+      title: "Asset Profile for Cultural Assets",
+      asset_schema: "did:example:123456789abcdefghi#assetSchema",
+      fungible: false,
+      organization_key: {
+        public_key: "did:example:abc123#keys-1",
+        issued: "2025-08-12T12:00:00Z",
+      },
+      facets: {
+        owner_transferability: "non-transferable",
+        network_transferability: "evm_compatible_network",
+        jurisdiction: {
+          ownerJurisdictionScope: {
+            law: "https://www.officialjoutrnal.example.org/eli/law/yyyy/nnnn/enacted/data.json",
+            territory: "Some country",
+          },
+        },
+      },
+    },
+    assetSchema: "did:example:123456789abcdefghi#",
+  },
+  proof: {
+    type: "Ed25519Signature2020",
+    created: "2025-08-29T14:06:13Z",
+    verificationMethod:
+      "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+    proofPurpose: "assertionMethod",
+    proofValue:
+      "z443xbnZKRMGnuL6PiQUHTfKjDmRHuLtY9XcaDdLmtbhHA1wtjdUU3kskh36P6tg7HbCpaVaXRiXRQRU63Twgi8Nq",
+  },
+};
+
+const VALID_TOKENIZED_ASSET_RECORD_VERIFIABLE_CREDENTIAL = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.example.org/schema-profile/vc/v1",
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+  ],
+  id: "did:example:tar:123456789abcdef",
+  type: ["VerifiableCredential", "TokenizedAssetRecordVerifiableCredential"],
+  issuer: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+  issuanceDate: "2025-08-29T16:49:25.511Z",
+  credentialSubject: {
+    id: "did:example:tar:123456789abcdef",
+    name: "Tokenized Asset Record Example",
+    version: "1.0.0",
+    hash: "0dd3fd52a42354fc53b403664ef6e83a3fdc561f892389f84f7de568c742b930",
+    nonce: "707f00651d3a048db748681e9882129a",
+    createdBy: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+    schemaProfile: {
+      id: "did:web:example.com:schema-profile",
+    },
+    tokenIssuanceAuthorization: {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://www.example.org/schema-profile/vc/v1",
+        "did:example:123456789abcdefghi#",
+        "https://w3id.org/security/suites/ed25519-2020/v1",
+      ],
+      id: "urn:uuid:b5344610-7381-4123-80b1-59c67f3feee0",
+      type: ["VerifiableCredential", "TokenIssuanceAuthorization"],
+      issuer: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+      issuanceDate: "2025-08-29T14:16:15.645Z",
+      credentialSubject: {
+        tokenIssuanceAuthorizationRequest: {
+          "@context": [
+            "https://www.w3.org/2018/credentials/v1",
+            "https://www.example.org/schema-profile/vc/v1",
+            "https://www.w3.org/ns/did/v1",
+            "https://w3id.org/security/suites/ed25519-2020/v1",
+          ],
+          id: "https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+          type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+          issuer: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+          issuanceDate: "2025-08-26T15:32:32.797Z",
+          credentialSubject: {
+            id: "did:web:example.com:schema-profile",
+            assetProvider: {
+              name: "Example Provider",
+              id: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+              organizationKey: {
+                publicKey: "z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+                type: "Ed25519VerificationKey2020",
+                issued: "2025-08-20T15:32:32.797Z",
+              },
+            },
+            networkId: "Ethereum",
+            name: "Token Issuance Authorization Request",
+            version: "1.0.0",
+            hash: "cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+            nonce: "179e76d999fa7c6edb9f09296dc9dfbf",
+            createdBy:
+              "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+            schema: "did:web:example.com:schema-profile",
+            schemaProfile: {
+              id: "did:web:example.com:schema-profile",
+            },
+          },
+          proof: {
+            type: "Ed25519Signature2020",
+            cryptosuite: "Ed25519Signature2020",
+            created: "2025-08-26T15:32:32Z",
+            verificationMethod:
+              "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+            proofPurpose: "assertionMethod",
+            proofValue:
+              "z2ViKtjuZtqF77XTT2oQTNm6SdNbu9CcDNwSes2EWN5jduUKBhaPoKwKQMNELpXzf6iEoq3ogFRQpTxhcU7dpMGiD",
+          },
+        },
+        hash: "a8ba20589496418073e53b1d138a2d92f68ab4208c03265fa8b5dc9aa16215cf",
+        nonce: "c2bb77aebbafef2ece4ac44c78f94bcc",
+        createdBy: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+      },
+      proof: {
+        type: "Ed25519Signature2020",
+        created: "2025-08-29T14:16:15Z",
+        verificationMethod:
+          "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+        proofPurpose: "assertionMethod",
+        proofValue:
+          "zHZYLjVHxJptk2TaX97PVKAWsycpqPZu6CbHUqDyDB7j89iWhAVsQjUa9YbivZRQXGFKGGZJd9B6rwett942bxRT",
+      },
+    },
+    tokenizedAssetRecord: {
+      "@context": [
+        {
+          "@version": 1.1,
+        },
+        "did:example:56745689abcdefghi#",
+      ],
+      schema_profile: "did:example:56745689abcdefghi#schema-profile",
+      token_issuance_authorization: {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.example.org/schema-profile/vc/v1",
+          "did:example:123456789abcdefghi#",
+          "https://w3id.org/security/suites/ed25519-2020/v1",
+        ],
+        id: "urn:uuid:b5344610-7381-4123-80b1-59c67f3feee0",
+        type: ["VerifiableCredential", "TokenIssuanceAuthorization"],
+        issuer: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+        issuanceDate: "2025-08-29T14:16:15.645Z",
+        credentialSubject: {
+          tokenIssuanceAuthorizationRequest: {
+            "@context": [
+              "https://www.w3.org/2018/credentials/v1",
+              "https://www.example.org/schema-profile/vc/v1",
+              "https://www.w3.org/ns/did/v1",
+              "https://w3id.org/security/suites/ed25519-2020/v1",
+            ],
+            id: "https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+            type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+            issuer: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+            issuanceDate: "2025-08-26T15:32:32.797Z",
+            credentialSubject: {
+              id: "did:web:example.com:schema-profile",
+              assetProvider: {
+                name: "Example Provider",
+                id: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+                organizationKey: {
+                  publicKey: "z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+                  type: "Ed25519VerificationKey2020",
+                  issued: "2025-08-20T15:32:32.797Z",
+                },
+              },
+              networkId: "Ethereum",
+              name: "Token Issuance Authorization Request",
+              version: "1.0.0",
+              hash: "cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+              nonce: "179e76d999fa7c6edb9f09296dc9dfbf",
+              createdBy:
+                "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+              schema: "did:web:example.com:schema-profile",
+              schemaProfile: {
+                id: "did:web:example.com:schema-profile",
+              },
+            },
+            proof: {
+              type: "Ed25519Signature2020",
+              cryptosuite: "Ed25519Signature2020",
+              created: "2025-08-26T15:32:32Z",
+              verificationMethod:
+                "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+              proofPurpose: "assertionMethod",
+              proofValue:
+                "z2ViKtjuZtqF77XTT2oQTNm6SdNbu9CcDNwSes2EWN5jduUKBhaPoKwKQMNELpXzf6iEoq3ogFRQpTxhcU7dpMGiD",
+            },
+          },
+          hash: "a8ba20589496418073e53b1d138a2d92f68ab4208c03265fa8b5dc9aa16215cf",
+          nonce: "c2bb77aebbafef2ece4ac44c78f94bcc",
+          createdBy: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+        },
+        proof: {
+          type: "Ed25519Signature2020",
+          created: "2025-08-29T14:16:15Z",
+          verificationMethod:
+            "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+          proofPurpose: "assertionMethod",
+          proofValue:
+            "zHZYLjVHxJptk2TaX97PVKAWsycpqPZu6CbHUqDyDB7j89iWhAVsQjUa9YbivZRQXGFKGGZJd9B6rwett942bxRT",
+        },
+      },
+      dcap: {
+        rwa: {
+          digital_carrier_id: "E492069BT491278256346325",
+          digital_carrier_type: "rfid_tag",
+          rwa_kind: {
+            en: "Various cases",
+          },
+          rwa_description: {
+            en: "Blue velvet jewelry box with fabric lining on the inside. The metal edges in gold colour can be seen at the application point of the hinged cover.",
+          },
+          rwa_current_storage: {
+            en: "Former Royal Estate",
+          },
+          rwa_storage_location: {
+            en: "Former Royal Estate, Box XX",
+          },
+        },
+        dcar: {
+          dar_id: "911024",
+          dar_system_id: "5TDYIU",
+          dar_url: "https://www.culture.example.org/doi/5TDYIU/911024",
+          dar_description: {
+            en: " Blue velvet jewelry box with fabric lining inside.",
+          },
+        },
+      },
+    },
+  },
+  proof: {
+    type: "Ed25519Signature2020",
+    created: "2025-08-29T16:49:25Z",
+    verificationMethod:
+      "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+    proofPurpose: "assertionMethod",
+    proofValue:
+      "z3QhUzXMcda5qPnVjz46vFpBjDTWsEg7fPCRzwMyhHuSrZHg4CLbuXhERbEpjc4qbzN8NuY7ZB6sM6uXP8FBWa7JR",
+  },
+};
 /**
  * SCHEMAS
  */
@@ -751,6 +1183,77 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION = {
   },
 };
 
+const VALID_TOKEN_ISSUANCE_AUTHORIZATION_TEST = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.example.org/schema-profile/vc/v1",
+    "did:example:123456789abcdefghi#",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+  ],
+  id: "urn:uuid:b5344610-7381-4123-80b1-59c67f3feee0",
+  type: ["VerifiableCredential", "TokenIssuanceAuthorization"],
+  issuer: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+  issuanceDate: "2025-08-29T14:16:15.645Z",
+  credentialSubject: {
+    tokenIssuanceAuthorizationRequest: {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://www.example.org/schema-profile/vc/v1",
+        "https://www.w3.org/ns/did/v1",
+        "https://w3id.org/security/suites/ed25519-2020/v1",
+      ],
+      id: "https://www.example.org/token-issuance-authorization-request/cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+      type: ["VerifiableCredential", "TokenIssuanceAuthorizationRequest"],
+      issuer: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+      issuanceDate: "2025-08-26T15:32:32.797Z",
+      credentialSubject: {
+        id: "did:web:example.com:schema-profile",
+        assetProvider: {
+          name: "Example Provider",
+          id: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+          organizationKey: {
+            publicKey: "z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+            type: "Ed25519VerificationKey2020",
+            issued: "2025-08-20T15:32:32.797Z",
+          },
+        },
+        networkId: "Ethereum",
+        name: "Token Issuance Authorization Request",
+        version: "1.0.0",
+        hash: "cdf2913a32fe6a8b7b93340a4d9f8c5324eef1d2d293ac9bd6c449f969d664a9",
+        nonce: "179e76d999fa7c6edb9f09296dc9dfbf",
+        createdBy: "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+        schema: "did:web:example.com:schema-profile",
+        schemaProfile: {
+          id: "did:web:example.com:schema-profile",
+        },
+      },
+      proof: {
+        type: "Ed25519Signature2020",
+        cryptosuite: "Ed25519Signature2020",
+        created: "2025-08-26T15:32:32Z",
+        verificationMethod:
+          "did:key:z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV#z6MkjCTVAV3Md4RoTA9oRg5hVaQXKiKWuwCfAbYPyFzQNvHV",
+        proofPurpose: "assertionMethod",
+        proofValue:
+          "z2ViKtjuZtqF77XTT2oQTNm6SdNbu9CcDNwSes2EWN5jduUKBhaPoKwKQMNELpXzf6iEoq3ogFRQpTxhcU7dpMGiD",
+      },
+    },
+    hash: "a8ba20589496418073e53b1d138a2d92f68ab4208c03265fa8b5dc9aa16215cf",
+    nonce: "c2bb77aebbafef2ece4ac44c78f94bcc",
+    createdBy: "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+  },
+  proof: {
+    type: "Ed25519Signature2020",
+    created: "2025-08-29T14:16:15Z",
+    verificationMethod:
+      "did:key:z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J#z6Mkfyv8zT7vg2zDTzTfv3MBhWsyxHFY3mMnfMv6xAaepc8J",
+    proofPurpose: "assertionMethod",
+    proofValue:
+      "zHZYLjVHxJptk2TaX97PVKAWsycpqPZu6CbHUqDyDB7j89iWhAVsQjUa9YbivZRQXGFKGGZJd9B6rwett942bxRT",
+  },
+};
+
 const VALID_TOKENIZED_ASSET_RECORD_EXAMPLE = {
   "@context": [{ "@version": 1.1 }, "did:example:56745689abcdefghi#"],
   schema_profile: "did:example:56745689abcdefghi#schema-profile",
@@ -816,6 +1319,8 @@ export {
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_SCHEMA_VERIFIABLE_CREDENTIAL,
+  VALID_TOKENIZED_ASSET_RECORD_VERIFIABLE_CREDENTIAL,
   VALID_ASSET_SCHEMA_EXAMPLE,
   INVALID_ASSET_SCHEMA_EXAMPLE,
   VALID_ASSET_SCHEMA_DID_DOCUMENT,
@@ -823,11 +1328,14 @@ export {
   INVALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_SCHEMA_PROFILE_VERIFIABLE_CREDENTIAL,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_TEST,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+  VALID_TOKENIZED_ASSET_RECORD_DID_DOCUMENT,
   VALID_ASSET_SCHEMA_AUTHORITY_CERTIFICATE_EXAMPLE,
   VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE,
 };

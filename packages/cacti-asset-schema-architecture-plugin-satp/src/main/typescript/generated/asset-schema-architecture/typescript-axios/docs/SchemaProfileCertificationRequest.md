@@ -1,12 +1,12 @@
 # SchemaProfileCertificationRequest
 
-Structure of a valid Schema Profile (JSON-LD format)
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestContext**](AssetSchemaCertificationRequestContext.md) |  | [default to undefined]
+**schemaProfile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [default to undefined]
+**schemaProfileDidDocument** | [**SchemaProfileCertificationRequestSchemaProfileDidDocument**](SchemaProfileCertificationRequestSchemaProfileDidDocument.md) |  | [default to undefined]
 
 ## Example
 
@@ -14,7 +14,8 @@ Name | Type | Description | Notes
 import { SchemaProfileCertificationRequest } from './api';
 
 const instance: SchemaProfileCertificationRequest = {
-    context,
+    schemaProfile,
+    schemaProfileDidDocument,
 };
 ```
 

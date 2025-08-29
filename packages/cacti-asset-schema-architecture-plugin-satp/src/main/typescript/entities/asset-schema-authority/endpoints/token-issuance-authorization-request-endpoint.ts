@@ -15,8 +15,11 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { TokenIssuanceAuthorizationRequest } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service";
+import {
+  TokenIssuanceAuthorizationRequest,
+  TokenIssuanceAuthorization,
+} from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 
 export class TokenIssuanceAuthorizationRequestEndpoint
   implements IWebServiceEndpoint
@@ -87,11 +90,18 @@ export class TokenIssuanceAuthorizationRequestEndpoint
     try {
       const tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest =
         req.body;
-      const tokenIssuanceAuthorization =
+      const tokenIssuanceAuthorization: TokenIssuanceAuthorization =
+        await this.assetSchemaAuthorityService.requestTokenIssuanceAuthorization(
+          tokenIssuanceAuthorizationRequest,
+        );
+      res.json(tokenIssuanceAuthorization);
+
+      /*const tokenIssuanceAuthorization =
         await this.assetSchemaAuthorityService.handleTokenIssuanceAuthorizationRequest(
           tokenIssuanceAuthorizationRequest,
         );
       res.json(tokenIssuanceAuthorization);
+      */
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
       handleRestEndpointException({

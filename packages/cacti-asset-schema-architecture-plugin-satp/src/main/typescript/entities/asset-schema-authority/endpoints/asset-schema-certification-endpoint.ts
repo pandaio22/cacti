@@ -14,8 +14,11 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { AssetSchema } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service";
+import {
+  AssetSchema,
+  CommissionedAssetSchema,
+} from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { AssetSchemaAuthorityService } from "../modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 
 export class AssetSchemaCertificationEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "AssetSchemaCertificationEndpoint";
@@ -81,12 +84,20 @@ export class AssetSchemaCertificationEndpoint implements IWebServiceEndpoint {
     const fnTag = `${this.className}#handleRequest()`;
     const reqTag = `${this.getVerbLowerCase()} - ${this.getPath()}`;
     try {
-      const assetSchema: AssetSchema = req.body;
+      const { assetSchema, assetSchemaDidDocument } = req.body;
+      const commissionedAssetSchema: CommissionedAssetSchema =
+        await this.assetSchemaAuthorityService.certifyAssetSchema(
+          assetSchema,
+          assetSchemaDidDocument,
+        );
+      console.log(commissionedAssetSchema);
+      res.json(commissionedAssetSchema);
+      /*const assetSchema: AssetSchema = req.body;
       const signedAssetSchema =
         await this.assetSchemaAuthorityService.handleAssetSchemaCertification(
           assetSchema,
         );
-      res.json(signedAssetSchema);
+      res.json(signedAssetSchema);*/
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
       handleRestEndpointException({

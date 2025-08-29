@@ -9,7 +9,9 @@ import {
   INVALID_ASSET_SCHEMA_AUTHORITY_DID_DOCUMENT_EXAMPLE,
   VALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
   INVALID_ASSET_PROVIDER_DID_DOCUMENT_EXAMPLE,
+  VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
+  VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
   VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION,
@@ -137,12 +139,49 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should validate Asset Schema: Given a valid signed Asset Schema, When executing validateAssetSchema, Then return Valid", async () => {
+  it("should validate Asset Schema: Given a valid Asset Schema, When executing validateAssetSchema, Then return Valid", async () => {
+    // Given
+    registryValidationService = new ValidationService();
+
+    // When
+    const result = await registryValidationService.validateAssetSchema(
+      VALID_ASSET_SCHEMA_EXAMPLE,
+    );
+
+    // Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
+  });
+
+  it("should fail Asset Schema validation: Given an invalid Asset Schema, When executing validateAssetSchema, Then return Invalid", async () => {
+    // Given
+    const contexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://example.org/AssetSchemaAuthority":
+        assetSchemaAuthorityCertificateContext,
+    };
+    registryValidationService = new ValidationService(contexts);
+
+    // When
+    const result = await registryValidationService.validateAssetSchema(
+      null as unknown as typeof VALID_ASSET_SCHEMA_EXAMPLE,
+    );
+
+    // Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
+  });
+
+  it("should validate Signed Asset Schema: Given a valid signed Asset Schema, When executing validateAssetSchema, Then return Valid", async () => {
     //Given
     registryValidationService = new ValidationService();
 
     //When
-    const result = await registryValidationService.validateAssetSchema(
+    const result = await registryValidationService.validateSignedAssetSchema(
       VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
     );
 
@@ -153,7 +192,7 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should fail Asset Schema validation: Given an invalid signed Asset Schema, When executing validateAssetSchema, Then return Invalid", async () => {
+  it("should fail Signed Asset Schema validation: Given an invalid signed Asset Schema, When executing validateAssetSchema, Then return Invalid", async () => {
     //Given
     const contexts: Record<string, any> = {
       "https://www.w3.org/ns/did/v1": didV1Context,
@@ -164,7 +203,7 @@ describe("Registry Validation Service", () => {
     registryValidationService = new ValidationService(contexts);
 
     //When
-    const result = await registryValidationService.validateAssetSchema(
+    const result = await registryValidationService.validateSignedAssetSchema(
       null as unknown as typeof VALID_SIGNED_ASSET_SCHEMA_EXAMPLE,
     );
 
@@ -175,7 +214,7 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should validate Schema Profile: Given a valid signed Schema Profile, When executing validateSchemaProfile, Then return Valid", async () => {
+  it("should validate Schema Profile: Given a valid Schema Profile, When executing validateSchemaProfile, Then return Valid", async () => {
     //Given
     const contexts: Record<string, any> = {
       "did:example:123456789abcdefghi#": assetSchemaContext,
@@ -186,6 +225,48 @@ describe("Registry Validation Service", () => {
 
     //When
     const result = await registryValidationService.validateSchemaProfile(
+      VALID_SCHEMA_PROFILE_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toBeUndefined();
+    expect(result.details).toBeDefined();
+  });
+
+  it("should fail Schema Profile validation: Given an invalid Schema Profile, When executing validateSchemaProfile, Then return Invalid", async () => {
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateSchemaProfile(
+      null as unknown as typeof VALID_SCHEMA_PROFILE_EXAMPLE,
+    );
+
+    //Then
+    console.debug("Validation Result:", result);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toBeDefined();
+    expect(result.details).toBeDefined();
+  });
+
+  it("should validate Signed Schema Profile: Given a valid signed Schema Profile, When executing validateSchemaProfile, Then return Valid", async () => {
+    //Given
+    const contexts: Record<string, any> = {
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      //"https://example.com/context/asset-schema": require("./contexts/asset-schema.jsonld"),
+    };
+
+    registryValidationService = new ValidationService(contexts);
+
+    //When
+    const result = await registryValidationService.validateSignedSchemaProfile(
       VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
     );
 
@@ -196,7 +277,7 @@ describe("Registry Validation Service", () => {
     expect(result.details).toBeDefined();
   });
 
-  it("should fail Schema Profile validation: Given an invalid signed Schema Profile, When executing validateSchemaProfile, Then return Invalid", async () => {
+  it("should fail Signed Schema Profile validation: Given an invalid signed Schema Profile, When executing validateSchemaProfile, Then return Invalid", async () => {
     //Given
     const contexts: Record<string, any> = {
       "did:example:123456789abcdefghi#": assetSchemaContext,
@@ -206,7 +287,7 @@ describe("Registry Validation Service", () => {
     registryValidationService = new ValidationService(contexts);
 
     //When
-    const result = await registryValidationService.validateSchemaProfile(
+    const result = await registryValidationService.validateSignedSchemaProfile(
       null as unknown as typeof VALID_SIGNED_SCHEMA_PROFILE_EXAMPLE,
     );
 

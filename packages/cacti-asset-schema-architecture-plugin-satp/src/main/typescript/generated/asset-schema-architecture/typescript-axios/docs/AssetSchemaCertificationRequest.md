@@ -1,12 +1,12 @@
 # AssetSchemaCertificationRequest
 
-Structure of a valid Asset Schema (JSON-LD format)
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestContext**](AssetSchemaCertificationRequestContext.md) |  | [default to undefined]
+**assetSchema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
+**assetSchemaDidDocument** | [**AssetSchemaCertificationRequestAssetSchemaDidDocument**](AssetSchemaCertificationRequestAssetSchemaDidDocument.md) |  | [default to undefined]
 
 ## Example
 
@@ -14,7 +14,8 @@ Name | Type | Description | Notes
 import { AssetSchemaCertificationRequest } from './api';
 
 const instance: AssetSchemaCertificationRequest = {
-    context,
+    assetSchema,
+    assetSchemaDidDocument,
 };
 ```
 

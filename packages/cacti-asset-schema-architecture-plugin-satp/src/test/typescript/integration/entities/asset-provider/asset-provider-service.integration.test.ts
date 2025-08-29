@@ -7,6 +7,8 @@ import {
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
   VALID_SCHEMA_PROFILE_EXAMPLE,
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION,
+  VALID_TOKEN_ISSUANCE_AUTHORIZATION_TEST,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION,
   //VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST,
 } from "../../../constants/constants";
@@ -131,18 +133,16 @@ describe("Asset Provider Service", () => {
     // Given
     const networkId = "Ethereum";
     const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
-    assetProviderService = new AssetProviderService(localContextsMap);
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
+    assetProviderService = new AssetProviderService(localContexts);
 
     // When
     const tokenIssuanceAuthorizationRequest =
@@ -176,19 +176,17 @@ describe("Asset Provider Service", () => {
       ...VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
       id: null,
     };
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-        "did:example:123456789abcdefghi#": assetSchemaContext,
-      }),
-    );
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+    };
 
-    assetProviderService = new AssetProviderService(localContextsMap);
+    assetProviderService = new AssetProviderService(localContexts);
 
     // When & Then
     await expect(
@@ -203,17 +201,15 @@ describe("Asset Provider Service", () => {
     // Given
     const networkId = "Ethereum";
     const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-      }),
-    );
-    assetProviderService = new AssetProviderService(localContextsMap);
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+    };
+    assetProviderService = new AssetProviderService(localContexts);
 
     const tokenIssuanceAuthorizationRequest =
       await assetProviderService.createTokenIssuanceAuthorizationRequest(
@@ -235,17 +231,15 @@ describe("Asset Provider Service", () => {
     // Given
     const networkId = "Ethereum";
     const schemaProfileDidDocument = VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE;
-    const localContextsMap = new Map(
-      Object.entries({
-        "https://www.w3.org/ns/did/v1": didV1Context,
-        "https://www.w3.org/2018/credentials/v1":
-          verifiableCredentialsContextTest,
-        "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
-        "https://www.example.org/schema-profile/vc/v1":
-          schemaProfileVerifiableCredentialContext,
-      }),
-    );
-    assetProviderService = new AssetProviderService(localContextsMap);
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+    };
+    assetProviderService = new AssetProviderService(localContexts);
 
     const tokenIssuanceAuthorizationRequest =
       await assetProviderService.createTokenIssuanceAuthorizationRequest(
@@ -276,4 +270,107 @@ describe("Asset Provider Service", () => {
   // ------------------------------------
   // Tokenized Asset Record
   // ------------------------------------
+
+  it("should create a TokenenizedAssetRecord: Given a valid TokenIssuanceAuthorization, When executing createTokenIssuanceAuthorizationRequest, Then return a valid TokenizedAssetRecord, TokenizedAssetRecordDidDocument and TokenizedAssetRecordVerifiableCredential", async () => {
+    // Given
+    const tokenIssuanceAuthorization = VALID_TOKEN_ISSUANCE_AUTHORIZATION_TEST;
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+    assetProviderService = new AssetProviderService(localContexts);
+
+    // When
+    const {
+      tokenizedAssetRecord,
+      tokenizedAssetRecordVerifiableCredential,
+      tokenizedAssetRecordDidDocument,
+    } = await assetProviderService.createTokenizedAssetRecord(
+      tokenIssuanceAuthorization,
+    );
+
+    // Then
+    expect(tokenizedAssetRecord).toBeDefined();
+    expect(tokenizedAssetRecordDidDocument).toBeDefined();
+    expect(tokenizedAssetRecordVerifiableCredential).toBeDefined();
+    expect(tokenizedAssetRecordVerifiableCredential).toHaveProperty("@context");
+    expect(tokenizedAssetRecordVerifiableCredential).toHaveProperty("id");
+    expect(tokenizedAssetRecordVerifiableCredential).toHaveProperty("type");
+    expect(tokenizedAssetRecordVerifiableCredential.type).toContain(
+      "VerifiableCredential",
+    );
+    expect(tokenizedAssetRecordVerifiableCredential.type).toContain(
+      "TokenizedAssetRecordVerifiableCredential",
+    );
+    expect(tokenizedAssetRecordVerifiableCredential).toHaveProperty(
+      "credentialSubject",
+    );
+    expect(tokenizedAssetRecordVerifiableCredential).toHaveProperty("proof");
+    expect(tokenizedAssetRecordVerifiableCredential.proof).toHaveProperty(
+      "type",
+    );
+  });
+
+  it("should fail to create a TokenizedAssetRecord: Given an invalid TokenIssuanceAuthorization, When executing createTokenizedAssetRecord, Then should throw an exception", async () => {
+    // Given
+    const invalidTokenIssuanceAuthorization = null;
+
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+
+    assetProviderService = new AssetProviderService(localContexts);
+
+    // When & Then
+    await expect(
+      assetProviderService.createTokenizedAssetRecord(
+        invalidTokenIssuanceAuthorization as any,
+      ),
+    ).rejects.toThrowError(/Missing Required Inputs|Invalid/); // adjust regex if needed
+  });
+
+  it("should verify a TokenenizedAssetRecord: Given a valid TokenenizedAssetRecord, When executing verifyTokenenizedAssetRecord, Then return a valid ValidationResult", async () => {
+    // Given
+    const tokenIssuanceAuthorization = VALID_TOKEN_ISSUANCE_AUTHORIZATION_TEST;
+    const localContexts: Record<string, any> = {
+      "https://www.w3.org/ns/did/v1": didV1Context,
+      "https://www.w3.org/2018/credentials/v1":
+        verifiableCredentialsContextTest,
+      "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
+      "https://www.example.org/schema-profile/vc/v1":
+        schemaProfileVerifiableCredentialContext,
+      "did:example:123456789abcdefghi#": assetSchemaContext,
+      "did:example:56745689abcdefghi#": schemaProfileContext,
+    };
+    assetProviderService = new AssetProviderService(localContexts);
+
+    const {
+      tokenizedAssetRecord,
+      tokenizedAssetRecordVerifiableCredential,
+      tokenizedAssetRecordDidDocument,
+    } = await assetProviderService.createTokenizedAssetRecord(
+      tokenIssuanceAuthorization,
+    );
+
+    // When
+    const result = await assetProviderService.verifyTokenizedAssetRecord(
+      tokenizedAssetRecordVerifiableCredential,
+    );
+
+    // Then
+    expect(result.valid).toBe(true);
+  });
 });

@@ -1,14 +1,21 @@
 import {
-  SignedAssetSchema,
+  AssetSchema,
   TokenIssuanceAuthorization,
   TokenizedAssetRecord,
-  SignedSchemaProfile,
+  SchemaProfile,
   AssetSchemaAuthorityCertificate,
   AssetProviderCertificate,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 import { ValidationResult } from "../../../../../../types/asset-schema-architecture-types.type";
 
-export default interface IValidationService {
+/**
+ * IValidationService
+ * -----------------
+ * Interface defining a validation service for various data structures and digital assets.
+ * Implementers of this interface provide methods to validate JSON-LD objects,
+ * asset schemas, schema profiles, tokenized asset records, and various types of certificates.
+ */
+export interface IValidationService {
   /**
    * Validates a JSON-LD object against various criteria.
    * @param jsonLdObject The JSON-LD object to validate.
@@ -25,12 +32,10 @@ export default interface IValidationService {
 
   /**
    * Validates an Asset Schema.
-   * @param signedAssetSchema The Asset Schema to validate.
+   * @param assetSchema The Asset Schema to validate.
    * @returns A promise that resolves to a ValidationResult indicating the validity of the Asset Schema.
    */
-  validateAssetSchema(
-    signedAssetSchema: SignedAssetSchema,
-  ): Promise<ValidationResult>;
+  validateAssetSchema(assetSchema: AssetSchema): Promise<ValidationResult>;
 
   /**
    * Validates a Schema Profile.
@@ -38,7 +43,7 @@ export default interface IValidationService {
    * @returns A promise that resolves to a ValidationResult indicating the validity of the Schema Profile.
    */
   validateSchemaProfile(
-    signedSchemaProfile: SignedSchemaProfile,
+    schemaProfile: SchemaProfile,
   ): Promise<ValidationResult>;
 
   /**

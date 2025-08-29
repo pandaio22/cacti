@@ -11,7 +11,6 @@ import {
 } from "../../../constants/constants";
 
 import { AssetSchemaAuthorityService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
-import { ValidationErrorDetail } from "../../../../../main/typescript/types/asset-schema-architecture-types.type";
 
 describe("Asset Schema Authority Service", () => {
   const TIMEOUT: number = 50000000;

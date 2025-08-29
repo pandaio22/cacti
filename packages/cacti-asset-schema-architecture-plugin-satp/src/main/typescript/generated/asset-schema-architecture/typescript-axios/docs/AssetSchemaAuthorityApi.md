@@ -9,7 +9,7 @@ All URIs are relative to *http://localhost:3000/api/@hyperledger/cacti-asset-sch
 |[**schemaProfileCertification**](#schemaprofilecertification) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/schema-profile-certification | Schema Profile Certification|
 
 # **assetSchemaCertification**
-> CommissionAssetSchemaRequest assetSchemaCertification(commissionAssetSchemaRequestAssetSchema)
+> AssetSchemaCertification200Response assetSchemaCertification(assetSchemaCertificationRequest)
 
 This endpoint allows a client to send an asset schema to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the asset schema, and includes it in the response. 
 
@@ -19,16 +19,16 @@ This endpoint allows a client to send an asset schema to be certified by the Ass
 import {
     AssetSchemaAuthorityApi,
     Configuration,
-    CommissionAssetSchemaRequestAssetSchema
+    AssetSchemaCertificationRequest
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new AssetSchemaAuthorityApi(configuration);
 
-let commissionAssetSchemaRequestAssetSchema: CommissionAssetSchemaRequestAssetSchema; //
+let assetSchemaCertificationRequest: AssetSchemaCertificationRequest; //
 
 const { status, data } = await apiInstance.assetSchemaCertification(
-    commissionAssetSchemaRequestAssetSchema
+    assetSchemaCertificationRequest
 );
 ```
 
@@ -36,12 +36,12 @@ const { status, data } = await apiInstance.assetSchemaCertification(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **commissionAssetSchemaRequestAssetSchema** | **CommissionAssetSchemaRequestAssetSchema**|  | |
+| **assetSchemaCertificationRequest** | **AssetSchemaCertificationRequest**|  | |
 
 
 ### Return type
 
-**CommissionAssetSchemaRequest**
+**AssetSchemaCertification200Response**
 
 ### Authorization
 
@@ -117,7 +117,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **schemaProfileCertification**
-> CommissionSchemaProfileRequest schemaProfileCertification(commissionSchemaProfileRequestSchemaProfile)
+> CommissionSchemaProfileRequest schemaProfileCertification(schemaProfileCertificationRequest)
 
 This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
 
@@ -127,16 +127,16 @@ This endpoint allows a client to send a schema profile to be certified by the As
 import {
     AssetSchemaAuthorityApi,
     Configuration,
-    CommissionSchemaProfileRequestSchemaProfile
+    SchemaProfileCertificationRequest
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new AssetSchemaAuthorityApi(configuration);
 
-let commissionSchemaProfileRequestSchemaProfile: CommissionSchemaProfileRequestSchemaProfile; //
+let schemaProfileCertificationRequest: SchemaProfileCertificationRequest; //
 
 const { status, data } = await apiInstance.schemaProfileCertification(
-    commissionSchemaProfileRequestSchemaProfile
+    schemaProfileCertificationRequest
 );
 ```
 
@@ -144,7 +144,7 @@ const { status, data } = await apiInstance.schemaProfileCertification(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **commissionSchemaProfileRequestSchemaProfile** | **CommissionSchemaProfileRequestSchemaProfile**|  | |
+| **schemaProfileCertificationRequest** | **SchemaProfileCertificationRequest**|  | |
 
 
 ### Return type
