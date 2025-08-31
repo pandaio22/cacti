@@ -589,6 +589,29 @@ AssetSchemaVerifiableCredential:
             The cryptographic proof value, typically a JWS or similar signature.
   additionalProperties: true
 
+RegisteredAssetSchema:
+  type: object
+  description: >
+    RegisteredAssetSchema represents a persistable wrapper for an Asset Schema,
+    including its DID Document and Verifiable Credential.
+  required:
+    - did
+    - assetSchema
+    - assetSchemaDidDocument
+    - assetSchemaVerifiableCredential
+  properties:
+    did:
+      type: string
+      description: The DID of this asset schema
+      example: "did:web:example.com:asset-schema"
+    assetSchema:
+      $ref: '#/AssetSchema'
+    assetSchemaDidDocument:
+      $ref: '#/AssetSchemaDidDocument'
+    assetSchemaVerifiableCredential:
+      $ref: '#/AssetSchemaVerifiableCredential'
+
+
 SignedAssetSchema:
   type: object
   properties:

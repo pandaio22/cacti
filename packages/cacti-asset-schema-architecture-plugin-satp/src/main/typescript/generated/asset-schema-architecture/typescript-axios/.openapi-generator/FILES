@@ -66,6 +66,8 @@ docs/RegisterTokenIssuanceAuthorizationRequestCredentialSubjectTokenIssuanceAuth
 docs/RegisterTokenIssuanceAuthorizationRequestProof.md
 docs/RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md
 docs/RegisteredAssetProviderID.md
+docs/RegisteredAssetSchema.md
+docs/RegisteredAssetSchemaAssetSchemaVerifiableCredential.md
 docs/RegisteredAssetSchemaAuthorityID.md
 docs/RegistryApi.md
 docs/SchemaProfile.md

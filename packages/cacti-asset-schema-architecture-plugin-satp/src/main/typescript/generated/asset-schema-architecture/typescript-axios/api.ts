@@ -1738,6 +1738,94 @@ export interface RegisteredAssetProviderID {
     'type': string;
 }
 /**
+ * RegisteredAssetSchema represents a persistable wrapper for an Asset Schema, including its DID Document and Verifiable Credential. 
+ * @export
+ * @interface RegisteredAssetSchema
+ */
+export interface RegisteredAssetSchema {
+    /**
+     * The DID of this asset schema
+     * @type {string}
+     * @memberof RegisteredAssetSchema
+     */
+    'did': string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof RegisteredAssetSchema
+     */
+    'assetSchema': CommissionAssetSchemaRequestAssetSchema;
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocument}
+     * @memberof RegisteredAssetSchema
+     */
+    'assetSchemaDidDocument': AssetSchemaCertificationRequestAssetSchemaDidDocument;
+    /**
+     * 
+     * @type {RegisteredAssetSchemaAssetSchemaVerifiableCredential}
+     * @memberof RegisteredAssetSchema
+     */
+    'assetSchemaVerifiableCredential': RegisteredAssetSchemaAssetSchemaVerifiableCredential;
+}
+/**
+ * Structure of a valid Asset Schema Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface RegisteredAssetSchemaAssetSchemaVerifiableCredential
+ */
+export interface RegisteredAssetSchemaAssetSchemaVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Asset Schema Verifiable Credential.
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {AssetSchemaCertification200ResponseCredentialSubject}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
  * 
  * @export
  * @interface RegisteredAssetSchemaAuthorityID
