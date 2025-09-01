@@ -69,6 +69,11 @@ docs/RegisteredAssetProviderID.md
 docs/RegisteredAssetSchema.md
 docs/RegisteredAssetSchemaAssetSchemaVerifiableCredential.md
 docs/RegisteredAssetSchemaAuthorityID.md
+docs/RegisteredSchemaProfile.md
+docs/RegisteredSchemaProfileSchemaProfileVerifiableCredential.md
+docs/RegisteredTokenizedAssetRecord.md
+docs/RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument.md
+docs/RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential.md
 docs/RegistryApi.md
 docs/SchemaProfile.md
 docs/SchemaProfileCertificationRequest.md
@@ -87,5 +92,6 @@ docs/TokenizedAssetRecordDidDocument.md
 docs/TokenizedAssetRecordDidDocumentVerificationMethodInner.md
 docs/TokenizedAssetRecordVerifiableCredential.md
 docs/TokenizedAssetRecordVerifiableCredentialCredentialSubject.md
+docs/TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile.md
 git_push.sh
 index.ts

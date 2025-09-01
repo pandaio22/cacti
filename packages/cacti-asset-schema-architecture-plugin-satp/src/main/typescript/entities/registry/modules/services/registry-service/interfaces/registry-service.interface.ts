@@ -1,4 +1,3 @@
-import { VerifiablePresentation } from "@digitalbazaar/vc";
 import {
   AssetSchema,
   AssetSchemaDidDocument,
@@ -9,6 +8,8 @@ import {
   TokenIssuanceAuthorization,
   TokenIssuanceAuthorizationID,
   TokenizedAssetRecord,
+  TokenizedAssetRecordDidDocument,
+  TokenizedAssetRecordVerifiableCredential,
   SchemaProfile,
   SchemaProfileDidDocument,
   SchemaProfileVerifiableCredential,
@@ -27,17 +28,17 @@ import {
  * Implementers provide methods to retrieve, commission, and register these entities.
  */
 export interface IRegistryService {
-  //verifyAsset(uid: string, challenge?: string): VerifiablePresentation;
+  //verifyAsset(did: string, challenge?: string): VerifiablePresentation;
   /**
    * Retrieves an Asset Schema and its associated artifacts by unique identifier.
    *
-   * @param uid - Unique identifier of the Asset Schema.
+   * @param did - Unique identifier of the Asset Schema.
    * @returns Promise containing:
    *  - assetSchema: The asset schema definition.
    *  - assetSchemaDidDocument: The DID document linked to the schema.
    *  - assetSchemaVerifiableCredential: The verifiable credential attesting the schema.
    */
-  getAssetSchema(uid: string): Promise<{
+  getAssetSchema(did: string): Promise<{
     assetSchema: AssetSchema;
     assetSchemaDidDocument: AssetSchemaDidDocument;
     assetSchemaVerifiableCredential: AssetSchemaVerifiableCredential;
@@ -46,13 +47,13 @@ export interface IRegistryService {
   /**
    * Retrieves a Schema Profile and its associated artifacts by unique identifier.
    *
-   * @param uid - Unique identifier of the Schema Profile.
+   * @param did - Unique identifier of the Schema Profile.
    * @returns Promise containing:
    *  - schemaProfile: The schema profile definition.
    *  - schemaProfileDidDocument: The DID document linked to the profile.
    *  - schemaProfileVerifiableCredential: The verifiable credential attesting the profile.
    */
-  getSchemaProfile(uid: string): Promise<{
+  getSchemaProfile(did: string): Promise<{
     schemaProfile: SchemaProfile;
     schemaProfileDidDocument: SchemaProfileDidDocument;
     schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential;
@@ -61,28 +62,32 @@ export interface IRegistryService {
   /**
    * Retrieves a Tokenized Asset Record by unique identifier.
    *
-   * @param uid - Unique identifier of the Tokenized Asset Record.
+   * @param did - Unique identifier of the Tokenized Asset Record.
    * @returns Promise containing the full Tokenized Asset Record.
    */
-  getTokenizedAssetRecord(uid: string): Promise<TokenizedAssetRecord>;
+  getTokenizedAssetRecord(did: string): Promise<{
+    tokenizedAssetRecord: TokenizedAssetRecord;
+    tokenizedAssetRecordDidDocument: TokenizedAssetRecordDidDocument;
+    tokenizedAssetRecordVerifiableCredential: TokenizedAssetRecordVerifiableCredential;
+  }>;
 
   /**
    * Retrieves a registered Asset Schema Authority by unique identifier.
    *
-   * @param uid - Unique identifier of the Asset Schema Authority.
+   * @param did - Unique identifier of the Asset Schema Authority.
    * @returns Promise containing the Asset Schema Authority Certificate.
    */
   getAssetSchemaAuthority(
-    uid: string,
+    did: string,
   ): Promise<AssetSchemaAuthorityCertificate>;
 
   /**
    * Retrieves a registered Asset Provider by unique identifier.
    *
-   * @param uid - Unique identifier of the Asset Provider.
+   * @param did - Unique identifier of the Asset Provider.
    * @returns Promise containing the Asset Provider Certificate.
    */
-  getAssetProvider(uid: string): Promise<AssetProviderCertificate>;
+  getAssetProvider(did: string): Promise<AssetProviderCertificate>;
 
   /**
    * Commissions (registers) a new Asset Schema in the registry.
@@ -116,10 +121,14 @@ export interface IRegistryService {
    * Commissions (registers) a new Tokenized Asset Record in the registry.
    *
    * @param tokenizedAssetRecord - The full tokenized asset record.
+   * @param tokenizedAssetRecordDidDocument - DID document linked to the tokenized asset record.
+   * @param tokenizedAssetRecordVerifiableCredential - Verifiable credential attesting the tokenized asset record.
    * @returns Promise resolving to the commissioned Tokenized Asset Record ID.
    */
   commissionTokenizedAssetRecord(
     tokenizedAssetRecord: TokenizedAssetRecord,
+    tokenizedAssetRecordDidDocument: TokenizedAssetRecordDidDocument,
+    tokenizedAssetRecordVerifiableCredential: TokenizedAssetRecordVerifiableCredential,
   ): Promise<CommissionedTokenizedAssetRecordID>;
 
   /**

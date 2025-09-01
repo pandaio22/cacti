@@ -1,7 +1,6 @@
 import path from "path";
 import { Knex } from "knex";
 import dotenv from "dotenv";
-import { v4 as uuidv4 } from "uuid";
 
 dotenv.config({ path: path.resolve(__dirname, "../../../../../.env") });
 
@@ -17,5 +16,5 @@ const config: { [key: string]: Knex.Config } = {
     },
   },
 };
-module.exports = config;
+//module.exports = config;
 export default config;

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **hash** | **string** | Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier.  | [optional] [default to undefined]
 **nonce** | **string** | Unique number used once to ensure freshness, preventing replay attacks.  | [optional] [default to undefined]
 **createdBy** | **string** | DID or URI of the entity that created the TokenizedAssetRecord. | [optional] [default to undefined]
-**schemaProfile** | **string** | Unique identifier for the Schema Profile | [optional] [default to undefined]
+**schemaProfile** | [**TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile**](TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile.md) |  | [optional] [default to undefined]
 **tokenizedAssetRecord** | [**CommissionTokenizedAssetRecordRequest**](CommissionTokenizedAssetRecordRequest.md) |  | [optional] [default to undefined]
 **tokenIssuanceAuthorization** | [**RegisterTokenIssuanceAuthorizationRequest**](RegisterTokenIssuanceAuthorizationRequest.md) |  | [optional] [default to undefined]
 

@@ -1847,6 +1847,227 @@ export interface RegisteredAssetSchemaAuthorityID {
     'type': string;
 }
 /**
+ * RegisteredSchemaProfile represents a persistable wrapper for a Schema Profile, including its DID Document and Verifiable Credential. 
+ * @export
+ * @interface RegisteredSchemaProfile
+ */
+export interface RegisteredSchemaProfile {
+    /**
+     * The DID of this schema profile
+     * @type {string}
+     * @memberof RegisteredSchemaProfile
+     */
+    'did': string;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof RegisteredSchemaProfile
+     */
+    'schemaProfile': CommissionSchemaProfileRequestSchemaProfile;
+    /**
+     * 
+     * @type {SchemaProfileCertificationRequestSchemaProfileDidDocument}
+     * @memberof RegisteredSchemaProfile
+     */
+    'schemaProfileDidDocument': SchemaProfileCertificationRequestSchemaProfileDidDocument;
+    /**
+     * 
+     * @type {RegisteredSchemaProfileSchemaProfileVerifiableCredential}
+     * @memberof RegisteredSchemaProfile
+     */
+    'schemaProfileVerifiableCredential': RegisteredSchemaProfileSchemaProfileVerifiableCredential;
+}
+/**
+ * Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface RegisteredSchemaProfileSchemaProfileVerifiableCredential
+ */
+export interface RegisteredSchemaProfileSchemaProfileVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the Schema Profile Verifiable Credential.
+     * @type {string}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"SchemaProfileVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {SchemaProfileVerifiableCredentialCredentialSubject}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'credentialSubject'?: SchemaProfileVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
+ * RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized Asset Record, including its DID Document and Verifiable Credential. 
+ * @export
+ * @interface RegisteredTokenizedAssetRecord
+ */
+export interface RegisteredTokenizedAssetRecord {
+    /**
+     * The DID of this tokenized asset record
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecord
+     */
+    'did': string;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequest}
+     * @memberof RegisteredTokenizedAssetRecord
+     */
+    'tokenizedAssetRecord': CommissionTokenizedAssetRecordRequest;
+    /**
+     * 
+     * @type {RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument}
+     * @memberof RegisteredTokenizedAssetRecord
+     */
+    'tokenizedAssetRecordDidDocument': RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument;
+    /**
+     * 
+     * @type {RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential}
+     * @memberof RegisteredTokenizedAssetRecord
+     */
+    'tokenizedAssetRecordVerifiableCredential': RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential;
+}
+/**
+ * Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
+ * @export
+ * @interface RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+ */
+export interface RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord DID Document.
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"TokenizedAssetRecordDidDocument\". 
+     * @type {Array<string>}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    'type'?: Array<string>;
+    /**
+     * 
+     * @type {Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    'verificationMethod': Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+ */
+export interface RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord Verifiable Credential.
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenizedAssetRecordVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this VC.
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubject}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'credentialSubject'?: TokenizedAssetRecordVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {AssetSchemaVerifiableCredentialProof}
+     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
+     */
+    'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
  * Structure of a valid Schema Profile (JSON-LD format)
  * @export
  * @interface SchemaProfile
@@ -2517,11 +2738,11 @@ export interface TokenizedAssetRecordVerifiableCredentialCredentialSubject {
      */
     'createdBy'?: string;
     /**
-     * Unique identifier for the Schema Profile
-     * @type {string}
+     * 
+     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile}
      * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
      */
-    'schemaProfile'?: string;
+    'schemaProfile'?: TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile;
     /**
      * 
      * @type {CommissionTokenizedAssetRecordRequest}
@@ -2535,6 +2756,12 @@ export interface TokenizedAssetRecordVerifiableCredentialCredentialSubject {
      */
     'tokenIssuanceAuthorization'?: RegisterTokenIssuanceAuthorizationRequest;
 }
+/**
+ * @type TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile
+ * @export
+ */
+export type TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile = object | string;
+
 
 /**
  * AssetSchemaAuthorityApi - axios parameter creator

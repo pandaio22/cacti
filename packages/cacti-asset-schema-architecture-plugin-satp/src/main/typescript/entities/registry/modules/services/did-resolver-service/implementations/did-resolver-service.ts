@@ -1,7 +1,7 @@
 import { IDidResolverService } from "../interfaces/did-resolver-service.interface";
 import { RegisteredAssetSchemaDao } from "../../../dao/dao-asset-schema";
-//import { RegisteredSchemaProfileDao } from "../../daos/RegisteredSchemaProfileDao";
-//import { RegisteredTokenizedAssetRecordDao } from "../../daos/RegisteredTokenizedAssetRecordDao";
+import { RegisteredSchemaProfileDao } from "../../../dao/dao-schema-profile";
+import { RegisteredTokenizedAssetRecordDao } from "../../../dao/dao-tokenized-asset-record";
 
 /**
  * DID Resolver Service
@@ -10,8 +10,8 @@ import { RegisteredAssetSchemaDao } from "../../../dao/dao-asset-schema";
 export class DidResolverService implements IDidResolverService {
   constructor(
     private assetSchemaDao: RegisteredAssetSchemaDao,
-    private schemaProfileDao: any,
-    private tokenizedAssetRecordDao: any,
+    private schemaProfileDao: RegisteredSchemaProfileDao,
+    private tokenizedAssetRecordDao: RegisteredTokenizedAssetRecordDao,
   ) {}
 
   public async resolve(
@@ -77,19 +77,22 @@ export class DidResolverService implements IDidResolverService {
         if (asset) {
           return {
             did,
-            didDocument: asset.assetSchemaDidDocument,
-            schemaDocument: asset.assetSchema,
-            verifiableCredential: asset.assetSchemaVerifiableCredential,
+            assetSchema: asset.assetSchema,
+            assetSchemaDidDocument: asset.assetSchemaDidDocument,
+            assetSchemaVerifiableCredential:
+              asset.assetSchemaVerifiableCredential,
           };
         }
-
+/*
         const profile = await this.schemaProfileDao.getByDid(did);
         if (profile) {
           return {
             did,
-            didDocument: profile.schemaProfileDidDocument,
-            schemaDocument: profile.schemaProfile,
-            verifiableCredential: profile.schemaProfileVerifiableCredential,
+            schemaProfile: profile.schemaProfile,
+            schemaProfileDidDocument: profile.schemaProfileDidDocument,
+
+            schemaProfileverifiableCredential:
+              profile.schemaProfileVerifiableCredential,
           };
         }
 
@@ -97,12 +100,15 @@ export class DidResolverService implements IDidResolverService {
         if (tar) {
           return {
             did,
-            didDocument: tar.tokenizedAssetRecordDidDocument,
-            schemaDocument: tar.tokenizedAssetRecord,
-            verifiableCredential: tar.tokenizedAssetRecordVerifiableCredential,
+            tokenizedAssetRecord: tar.tokenizedAssetRecord,
+            tokenizedAssetRecordDidDocument:
+              tar.tokenizedAssetRecordDidDocument,
+
+            tokenizedAssetRecordverifiableCredential:
+              tar.tokenizedAssetRecordVerifiableCredential,
           };
         }
-
+*/
         return null;
       }
     }

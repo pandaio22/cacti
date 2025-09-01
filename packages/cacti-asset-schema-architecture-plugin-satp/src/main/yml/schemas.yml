@@ -611,7 +611,6 @@ RegisteredAssetSchema:
     assetSchemaVerifiableCredential:
       $ref: '#/AssetSchemaVerifiableCredential'
 
-
 SignedAssetSchema:
   type: object
   properties:
@@ -1031,6 +1030,28 @@ SchemaProfileVerifiableCredential:
             The cryptographic proof value, typically a JWS or similar signature.
   additionalProperties: true
 
+RegisteredSchemaProfile:
+  type: object
+  description: >
+    RegisteredSchemaProfile represents a persistable wrapper for a Schema Profile,
+    including its DID Document and Verifiable Credential.
+  required:
+    - did
+    - schemaProfile
+    - schemaProfileDidDocument
+    - schemaProfileVerifiableCredential
+  properties:
+    did:
+      type: string
+      description: The DID of this schema profile
+      example: "did:web:example.com:schema-profile"
+    schemaProfile:
+      $ref: '#/SchemaProfile'
+    schemaProfileDidDocument:
+      $ref: '#/SchemaProfileDidDocument'
+    schemaProfileVerifiableCredential:
+      $ref: '#/SchemaProfileVerifiableCredential'
+
 SignedSchemaProfile:
   type: object
   properties:
@@ -1299,10 +1320,12 @@ TokenizedAssetRecordVerifiableCredential:
           example: 'did:web:example.com#asset-schema-authority'
           description: DID or URI of the entity that created the TokenizedAssetRecord.
         schemaProfile:
-          type: string
-          format: uri
-          example: 'did:example:56745689abcdefghi#schema-profile'
-          description: Unique identifier for the Schema Profile
+          oneOf:
+            - type: object
+            - type: string
+              format: uri
+              example: 'did:example:56745689abcdefghi#schema-profile'
+              description: Unique identifier for the Schema Profile
         tokenizedAssetRecord:
           $ref: '#/TokenizedAssetRecord'
         tokenIssuanceAuthorization:
@@ -1328,6 +1351,28 @@ TokenizedAssetRecordVerifiableCredential:
           description: >
             The cryptographic proof value, typically a JWS or similar signature.
   additionalProperties: true
+
+RegisteredTokenizedAssetRecord:
+  type: object
+  description: >
+    RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized Asset Record,
+    including its DID Document and Verifiable Credential.
+  required:
+    - did
+    - tokenizedAssetRecord
+    - tokenizedAssetRecordDidDocument
+    - tokenizedAssetRecordVerifiableCredential
+  properties:
+    did:
+      type: string
+      description: The DID of this tokenized asset record
+      example: "did:web:example.com:tokenized-asset-record"
+    tokenizedAssetRecord:
+      $ref: '#/TokenizedAssetRecord'
+    tokenizedAssetRecordDidDocument:
+      $ref: '#/TokenizedAssetRecordDidDocument'
+    tokenizedAssetRecordVerifiableCredential:
+      $ref: '#/TokenizedAssetRecordVerifiableCredential'
 
 CommissionedTokenizedAssetRecordID:
   type: object
