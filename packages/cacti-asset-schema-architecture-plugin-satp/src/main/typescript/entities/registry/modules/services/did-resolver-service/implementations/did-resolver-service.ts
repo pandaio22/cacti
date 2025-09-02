@@ -83,7 +83,7 @@ export class DidResolverService implements IDidResolverService {
               asset.assetSchemaVerifiableCredential,
           };
         }
-/*
+
         const profile = await this.schemaProfileDao.getByDid(did);
         if (profile) {
           return {
@@ -108,7 +108,6 @@ export class DidResolverService implements IDidResolverService {
               tar.tokenizedAssetRecordVerifiableCredential,
           };
         }
-*/
         return null;
       }
     }
