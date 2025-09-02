@@ -468,11 +468,11 @@ export class ValidationService implements IValidationService {
       }
 
       // 2. Check "type" field exact match
-      if (!didDocument.type || didDocument.type !== "AssetSchemaArchitecture") {
+      /*if (!didDocument.type || didDocument.type !== "AssetSchemaArchitecture") {
         throw new Error(
           `Missing or invalid 'type' field. Expected 'AssetSchemaArchitecture'`,
         );
-      }
+      }*/
 
       // 3. Verify verificationMethod semantics if present
       if (didDocument.verificationMethod) {

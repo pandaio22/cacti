@@ -33,6 +33,10 @@ const ed255192020 = loadContext("ed25519-2020.jsonld");
 const tokenIssuanceAuthorizationContext = loadContext(
   "token-issuance-authorization.jsonld",
 );
+const assetSchemaAuthorityCertificateContext = loadContext(
+  "asset-schema-authority-certificate.jsonld",
+);
+const assetProviderContext = loadContext("asset-provider-certificate.jsonld");
 
 export const DEFAULT_LOCAL_CONTEXTS: Record<string, any> = {
   "https://www.w3.org/ns/did/v1": didV1Context,
@@ -45,8 +49,15 @@ export const DEFAULT_LOCAL_CONTEXTS: Record<string, any> = {
   "https://www.w3.org/2018/credentials/v1": verifiableCredentialsContextTest,
   "https://www.w3.org/ns/credentials/v1": verifiableCredentialsContextV1,
   "https://www.w3.org/ns/credentials/v2": verifiableCredentialsContext,
+  "https://www.w3.org/2018/credentials/v2": verifiableCredentialsContext,
   "https://w3id.org/security/suites/ed25519-2020/v1": ed255192020,
   "https://www.example.org/token-issuance-authorization/v1":
     tokenIssuanceAuthorizationContext,
+  "https://example.org/contexts/token-issuance-authorization/v1":
+    tokenIssuanceAuthorizationContext,
   "did:example:123456789abcdefghi#": assetSchemaContext,
+  "did:example:56745689abcdefghi#": schemaProfileContext,
+  "https://example.org/AssetSchemaAuthority":
+    assetSchemaAuthorityCertificateContext,
+  "https://example.org/AssetProvider": assetProviderContext,
 };
