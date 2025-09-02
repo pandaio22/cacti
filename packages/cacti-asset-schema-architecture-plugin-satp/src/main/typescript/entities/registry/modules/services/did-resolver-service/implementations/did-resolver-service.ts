@@ -91,7 +91,7 @@ export class DidResolverService implements IDidResolverService {
             schemaProfile: profile.schemaProfile,
             schemaProfileDidDocument: profile.schemaProfileDidDocument,
 
-            schemaProfileverifiableCredential:
+            schemaProfileVerifiableCredential:
               profile.schemaProfileVerifiableCredential,
           };
         }
@@ -104,7 +104,7 @@ export class DidResolverService implements IDidResolverService {
             tokenizedAssetRecordDidDocument:
               tar.tokenizedAssetRecordDidDocument,
 
-            tokenizedAssetRecordverifiableCredential:
+            tokenizedAssetRecordVerifiableCredential:
               tar.tokenizedAssetRecordVerifiableCredential,
           };
         }

@@ -49,6 +49,7 @@ import {
 } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
+import { RegistryService } from "../typescript/entities/registry/modules/services/registry-service/implementations/registry-service";
 import {
   EntityServerConfig,
   EntityServerType,
@@ -341,34 +342,34 @@ export class PluginAssetSchemaArchitecture
 
     /*REGISTRY ENDPOINTS*/
     const commissionAssetSchemaEndpoint = new CommissionAssetSchemaEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const commissionSchemaProfileEndpoint = new CommissionSchemaProfileEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const commissionTokenizedAssetRecord =
-      new CommissionTokenizedAssetRecordEndpoint(new RegistryApiService());
+      new CommissionTokenizedAssetRecordEndpoint(new RegistryService());
     const registerTokenAuthorizationEndpoint =
-      new RegisterTokenAuthorizationEndpoint(new RegistryApiService());
+      new RegisterTokenAuthorizationEndpoint(new RegistryService());
     const registerAssetSchemaAuthorityEndpoint =
-      new RegisterAssetSchemaAuthorityEndpoint(new RegistryApiService());
+      new RegisterAssetSchemaAuthorityEndpoint(new RegistryService());
     const registerAssetProviderEndpoint = new RegisterAssetProviderEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const getAssetSchemaEndpoint = new GetAssetSchemaEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const getSchemaProfileEndpoint = new GetSchemaProfileEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const getTokenizedAssetRecordEndpoint = new GetTokenizedAssetRecordEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const getAssetSchemaAuthorityEndpoint = new GetAssetSchemaAuthorityEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
     const getAssetProviderEndpoint = new GetAssetProviderEndpoint(
-      new RegistryApiService(),
+      new RegistryService(),
     );
 
     this.endpoints = [

@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **token_issuance_authorization_request** | [**RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner**](RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner.md) |  | [default to undefined]
-**proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
+**proof** | [**SchemaProfileCertification200ResponseProof**](SchemaProfileCertification200ResponseProof.md) |  | [default to undefined]
 
 ## Example
 

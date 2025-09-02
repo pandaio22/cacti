@@ -6,7 +6,7 @@ Structure of a valid Schema Profile DID Document (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestAssetSchemaDidDocumentContext**](AssetSchemaCertificationRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaDidDocumentContext**](CommissionAssetSchemaRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
 **id** | **string** | Unique identifier for the Schema Profile DID Document. | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;DIDDocument\&quot; and \&quot;SchemaProfileDidDocument\&quot;.  | [default to undefined]
 **verificationMethod** | [**Array&lt;SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner&gt;**](SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner.md) |  | [default to undefined]

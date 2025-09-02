@@ -8,8 +8,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **did** | **string** | The DID of this asset schema | [default to undefined]
 **assetSchema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
-**assetSchemaDidDocument** | [**AssetSchemaCertificationRequestAssetSchemaDidDocument**](AssetSchemaCertificationRequestAssetSchemaDidDocument.md) |  | [default to undefined]
-**assetSchemaVerifiableCredential** | [**RegisteredAssetSchemaAssetSchemaVerifiableCredential**](RegisteredAssetSchemaAssetSchemaVerifiableCredential.md) |  | [default to undefined]
+**assetSchemaDidDocument** | [**CommissionAssetSchemaRequestAssetSchemaDidDocument**](CommissionAssetSchemaRequestAssetSchemaDidDocument.md) |  | [default to undefined]
+**assetSchemaVerifiableCredential** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredential**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredential.md) |  | [default to undefined]
 
 ## Example
 

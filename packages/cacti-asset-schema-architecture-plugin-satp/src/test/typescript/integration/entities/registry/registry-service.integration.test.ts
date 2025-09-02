@@ -75,19 +75,6 @@ describe("Registry Service", () => {
     });
   });
 
-  afterAll(async () => {
-    await db.destroy();
-  });
-
-  afterEach(async () => {
-    await db("asset_schemas").del();
-    await db("asset_providers").del(); // clear table
-    await db("schema_profiles").del();
-    await db("tokenized_asset_records").del();
-    await db("token_issuance_authorizations").del();
-    await db("asset_schema_authorities").del();
-  });
-
   beforeEach(() => {
     assetSchemaDao = new RegisteredAssetSchemaDao();
     schemaProfileDao = new RegisteredSchemaProfileDao();
@@ -113,6 +100,18 @@ describe("Registry Service", () => {
     );
   });
 
+  afterEach(async () => {
+    await db("asset_schemas").del();
+    await db("asset_providers").del(); // clear table
+    await db("schema_profiles").del();
+    await db("tokenized_asset_records").del();
+    await db("token_issuance_authorizations").del();
+    await db("asset_schema_authorities").del();
+  });
+
+  afterAll(async () => {
+    await db.destroy();
+  });
   it("should register an Asset Schema successfully: Given valid Asset Schema, AssetSchemaDidDocument and AssetSchemaVerifiableCredential, When executing commissionAssetSchema, Then store successfully", async () => {
     // Given
     /**
@@ -150,6 +149,12 @@ describe("Registry Service", () => {
     expect(result).toBeDefined();
     //expect(result?.did).toBe(did);
     expect(result?.assetSchema).toEqual(VALID_ASSET_SCHEMA_EXAMPLE);
+    expect(result?.assetSchemaDidDocument).toEqual(
+      VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
+    );
+    expect(result?.assetSchemaVerifiableCredential).toEqual(
+      VALID_ASSET_SCHEMA_VERIFIABLE_CREDENTIAL,
+    );
   });
 
   it("should register a Schema Profile successfully: Given valid SchemaProfile, SchemaProfileDidDocument and SchemaProfileVerifiableCredential, When executing commissionSchemaProfile, Then store successfully", async () => {
@@ -189,6 +194,12 @@ describe("Registry Service", () => {
     expect(result).toBeDefined();
     expect(result?.schemaProfileDidDocument.id).toBe(did);
     expect(result?.schemaProfile).toEqual(VALID_SCHEMA_PROFILE_EXAMPLE);
+    expect(result?.schemaProfileDidDocument).toEqual(
+      VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
+    );
+    expect(result?.schemaProfileVerifiableCredential).toEqual(
+      VALID_SCHEMA_PROFILE_VERIFIABLE_CREDENTIAL,
+    );
   });
 
   it("should register a Tokenized Asset Record successfully: Given valid TokenizedAssetRecord, TokenizedAssetRecordDidDocument and TokenizedAssetRecordVerifiableCredential, When executing commissionTokenizedAssetRecord, Then store successfully", async () => {
@@ -229,6 +240,12 @@ describe("Registry Service", () => {
     expect(result?.tokenizedAssetRecordDidDocument.id).toBe(did);
     expect(result?.tokenizedAssetRecord).toEqual(
       VALID_TOKENIZED_ASSET_RECORD_EXAMPLE,
+    );
+    expect(result?.tokenizedAssetRecordDidDocument).toEqual(
+      VALID_TOKENIZED_ASSET_RECORD_DID_DOCUMENT,
+    );
+    expect(result?.tokenizedAssetRecordVerifiableCredential).toEqual(
+      VALID_TOKENIZED_ASSET_RECORD_VERIFIABLE_CREDENTIAL,
     );
   });
 

@@ -6,14 +6,14 @@ Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [optional] [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext.md) |  | [optional] [default to undefined]
 **id** | **string** | Unique identifier for the TokenizedAssetRecord Verifiable Credential. | [optional] [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiableCredential\&quot; and \&quot;TokenizedAssetRecordVerifiableCredential\&quot;.  | [optional] [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Provider issuing this VC. | [optional] [default to undefined]
 **validFrom** | **string** | Timestamp stating VC starting validity. | [optional] [default to undefined]
 **issuanceDate** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
-**credentialSubject** | [**TokenizedAssetRecordVerifiableCredentialCredentialSubject**](TokenizedAssetRecordVerifiableCredentialCredentialSubject.md) |  | [optional] [default to undefined]
-**proof** | [**AssetSchemaVerifiableCredentialProof**](AssetSchemaVerifiableCredentialProof.md) |  | [optional] [default to undefined]
+**credentialSubject** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject.md) |  | [optional] [default to undefined]
+**proof** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof.md) |  | [optional] [default to undefined]
 
 ## Example
 

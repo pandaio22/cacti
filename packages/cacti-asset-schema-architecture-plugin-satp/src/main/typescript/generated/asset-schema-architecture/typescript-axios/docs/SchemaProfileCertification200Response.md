@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**schema_profile** | [**SchemaProfileCertificationRequest**](SchemaProfileCertificationRequest.md) |  | [default to undefined]
-**proof** | [**RequestTokenIssuanceAuthorizationRequestProof**](RequestTokenIssuanceAuthorizationRequestProof.md) |  | [default to undefined]
+**schema_profile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [optional] [default to undefined]
+**proof** | [**SchemaProfileCertification200ResponseProof**](SchemaProfileCertification200ResponseProof.md) |  | [default to undefined]
 
 ## Example
 

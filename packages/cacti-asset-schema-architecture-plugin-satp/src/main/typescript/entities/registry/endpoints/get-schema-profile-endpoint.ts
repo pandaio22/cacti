@@ -14,8 +14,8 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { SignedSchemaProfile } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegisteredSchemaProfile } from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class GetSchemaProfileEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "GetSchemaProfileEndpoint";
@@ -26,7 +26,7 @@ export class GetSchemaProfileEndpoint implements IWebServiceEndpoint {
     return GetSchemaProfileEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -84,17 +84,31 @@ export class GetSchemaProfileEndpoint implements IWebServiceEndpoint {
       if (!uid || typeof uid !== "string")
         throw new Error("Missing or invalid 'UniqueId' query parameter.");
 
-      const signedSchemaProfile: SignedSchemaProfile =
-        await this.registryApiService.getSchemaProfile(uid);
+      const {
+        schemaProfile,
+        schemaProfileDidDocument,
+        schemaProfileVerifiableCredential,
+      } = await this.registryService.getSchemaProfile(uid);
 
-      if (!signedSchemaProfile) {
+      const registeredSchemaProfile: RegisteredSchemaProfile = {
+        did: schemaProfileDidDocument.id,
+        schemaProfile: schemaProfile,
+        schemaProfileDidDocument: schemaProfileDidDocument,
+        schemaProfileVerifiableCredential: schemaProfileVerifiableCredential,
+      };
+
+      if (!registeredSchemaProfile) {
         throw new Error("Schema Profile not found.");
       }
 
-      console.log("Retrieved signed Schema Profile:", signedSchemaProfile);
-      res.json(signedSchemaProfile);
+      console.log(
+        "Retrieved commissioned Schema Profile:",
+        registeredSchemaProfile,
+      );
+      res.json(registeredSchemaProfile);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

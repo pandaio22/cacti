@@ -18,7 +18,7 @@ import {
   TokenIssuanceAuthorization,
   TokenIssuanceAuthorizationID,
 } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { RegistryApiService } from "../../registry/modules/services/registry-api-service/implementations/registry-api-service";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class RegisterTokenAuthorizationEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME =
@@ -30,8 +30,8 @@ export class RegisterTokenAuthorizationEndpoint implements IWebServiceEndpoint {
     return RegisterTokenAuthorizationEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: RegistryApiService) {
-    const fnTag = `${this.className}#constructor()`;
+  constructor(private readonly registryService: RegistryService) {
+    //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
 
@@ -85,12 +85,13 @@ export class RegisterTokenAuthorizationEndpoint implements IWebServiceEndpoint {
     try {
       const tokenIssuanceAuthorization: TokenIssuanceAuthorization = req.body;
       const tokenIssuanceAuthorizationId: TokenIssuanceAuthorizationID =
-        await this.registryApiService.registerTokenIssuanceAuthorization(
+        await this.registryService.registerTokenIssuanceAuthorization(
           tokenIssuanceAuthorization,
         );
       res.json(tokenIssuanceAuthorizationId);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

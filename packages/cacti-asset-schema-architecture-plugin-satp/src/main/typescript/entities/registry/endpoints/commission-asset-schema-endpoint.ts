@@ -15,10 +15,10 @@ import {
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
 import {
-  SignedAssetSchema,
+  RegisteredAssetSchema,
   CommissionedAssetSchemaID,
 } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class CommissionAssetSchemaEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "CommissionAssetSchemaEndpoint";
@@ -29,7 +29,7 @@ export class CommissionAssetSchemaEndpoint implements IWebServiceEndpoint {
     return CommissionAssetSchemaEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -78,18 +78,31 @@ export class CommissionAssetSchemaEndpoint implements IWebServiceEndpoint {
       }),
     };
   }
+
   public async handleRequest(req: Request, res: Response): Promise<void> {
     const fnTag = `${this.className}#handleRequest()`;
     const reqTag = `${this.getVerbLowerCase()} - ${this.getPath()}`;
     try {
+      /*
       const signedAssetSchema: SignedAssetSchema = req.body;
+      
       const commissionedAssetSchemaID: CommissionedAssetSchemaID =
-        await this.registryApiService.commissionAssetSchema(signedAssetSchema);
+        await this.registryService.commissionAssetSchema(
+          signedAssetSchema,
+        );*/
+      const registeredAssetSchema: RegisteredAssetSchema = req.body;
+      const commissionedAssetSchemaID: CommissionedAssetSchemaID =
+        await this.registryService.commissionAssetSchema(
+          registeredAssetSchema.assetSchema,
+          registeredAssetSchema.assetSchemaDidDocument,
+          registeredAssetSchema.assetSchemaVerifiableCredential,
+        );
       console.log("Commissioned Asset Schema:", commissionedAssetSchemaID);
       res.json(commissionedAssetSchemaID);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
-      handleRestEndpointException({
+      console.log("\n" + errorMsg + "\n");
+      await handleRestEndpointException({
         errorMsg,
         log: this.log,
         error: exception,

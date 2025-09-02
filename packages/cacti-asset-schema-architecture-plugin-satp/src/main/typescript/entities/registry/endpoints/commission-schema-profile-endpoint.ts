@@ -15,10 +15,10 @@ import {
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
 import {
-  SignedSchemaProfile,
+  RegisteredSchemaProfile,
   CommissionedSchemaProfileID,
 } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class CommissionSchemaProfileEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "CommissionSchemaProfileEndpoint";
@@ -29,7 +29,7 @@ export class CommissionSchemaProfileEndpoint implements IWebServiceEndpoint {
     return CommissionSchemaProfileEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -78,19 +78,23 @@ export class CommissionSchemaProfileEndpoint implements IWebServiceEndpoint {
       }),
     };
   }
+
   public async handleRequest(req: Request, res: Response): Promise<void> {
     const fnTag = `${this.className}#handleRequest()`;
     const reqTag = `${this.getVerbLowerCase()} - ${this.getPath()}`;
     try {
-      const signedSchemaProfile: SignedSchemaProfile = req.body;
+      const registeredSchemaProfile: RegisteredSchemaProfile = req.body;
       const commissionedSchemaProfileID: CommissionedSchemaProfileID =
-        await this.registryApiService.commissionSchemaProfile(
-          signedSchemaProfile,
+        await this.registryService.commissionSchemaProfile(
+          registeredSchemaProfile.schemaProfile,
+          registeredSchemaProfile.schemaProfileDidDocument,
+          registeredSchemaProfile.schemaProfileVerifiableCredential,
         );
       console.log("Commissioned Schema Profile:", commissionedSchemaProfileID);
       res.json(commissionedSchemaProfileID);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

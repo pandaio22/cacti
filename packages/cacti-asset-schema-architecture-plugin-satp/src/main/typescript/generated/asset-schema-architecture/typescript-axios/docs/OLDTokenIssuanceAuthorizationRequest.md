@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **asset_provider** | [**OLDTokenIssuanceAuthorizationRequestAssetProvider**](OLDTokenIssuanceAuthorizationRequestAssetProvider.md) |  | [default to undefined]
 **schema_profile** | **string** |  | [default to undefined]
 **network_id** | **string** |  | [default to undefined]
-**proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
+**proof** | [**SchemaProfileCertification200ResponseProof**](SchemaProfileCertification200ResponseProof.md) |  | [default to undefined]
 
 ## Example
 

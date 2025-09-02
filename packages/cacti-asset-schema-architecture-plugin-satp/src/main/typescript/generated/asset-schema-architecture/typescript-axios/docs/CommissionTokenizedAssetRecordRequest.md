@@ -1,13 +1,15 @@
 # CommissionTokenizedAssetRecordRequest
 
-Structure of a valid Tokenized Asset Record (JSON-LD format)
+RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized Asset Record, including its DID Document and Verifiable Credential. 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [default to undefined]
-**token_issuance_authorization** | [**CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization**](CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization.md) |  | [optional] [default to undefined]
+**did** | **string** | The DID of this tokenized asset record | [default to undefined]
+**tokenizedAssetRecord** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecord**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecord.md) |  | [default to undefined]
+**tokenizedAssetRecordDidDocument** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument.md) |  | [default to undefined]
+**tokenizedAssetRecordVerifiableCredential** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential.md) |  | [default to undefined]
 
 ## Example
 
@@ -15,8 +17,10 @@ Name | Type | Description | Notes
 import { CommissionTokenizedAssetRecordRequest } from './api';
 
 const instance: CommissionTokenizedAssetRecordRequest = {
-    context,
-    token_issuance_authorization,
+    did,
+    tokenizedAssetRecord,
+    tokenizedAssetRecordDidDocument,
+    tokenizedAssetRecordVerifiableCredential,
 };
 ```
 

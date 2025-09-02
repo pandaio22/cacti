@@ -6,10 +6,10 @@ Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestAssetSchemaDidDocumentContext**](AssetSchemaCertificationRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaDidDocumentContext**](CommissionAssetSchemaRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
 **id** | **string** | Unique identifier for the TokenizedAssetRecord DID Document. | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;DIDDocument\&quot; and \&quot;TokenizedAssetRecordDidDocument\&quot;.  | [optional] [default to undefined]
-**verificationMethod** | [**Array&lt;TokenizedAssetRecordDidDocumentVerificationMethodInner&gt;**](TokenizedAssetRecordDidDocumentVerificationMethodInner.md) |  | [default to undefined]
+**verificationMethod** | [**Array&lt;CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner&gt;**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner.md) |  | [default to undefined]
 **authentication** | **Array&lt;string&gt;** | List of verification method IDs allowed for authentication.  | [optional] [default to undefined]
 **assertionMethod** | **Array&lt;string&gt;** | List of verification method IDs allowed for asserting claims or issuing VCs.  | [optional] [default to undefined]
 

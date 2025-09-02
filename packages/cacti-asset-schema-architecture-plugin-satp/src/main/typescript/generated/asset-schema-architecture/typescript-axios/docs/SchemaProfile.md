@@ -6,7 +6,7 @@ Structure of a valid Schema Profile (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext.md) |  | [default to undefined]
 **id** | **string** | Unique identifier for the Schema Profile. | [default to undefined]
 **title** | **string** | Human-readable title of the Schema Profile. | [default to undefined]
 **asset_schema** | **string** | Reference to the Asset Schema associated with this Schema Profile. | [default to undefined]

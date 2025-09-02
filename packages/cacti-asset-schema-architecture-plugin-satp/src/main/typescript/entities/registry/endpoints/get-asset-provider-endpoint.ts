@@ -15,7 +15,7 @@ import {
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
 import { AssetProviderCertificate } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class GetAssetProviderEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "GetAssetProviderEndpoint";
@@ -26,7 +26,7 @@ export class GetAssetProviderEndpoint implements IWebServiceEndpoint {
     return GetAssetProviderEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -85,7 +85,7 @@ export class GetAssetProviderEndpoint implements IWebServiceEndpoint {
         throw new Error("Missing or invalid 'UniqueId' query parameter.");
 
       const assetProviderCertificate: AssetProviderCertificate =
-        await this.registryApiService.getAssetProvider(uid);
+        await this.registryService.getAssetProvider(uid);
 
       if (!assetProviderCertificate) {
         throw new Error("Asset Provider not found.");
@@ -95,6 +95,7 @@ export class GetAssetProviderEndpoint implements IWebServiceEndpoint {
       res.json(assetProviderCertificate);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

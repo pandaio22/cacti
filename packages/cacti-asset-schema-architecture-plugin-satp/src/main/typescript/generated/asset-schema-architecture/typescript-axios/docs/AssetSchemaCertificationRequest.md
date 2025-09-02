@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **assetSchema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
-**assetSchemaDidDocument** | [**AssetSchemaCertificationRequestAssetSchemaDidDocument**](AssetSchemaCertificationRequestAssetSchemaDidDocument.md) |  | [default to undefined]
+**assetSchemaDidDocument** | [**CommissionAssetSchemaRequestAssetSchemaDidDocument**](CommissionAssetSchemaRequestAssetSchemaDidDocument.md) |  | [default to undefined]
 
 ## Example
 

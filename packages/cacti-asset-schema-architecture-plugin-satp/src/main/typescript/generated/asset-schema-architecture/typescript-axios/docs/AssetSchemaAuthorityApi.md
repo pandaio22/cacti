@@ -117,7 +117,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **schemaProfileCertification**
-> CommissionSchemaProfileRequest schemaProfileCertification(schemaProfileCertificationRequest)
+> SchemaProfileCertification200Response schemaProfileCertification(schemaProfileCertificationRequest)
 
 This endpoint allows a client to send a schema profile to be certified by the Asset Schema Authority. If accepted, the Asset Schema Authority digitally signs the schema profile, and includes it in the response. 
 
@@ -149,7 +149,7 @@ const { status, data } = await apiInstance.schemaProfileCertification(
 
 ### Return type
 
-**CommissionSchemaProfileRequest**
+**SchemaProfileCertification200Response**
 
 ### Authorization
 

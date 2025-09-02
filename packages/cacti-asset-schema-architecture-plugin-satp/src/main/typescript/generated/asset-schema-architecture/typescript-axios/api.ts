@@ -126,10 +126,10 @@ export interface AssetSchemaCertification200Response {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof AssetSchemaCertification200Response
      */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Asset Schema Verifiable Credential.
      * @type {string}
@@ -162,65 +162,16 @@ export interface AssetSchemaCertification200Response {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {AssetSchemaCertification200ResponseCredentialSubject}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject}
      * @memberof AssetSchemaCertification200Response
      */
-    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
+    'credentialSubject'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject;
     /**
      * 
      * @type {AssetSchemaCertification200ResponseProof}
      * @memberof AssetSchemaCertification200Response
      */
     'proof'?: AssetSchemaCertification200ResponseProof;
-}
-/**
- * 
- * @export
- * @interface AssetSchemaCertification200ResponseCredentialSubject
- */
-export interface AssetSchemaCertification200ResponseCredentialSubject {
-    /**
-     * DID or URI of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'id'?: string;
-    /**
-     * Human-readable name of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'name'?: string;
-    /**
-     * Version of the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'version'?: string;
-    /**
-     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'hash'?: string;
-    /**
-     * Unique number used once to ensure freshness, preventing replay attacks. 
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'nonce'?: string;
-    /**
-     * DID or URI of the entity that created the Asset Schema.
-     * @type {string}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'createdBy'?: string;
-    /**
-     * 
-     * @type {CommissionAssetSchemaRequestAssetSchema}
-     * @memberof AssetSchemaCertification200ResponseCredentialSubject
-     */
-    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
 }
 /**
  * 
@@ -273,92 +224,10 @@ export interface AssetSchemaCertificationRequest {
     'assetSchema': CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocument}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocument}
      * @memberof AssetSchemaCertificationRequest
      */
-    'assetSchemaDidDocument': AssetSchemaCertificationRequestAssetSchemaDidDocument;
-}
-/**
- * Structure of a valid Asset Schema DID Document (JSON-LD format)
- * @export
- * @interface AssetSchemaCertificationRequestAssetSchemaDidDocument
- */
-export interface AssetSchemaCertificationRequestAssetSchemaDidDocument {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
-    /**
-     * Unique identifier for the Asset Schema DID Document.
-     * @type {string}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    'id': string;
-    /**
-     * Includes \"DIDDocument\" and \"AssetSchemaDidDocument\". 
-     * @type {Array<string>}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    'type': Array<string>;
-    /**
-     * 
-     * @type {Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    'verificationMethod': Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>;
-    /**
-     * List of verification method IDs allowed for authentication. 
-     * @type {Array<string>}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    'authentication'?: Array<string>;
-    /**
-     * List of verification method IDs allowed for asserting claims or issuing VCs. 
-     * @type {Array<string>}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocument
-     */
-    'assertionMethod'?: Array<string>;
-}
-/**
- * @type AssetSchemaCertificationRequestAssetSchemaDidDocumentContext
- * @export
- */
-export type AssetSchemaCertificationRequestAssetSchemaDidDocumentContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
-
-/**
- * 
- * @export
- * @interface AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
- */
-export interface AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner {
-    /**
-     * Identifier for the verification method.
-     * @type {string}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
-     */
-    'id': string;
-    /**
-     * Type of verification method.
-     * @type {string}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
-     */
-    'type': string;
-    /**
-     * DID of the controller of this Asset Schema DID.
-     * @type {string}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
-     */
-    'controller': string;
-    /**
-     * Public key of the controller.
-     * @type {string}
-     * @memberof AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner
-     */
-    'publicKeyMultibase'?: string;
+    'assetSchemaDidDocument': CommissionAssetSchemaRequestAssetSchemaDidDocument;
 }
 /**
  * Structure of a valid Asset Schema DID Document (JSON-LD format)
@@ -370,10 +239,10 @@ export interface AssetSchemaDidDocument {
 
     /**
      * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
      * @memberof AssetSchemaDidDocument
      */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
     /**
      * Unique identifier for the Asset Schema DID Document.
      * @type {string}
@@ -388,10 +257,10 @@ export interface AssetSchemaDidDocument {
     'type': Array<string>;
     /**
      * 
-     * @type {Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>}
+     * @type {Array<CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner>}
      * @memberof AssetSchemaDidDocument
      */
-    'verificationMethod': Array<AssetSchemaCertificationRequestAssetSchemaDidDocumentVerificationMethodInner>;
+    'verificationMethod': Array<CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner>;
     /**
      * List of verification method IDs allowed for authentication. 
      * @type {Array<string>}
@@ -415,10 +284,10 @@ export interface AssetSchemaVerifiableCredential {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof AssetSchemaVerifiableCredential
      */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Asset Schema Verifiable Credential.
      * @type {string}
@@ -451,59 +320,16 @@ export interface AssetSchemaVerifiableCredential {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {AssetSchemaCertification200ResponseCredentialSubject}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject}
      * @memberof AssetSchemaVerifiableCredential
      */
-    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
+    'credentialSubject'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject;
     /**
      * 
-     * @type {AssetSchemaVerifiableCredentialProof}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
      * @memberof AssetSchemaVerifiableCredential
      */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
-}
-/**
- * 
- * @export
- * @interface AssetSchemaVerifiableCredentialProof
- */
-export interface AssetSchemaVerifiableCredentialProof {
-    /**
-     * 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'type'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'verificationMethod'?: string;
-    /**
-     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'cryptosuite'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'created'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'proofPurpose'?: string;
-    /**
-     * The cryptographic proof value, typically a JWS or similar signature. 
-     * @type {string}
-     * @memberof AssetSchemaVerifiableCredentialProof
-     */
-    'proofValue'?: string;
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Asset Schema.
@@ -531,25 +357,35 @@ export interface CommissionAssetSchema200Response {
     'type': string;
 }
 /**
- * 
+ * RegisteredAssetSchema represents a persistable wrapper for an Asset Schema, including its DID Document and Verifiable Credential. 
  * @export
  * @interface CommissionAssetSchemaRequest
  */
 export interface CommissionAssetSchemaRequest {
-    [key: string]: any;
-
+    /**
+     * The DID of this asset schema
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequest
+     */
+    'did': string;
     /**
      * 
      * @type {CommissionAssetSchemaRequestAssetSchema}
      * @memberof CommissionAssetSchemaRequest
      */
-    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+    'assetSchema': CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocument}
      * @memberof CommissionAssetSchemaRequest
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'assetSchemaDidDocument': CommissionAssetSchemaRequestAssetSchemaDidDocument;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredential}
+     * @memberof CommissionAssetSchemaRequest
+     */
+    'assetSchemaVerifiableCredential': CommissionAssetSchemaRequestAssetSchemaVerifiableCredential;
 }
 /**
  * Structure of a valid Asset Schema (JSON-LD format)
@@ -604,41 +440,241 @@ export interface CommissionAssetSchemaRequestAssetSchemaContextOneOf {
     'organization_key': object;
 }
 /**
- * 
+ * Structure of a valid Asset Schema DID Document (JSON-LD format)
  * @export
- * @interface CommissionAssetSchemaRequestProof
+ * @interface CommissionAssetSchemaRequestAssetSchemaDidDocument
  */
-export interface CommissionAssetSchemaRequestProof {
+export interface CommissionAssetSchemaRequestAssetSchemaDidDocument {
+    [key: string]: any;
+
     /**
      * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Asset Schema DID Document.
      * @type {string}
-     * @memberof CommissionAssetSchemaRequestProof
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"AssetSchemaDidDocument\". 
+     * @type {Array<string>}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner>}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    'verificationMethod': Array<CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * @type CommissionAssetSchemaRequestAssetSchemaDidDocumentContext
+ * @export
+ */
+export type CommissionAssetSchemaRequestAssetSchemaDidDocumentContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner
+ */
+export interface CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner
      */
     'type': string;
     /**
-     * 
+     * DID of the controller of this Asset Schema DID.
      * @type {string}
-     * @memberof CommissionAssetSchemaRequestProof
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner
      */
-    'created': string;
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
+ * Structure of a valid Asset Schema Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+ */
+export interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
+    /**
+     * Unique identifier for the Asset Schema Verifiable Credential.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'credentialSubject'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredential
+     */
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
+}
+/**
+ * @type CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext
+ * @export
+ */
+export type CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+
+/**
+ * 
+ * @export
+ * @interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+ */
+export interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the Asset Schema.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the Asset Schema.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the Asset Schema.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the Asset Schema.
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchema}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject
+     */
+    'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
+ */
+export interface CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof {
     /**
      * 
      * @type {string}
-     * @memberof CommissionAssetSchemaRequestProof
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
      */
-    'proofPurpose': string;
+    'type'?: string;
     /**
      * 
      * @type {string}
-     * @memberof CommissionAssetSchemaRequestProof
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
      */
-    'verificationMethod': string;
+    'verificationMethod'?: string;
+    /**
+     * The cryptographic suite used for signing, e.g., \"eddsa-rdfc-2022\". 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
+     */
+    'cryptosuite'?: string;
     /**
      * 
      * @type {string}
-     * @memberof CommissionAssetSchemaRequestProof
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
      */
-    'jws': string;
+    'created'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
+     */
+    'proofPurpose'?: string;
+    /**
+     * The cryptographic proof value, typically a JWS or similar signature. 
+     * @type {string}
+     * @memberof CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof
+     */
+    'proofValue'?: string;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
@@ -666,25 +702,35 @@ export interface CommissionSchemaProfile200Response {
     'type': string;
 }
 /**
- * 
+ * RegisteredSchemaProfile represents a persistable wrapper for a Schema Profile, including its DID Document and Verifiable Credential. 
  * @export
  * @interface CommissionSchemaProfileRequest
  */
 export interface CommissionSchemaProfileRequest {
-    [key: string]: any;
-
+    /**
+     * The DID of this schema profile
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequest
+     */
+    'did': string;
     /**
      * 
      * @type {CommissionSchemaProfileRequestSchemaProfile}
      * @memberof CommissionSchemaProfileRequest
      */
-    'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
+    'schemaProfile': CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {CommissionSchemaProfileRequestSchemaProfileDidDocument}
      * @memberof CommissionSchemaProfileRequest
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'schemaProfileDidDocument': CommissionSchemaProfileRequestSchemaProfileDidDocument;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential}
+     * @memberof CommissionSchemaProfileRequest
+     */
+    'schemaProfileVerifiableCredential': CommissionSchemaProfileRequestSchemaProfileVerifiableCredential;
 }
 /**
  * Structure of a valid Schema Profile (JSON-LD format)
@@ -696,10 +742,10 @@ export interface CommissionSchemaProfileRequestSchemaProfile {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof CommissionSchemaProfileRequestSchemaProfile
      */
-    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Schema Profile.
      * @type {string}
@@ -738,11 +784,81 @@ export interface CommissionSchemaProfileRequestSchemaProfile {
     'facets': object;
 }
 /**
- * @type CommissionSchemaProfileRequestSchemaProfileContext
+ * Structure of a valid Schema Profile DID Document (JSON-LD format)
  * @export
+ * @interface CommissionSchemaProfileRequestSchemaProfileDidDocument
  */
-export type CommissionSchemaProfileRequestSchemaProfileContext = Array<RegisterTokenIssuanceAuthorization200ResponseContextOneOfInner> | object | string;
+export interface CommissionSchemaProfileRequestSchemaProfileDidDocument {
+    [key: string]: any;
 
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the Schema Profile DID Document.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"SchemaProfileDidDocument\". 
+     * @type {Array<string>}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    'type': Array<string>;
+    /**
+     * 
+     * @type {Array<CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner>}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    'verificationMethod': Array<CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner
+ */
+export interface CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Schema Profile DID.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
 /**
  * 
  * @export
@@ -761,6 +877,112 @@ export interface CommissionSchemaProfileRequestSchemaProfileOrganizationKey {
      * @memberof CommissionSchemaProfileRequestSchemaProfileOrganizationKey
      */
     'issued'?: string;
+}
+/**
+ * Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+ */
+export interface CommissionSchemaProfileRequestSchemaProfileVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
+    /**
+     * Unique identifier for the Schema Profile Verifiable Credential.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"SchemaProfileVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Schema Authority issuing this VC.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'credentialSubject'?: CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+     */
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+ */
+export interface CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the Schema Profile.
+     * @type {string}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject
+     */
+    'asset_schema'?: CommissionSchemaProfileRequestSchemaProfile;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Tokenized Asset Record (TAR).
@@ -788,31 +1010,262 @@ export interface CommissionTokenizedAssetRecord200Response {
     'type': string;
 }
 /**
- * Structure of a valid Tokenized Asset Record (JSON-LD format)
+ * RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized Asset Record, including its DID Document and Verifiable Credential. 
  * @export
  * @interface CommissionTokenizedAssetRecordRequest
  */
 export interface CommissionTokenizedAssetRecordRequest {
+    /**
+     * The DID of this tokenized asset record
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    'did': string;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecord}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    'tokenizedAssetRecord': CommissionTokenizedAssetRecordRequestTokenizedAssetRecord;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    'tokenizedAssetRecordDidDocument': CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential}
+     * @memberof CommissionTokenizedAssetRecordRequest
+     */
+    'tokenizedAssetRecordVerifiableCredential': CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential;
+}
+/**
+ * Structure of a valid Tokenized Asset Record (JSON-LD format)
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecord
+ */
+export interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecord {
     [key: string]: any;
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
-     * @memberof CommissionTokenizedAssetRecordRequest
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecord
      */
-    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * 
-     * @type {CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization}
-     * @memberof CommissionTokenizedAssetRecordRequest
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecord
      */
-    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization;
+    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization;
 }
 /**
- * @type CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization
+ * Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+ */
+export interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord DID Document.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    'id': string;
+    /**
+     * Includes \"DIDDocument\" and \"TokenizedAssetRecordDidDocument\". 
+     * @type {Array<string>}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    'type'?: Array<string>;
+    /**
+     * 
+     * @type {Array<CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner>}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    'verificationMethod': Array<CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner>;
+    /**
+     * List of verification method IDs allowed for authentication. 
+     * @type {Array<string>}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    'authentication'?: Array<string>;
+    /**
+     * List of verification method IDs allowed for asserting claims or issuing VCs. 
+     * @type {Array<string>}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument
+     */
+    'assertionMethod'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner
+ */
+export interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner {
+    /**
+     * Identifier for the verification method.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'id': string;
+    /**
+     * Type of verification method.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'type': string;
+    /**
+     * DID of the controller of this Schema Profile DID.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'controller': string;
+    /**
+     * Public key of the controller.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner
+     */
+    'publicKeyMultibase'?: string;
+}
+/**
+ * @type CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization
  * @export
  */
-export type CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization = object | string;
+export type CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization = object | string;
+
+/**
+ * Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+ */
+export interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
+    /**
+     * Unique identifier for the TokenizedAssetRecord Verifiable Credential.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'id'?: string;
+    /**
+     * Includes \"VerifiableCredential\" and \"TokenizedAssetRecordVerifiableCredential\". 
+     * @type {Array<string>}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'type'?: Array<string>;
+    /**
+     * DID or URI of the Asset Provider issuing this VC.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'issuer'?: string;
+    /**
+     * Timestamp stating VC starting validity.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'validFrom'?: string;
+    /**
+     * Timestamp when the VC was issued.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'issuanceDate'?: string;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'credentialSubject'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject;
+    /**
+     * 
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+     */
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+ */
+export interface CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject {
+    /**
+     * DID or URI of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'id'?: string;
+    /**
+     * Human-readable name of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'name'?: string;
+    /**
+     * Version of the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'version'?: string;
+    /**
+     * Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier. 
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'hash'?: string;
+    /**
+     * Unique number used once to ensure freshness, preventing replay attacks. 
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'nonce'?: string;
+    /**
+     * DID or URI of the entity that created the TokenizedAssetRecord.
+     * @type {string}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'createdBy'?: string;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'schemaProfile'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile;
+    /**
+     * 
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecord}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'tokenizedAssetRecord'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecord;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequest}
+     * @memberof CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject
+     */
+    'tokenIssuanceAuthorization'?: RegisterTokenIssuanceAuthorizationRequest;
+}
+/**
+ * @type CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile
+ * @export
+ */
+export type CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile = object | string;
 
 /**
  * Structure of a commissioned Asset Schema Verifiable Credential (JSON-LD format)
@@ -824,10 +1277,10 @@ export interface CommissionedAssetSchema {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof CommissionedAssetSchema
      */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Asset Schema Verifiable Credential.
      * @type {string}
@@ -860,10 +1313,10 @@ export interface CommissionedAssetSchema {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {AssetSchemaCertification200ResponseCredentialSubject}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject}
      * @memberof CommissionedAssetSchema
      */
-    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
+    'credentialSubject'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialCredentialSubject;
     /**
      * 
      * @type {AssetSchemaCertification200ResponseProof}
@@ -912,10 +1365,10 @@ export interface CommissionedSchemaProfile {
     'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof CommissionedSchemaProfile
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * A JSON-LD response representing the DID for a commissioned Schema Profile.
@@ -983,10 +1436,10 @@ export interface OLDCommissionedAssetSchema {
     'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof OLDCommissionedAssetSchema
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * 
@@ -1002,10 +1455,10 @@ export interface OLDOLDTokenIssuanceAuthorization {
     'token_issuance_authorization_request': RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialInner;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof OLDOLDTokenIssuanceAuthorization
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * 
@@ -1125,10 +1578,10 @@ export interface OLDTokenIssuanceAuthorizationRequest {
     'network_id': string;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof OLDTokenIssuanceAuthorizationRequest
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * 
@@ -1784,73 +2237,16 @@ export interface RegisteredAssetSchema {
     'assetSchema': CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocument}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocument}
      * @memberof RegisteredAssetSchema
      */
-    'assetSchemaDidDocument': AssetSchemaCertificationRequestAssetSchemaDidDocument;
+    'assetSchemaDidDocument': CommissionAssetSchemaRequestAssetSchemaDidDocument;
     /**
      * 
-     * @type {RegisteredAssetSchemaAssetSchemaVerifiableCredential}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredential}
      * @memberof RegisteredAssetSchema
      */
-    'assetSchemaVerifiableCredential': RegisteredAssetSchemaAssetSchemaVerifiableCredential;
-}
-/**
- * Structure of a valid Asset Schema Verifiable Credential (JSON-LD format)
- * @export
- * @interface RegisteredAssetSchemaAssetSchemaVerifiableCredential
- */
-export interface RegisteredAssetSchemaAssetSchemaVerifiableCredential {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
-    /**
-     * Unique identifier for the Asset Schema Verifiable Credential.
-     * @type {string}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'id'?: string;
-    /**
-     * Includes \"VerifiableCredential\" and \"AssetSchemaVerifiableCredential\". 
-     * @type {Array<string>}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'type'?: Array<string>;
-    /**
-     * DID or URI of the Asset Schema Authority issuing this VC.
-     * @type {string}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'issuer'?: string;
-    /**
-     * Timestamp stating VC starting validity.
-     * @type {string}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'validFrom'?: string;
-    /**
-     * Timestamp when the VC was issued.
-     * @type {string}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'issuanceDate'?: string;
-    /**
-     * 
-     * @type {AssetSchemaCertification200ResponseCredentialSubject}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'credentialSubject'?: AssetSchemaCertification200ResponseCredentialSubject;
-    /**
-     * 
-     * @type {AssetSchemaVerifiableCredentialProof}
-     * @memberof RegisteredAssetSchemaAssetSchemaVerifiableCredential
-     */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
+    'assetSchemaVerifiableCredential': CommissionAssetSchemaRequestAssetSchemaVerifiableCredential;
 }
 /**
  * 
@@ -1914,73 +2310,16 @@ export interface RegisteredSchemaProfile {
     'schemaProfile': CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {SchemaProfileCertificationRequestSchemaProfileDidDocument}
+     * @type {CommissionSchemaProfileRequestSchemaProfileDidDocument}
      * @memberof RegisteredSchemaProfile
      */
-    'schemaProfileDidDocument': SchemaProfileCertificationRequestSchemaProfileDidDocument;
+    'schemaProfileDidDocument': CommissionSchemaProfileRequestSchemaProfileDidDocument;
     /**
      * 
-     * @type {RegisteredSchemaProfileSchemaProfileVerifiableCredential}
+     * @type {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential}
      * @memberof RegisteredSchemaProfile
      */
-    'schemaProfileVerifiableCredential': RegisteredSchemaProfileSchemaProfileVerifiableCredential;
-}
-/**
- * Structure of a valid Schema Profile Verifiable Credential (JSON-LD format)
- * @export
- * @interface RegisteredSchemaProfileSchemaProfileVerifiableCredential
- */
-export interface RegisteredSchemaProfileSchemaProfileVerifiableCredential {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
-    /**
-     * Unique identifier for the Schema Profile Verifiable Credential.
-     * @type {string}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'id'?: string;
-    /**
-     * Includes \"VerifiableCredential\" and \"SchemaProfileVerifiableCredential\". 
-     * @type {Array<string>}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'type'?: Array<string>;
-    /**
-     * DID or URI of the Asset Schema Authority issuing this VC.
-     * @type {string}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'issuer'?: string;
-    /**
-     * Timestamp stating VC starting validity.
-     * @type {string}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'validFrom'?: string;
-    /**
-     * Timestamp when the VC was issued.
-     * @type {string}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'issuanceDate'?: string;
-    /**
-     * 
-     * @type {SchemaProfileVerifiableCredentialCredentialSubject}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'credentialSubject'?: SchemaProfileVerifiableCredentialCredentialSubject;
-    /**
-     * 
-     * @type {AssetSchemaVerifiableCredentialProof}
-     * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
-     */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
+    'schemaProfileVerifiableCredential': CommissionSchemaProfileRequestSchemaProfileVerifiableCredential;
 }
 /**
  * 
@@ -2017,124 +2356,22 @@ export interface RegisteredTokenizedAssetRecord {
     'did': string;
     /**
      * 
-     * @type {CommissionTokenizedAssetRecordRequest}
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecord}
      * @memberof RegisteredTokenizedAssetRecord
      */
-    'tokenizedAssetRecord': CommissionTokenizedAssetRecordRequest;
+    'tokenizedAssetRecord': CommissionTokenizedAssetRecordRequestTokenizedAssetRecord;
     /**
      * 
-     * @type {RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument}
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument}
      * @memberof RegisteredTokenizedAssetRecord
      */
-    'tokenizedAssetRecordDidDocument': RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument;
+    'tokenizedAssetRecordDidDocument': CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument;
     /**
      * 
-     * @type {RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential}
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential}
      * @memberof RegisteredTokenizedAssetRecord
      */
-    'tokenizedAssetRecordVerifiableCredential': RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential;
-}
-/**
- * Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
- * @export
- * @interface RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
- */
-export interface RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
-    /**
-     * Unique identifier for the TokenizedAssetRecord DID Document.
-     * @type {string}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    'id': string;
-    /**
-     * Includes \"DIDDocument\" and \"TokenizedAssetRecordDidDocument\". 
-     * @type {Array<string>}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    'type'?: Array<string>;
-    /**
-     * 
-     * @type {Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    'verificationMethod': Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>;
-    /**
-     * List of verification method IDs allowed for authentication. 
-     * @type {Array<string>}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    'authentication'?: Array<string>;
-    /**
-     * List of verification method IDs allowed for asserting claims or issuing VCs. 
-     * @type {Array<string>}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument
-     */
-    'assertionMethod'?: Array<string>;
-}
-/**
- * Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
- * @export
- * @interface RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
- */
-export interface RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
-    /**
-     * Unique identifier for the TokenizedAssetRecord Verifiable Credential.
-     * @type {string}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'id'?: string;
-    /**
-     * Includes \"VerifiableCredential\" and \"TokenizedAssetRecordVerifiableCredential\". 
-     * @type {Array<string>}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'type'?: Array<string>;
-    /**
-     * DID or URI of the Asset Provider issuing this VC.
-     * @type {string}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'issuer'?: string;
-    /**
-     * Timestamp stating VC starting validity.
-     * @type {string}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'validFrom'?: string;
-    /**
-     * Timestamp when the VC was issued.
-     * @type {string}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'issuanceDate'?: string;
-    /**
-     * 
-     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubject}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'credentialSubject'?: TokenizedAssetRecordVerifiableCredentialCredentialSubject;
-    /**
-     * 
-     * @type {AssetSchemaVerifiableCredentialProof}
-     * @memberof RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential
-     */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
+    'tokenizedAssetRecordVerifiableCredential': CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential;
 }
 /**
  * Structure of a valid Schema Profile (JSON-LD format)
@@ -2146,10 +2383,10 @@ export interface SchemaProfile {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof SchemaProfile
      */
-    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Schema Profile.
      * @type {string}
@@ -2190,6 +2427,64 @@ export interface SchemaProfile {
 /**
  * 
  * @export
+ * @interface SchemaProfileCertification200Response
+ */
+export interface SchemaProfileCertification200Response {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {CommissionSchemaProfileRequestSchemaProfile}
+     * @memberof SchemaProfileCertification200Response
+     */
+    'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
+    /**
+     * 
+     * @type {SchemaProfileCertification200ResponseProof}
+     * @memberof SchemaProfileCertification200Response
+     */
+    'proof': SchemaProfileCertification200ResponseProof;
+}
+/**
+ * 
+ * @export
+ * @interface SchemaProfileCertification200ResponseProof
+ */
+export interface SchemaProfileCertification200ResponseProof {
+    /**
+     * 
+     * @type {string}
+     * @memberof SchemaProfileCertification200ResponseProof
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SchemaProfileCertification200ResponseProof
+     */
+    'created': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SchemaProfileCertification200ResponseProof
+     */
+    'proofPurpose': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SchemaProfileCertification200ResponseProof
+     */
+    'verificationMethod': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SchemaProfileCertification200ResponseProof
+     */
+    'jws': string;
+}
+/**
+ * 
+ * @export
  * @interface SchemaProfileCertificationRequest
  */
 export interface SchemaProfileCertificationRequest {
@@ -2201,86 +2496,10 @@ export interface SchemaProfileCertificationRequest {
     'schemaProfile': CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {SchemaProfileCertificationRequestSchemaProfileDidDocument}
+     * @type {CommissionSchemaProfileRequestSchemaProfileDidDocument}
      * @memberof SchemaProfileCertificationRequest
      */
-    'schemaProfileDidDocument': SchemaProfileCertificationRequestSchemaProfileDidDocument;
-}
-/**
- * Structure of a valid Schema Profile DID Document (JSON-LD format)
- * @export
- * @interface SchemaProfileCertificationRequestSchemaProfileDidDocument
- */
-export interface SchemaProfileCertificationRequestSchemaProfileDidDocument {
-    [key: string]: any;
-
-    /**
-     * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
-    /**
-     * Unique identifier for the Schema Profile DID Document.
-     * @type {string}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    'id': string;
-    /**
-     * Includes \"DIDDocument\" and \"SchemaProfileDidDocument\". 
-     * @type {Array<string>}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    'type': Array<string>;
-    /**
-     * 
-     * @type {Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    'verificationMethod': Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>;
-    /**
-     * List of verification method IDs allowed for authentication. 
-     * @type {Array<string>}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    'authentication'?: Array<string>;
-    /**
-     * List of verification method IDs allowed for asserting claims or issuing VCs. 
-     * @type {Array<string>}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocument
-     */
-    'assertionMethod'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
- */
-export interface SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner {
-    /**
-     * Identifier for the verification method.
-     * @type {string}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
-     */
-    'id': string;
-    /**
-     * Type of verification method.
-     * @type {string}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
-     */
-    'type': string;
-    /**
-     * DID of the controller of this Schema Profile DID.
-     * @type {string}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
-     */
-    'controller': string;
-    /**
-     * Public key of the controller.
-     * @type {string}
-     * @memberof SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner
-     */
-    'publicKeyMultibase'?: string;
+    'schemaProfileDidDocument': CommissionSchemaProfileRequestSchemaProfileDidDocument;
 }
 /**
  * Structure of a valid Schema Profile DID Document (JSON-LD format)
@@ -2292,10 +2511,10 @@ export interface SchemaProfileDidDocument {
 
     /**
      * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
      * @memberof SchemaProfileDidDocument
      */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
     /**
      * Unique identifier for the Schema Profile DID Document.
      * @type {string}
@@ -2310,10 +2529,10 @@ export interface SchemaProfileDidDocument {
     'type': Array<string>;
     /**
      * 
-     * @type {Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>}
+     * @type {Array<CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner>}
      * @memberof SchemaProfileDidDocument
      */
-    'verificationMethod': Array<SchemaProfileCertificationRequestSchemaProfileDidDocumentVerificationMethodInner>;
+    'verificationMethod': Array<CommissionSchemaProfileRequestSchemaProfileDidDocumentVerificationMethodInner>;
     /**
      * List of verification method IDs allowed for authentication. 
      * @type {Array<string>}
@@ -2337,10 +2556,10 @@ export interface SchemaProfileVerifiableCredential {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof SchemaProfileVerifiableCredential
      */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the Schema Profile Verifiable Credential.
      * @type {string}
@@ -2373,65 +2592,16 @@ export interface SchemaProfileVerifiableCredential {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {SchemaProfileVerifiableCredentialCredentialSubject}
+     * @type {CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject}
      * @memberof SchemaProfileVerifiableCredential
      */
-    'credentialSubject'?: SchemaProfileVerifiableCredentialCredentialSubject;
+    'credentialSubject'?: CommissionSchemaProfileRequestSchemaProfileVerifiableCredentialCredentialSubject;
     /**
      * 
-     * @type {AssetSchemaVerifiableCredentialProof}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
      * @memberof SchemaProfileVerifiableCredential
      */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
-}
-/**
- * 
- * @export
- * @interface SchemaProfileVerifiableCredentialCredentialSubject
- */
-export interface SchemaProfileVerifiableCredentialCredentialSubject {
-    /**
-     * DID or URI of the Schema Profile.
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'id'?: string;
-    /**
-     * Human-readable name of the Schema Profile.
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'name'?: string;
-    /**
-     * Version of the Schema Profile.
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'version'?: string;
-    /**
-     * Unique hash representing the Asset Schema, typically a CID or similar identifier. 
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'hash'?: string;
-    /**
-     * Unique number used once to ensure freshness, preventing replay attacks. 
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'nonce'?: string;
-    /**
-     * DID or URI of the entity that created the Schema Profile.
-     * @type {string}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'createdBy'?: string;
-    /**
-     * 
-     * @type {CommissionSchemaProfileRequestSchemaProfile}
-     * @memberof SchemaProfileVerifiableCredentialCredentialSubject
-     */
-    'asset_schema'?: CommissionSchemaProfileRequestSchemaProfile;
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
 }
 /**
  * 
@@ -2449,10 +2619,10 @@ export interface SignedAssetSchema {
     'asset_schema'?: CommissionAssetSchemaRequestAssetSchema;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof SignedAssetSchema
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * 
@@ -2470,10 +2640,10 @@ export interface SignedSchemaProfile {
     'schema_profile'?: CommissionSchemaProfileRequestSchemaProfile;
     /**
      * 
-     * @type {CommissionAssetSchemaRequestProof}
+     * @type {SchemaProfileCertification200ResponseProof}
      * @memberof SignedSchemaProfile
      */
-    'proof': CommissionAssetSchemaRequestProof;
+    'proof': SchemaProfileCertification200ResponseProof;
 }
 /**
  * 
@@ -2626,16 +2796,16 @@ export interface TokenizedAssetRecord {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof TokenizedAssetRecord
      */
-    '@context': CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * 
-     * @type {CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization}
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization}
      * @memberof TokenizedAssetRecord
      */
-    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization;
+    'token_issuance_authorization'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization;
 }
 /**
  * Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
@@ -2647,10 +2817,10 @@ export interface TokenizedAssetRecordDidDocument {
 
     /**
      * 
-     * @type {AssetSchemaCertificationRequestAssetSchemaDidDocumentContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaDidDocumentContext}
      * @memberof TokenizedAssetRecordDidDocument
      */
-    '@context': AssetSchemaCertificationRequestAssetSchemaDidDocumentContext;
+    '@context': CommissionAssetSchemaRequestAssetSchemaDidDocumentContext;
     /**
      * Unique identifier for the TokenizedAssetRecord DID Document.
      * @type {string}
@@ -2665,10 +2835,10 @@ export interface TokenizedAssetRecordDidDocument {
     'type'?: Array<string>;
     /**
      * 
-     * @type {Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>}
+     * @type {Array<CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner>}
      * @memberof TokenizedAssetRecordDidDocument
      */
-    'verificationMethod': Array<TokenizedAssetRecordDidDocumentVerificationMethodInner>;
+    'verificationMethod': Array<CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocumentVerificationMethodInner>;
     /**
      * List of verification method IDs allowed for authentication. 
      * @type {Array<string>}
@@ -2683,37 +2853,6 @@ export interface TokenizedAssetRecordDidDocument {
     'assertionMethod'?: Array<string>;
 }
 /**
- * 
- * @export
- * @interface TokenizedAssetRecordDidDocumentVerificationMethodInner
- */
-export interface TokenizedAssetRecordDidDocumentVerificationMethodInner {
-    /**
-     * Identifier for the verification method.
-     * @type {string}
-     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
-     */
-    'id': string;
-    /**
-     * Type of verification method.
-     * @type {string}
-     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
-     */
-    'type': string;
-    /**
-     * DID of the controller of this Schema Profile DID.
-     * @type {string}
-     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
-     */
-    'controller': string;
-    /**
-     * Public key of the controller.
-     * @type {string}
-     * @memberof TokenizedAssetRecordDidDocumentVerificationMethodInner
-     */
-    'publicKeyMultibase'?: string;
-}
-/**
  * Structure of a valid TokenizedAssetRecord Verifiable Credential (JSON-LD format)
  * @export
  * @interface TokenizedAssetRecordVerifiableCredential
@@ -2723,10 +2862,10 @@ export interface TokenizedAssetRecordVerifiableCredential {
 
     /**
      * 
-     * @type {CommissionSchemaProfileRequestSchemaProfileContext}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext}
      * @memberof TokenizedAssetRecordVerifiableCredential
      */
-    '@context'?: CommissionSchemaProfileRequestSchemaProfileContext;
+    '@context'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext;
     /**
      * Unique identifier for the TokenizedAssetRecord Verifiable Credential.
      * @type {string}
@@ -2759,84 +2898,17 @@ export interface TokenizedAssetRecordVerifiableCredential {
     'issuanceDate'?: string;
     /**
      * 
-     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubject}
+     * @type {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject}
      * @memberof TokenizedAssetRecordVerifiableCredential
      */
-    'credentialSubject'?: TokenizedAssetRecordVerifiableCredentialCredentialSubject;
+    'credentialSubject'?: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredentialCredentialSubject;
     /**
      * 
-     * @type {AssetSchemaVerifiableCredentialProof}
+     * @type {CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof}
      * @memberof TokenizedAssetRecordVerifiableCredential
      */
-    'proof'?: AssetSchemaVerifiableCredentialProof;
+    'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
 }
-/**
- * 
- * @export
- * @interface TokenizedAssetRecordVerifiableCredentialCredentialSubject
- */
-export interface TokenizedAssetRecordVerifiableCredentialCredentialSubject {
-    /**
-     * DID or URI of the TokenizedAssetRecord.
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'id'?: string;
-    /**
-     * Human-readable name of the TokenizedAssetRecord.
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'name'?: string;
-    /**
-     * Version of the TokenizedAssetRecord.
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'version'?: string;
-    /**
-     * Unique hash representing the TokenizedAssetRecord, typically a CID or similar identifier. 
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'hash'?: string;
-    /**
-     * Unique number used once to ensure freshness, preventing replay attacks. 
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'nonce'?: string;
-    /**
-     * DID or URI of the entity that created the TokenizedAssetRecord.
-     * @type {string}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'createdBy'?: string;
-    /**
-     * 
-     * @type {TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'schemaProfile'?: TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile;
-    /**
-     * 
-     * @type {CommissionTokenizedAssetRecordRequest}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'tokenizedAssetRecord'?: CommissionTokenizedAssetRecordRequest;
-    /**
-     * 
-     * @type {RegisterTokenIssuanceAuthorizationRequest}
-     * @memberof TokenizedAssetRecordVerifiableCredentialCredentialSubject
-     */
-    'tokenIssuanceAuthorization'?: RegisterTokenIssuanceAuthorizationRequest;
-}
-/**
- * @type TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile
- * @export
- */
-export type TokenizedAssetRecordVerifiableCredentialCredentialSubjectSchemaProfile = object | string;
-
 
 /**
  * AssetSchemaAuthorityApi - axios parameter creator
@@ -2995,7 +3067,7 @@ export const AssetSchemaAuthorityApiFp = function(configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommissionSchemaProfileRequest>> {
+        async schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SchemaProfileCertification200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.schemaProfileCertification(schemaProfileCertificationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetSchemaAuthorityApi.schemaProfileCertification']?.[localVarOperationServerIndex]?.url;
@@ -3038,7 +3110,7 @@ export const AssetSchemaAuthorityApiFactory = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CommissionSchemaProfileRequest> {
+        schemaProfileCertification(schemaProfileCertificationRequest: SchemaProfileCertificationRequest, options?: RawAxiosRequestConfig): AxiosPromise<SchemaProfileCertification200Response> {
             return localVarFp.schemaProfileCertification(schemaProfileCertificationRequest, options).then((request) => request(axios, basePath));
         },
     };

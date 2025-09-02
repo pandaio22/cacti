@@ -6,8 +6,8 @@ Structure of a valid Tokenized Asset Record (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**CommissionSchemaProfileRequestSchemaProfileContext**](CommissionSchemaProfileRequestSchemaProfileContext.md) |  | [default to undefined]
-**token_issuance_authorization** | [**CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization**](CommissionTokenizedAssetRecordRequestTokenIssuanceAuthorization.md) |  | [optional] [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialContext.md) |  | [default to undefined]
+**token_issuance_authorization** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordTokenIssuanceAuthorization.md) |  | [optional] [default to undefined]
 
 ## Example
 

@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **schemaProfile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [default to undefined]
-**schemaProfileDidDocument** | [**SchemaProfileCertificationRequestSchemaProfileDidDocument**](SchemaProfileCertificationRequestSchemaProfileDidDocument.md) |  | [default to undefined]
+**schemaProfileDidDocument** | [**CommissionSchemaProfileRequestSchemaProfileDidDocument**](CommissionSchemaProfileRequestSchemaProfileDidDocument.md) |  | [default to undefined]
 
 ## Example
 

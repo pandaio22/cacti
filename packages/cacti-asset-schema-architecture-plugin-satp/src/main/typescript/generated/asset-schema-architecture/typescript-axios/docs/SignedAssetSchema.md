@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [optional] [default to undefined]
-**proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
+**proof** | [**SchemaProfileCertification200ResponseProof**](SchemaProfileCertification200ResponseProof.md) |  | [default to undefined]
 
 ## Example
 

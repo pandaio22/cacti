@@ -14,8 +14,11 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { AssetSchemaAuthorityCertificate } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import {
+  AssetSchemaAuthorityCertificate,
+  RegisteredAssetSchemaAuthorityCertificate,
+} from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class GetAssetSchemaAuthorityEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "GetAssetSchemaAuthorityEndpoint";
@@ -26,7 +29,7 @@ export class GetAssetSchemaAuthorityEndpoint implements IWebServiceEndpoint {
     return GetAssetSchemaAuthorityEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -85,7 +88,7 @@ export class GetAssetSchemaAuthorityEndpoint implements IWebServiceEndpoint {
         throw new Error("Missing or invalid 'UniqueId' query parameter.");
 
       const assetSchemaAuthorityCertificate: AssetSchemaAuthorityCertificate =
-        await this.registryApiService.getAssetSchemaAuthority(uid);
+        await this.registryService.getAssetSchemaAuthority(uid);
 
       if (!assetSchemaAuthorityCertificate) {
         throw new Error("Asset Schema Authority not found.");
@@ -98,6 +101,7 @@ export class GetAssetSchemaAuthorityEndpoint implements IWebServiceEndpoint {
       res.json(assetSchemaAuthorityCertificate);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

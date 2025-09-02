@@ -14,8 +14,8 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { TokenizedAssetRecord } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegisteredTokenizedAssetRecord } from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class GetTokenizedAssetRecordEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "GetTokenizedAssetRecordEndpoint";
@@ -26,7 +26,7 @@ export class GetTokenizedAssetRecordEndpoint implements IWebServiceEndpoint {
     return GetTokenizedAssetRecordEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -84,17 +84,32 @@ export class GetTokenizedAssetRecordEndpoint implements IWebServiceEndpoint {
       if (!uid || typeof uid !== "string")
         throw new Error("Missing or invalid 'UniqueId' query parameter.");
 
-      const tokenizedAssetRecord: TokenizedAssetRecord =
-        await this.registryApiService.getTokenizedAssetRecord(uid);
+      const {
+        tokenizedAssetRecord,
+        tokenizedAssetRecordDidDocument,
+        tokenizedAssetRecordVerifiableCredential,
+      } = await this.registryService.getTokenizedAssetRecord(uid);
 
-      if (!tokenizedAssetRecord) {
+      const registeredTokenizedAssetRecord: RegisteredTokenizedAssetRecord = {
+        did: tokenizedAssetRecordDidDocument.id,
+        tokenizedAssetRecord: tokenizedAssetRecord,
+        tokenizedAssetRecordDidDocument: tokenizedAssetRecordDidDocument,
+        tokenizedAssetRecordVerifiableCredential:
+          tokenizedAssetRecordVerifiableCredential,
+      };
+
+      if (!registeredTokenizedAssetRecord) {
         throw new Error("Tokenized Asset Record not found.");
       }
 
-      console.log("Retrieved Tokenized Asset Record:", tokenizedAssetRecord);
-      res.json(tokenizedAssetRecord);
+      console.log(
+        "Retrieved Tokenized Asset Record:",
+        registeredTokenizedAssetRecord,
+      );
+      res.json(registeredTokenizedAssetRecord);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,

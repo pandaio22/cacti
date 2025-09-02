@@ -6,7 +6,7 @@ Structure of a valid TokenizedAssetRecord DID Document (JSON-LD format)
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**context** | [**AssetSchemaCertificationRequestAssetSchemaDidDocumentContext**](AssetSchemaCertificationRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
+**context** | [**CommissionAssetSchemaRequestAssetSchemaDidDocumentContext**](CommissionAssetSchemaRequestAssetSchemaDidDocumentContext.md) |  | [default to undefined]
 **id** | **string** | Unique identifier for the TokenizedAssetRecord DID Document. | [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;DIDDocument\&quot; and \&quot;TokenizedAssetRecordDidDocument\&quot;.  | [optional] [default to undefined]
 **verificationMethod** | [**Array&lt;TokenizedAssetRecordDidDocumentVerificationMethodInner&gt;**](TokenizedAssetRecordDidDocumentVerificationMethodInner.md) |  | [default to undefined]

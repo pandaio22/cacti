@@ -1,12 +1,15 @@
 # CommissionAssetSchemaRequest
 
+RegisteredAssetSchema represents a persistable wrapper for an Asset Schema, including its DID Document and Verifiable Credential. 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**asset_schema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [optional] [default to undefined]
-**proof** | [**CommissionAssetSchemaRequestProof**](CommissionAssetSchemaRequestProof.md) |  | [default to undefined]
+**did** | **string** | The DID of this asset schema | [default to undefined]
+**assetSchema** | [**CommissionAssetSchemaRequestAssetSchema**](CommissionAssetSchemaRequestAssetSchema.md) |  | [default to undefined]
+**assetSchemaDidDocument** | [**CommissionAssetSchemaRequestAssetSchemaDidDocument**](CommissionAssetSchemaRequestAssetSchemaDidDocument.md) |  | [default to undefined]
+**assetSchemaVerifiableCredential** | [**CommissionAssetSchemaRequestAssetSchemaVerifiableCredential**](CommissionAssetSchemaRequestAssetSchemaVerifiableCredential.md) |  | [default to undefined]
 
 ## Example
 
@@ -14,8 +17,10 @@ Name | Type | Description | Notes
 import { CommissionAssetSchemaRequest } from './api';
 
 const instance: CommissionAssetSchemaRequest = {
-    asset_schema,
-    proof,
+    did,
+    assetSchema,
+    assetSchemaDidDocument,
+    assetSchemaVerifiableCredential,
 };
 ```
 

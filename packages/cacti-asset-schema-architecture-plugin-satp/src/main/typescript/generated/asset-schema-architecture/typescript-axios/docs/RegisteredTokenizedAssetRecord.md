@@ -7,9 +7,9 @@ RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **did** | **string** | The DID of this tokenized asset record | [default to undefined]
-**tokenizedAssetRecord** | [**CommissionTokenizedAssetRecordRequest**](CommissionTokenizedAssetRecordRequest.md) |  | [default to undefined]
-**tokenizedAssetRecordDidDocument** | [**RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument**](RegisteredTokenizedAssetRecordTokenizedAssetRecordDidDocument.md) |  | [default to undefined]
-**tokenizedAssetRecordVerifiableCredential** | [**RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential**](RegisteredTokenizedAssetRecordTokenizedAssetRecordVerifiableCredential.md) |  | [default to undefined]
+**tokenizedAssetRecord** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecord**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecord.md) |  | [default to undefined]
+**tokenizedAssetRecordDidDocument** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordDidDocument.md) |  | [default to undefined]
+**tokenizedAssetRecordVerifiableCredential** | [**CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential**](CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential.md) |  | [default to undefined]
 
 ## Example
 

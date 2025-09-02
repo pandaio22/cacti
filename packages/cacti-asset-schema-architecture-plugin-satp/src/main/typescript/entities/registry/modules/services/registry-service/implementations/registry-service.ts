@@ -40,13 +40,17 @@ export class RegistryService implements IRegistryService {
   private validationService: ValidationService;
   private verifiableCredentialService: VcVerificationService;
   constructor(
-    private assetSchemaDao: RegisteredAssetSchemaDao,
-    private schemaProfileDao: RegisteredSchemaProfileDao,
-    private tokenizedAssetRecordDao: RegisteredTokenizedAssetRecordDao,
-    private assetSchemaAuthorityDao: AssetSchemaAuthorityCertificateDao,
-    private assetProviderDao: AssetProviderCertificateDao,
-    private tokenIssuanceAuthorizationDao: TokenIssuanceAuthorizationDao,
-    private didResolver: DidResolverService,
+    private assetSchemaDao: RegisteredAssetSchemaDao = new RegisteredAssetSchemaDao(),
+    private schemaProfileDao: RegisteredSchemaProfileDao = new RegisteredSchemaProfileDao(),
+    private tokenizedAssetRecordDao: RegisteredTokenizedAssetRecordDao = new RegisteredTokenizedAssetRecordDao(),
+    private assetSchemaAuthorityDao: AssetSchemaAuthorityCertificateDao = new AssetSchemaAuthorityCertificateDao(),
+    private assetProviderDao: AssetProviderCertificateDao = new AssetProviderCertificateDao(),
+    private tokenIssuanceAuthorizationDao: TokenIssuanceAuthorizationDao = new TokenIssuanceAuthorizationDao(),
+    private didResolver: DidResolverService = new DidResolverService(
+      new RegisteredAssetSchemaDao(),
+      new RegisteredSchemaProfileDao(),
+      new RegisteredTokenizedAssetRecordDao(),
+    ),
     private localContexts?: Record<string, any> | undefined,
   ) {
     this.localContexts = localContexts ?? DEFAULT_LOCAL_CONTEXTS;

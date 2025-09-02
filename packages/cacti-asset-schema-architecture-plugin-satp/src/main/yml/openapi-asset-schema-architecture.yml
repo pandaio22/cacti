@@ -96,7 +96,7 @@ paths:
         content:
           application/ld+json:
             schema:
-              $ref: '#/components/schemas/SignedAssetSchema'
+              $ref: '#/components/schemas/RegisteredAssetSchema'
       responses:
         '200':
           description: Asset Schema commissioned successfully
@@ -125,7 +125,7 @@ paths:
         content:
           application/ld+json:
             schema:
-              $ref: '#/components/schemas/SignedSchemaProfile'
+              $ref: '#/components/schemas/RegisteredSchemaProfile'
       responses:
         '200':
           description: Schema Profile commissioned successfully
@@ -154,7 +154,7 @@ paths:
         content:
           application/ld+json:
             schema:
-              $ref: '#/components/schemas/TokenizedAssetRecord'
+              $ref: '#/components/schemas/RegisteredTokenizedAssetRecord'
       responses:
         '200':
           description: Schema Profile commissioned successfully
@@ -249,7 +249,7 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/SignedAssetSchema'
+                $ref: '#/components/schemas/RegisteredAssetSchema'
         '400':
           description: Bad Request
         '500':
@@ -279,7 +279,7 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/SignedSchemaProfile'
+                $ref: '#/components/schemas/RegisteredSchemaProfile'
         '400':
           description: Bad Request
         '500':
@@ -309,7 +309,7 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/TokenizedAssetRecord'
+                $ref: '#/components/schemas/RegisteredTokenizedAssetRecord'
         '400':
           description: Bad Request
         '500':

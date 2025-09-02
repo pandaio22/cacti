@@ -14,8 +14,8 @@ import {
   registerWebServiceEndpoint,
 } from "@hyperledger/cactus-core";
 import OAS from "../../../../json/openapi-asset-schema-architecture-bundled.json";
-import { SignedAssetSchema } from "../../../generated/asset-schema-architecture/typescript-axios/api";
-import { IRegistryApiService } from "../../registry/modules/services/registry-api-service/interfaces/registry-api-service.interface";
+import { RegisteredAssetSchema } from "../../../generated/asset-schema-architecture/typescript-axios/api";
+import { RegistryService } from "../../registry/modules/services/registry-service/implementations/registry-service";
 
 export class GetAssetSchemaEndpoint implements IWebServiceEndpoint {
   public static readonly CLASS_NAME = "GetAssetSchemaEndpoint";
@@ -26,7 +26,7 @@ export class GetAssetSchemaEndpoint implements IWebServiceEndpoint {
     return GetAssetSchemaEndpoint.CLASS_NAME;
   }
 
-  constructor(private readonly registryApiService: IRegistryApiService) {
+  constructor(private readonly registryService: RegistryService) {
     //const fnTag = `${this.className}#constructor()`;
     //Checks.truthy(options, `${fnTag} arg options`);
     //Checks.truthy(options.dispatcher, `${fnTag} arg options.connector`);
@@ -84,17 +84,31 @@ export class GetAssetSchemaEndpoint implements IWebServiceEndpoint {
       if (!uid || typeof uid !== "string")
         throw new Error("Missing or invalid 'UniqueId' query parameter.");
 
-      const signedAssetSchema: SignedAssetSchema =
-        await this.registryApiService.getAssetSchema(uid);
+      const {
+        assetSchema,
+        assetSchemaDidDocument,
+        assetSchemaVerifiableCredential,
+      } = await this.registryService.getAssetSchema(uid);
 
-      if (!signedAssetSchema) {
+      const registeredAssetSchema: RegisteredAssetSchema = {
+        did: assetSchemaDidDocument.id,
+        assetSchema: assetSchema,
+        assetSchemaDidDocument: assetSchemaDidDocument,
+        assetSchemaVerifiableCredential: assetSchemaVerifiableCredential,
+      };
+
+      if (!registeredAssetSchema) {
         throw new Error("Asset schema not found.");
       }
 
-      console.log("Retrieved signed Asset Schema:", signedAssetSchema);
-      res.json(signedAssetSchema);
+      console.log(
+        "Retrieved commissioned Asset Schema:",
+        registeredAssetSchema,
+      );
+      res.json(registeredAssetSchema);
     } catch (exception) {
       const errorMsg = `${reqTag} ${fnTag} Failed to transact: ${exception}`;
+      console.log("\n" + errorMsg + "\n");
       handleRestEndpointException({
         errorMsg,
         log: this.log,
