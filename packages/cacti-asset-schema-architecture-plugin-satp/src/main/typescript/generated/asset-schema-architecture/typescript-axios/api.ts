@@ -1351,6 +1351,12 @@ export interface RegisterTokenIssuanceAuthorizationRequest {
      */
     '@context': RegisterTokenIssuanceAuthorizationRequestContext;
     /**
+     * 
+     * @type {string}
+     * @memberof RegisterTokenIssuanceAuthorizationRequest
+     */
+    'id'?: string;
+    /**
      * Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\". 
      * @type {Array<string>}
      * @memberof RegisterTokenIssuanceAuthorizationRequest
@@ -1719,6 +1725,27 @@ export interface RegisterTokenIssuanceAuthorizationRequestVerifiableCredentialIn
 /**
  * 
  * @export
+ * @interface RegisteredAssetProviderCertificate
+ */
+export interface RegisteredAssetProviderCertificate {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetProviderCertificate
+     */
+    'id': string;
+    /**
+     * 
+     * @type {RegisterAssetProviderRequest}
+     * @memberof RegisteredAssetProviderCertificate
+     */
+    'assetProviderCertificate': RegisterAssetProviderRequest;
+}
+/**
+ * 
+ * @export
  * @interface RegisteredAssetProviderID
  */
 export interface RegisteredAssetProviderID {
@@ -1828,6 +1855,27 @@ export interface RegisteredAssetSchemaAssetSchemaVerifiableCredential {
 /**
  * 
  * @export
+ * @interface RegisteredAssetSchemaAuthorityCertificate
+ */
+export interface RegisteredAssetSchemaAuthorityCertificate {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredAssetSchemaAuthorityCertificate
+     */
+    'id': string;
+    /**
+     * 
+     * @type {RegisterAssetSchemaAuthorityRequest}
+     * @memberof RegisteredAssetSchemaAuthorityCertificate
+     */
+    'assetSchemaAuthorityCertificate': RegisterAssetSchemaAuthorityRequest;
+}
+/**
+ * 
+ * @export
  * @interface RegisteredAssetSchemaAuthorityID
  */
 export interface RegisteredAssetSchemaAuthorityID {
@@ -1933,6 +1981,27 @@ export interface RegisteredSchemaProfileSchemaProfileVerifiableCredential {
      * @memberof RegisteredSchemaProfileSchemaProfileVerifiableCredential
      */
     'proof'?: AssetSchemaVerifiableCredentialProof;
+}
+/**
+ * 
+ * @export
+ * @interface RegisteredTokenIssuanceAuthorization
+ */
+export interface RegisteredTokenIssuanceAuthorization {
+    [key: string]: any;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisteredTokenIssuanceAuthorization
+     */
+    'id': string;
+    /**
+     * 
+     * @type {RegisterTokenIssuanceAuthorizationRequest}
+     * @memberof RegisteredTokenIssuanceAuthorization
+     */
+    'tokenIssuanceAuthorization': RegisterTokenIssuanceAuthorizationRequest;
 }
 /**
  * RegisteredTokenizedAssetRecord represents a persistable wrapper for a Tokenized Asset Record, including its DID Document and Verifiable Credential. 
@@ -2418,6 +2487,12 @@ export interface TokenIssuanceAuthorization {
      * @memberof TokenIssuanceAuthorization
      */
     '@context': RegisterTokenIssuanceAuthorizationRequestContext;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenIssuanceAuthorization
+     */
+    'id'?: string;
     /**
      * Includes \"VerifiablePresentation\" and optionally \"TokenIssuanceAuthorization\". 
      * @type {Array<string>}

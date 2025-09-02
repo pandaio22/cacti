@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | [**RegisterTokenIssuanceAuthorizationRequestContext**](RegisterTokenIssuanceAuthorizationRequestContext.md) |  | [default to undefined]
+**id** | **string** |  | [optional] [default to undefined]
 **type** | **Array&lt;string&gt;** | Includes \&quot;VerifiablePresentation\&quot; and optionally \&quot;TokenIssuanceAuthorization\&quot;.  | [default to undefined]
 **issuer** | **string** | DID or URI of the Asset Schema Authority issuing (signing) this TIA VP.  | [default to undefined]
 **issuanceDate** | **string** | Timestamp when the VC was issued. | [optional] [default to undefined]
@@ -20,6 +21,7 @@ import { TokenIssuanceAuthorization } from './api';
 
 const instance: TokenIssuanceAuthorization = {
     context,
+    id,
     type,
     issuer,
     issuanceDate,

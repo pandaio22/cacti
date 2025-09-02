@@ -1134,6 +1134,7 @@ const VALID_TOKEN_ISSUANCE_AUTHORIZATION = {
     "https://www.w3.org/2018/credentials/v2",
     "https://example.org/contexts/token-issuance-authorization/v1",
   ],
+  id: "urn:uuid:9a7b6c5d-4e3f-2a1b-0c9d-8e7f6a5b4c3d",
   type: ["VerifiablePresentation", "TokenIssuanceAuthorization"],
   issuer: "did:example:asset-schema-authority-456",
   holder: "did:example:asset-provider-123",

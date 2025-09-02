@@ -185,6 +185,10 @@ TokenIssuanceAuthorization:
               - type: object
       description: >
         Typically includes "https://www.w3.org/2018/credentials/v1" and may include domain-specific contexts.
+    id:
+      type: string
+      format: uri
+      example: 'uuid:web:example.com#token-issuance-authorization'
     type:
       type: array
       items:
@@ -245,6 +249,20 @@ TokenIssuanceAuthorization:
     - type
     - issuer
     - proof
+
+RegisteredTokenIssuanceAuthorization:
+  type: object
+  required:
+    - id
+    - tokenIssuanceAuthorization
+  properties:
+    id:
+      type: string
+      format: uri
+      example: 'uuid:web:example.com#token-issuance-authorization'
+    tokenIssuanceAuthorization:
+      $ref: '#/TokenIssuanceAuthorization'
+  additionalProperties: true
 
 OLDTokenIssuanceAuthorization:
   type: object
@@ -1443,6 +1461,20 @@ AssetSchemaAuthorityCertificate:
       example: 'An example Asset Schema Authority DID Document'
   additionalProperties: true
 
+RegisteredAssetSchemaAuthorityCertificate:
+  type: object
+  required:
+    - id
+    - assetSchemaAuthorityCertificate
+  properties:
+    id:
+      type: string
+      format: uri
+      example: 'did:web:example.com#asset-schema-authority'
+    assetSchemaAuthorityCertificate:
+      $ref: '#/AssetSchemaAuthorityCertificate'
+  additionalProperties: true
+
 RegisteredAssetSchemaAuthorityID:
   type: object
   required:
@@ -1495,6 +1527,20 @@ AssetProviderCertificate:
     description:
       type: string
       example: 'An example Asset Provider DID Document'
+  additionalProperties: true
+
+RegisteredAssetProviderCertificate:
+  type: object
+  required:
+    - id
+    - assetProviderCertificate
+  properties:
+    id:
+      type: string
+      format: uri
+      example: 'did:web:example.com#asset-provider'
+    assetProviderCertificate:
+      $ref: '#/AssetProviderCertificate'
   additionalProperties: true
 
 RegisteredAssetProviderID:
