@@ -1,7 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
-
+import { LogLevelDesc } from "@hyperledger/cactus-common";
+import { PluginRegistry } from "@hyperledger/cactus-core";
+import { v4 as uuidv4 } from "uuid";
+import {
+  PluginAssetSchemaArchitecture,
+  IPluginAssetSchemaArchitectureOptions,
+} from "../../../../../main/typescript/plugin-asset-schema-architecture";
 import {
   VALID_ASSET_SCHEMA_EXAMPLE,
   VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE,
@@ -9,10 +15,15 @@ import {
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
 } from "../../../constants/constants";
+import { db } from "../../../../../main/typescript/entities/registry/modules/database/knex/db-connection";
 
 import { AssetSchemaAuthorityService } from "../../../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 
 describe("Asset Schema Authority Service", () => {
+  let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
+  let pluginAssetSchemaArchitecture: PluginAssetSchemaArchitecture;
+  const logLevel: LogLevelDesc = "INFO";
+  const pluginRegistry = new PluginRegistry({ logLevel, plugins: [] });
   const TIMEOUT: number = 50000000;
   let assetSchemaAuthorityService: AssetSchemaAuthorityService;
 
@@ -50,16 +61,6 @@ describe("Asset Schema Authority Service", () => {
     ),
   );
 
-  const schemaProfileContext = JSON.parse(
-    fs.readFileSync(
-      path.join(
-        __dirname,
-        "../../../../json-ld/contexts/schema-profile.jsonld",
-      ),
-      "utf-8",
-    ),
-  );
-
   const schemaProfileVerifiableCredentialContext = JSON.parse(
     fs.readFileSync(
       path.join(
@@ -77,26 +78,6 @@ describe("Asset Schema Authority Service", () => {
     ),
   );
 
-  const verifiableCredentialsContextV1 = JSON.parse(
-    fs.readFileSync(
-      path.join(
-        __dirname,
-        "../../../../json-ld/contexts/verifiable-credentials-v1.jsonld",
-      ),
-      "utf-8",
-    ),
-  );
-
-  const verifiableCredentialsContext = JSON.parse(
-    fs.readFileSync(
-      path.join(
-        __dirname,
-        "../../../../json-ld/contexts/verifiable-credentials-v2.jsonld",
-      ),
-      "utf-8",
-    ),
-  );
-
   const ed255192020 = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../../../../json-ld/contexts/ed25519-2020.jsonld"),
@@ -104,30 +85,56 @@ describe("Asset Schema Authority Service", () => {
     ),
   );
 
-  const tokenIssuanceAuthorizationContext = JSON.parse(
-    fs.readFileSync(
-      path.join(
-        __dirname,
-        "../../../../json-ld/contexts/token-issuance-authorization.jsonld",
-      ),
-      "utf-8",
-    ),
-  );
   /***************************************************************/
   beforeAll(async () => {
-    // Placeholder
+    // Create tables for testing
+    await db.schema.dropTableIfExists("asset_schemas");
+    await db.schema.createTable("asset_schemas", (table) => {
+      table.string("did").primary();
+      table.text("asset_schema");
+      table.text("asset_schema_did_document");
+      table.text("asset_schema_vc");
+    });
+    await db.schema.dropTableIfExists("schema_profiles");
+    await db.schema.createTable("schema_profiles", (table) => {
+      table.string("did").primary();
+      table.text("schema_profile");
+      table.text("schema_profile_did_document");
+      table.text("schema_profile_vc");
+    });
+    await db.schema.dropTableIfExists("token_issuance_authorizations");
+    await db.schema.createTable("token_issuance_authorizations", (table) => {
+      table.string("id").primary();
+      table.text("token_issuance_authorization");
+    });
   });
 
   beforeEach(async () => {
+    pluginAssetSchemaArchitectureOptions = {
+      pluginRegistry,
+      instanceId: uuidv4(),
+      logLevel: "DEBUG",
+    };
+
+    pluginAssetSchemaArchitecture = new PluginAssetSchemaArchitecture(
+      pluginAssetSchemaArchitectureOptions,
+    );
+
+    await pluginAssetSchemaArchitecture.startup();
+
     assetSchemaAuthorityService = new AssetSchemaAuthorityService();
   }, TIMEOUT);
 
   afterEach(async () => {
-    // Placeholder
+    await db("asset_schemas").del();
+    await db("schema_profiles").del();
+    await db("token_issuance_authorizations").del();
+
+    await pluginAssetSchemaArchitecture.shutdown();
   }, TIMEOUT);
 
   afterAll(async () => {
-    // Placeholder
+    await db.destroy();
   });
 
   // ------------------------

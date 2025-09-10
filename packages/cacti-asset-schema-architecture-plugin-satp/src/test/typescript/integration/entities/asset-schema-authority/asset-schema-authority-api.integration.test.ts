@@ -15,6 +15,7 @@ import {
   VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE,
   VALID_TOKEN_ISSUANCE_AUTHORIZATION_REQUEST_TEST,
 } from "../../../constants/constants";
+import { db } from "../../../../../main/typescript/entities/registry/modules/database/knex/db-connection";
 
 describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   let pluginAssetSchemaArchitectureOptions: IPluginAssetSchemaArchitectureOptions;
@@ -28,7 +29,26 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   let assetSchemaAuthorityApi: AssetSchemaAuthorityApi;
 
   beforeAll(async () => {
-    //Placeholder
+    // Create tables for testing
+    await db.schema.dropTableIfExists("asset_schemas");
+    await db.schema.createTable("asset_schemas", (table) => {
+      table.string("did").primary();
+      table.text("asset_schema");
+      table.text("asset_schema_did_document");
+      table.text("asset_schema_vc");
+    });
+    await db.schema.dropTableIfExists("schema_profiles");
+    await db.schema.createTable("schema_profiles", (table) => {
+      table.string("did").primary();
+      table.text("schema_profile");
+      table.text("schema_profile_did_document");
+      table.text("schema_profile_vc");
+    });
+    await db.schema.dropTableIfExists("token_issuance_authorizations");
+    await db.schema.createTable("token_issuance_authorizations", (table) => {
+      table.string("id").primary();
+      table.text("token_issuance_authorization");
+    });
   });
 
   beforeEach(async () => {
@@ -48,13 +68,16 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
   }, TIMEOUT);
 
   afterEach(async () => {
+    await db("asset_schemas").del();
+    await db("schema_profiles").del();
+    await db("token_issuance_authorizations").del();
     pluginRegistry.deleteByPackageName(pluginAssetSchemaArchitecture.className);
 
     await pluginAssetSchemaArchitecture.shutdown();
   }, TIMEOUT);
 
   afterAll(async () => {
-    //Placeholder
+    await db.destroy();
   });
 
   it(
@@ -90,17 +113,8 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
         .catch((err) => err.response);
 
       // Then
-      console.log(
-        "Error Response Data:",
-        tokenIssuanceAuthorizationEndpoint?.data,
-      );
-
       expect(tokenIssuanceAuthorizationEndpoint).toBeDefined();
-
-      // HTTP status
       expect(tokenIssuanceAuthorizationEndpoint?.status).toEqual(500);
-
-      // Outer error message
       expect(tokenIssuanceAuthorizationEndpoint?.data?.message).toEqual(
         "InternalServerError",
       );
@@ -121,6 +135,10 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
       //Then
       expect(assetSchemaCertificationEndpoint.status).toEqual(200);
       expect(assetSchemaCertificationEndpoint.data).toBeDefined();
+      console.log(
+        "Certified Asset Schema:",
+        assetSchemaCertificationEndpoint.data,
+      );
     },
     TIMEOUT,
   );
@@ -146,16 +164,8 @@ describe("Asset Schema Authority (ASA) API Integration Tests", () => {
         })
         .catch((err) => err.response);
       // Then
-      console.log(
-        "Error Response Data:",
-        assetSchemaCertificationEndpoint.data,
-      );
-      expect(assetSchemaCertificationEndpoint).toBeDefined(); // ensure we got a response
-
-      // HTTP status
+      expect(assetSchemaCertificationEndpoint).toBeDefined();
       expect(assetSchemaCertificationEndpoint.status).toEqual(500);
-
-      // Outer error
       expect(assetSchemaCertificationEndpoint.data.message).toEqual(
         "InternalServerError",
       );

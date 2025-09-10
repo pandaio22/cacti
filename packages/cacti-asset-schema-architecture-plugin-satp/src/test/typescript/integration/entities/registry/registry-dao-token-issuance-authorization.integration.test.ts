@@ -99,7 +99,7 @@ describe("TokenIssuanceAuthorizationDao", () => {
 
     // Then
     const row = await dao.getById(updated.id);
-    expect(row?.tokenIssuanceAuthorization.issuer).toBe("updated-isuer");
+    expect(row?.tokenIssuanceAuthorization.issuer).toBe("updated-issuer");
   });
 
   it("should throw error on updating non-existent authorization: Given no authorization exists, When attempting to update, Then an error should be thrown", async () => {

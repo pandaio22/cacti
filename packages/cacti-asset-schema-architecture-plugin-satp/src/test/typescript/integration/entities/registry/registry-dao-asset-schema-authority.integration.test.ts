@@ -40,7 +40,9 @@ describe("AssetSchemaAuthorityCertificateDao", () => {
       .where({ did: authority.id })
       .first();
     expect(row).toBeDefined();
-    expect(JSON.parse(row.asset_schema_authority)).toEqual(authority);
+    expect(JSON.parse(row.asset_schema_authority)).toEqual(
+      authority.assetSchemaAuthorityCertificate,
+    );
   });
 
   it("should throw error on duplicate DID: Given a certificate already exists, When creating it again with the same DID, Then an error should be thrown", async () => {

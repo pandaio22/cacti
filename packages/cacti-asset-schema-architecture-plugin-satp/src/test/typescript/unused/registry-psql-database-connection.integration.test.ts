@@ -1,5 +1,5 @@
 import knex from "knex";
-import config from "../../../../../main/typescript/entities/registry/modules/database/knex/knexfile";
+import config from "../../../main/typescript/entities/registry/modules/database/knex/knexfile";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("Postgres connection via Knex", () => {

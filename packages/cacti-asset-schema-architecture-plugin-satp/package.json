@@ -35,6 +35,7 @@
     "test:vitest:integration:registry": "vitest run ./src/test/typescript/integration/entities/registry --run",
     "test:vitest:integration:asset-provider": "vitest run ./src/test/typescript/integration/entities/asset-provider --run",
     "test:vitest:integration:all": "yarn test:vitest:integration:asset-schema-authority && yarn test:vitest:integration:registry && yarn test:vitest:integration:asset-provider",
+    "test:vitest:system": "vitest run ./src/test/typescript/system/**/*.system.test.ts --run --sequence.concurrent=false --sequence.shuffle=false --max-workers=1",
     "test:jest:unit": "npx jest ./src/test/typescript/unit --detectOpenHandles --runInBand",
     "test:jest:integration": "npx jest ./src/test/typescript/integration/entities --detectOpenHandles --runInBand",
     "test:jest:integration:asset-schema-authority": "npx jest ./src/test/typescript/integration/entities/asset-schema-authority --detectOpenHandles --runInBand",

@@ -1,3 +1,4 @@
+import { Configuration } from "@hyperledger/cactus-core-api";
 import {
   AssetSchema,
   AssetSchemaDidDocument,
@@ -8,6 +9,7 @@ import {
   TokenIssuanceAuthorization,
   TokenIssuanceAuthorizationRequest,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
+import { REGISTRY_API_SERVER } from "../../../../../../constants/constants";
 import { VerifiableCredentialService } from "../../verifiable-credential-service/implementations/verifiable-credential-service";
 import { ValidationService } from "../../validation-service/implementations/validation-service";
 import {
@@ -16,6 +18,7 @@ import {
 } from "../../../../../../types/asset-schema-architecture-types.type";
 import { IAssetSchemaAuthorityService } from "../interfaces/asset-schema-authority-service.interface";
 import { DEFAULT_LOCAL_CONTEXTS } from "../../../../../../utils/defaultLocalContexts";
+import { RegistryApi } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 
 /**
  * AssetSchemaAuthorityService
@@ -32,6 +35,7 @@ export class AssetSchemaAuthorityService
   private localContexts: Record<string, any> | undefined;
   private validationService: ValidationService;
   private verifiableCredentialService: VerifiableCredentialService;
+  private registryApi: RegistryApi;
 
   /**
    * Constructs an instance of AssetSchemaAuthorityService.
@@ -45,6 +49,10 @@ export class AssetSchemaAuthorityService
     this.verifiableCredentialService = new VerifiableCredentialService(
       this.localContexts,
     );
+    const config = new Configuration({
+      basePath: REGISTRY_API_SERVER,
+    });
+    this.registryApi = new RegistryApi(config);
   }
   /**
    * Certifies an Asset Schema by wrapping it into a Verifiable Credential (VC),
@@ -114,8 +122,20 @@ export class AssetSchemaAuthorityService
         );
       }
       //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
-
-      //###CALL REGISTRY - TODOOO
+      console.log("Commissioning Asset Schema in Registry...\n");
+      if (
+        !(await this.registryApi.commissionAssetSchema({
+          did: assetSchemaDidDocument.id!,
+          assetSchema: assetSchema,
+          assetSchemaDidDocument: assetSchemaDidDocument,
+          assetSchemaVerifiableCredential: assetSchemaVerifiableCredential,
+        }))
+      ) {
+        console.log("Registry Response Error");
+        throw new Error(
+          "Registry Error: Error when calling Registry to commission Asset Schema.",
+        );
+      }
 
       return assetSchemaVerifiableCredential as CommissionedAssetSchema;
     } catch (error) {
@@ -198,9 +218,23 @@ export class AssetSchemaAuthorityService
           "Invalid Verifiable Credential: Error when verifying Verifiable Credential.",
         );
       }
-      //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
 
-      //###TODO - CALL REGISTRY
+      //3rd - Call Registry endpoint to commission Schema Profile, Schema Profile VC and Schema Profile DID Document
+
+      console.log("Commissioning Schema Profile in Registry...\n");
+      if (
+        !(await this.registryApi.commissionSchemaProfile({
+          did: schemaProfileDidDocument.id!,
+          schemaProfile: schemaProfile,
+          schemaProfileDidDocument: schemaProfileDidDocument,
+          schemaProfileVerifiableCredential: schemaProfileVerifiableCredential,
+        }))
+      ) {
+        console.log("Registry Response Error");
+        throw new Error(
+          "Registry Error: Error when calling Registry to commission Schema Profile.",
+        );
+      }
 
       return schemaProfileVerifiableCredential as CommissionedSchemaProfile;
     } catch (error) {
@@ -284,6 +318,18 @@ export class AssetSchemaAuthorityService
       }
 
       //3rd - Call Registry endpoint to commission Asset Schema, Asset Schema VC and Asset Schema DID Document
+
+      console.log("Registering Token Issuance Authorization in Registry...\n");
+      if (
+        !(await this.registryApi.registerTokenIssuanceAuthorization(
+          tokenIssuanceAuthorization,
+        ))
+      ) {
+        console.log("Registry Response Error");
+        throw new Error(
+          "Registry Error: Error when calling Registry to register a Token Issuance Authorization.",
+        );
+      }
 
       return tokenIssuanceAuthorization as TokenIssuanceAuthorization;
     } catch (error) {

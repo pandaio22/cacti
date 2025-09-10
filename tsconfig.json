@@ -183,10 +183,10 @@
       "path": "./packages/cacti-asset-schema-architecture-plugin-satp/tsconfig.json"
     },
     {
-      "path": "./packages/cacti-test-asset-schema-architecture-plugin-satp/tsconfig.json"
+      "path": "./packages/cactus-plugin-satp-hermes/tsconfig.json"
     },
     {
-      "path": "./packages/cactus-plugin-satp-hermes/tsconfig.json"
+      "path": "./packages/cacti-test-asset-schema-architecture-plugin-satp/tsconfig.json"
     },
     {
       "path": "./packages/cactus-plugin-satp-hermes/tsconfig.json"
