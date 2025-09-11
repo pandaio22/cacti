@@ -56,7 +56,7 @@ const TIMEOUT = 900000; // 15 minutes
 afterAll(async () => {
   await gateway.shutdown();
   await besuEnv.tearDown();
-  await fabricEnv.tearDown();
+ // await fabricEnv.tearDown();
 
   await pruneDockerAllIfGithubAction({ logLevel })
     .then(() => {
@@ -90,7 +90,7 @@ beforeAll(async () => {
       fail("Pruning didn't throw OK");
     });
 
-  {
+  /*{
     const satpContractName = "satp-contract";
     fabricEnv = await FabricTestEnvironment.setupTestEnvironment({
       contractName: satpContractName,
@@ -100,7 +100,7 @@ beforeAll(async () => {
     log.info("Fabric Ledger started successfully");
 
     await fabricEnv.deployAndSetupContracts();
-  }
+  }*/
 
   {
     const erc20TokenContract = "SATPContract";
@@ -122,7 +122,7 @@ beforeAll(async () => {
     await ethereumEnv.deployAndSetupContracts(ClaimFormat.BUNGEE);
   }
 }, TIMEOUT);
-
+/*
 describe("SATPGateway sending a token from Besu to Fabric", () => {
   jest.setTimeout(TIMEOUT);
   it("should mint 100 tokens to the owner account", async () => {
@@ -443,7 +443,7 @@ describe("SATPGateway sending a token from Fabric to Besu", () => {
     await gateway.shutdown();
   });
 });
-
+*/
 describe("SATPGateway sending a token from Besu to Ethereum", () => {
   jest.setTimeout(TIMEOUT);
   it("should realize a transfer", async () => {

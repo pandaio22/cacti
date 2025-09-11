@@ -9,6 +9,12 @@ const config: Config = {
 
   extensionsToTreatAsEsm: [".ts"],
 
+  //globals: {
+  //  "ts-jest": {
+  //    useESM: true,
+  //  },
+  //},
+
   // Modern ts-jest configuration (replaces globals)
   transform: {
     "^.+\\.tsx?$": [
@@ -18,9 +24,9 @@ const config: Config = {
       },
     ],
   },
-  //transform: {},
+
   transformIgnorePatterns: [
-    "node_modules/(?!(@digitalbazaar/.*|@digitalbazaar/vc/lib/index.js|@veramo/core/.*|jsonld|did-resolver|ethr-did-resolver|web-did-resolver))",
+    "node_modules/(?!(@digitalbazaar/.*|@veramo/core/.*|did-resolver|ethr-did-resolver|web-did-resolver))",
   ],
 
   testEnvironment: "node",

@@ -8,7 +8,8 @@
     "rootDir": "./src/",
     "tsBuildInfoFile": "../../.build-cache/cactus-plugin-satp-hermes.tsbuildinfo",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "typeRoots": ["./src/main/typescript/types", "./node_modules/@types"]
   },
   "ts-node": {
     "files": true

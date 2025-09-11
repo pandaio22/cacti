@@ -66,7 +66,12 @@ import { type BridgeManagerClientInterface } from "../../../cross-chain-mechanis
 import { LedgerType } from "@hyperledger/cactus-core-api";
 import { NetworkId } from "../../../public-api";
 import { Configuration } from "@hyperledger/cactus-core-api";
-import { RegistryApi } from "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api";
+//import { RegistryApi } from "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api";
+//const { RegistryApi } = await import(
+//  "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api"
+//);
+// At the top of stage0-server-service.ts
+//import type { RegistryApi } from "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api";
 
 export class Stage0ServerService extends SATPService {
   public static readonly SATP_STAGE = "0";
@@ -679,6 +684,11 @@ export class Stage0ServerService extends SATPService {
     return preTransferVerificationResponse;
   }
 
+  /*
+  Added to test the Asset Schema Architecture (ASA) integration
+  Registry Verification of Tokenized Asset Record TAR and Schema Profile SP:
+  Gateway G2 must perform the following steps to validate the Tokenized Asset Record
+  */
   public async registryVerification(
     request: PreTransferVerificationRequest,
     session: SATPSession,
@@ -690,7 +700,7 @@ export class Stage0ServerService extends SATPService {
     const config = new Configuration({
       basePath: REGISTRY_API_SERVER,
     });
-
+/*
     const registryApi = new RegistryApi(config);
 
     this.Log.debug("registryVerification() CALLED HERE");
@@ -710,7 +720,7 @@ export class Stage0ServerService extends SATPService {
         "Schema Profile validation failed",
       );
     }
-
+*/
     return true;
   }
 
@@ -722,7 +732,7 @@ export class Stage0ServerService extends SATPService {
    *Gateway G2 then fetches a copy of the TAR1 from the Registry Service (RG) and
    *validates the signature of on TAR.
    */
-  public async validateTokenizedAssetRecord(
+  /*public async validateTokenizedAssetRecord(
     request: PreTransferVerificationRequest,
     session: SATPSession,
     registryApi: RegistryApi,
@@ -763,7 +773,7 @@ export class Stage0ServerService extends SATPService {
         error,
       );
     }
-  }
+  }*/
 
   /**
    * Validating Schema Profile (SP) corresponding to Tokenized Asset Record (TAR):
@@ -771,7 +781,7 @@ export class Stage0ServerService extends SATPService {
    * gateway G2 must use that reference to fetch a copy of the Schema Profile from the
    * correct Registry Service (RG).
    */
-  public async validateSchemaProfile(
+  /*public async validateSchemaProfile(
     request: PreTransferVerificationRequest,
     session: SATPSession,
     registryApi: RegistryApi,
@@ -814,7 +824,7 @@ export class Stage0ServerService extends SATPService {
       this.Log.error(`Error in ${fnTag}`, error);
       throw new FailedToProcessError(fnTag, "validateSchemaProfile", error);
     }
-  }
+  }*/
 
   /*Policy Verification of Schema Profile SP: Using the Schema Profile SP obtained
    *from Registry Service RG the gateway G2 is now able to compare the asset definitions

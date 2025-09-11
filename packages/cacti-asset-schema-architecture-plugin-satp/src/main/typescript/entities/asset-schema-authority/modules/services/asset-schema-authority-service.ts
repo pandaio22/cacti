@@ -1,4 +1,4 @@
-import { SignatureService } from "./signature-service";
+/*import { SignatureService } from "./signature-service";
 import { PRIVATE_KEYS_PEM } from "../../../../constants/constants";
 import { TokenIssuanceAuthorizationRequest } from "../../../../generated/asset-schema-architecture/typescript-axios/api";
 
@@ -9,7 +9,7 @@ export class AssetSchemaAuthorityService {
    * @param assetSchema - The asset schema to sign.
    * @returns A promise that resolves to the signed asset schema.
    * @throws Error if the asset schema is invalid or signing fails.
-   */
+   
   public async signAssetSchema(assetSchema: any): Promise<string> {
     try {
       console.log("Signing asset schema:", assetSchema);
@@ -40,7 +40,7 @@ export class AssetSchemaAuthorityService {
    * @param schemaProfile - The schema profile to sign.
    * @returns A promise that resolves to the signed schema profile.
    * @throws Error if the schema profile is invalid or signing fails.
-   */
+   
   public async signSchemaProfile(schemaProfile: any): Promise<string> {
     try {
       console.log("Signing schema profile:", schemaProfile);
@@ -71,7 +71,7 @@ export class AssetSchemaAuthorityService {
    * @param assetSchema - The asset schema to certify.
    * @returns A promise that resolves to the certified asset schema.
    * @throws Error if the asset schema is invalid or signing fails.
-   */
+   
   public async handleAssetSchemaCertification(
     assetSchema: any,
   ): Promise<string> {
@@ -105,7 +105,7 @@ export class AssetSchemaAuthorityService {
    * @param schemaProfile - The schema profile to certify.
    * @returns A promise that resolves to the certified schema profile.
    * @throws Error if the schema profile is invalid or signing fails.
-   */
+   
   public async handleSchemaProfileCertification(
     schemaProfile: any,
   ): Promise<string> {
@@ -139,7 +139,7 @@ export class AssetSchemaAuthorityService {
    * @param tokenIssuanceAuthorizationRequest - The request to sign.
    * @returns A promise that resolves to the signed token issuance authorization.
    * @throws Error if the request is invalid or signing fails.
-   */
+   
   public async handleTokenIssuanceAuthorizationRequest(
     tokenIssuanceAuthorizationRequest: TokenIssuanceAuthorizationRequest,
   ): Promise<string> {
@@ -171,7 +171,7 @@ export class AssetSchemaAuthorityService {
 
       //5th - If registered successfully, return TIA. Else, throw exception
       return tokenIssuanceAuthorization;
-      */
+      //ADD A CLOSE COMMENT HERE
       return "Success";
     } catch (error) {
       console.error(
@@ -182,3 +182,4 @@ export class AssetSchemaAuthorityService {
     }
   }
 }
+*/

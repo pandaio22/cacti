@@ -42,7 +42,8 @@ export async function launchAssetSchemaArchitecture(): Promise<void> {
     await pluginAssetSchemaArchitecture.startup();
     logger.info("Plugin started successfully");
     logger.info("Type 'exit' to shutdown the plugin");
-
+    
+    //comment
     // Alternative: Direct stdin handling (uncomment if readline doesn't work)
     /*
     process.stdin.setRawMode(false);

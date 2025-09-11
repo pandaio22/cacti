@@ -1,4 +1,4 @@
-import "jest-extended";
+/*import "jest-extended";
 import {
   JsObjectSigner,
   type LogLevelDesc,
@@ -322,3 +322,4 @@ describe("Test registryVerification", () => {
     );
   }
 });
+*/

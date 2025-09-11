@@ -11,7 +11,7 @@ const IPFS_URL: string = "http://localhost:5001/api/v0";
  * This private key is used to sign asset schemas and schema profiles.
  * Ensure that the private key is kept secure and not exposed in public repositories.
  */
-
+/*
 const assetSchemaAuthorityPrivateKeyPath = path.resolve(
   process.cwd(),
   "src/main/typescript/entities/asset-schema-authority/certificates/privateKey.pem",
@@ -31,7 +31,7 @@ const ASSET_PROVIDER_PRIVATE_KEY_PEM = fs.readFileSync(
 const PRIVATE_KEYS_PEM = {
   ASSET_SCHEMA_AUTHORITY: ASSET_SCHEMA_AUTHORITY_PRIVATE_KEY_PEM,
   ASSET_PROVIDER: ASSET_PROVIDER_PRIVATE_KEY_PEM,
-};
+};*/
 /**
  * API SERVERS
  */
@@ -323,7 +323,7 @@ const VALID_ASSET_PROVIDER_CERTIFICATE_EXAMPLE = {
 /****************************************************/
 export {
   IPFS_URL,
-  PRIVATE_KEYS_PEM,
+  //PRIVATE_KEYS_PEM,
   REGISTRY_API_SERVER,
   ASSET_SCHEMA_AUTHORITY_API_SERVER,
   ASSET_PROVIDER_API_SERVER,

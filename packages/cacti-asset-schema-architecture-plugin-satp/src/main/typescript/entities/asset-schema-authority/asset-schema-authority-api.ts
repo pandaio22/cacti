@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+/*import express, { Express, Request, Response } from "express";
 import { Server } from "http";
 import bodyParser from "body-parser";
 import { AssetSchemaAuthorityService } from "./modules/services/asset-schema-authority-service";
@@ -12,7 +12,7 @@ export class AssetSchemaAuthorityApi {
    * Constructs a new instance of the AssetSchemaAuthorityApi.
    * @param assetSchemaAuthorityService - An instance of the AssetSchemaAuthorityService to handle API requests.
    * @param port - The port on which the server will listen (default is 3000).
-   * */
+   * 
   constructor(
     private readonly assetSchemaAuthorityService: AssetSchemaAuthorityService,
     port: number = 3010,
@@ -32,7 +32,7 @@ export class AssetSchemaAuthorityApi {
   /**
    * Starts the server and listens on the specified port.
    * @returns A promise that resolves when the server is successfully started.
-   */
+   
   public async start(): Promise<void> {
     this.server = await new Promise<Server>((resolve, reject) => {
       const server = this.app.listen(this.port, () => {
@@ -48,7 +48,7 @@ export class AssetSchemaAuthorityApi {
   /**
    * Stops the server if it is running.
    * @returns A promise that resolves when the server is successfully stopped.
-   */
+   
   public async stop(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.server) {
@@ -66,7 +66,7 @@ export class AssetSchemaAuthorityApi {
    * API endpoint to issue a certificate for an asset schema.
    * @param req - The request object containing the asset schema data.
    * @param res - The response object to send the result.
-   */
+   
   private async certificateAssetSchema(
     req: Request,
     res: Response,
@@ -121,3 +121,4 @@ export class AssetSchemaAuthorityApi {
     }
   }
 }
+*/

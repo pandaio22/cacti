@@ -38,6 +38,12 @@ import { createMigrationSource } from "../../../../main/typescript/database/knex
 import { knexLocalInstance } from "../../../../main/typescript/database/knexfile";
 import { knexRemoteInstance } from "../../../../main/typescript/database/knexfile-remote";
 
+/*import { Configuration } from "@hyperledger/cactus-core-api";
+import {
+  PluginAssetSchemaArchitecture,
+  IPluginAssetSchemaArchitectureOptions,
+} from "@hyperledger/cacti-asset-schema-architecture-plugin-satp/src/main/typescript/public-api";*/
+
 const logLevel: LogLevelDesc = "DEBUG";
 const log = LoggerProvider.getOrCreate({
   level: logLevel,

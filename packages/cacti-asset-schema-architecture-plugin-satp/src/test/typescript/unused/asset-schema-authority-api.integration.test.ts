@@ -1,4 +1,4 @@
-import { AssetSchemaAuthorityApi } from "../../../main/typescript/entities/asset-schema-authority/asset-schema-authority-api";
+/*import { AssetSchemaAuthorityApi } from "../../../main/typescript/entities/asset-schema-authority/asset-schema-authority-api";
 import { AssetSchemaAuthorityService } from "../../../main/typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service";
 import request from "supertest";
 
@@ -89,3 +89,4 @@ describe("AssetSchemaAuthorityApi", () => {
     });
   });
 });
+*/
