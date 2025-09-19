@@ -801,11 +801,11 @@ export class Stage3SATPHandler implements SATPHandler {
             session.getServerSessionData().recipientLedgerAssetId || undefined;
 
           const stage3Str =
-            session.getClientSessionData().receivedTimestamps?.stage3
+            session.getServerSessionData().processedTimestamps?.stage3
               ?.transferCompleteResponseMessageTimestamp;
           const stage1Str =
-            session.getClientSessionData().receivedTimestamps?.stage1
-              ?.transferProposalReceiptMessageTimestamp;
+            session.getClientSessionData().processedTimestamps?.stage0
+              ?.newSessionRequestMessageTimestamp;
 
           if (stage1Str && stage3Str) {
             const duration = Number(stage3Str) - Number(stage1Str);
