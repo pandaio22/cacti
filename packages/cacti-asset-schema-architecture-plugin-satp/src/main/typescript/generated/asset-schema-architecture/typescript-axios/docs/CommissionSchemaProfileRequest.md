@@ -1,0 +1,27 @@
+# CommissionSchemaProfileRequest
+
+RegisteredSchemaProfile represents a persistable wrapper for a Schema Profile, including its DID Document and Verifiable Credential. 
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**did** | **string** | The DID of this schema profile | [default to undefined]
+**schemaProfile** | [**CommissionSchemaProfileRequestSchemaProfile**](CommissionSchemaProfileRequestSchemaProfile.md) |  | [default to undefined]
+**schemaProfileDidDocument** | [**CommissionSchemaProfileRequestSchemaProfileDidDocument**](CommissionSchemaProfileRequestSchemaProfileDidDocument.md) |  | [default to undefined]
+**schemaProfileVerifiableCredential** | [**CommissionSchemaProfileRequestSchemaProfileVerifiableCredential**](CommissionSchemaProfileRequestSchemaProfileVerifiableCredential.md) |  | [default to undefined]
+
+## Example
+
+```typescript
+import { CommissionSchemaProfileRequest } from './api';
+
+const instance: CommissionSchemaProfileRequest = {
+    did,
+    schemaProfile,
+    schemaProfileDidDocument,
+    schemaProfileVerifiableCredential,
+};
+```
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

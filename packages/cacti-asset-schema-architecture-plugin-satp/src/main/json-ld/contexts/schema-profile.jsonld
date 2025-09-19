@@ -1,0 +1,87 @@
+{
+  "@context": [
+    { "@version": 1.1 },
+    "did:example:123456789abcdefghi#",
+    {
+      "dcap": {
+        "@id": "https://www.culture.example.org/asset_profile/dcap",
+        "@context": {
+          "rwa": {
+            "@id": "https://www.culture.example.org/asset_profile/rwa",
+            "@context": {
+              "digital_carrier_id": {
+                "@id": "https://www.culture.example.org/asset_profile/digital_carrier_id",
+                "@type": "schema:string"
+              },
+              "digital_carrier_type": {
+                "@id": "https://www.culture.example.org/asset_profile/digital_carrier_type",
+                "@type": "schema:string"
+              },
+              "rwa_kind": {
+                "@id": "https://www.culture.example.org/asset_profile/rwa_kind",
+                "@container": "@language"
+              },
+              "rwa_description": {
+                "@id": "https://www.culture.example.org/asset_profile/rwa_description",
+                "@container": "@language"
+              },
+              "rwa_current_storage": {
+                "@id": "https://www.culture.example.org/asset_profile/rwa_current_storage",
+                "@container": "@language"
+              },
+              "rwa_storage_location": {
+                "@id": "https://www.culture.example.org/asset_profile/rwa_storage_location",
+                "@container": "@language"
+              }
+            }
+          },
+          "dar": {
+            "@id": "https://www.culture.example.org/asset_profile/dar",
+            "@context": {
+              "dar_id": {
+                "@id": "https://www.culture.example.org/asset_profile/dar_id",
+                "@type": "schema:string"
+              },
+              "dar_system_id": {
+                "@id": "https://www.culture.example.org/asset_profile/dar_system_id",
+                "@type": "schema:string"
+              },
+              "dar_url": {
+                "@id": "https://www.culture.example.org/asset_profile/dar_url",
+                "@type": "schema:url"
+              },
+              "dar_description": {
+                "@id": "https://www.culture.example.org/asset_profile/dar_description",
+                "@container": "@language"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tokenized_issuance_authorization": "https://example.org/tokenissuanceauthorization"
+    },
+    {
+      "schema_profile": "https://example.org/schemaprofile"
+    }
+  ],
+  "@id": "did:example:56745689abcdefghi",
+  "title": "Asset Profile for Cultural Assets",
+  "asset_schema": "did:example:123456789abcdefghi#assetSchema",
+  "fungible": false,
+  "organization_key": {
+    "public_key": "did:example:abc123#keys-1",
+    "issued": "2025-08-12T12:00:00Z"
+  },
+  "facets": {
+    "owner_transferability": "non-transferable",
+    "network_transferability": "evm_compatible_network",
+    "jurisdiction": {
+      "ownerJurisdictionScope": {
+        "law": "https://www.officialjoutrnal.example.org/eli/law/yyyy/nnnn/enacted/data.json",
+        "territory": "Some country"
+      }
+    }
+  }
+}
