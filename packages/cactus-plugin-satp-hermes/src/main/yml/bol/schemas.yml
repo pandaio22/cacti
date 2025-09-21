@@ -238,6 +238,11 @@ Asset:
       $ref: ./schemas.yml#/TokenType
     referenceId:
       type: string
+    tokenizedAssetRecord:
+      oneOf:
+        - type: string
+          format: uri
+          example: 'did:example:tokenizedAssetRecord'
     
 TransactRequest:
   description: "Request schema for initiating a transaction. Includes details such as the transaction context, mode (data or transfer), payload, and information about the source and destination DLT networks."

@@ -221,8 +221,18 @@ export class Stage0SATPHandler implements SATPHandler {
 
           saveMessageInSessionData(session.getServerSessionData(), req);
 
+          //ADDED BY RODOLFO
+
+          console.log("Sender Asset:", req.senderAsset);
+          console.log("Receiver Asset:", req.receiverAsset);
+          await this.serverService.registryVerification(req, session);
+          //
+
           await this.serverService.wrapToken(session);
 
+          //ADDED BY RODOLFO
+          //await this.serverService.destinationNetworkAssetCompatibilityVerification();
+          //
           const message = await this.serverService.preSATPTransferResponse(
             req,
             session,

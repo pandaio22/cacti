@@ -290,18 +290,18 @@ const VALID_ASSET_SCHEMA_DID_DOCUMENT_EXAMPLE = {
 
 const VALID_SCHEMA_PROFILE_DID_DOCUMENT_EXAMPLE = {
   "@context": ["https://www.w3.org/ns/did/v1"],
-  id: "did:web:example.com:schema-profile",
+  id: "did:example:56745689abcdefghi",
   type: ["DIDDocument", "SchemaProfileDidDocument"],
   verificationMethod: [
     {
-      id: "did:web:example.com:schema-profile#controller",
+      id: "did:example:56745689abcdefghi#controller",
       type: "Ed25519VerificationKey2020",
       controller: "did:web:example.com:controller",
       publicKeyMultibase: "H3C2AVvLMf2pX...",
     },
   ],
-  authentication: ["did:web:example.com:schema-profile#controller"],
-  assertionMethod: ["did:web:example.com:schema-profile#controller"],
+  authentication: ["did:example:56745689abcdefghi#controller"],
+  assertionMethod: ["did:example:56745689abcdefghi#controller"],
 };
 
 const VALID_TOKENIZED_ASSET_RECORD_DID_DOCUMENT = {

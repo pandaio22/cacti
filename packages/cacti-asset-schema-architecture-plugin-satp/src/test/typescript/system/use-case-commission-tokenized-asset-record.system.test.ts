@@ -194,6 +194,7 @@ describe("Scenario #3 - Commission Tokenized Asset Record", () => {
             tokenizedAssetRecordVerifiableCredential,
         });
 
+      //await new Promise((resolve) => setTimeout(resolve, 5 * 60 * 1000)); // 2 minutes
       //Then
       expect(tokenIssuanceAuthorizationRequest).toBeDefined();
       expect(tokenIssuanceAuthorizationRequest).toHaveProperty("@context");

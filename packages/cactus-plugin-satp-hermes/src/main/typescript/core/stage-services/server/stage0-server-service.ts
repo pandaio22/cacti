@@ -63,6 +63,8 @@ import { type BridgeManagerClientInterface } from "../../../cross-chain-mechanis
 import { LedgerType } from "@hyperledger/cactus-core-api";
 import { NetworkId } from "../../../public-api";
 import { context, SpanStatusCode } from "@opentelemetry/api";
+
+import axios, { AxiosInstance } from "axios"; //ADDED BY RODOLFO
 export class Stage0ServerService extends SATPService {
   public static readonly SATP_STAGE = "0";
   public static readonly SERVICE_TYPE = SATPServiceType.Server;
@@ -71,6 +73,8 @@ export class Stage0ServerService extends SATPService {
   private bridgeManager: BridgeManagerClientInterface;
 
   private claimFormat: ClaimFormat;
+
+  private api: AxiosInstance; //ADDED BY RODOLFO
 
   constructor(ops: ISATPServerServiceOptions) {
     // for now stage1serverservice does not have any different options than the SATPService class
@@ -93,6 +97,14 @@ export class Stage0ServerService extends SATPService {
 
     this.claimFormat = ops.claimFormat || ClaimFormat.DEFAULT;
     this.bridgeManager = ops.bridgeManager;
+    //ADDED BY RODOLFO
+    this.api = axios.create({
+      baseURL: "http://localhost:3000",
+      headers: {
+        Accept: "application/ld+json",
+      },
+    });
+    //
   }
 
   public async checkNewSessionRequest(
@@ -757,5 +769,115 @@ export class Stage0ServerService extends SATPService {
         span.end();
       }
     });
+  }
+
+  public async registryVerification(
+    request: PreSATPTransferRequest,
+    session: SATPSession,
+  ): Promise<boolean> {
+    const stepTag = `registryVerification`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+
+    this.Log.debug("registryVerification() CALLED HERE");
+
+    if (await !this.validateTokenizedAssetRecord(request, session)) {
+      throw new SignatureVerificationError(
+        fnTag,
+        "Tokenized Asset Record validation failed",
+      );
+    }
+
+    return true;
+  }
+
+  /*
+   *Validating Tokenized Asset Record (TAR) corresponding to asset-token AT:
+   *Upon receiving the reference to the Tokenized Asset Record,
+   *the gateway G2 must resolve (de-reference) the reference to the correct
+   *Registry Service (RG) where the Tokenized Asset Record (TAR) is stored.
+   *Gateway G2 then fetches a copy of the TAR1 from the Registry Service (RG) and
+   *validates the signature of on TAR.
+   */
+  public async validateTokenizedAssetRecord(
+    request: PreSATPTransferRequest,
+    session: SATPSession,
+  ): Promise<boolean> {
+    const stepTag = `validateTokenizedAssetRecord()`;
+    const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
+    try {
+      console.log("TAR:", request.senderAsset?.tokenizedAssetRecord);
+      if (request.senderAsset?.tokenizedAssetRecord == undefined) {
+        throw new AssetMissing(fnTag);
+      }
+      if (session == undefined) {
+        throw new SessionError(fnTag);
+      }
+      //1st - Fetch Tokenized Asset Record from Registry Service
+      let uid = request.senderAsset?.tokenizedAssetRecord;
+      const getTokenizedAssetRecord = await this.api.get(
+        "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-tokenized-asset-record",
+        {
+          params: { uid },
+          headers: {
+            Accept: "application/ld+json",
+          },
+        },
+      );
+      if (getTokenizedAssetRecord == undefined) {
+        throw new AssetMissing(
+          fnTag,
+          `Failed to fetch Tokenized Asset Record from Registry`,
+        );
+      }
+      console.log(
+        `${fnTag}, Tokenized Asset Record fetched successfully:`,
+        getTokenizedAssetRecord.data,
+      );
+
+      //2nd - Validate Tokenized Asset Record signature
+      // Missing the library :(
+
+      /**
+       * Validating Schema Profile (SP) corresponding to Tokenized Asset Record (TAR):
+       * Since the Tokenized Asset Record (TAR) carries a reference to the Schema Profile (SP),
+       * gateway G2 must use that reference to fetch a copy of the Schema Profile from the
+       * correct Registry Service (RG).
+       */
+      if (
+        getTokenizedAssetRecord.data.tokenizedAssetRecord.schema_profile ==
+        undefined
+      ) {
+        throw new AssetMissing(fnTag);
+      }
+      uid = getTokenizedAssetRecord.data.tokenizedAssetRecord.schema_profile;
+
+      const getSchemaProfile = await this.api.get(
+        "/api/@hyperledger/cacti-asset-schema-architecture/registry/get-schema-profile",
+        {
+          params: { uid },
+          headers: {
+            Accept: "application/ld+json",
+          },
+        },
+      );
+      if (getSchemaProfile == undefined) {
+        throw new AssetMissing(
+          fnTag,
+          `Failed to fetch Schema Profile from Registry`,
+        );
+      }
+      console.log(
+        `${fnTag}, Tokenized Asset Record fetched successfully:`,
+        getTokenizedAssetRecord.data,
+      );
+      return true;
+    } catch (error) {
+      this.Log.error(`Error in ${fnTag}`, error);
+      throw new FailedToProcessError(
+        fnTag,
+        "validateTokenizedAssetRecord",
+        error,
+      );
+    }
   }
 }

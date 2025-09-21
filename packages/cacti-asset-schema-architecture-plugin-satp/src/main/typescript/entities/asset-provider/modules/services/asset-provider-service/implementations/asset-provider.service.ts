@@ -270,9 +270,10 @@ export class AssetProviderService implements IAssetProviderService {
 
       //Step 2: Create Tokenized Asset Record - USE CASE EXAMPLE
       console.debug("Digitized Asset Record created...\n");
+      //schema_profile: "did:example:56745689abcdefghi#schema-profile",
       const tokenizedAssetRecord: TokenizedAssetRecord = {
         "@context": [{ "@version": 1.1 }, "did:example:56745689abcdefghi#"],
-        schema_profile: "did:example:56745689abcdefghi#schema-profile",
+        schema_profile: "did:example:56745689abcdefghi",
         token_issuance_authorization: tokenIssuanceAuthorization,
         dcap: {
           rwa: {

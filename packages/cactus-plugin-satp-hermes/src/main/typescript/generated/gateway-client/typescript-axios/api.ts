@@ -319,6 +319,12 @@ export interface Asset {
      * @memberof Asset
      */
     'referenceId': string;
+    /**
+     * 
+     * @type {TransactRequestSourceAssetTokenizedAssetRecord}
+     * @memberof Asset
+     */
+    'tokenizedAssetRecord'?: TransactRequestSourceAssetTokenizedAssetRecord;
 }
 
 export const AssetTokenTypeEnum = {
@@ -3790,6 +3796,12 @@ export interface TransactRequestSourceAsset {
      * @memberof TransactRequestSourceAsset
      */
     'referenceId': string;
+    /**
+     * 
+     * @type {TransactRequestSourceAssetTokenizedAssetRecord}
+     * @memberof TransactRequestSourceAsset
+     */
+    'tokenizedAssetRecord'?: TransactRequestSourceAssetTokenizedAssetRecord;
 }
 
 export const TransactRequestSourceAssetTokenTypeEnum = {
@@ -3833,6 +3845,12 @@ export const TransactRequestSourceAssetNetworkIdLedgerTypeEnum = {
 } as const;
 
 export type TransactRequestSourceAssetNetworkIdLedgerTypeEnum = typeof TransactRequestSourceAssetNetworkIdLedgerTypeEnum[keyof typeof TransactRequestSourceAssetNetworkIdLedgerTypeEnum];
+
+/**
+ * @type TransactRequestSourceAssetTokenizedAssetRecord
+ * @export
+ */
+export type TransactRequestSourceAssetTokenizedAssetRecord = string;
 
 /**
  * Response schema for a transaction request. Includes the session ID and the current status of the transaction.

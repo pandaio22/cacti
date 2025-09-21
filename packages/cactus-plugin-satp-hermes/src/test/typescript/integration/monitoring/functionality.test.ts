@@ -252,6 +252,12 @@ async function executeTransfer(
     amountPerTransfer,
     amountPerTransfer,
   );
+  /*
+   * ADDED HERE TO TEST THE ASSET SCHEMA ARCHITECTURE
+   */
+  req.sourceAsset.tokenizedAssetRecord = "did:example:tar:123456789abcdef";
+  console.log("This is the Source Asset:", req.sourceAsset);
+  /************************************************/
 
   for (let i = 0; i < transfers; i++) {
     const res = await dispatcher?.Transact(req);
@@ -286,7 +292,7 @@ beforeAll(async () => {
   await besuEnv.deployAndSetupContracts(ClaimFormat.BUNGEE);
   // Start monitoring system
   startDockerComposeService("otel-lgtm");
-  await executeTransfer("1000", 10, "100");
+  await executeTransfer("1000", 1, "100");
 }, TIMEOUT);
 
 afterEach(async () => {

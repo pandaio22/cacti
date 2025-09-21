@@ -151,6 +151,15 @@
                       },
                       "referenceId": {
                         "type": "string"
+                      },
+                      "tokenizedAssetRecord": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "did:example:tokenizedAssetRecord"
+                          }
+                        ]
                       }
                     }
                   },
@@ -227,6 +236,15 @@
                       },
                       "referenceId": {
                         "type": "string"
+                      },
+                      "tokenizedAssetRecord": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "did:example:tokenizedAssetRecord"
+                          }
+                        ]
                       }
                     }
                   }
@@ -4597,6 +4615,15 @@
           },
           "referenceId": {
             "type": "string"
+          },
+          "tokenizedAssetRecord": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "example": "did:example:tokenizedAssetRecord"
+              }
+            ]
           }
         }
       },
@@ -4691,6 +4718,15 @@
               },
               "referenceId": {
                 "type": "string"
+              },
+              "tokenizedAssetRecord": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:example:tokenizedAssetRecord"
+                  }
+                ]
               }
             }
           },
@@ -4767,6 +4803,15 @@
               },
               "referenceId": {
                 "type": "string"
+              },
+              "tokenizedAssetRecord": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "did:example:tokenizedAssetRecord"
+                  }
+                ]
               }
             }
           }

@@ -101,6 +101,7 @@ export function populateClientSessionData(
   sourceAssetReferenceId: string,
   sourceAssetNetworkType: string,
   sourceAssetTokenType: TokenType,
+  sourceAssetTokenizedAssetRecord: string | undefined,
   receiverAssetNetworkId: string,
   receiverAssetReferenceId: string,
   receiverAssetNetworkType: string,
@@ -137,6 +138,7 @@ export function populateClientSessionData(
       type: sourceAssetNetworkType,
     }),
     tokenType: getEnumValueByKey(ProtoTokenType, sourceAssetTokenType),
+    tokenizedAssetRecord: sourceAssetTokenizedAssetRecord,
   });
 
   sessionData.receiverAsset = create(AssetSchema, {

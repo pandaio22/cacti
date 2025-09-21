@@ -297,6 +297,7 @@ message Asset {
   string msp_id = 8;
   string channel_name = 9;
   NetworkId network_id = 10;
+  optional string tokenizedAssetRecord = 11;
 }
 
 message NetworkId {
