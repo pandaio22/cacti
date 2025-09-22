@@ -31,6 +31,7 @@ import { MessageType } from "../../generated/proto/cacti/satp/v02/common/message
 import { getMessageTypeName } from "../satp-utils";
 import { MonitorService } from "../../services/monitoring/monitor";
 import { context, SpanStatusCode } from "@opentelemetry/api";
+import { Result } from "ts-results";
 
 export class Stage0SATPHandler implements SATPHandler {
   public static readonly CLASS_NAME = SATPHandlerType.STAGE0;
@@ -225,10 +226,14 @@ export class Stage0SATPHandler implements SATPHandler {
 
           console.log("Sender Asset:", req.senderAsset);
           console.log("Receiver Asset:", req.receiverAsset);
-          await this.serverService.registryVerification(req, session);
+          const schemaProfile = await this.serverService.registryVerification(
+            req,
+            session,
+          );
           //
 
-          await this.serverService.wrapToken(session);
+          await this.serverService.wrapToken(session, schemaProfile);
+          //await this.serverService.validateSchemaProfileCompatibility(session);
 
           //ADDED BY RODOLFO
           //await this.serverService.destinationNetworkAssetCompatibilityVerification();

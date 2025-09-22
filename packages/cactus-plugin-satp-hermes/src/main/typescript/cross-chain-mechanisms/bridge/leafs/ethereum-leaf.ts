@@ -49,6 +49,7 @@ import {
 } from "../../common/errors";
 import { ISignerKeyPair } from "@hyperledger/cactus-common";
 import SATPWrapperContract from "../../../../solidity/generated/SATPWrapperContract.sol/SATPWrapperContract.json";
+import SATPTokenContract from "../../../../../test/solidity/generated/SATPTokenAssetSchemaArchitectureContract.sol/SATPTokenContract.json";
 import { Asset } from "../ontology/assets/asset";
 import { TokenResponse } from "../../../generated/SATPWrapperContract";
 import { NetworkId } from "../../../public-api";
@@ -378,6 +379,37 @@ export class EthereumLeaf
       }
     });
   }
+  /**
+   * ADDED BY RODOLFO
+   * Returns the schema profile ID.
+   * WHERE TO ACCESS THE DESTINATION CONTRACT ABI?
+   *
+   * */
+  public async getSchemaProfileId(asset: EvmAsset): Promise<void> {
+    const fnTag = `${EthereumLeaf.CLASS_NAME}#getSchemaProfileId`;
+    this.log.debug(`${fnTag}, Getting SchemaProfileId`);
+
+    const response = (await this.connector.invokeContract({
+      contract: {
+        contractJSON: {
+          contractName: asset.contractName,
+          abi: SATPTokenContract.abi,
+          bytecode: SATPTokenContract.bytecode.object,
+        },
+        contractAddress: asset.contractAddress,
+      },
+      invocationType: EthContractInvocationType.Call,
+      methodName: "assetType",
+      params: [],
+      web3SigningCredential: this.signingCredential,
+      gasConfig: this.gasConfig,
+    })) as EthereumResponse;
+
+    if (!response.success) {
+      throw new TransactionError(fnTag);
+    }
+    console.log("I CALLED THE SMART CONTRACT!!!", response.callOutput);
+  }
 
   /**
    * Deploys a non-fungible wrapper contract.
@@ -588,6 +620,39 @@ export class EthereumLeaf
         if (!response.success) {
           throw new TransactionError(fnTag);
         }
+
+        /*ADDED BY RODOLFO*/
+        console.log("Trouble starts here!");
+
+        const destinationSchemaProfile = (await this.connector.invokeContract({
+          contract: {
+            contractJSON: {
+              contractName: this.wrapperContractName,
+              abi: SATPWrapperContract.abi,
+              bytecode: SATPWrapperContract.bytecode.object,
+            },
+            contractAddress: this.wrapperContractAddress,
+          },
+          invocationType: EthContractInvocationType.Call,
+          methodName: "fetchSchemaProfile",
+          params: [
+            asset.contractAddress, // the address of SATPTokenContract (Contract A)
+          ],
+          web3SigningCredential: this.signingCredential, // still needed for auth
+          gasConfig: this.gasConfig,
+        })) as EthereumResponse;
+
+        console.log(
+          "This is the Destination Contract Schema Profile:",
+          destinationSchemaProfile.callOutput,
+        );
+
+        if (destinationSchemaProfile.callOutput === asset.schemaProfile)
+          console.log(
+            "The Destination Contract is compatible and supports the asset being sent",
+          );
+
+        /******************/
 
         return {
           transactionId: response.out.transactionReceipt.transactionHash ?? "",

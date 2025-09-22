@@ -17,6 +17,9 @@ contract SATPTokenContract is AccessControl, ERC20 {
     bytes32 public constant BRIDGE_ROLE = keccak256("BRIDGE_ROLE");
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
+    string private _schemaId;
+
+
     constructor(address _owner) ERC20("SATPToken", "SATP") {
         _grantRole(OWNER_ROLE, _owner);
         _grantRole(BRIDGE_ROLE, _owner);
@@ -64,6 +67,23 @@ contract SATPTokenContract is AccessControl, ERC20 {
             return true;
         }     
         revert noPermission(account);
+    }
+    
+
+    /**
+    * @notice Sets the schema ID of the asset.
+    * @param schemaId The schema ID to set.
+    */
+    function setSchemaId(string memory schemaId) external onlyRole(OWNER_ROLE) {
+        _schemaId = schemaId;
+    }
+
+    /**
+    * @notice Gets the schema ID of the asset.
+    * @return schemaId The current schema ID.
+    */
+    function getSchemaId() external view returns (string memory schemaId) {
+        return _schemaId;
     }
 
     /**

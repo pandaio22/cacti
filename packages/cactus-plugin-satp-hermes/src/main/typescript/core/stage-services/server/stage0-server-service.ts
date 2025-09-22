@@ -637,7 +637,10 @@ export class Stage0ServerService extends SATPService {
     });
   }
 
-  public async wrapToken(session: SATPSession): Promise<void> {
+  public async wrapToken(
+    session: SATPSession,
+    schemaProfile?: string,
+  ): Promise<void> {
     const stepTag = `wrapToken()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
 
@@ -676,6 +679,7 @@ export class Stage0ServerService extends SATPService {
             ledgerType: sessionData.receiverAsset.networkId?.type as LedgerType,
           } as NetworkId;
 
+          sessionData.receiverAsset.tokenizedAssetRecord = schemaProfile; //ADDED BY RODOLFO
           const token: FungibleAsset = protoToAsset(
             sessionData.receiverAsset,
             networkId,
@@ -774,20 +778,24 @@ export class Stage0ServerService extends SATPService {
   public async registryVerification(
     request: PreSATPTransferRequest,
     session: SATPSession,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const stepTag = `registryVerification`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
 
     this.Log.debug("registryVerification() CALLED HERE");
-
-    if (await !this.validateTokenizedAssetRecord(request, session)) {
+    const { result, schemaProfile } = await this.validateTokenizedAssetRecord(
+      request,
+      session,
+    );
+    console.log("Result:", { result, schemaProfile });
+    if (!result) {
       throw new SignatureVerificationError(
         fnTag,
         "Tokenized Asset Record validation failed",
       );
     }
 
-    return true;
+    return schemaProfile;
   }
 
   /*
@@ -801,7 +809,7 @@ export class Stage0ServerService extends SATPService {
   public async validateTokenizedAssetRecord(
     request: PreSATPTransferRequest,
     session: SATPSession,
-  ): Promise<boolean> {
+  ): Promise<{ result: boolean; schemaProfile: string }> {
     const stepTag = `validateTokenizedAssetRecord()`;
     const fnTag = `${this.getServiceIdentifier()}#${stepTag}`;
     try {
@@ -870,7 +878,7 @@ export class Stage0ServerService extends SATPService {
         `${fnTag}, Tokenized Asset Record fetched successfully:`,
         getTokenizedAssetRecord.data,
       );
-      return true;
+      return { result: true, schemaProfile: uid };
     } catch (error) {
       this.Log.error(`Error in ${fnTag}`, error);
       throw new FailedToProcessError(

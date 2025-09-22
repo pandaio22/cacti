@@ -9,6 +9,7 @@ export interface Asset {
   owner: string;
   contractName: string;
   network: NetworkId;
+  schemaProfile?: string; //ADDED BY RODOLFO
 }
 
 export interface FungibleAsset extends Asset {

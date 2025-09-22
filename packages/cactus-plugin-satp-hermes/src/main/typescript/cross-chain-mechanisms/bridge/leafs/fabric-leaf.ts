@@ -377,6 +377,18 @@ export class FabricLeaf
   }
 
   /**
+   * ADDED BY RODOLFO
+   * Returns the schema profile ID.
+   * WHERE TO ACCESS THE DESTINATION CONTRACT ABI?
+   *
+   * */
+  public async getSchemaProfileId(asset: FabricAsset): Promise<void> {
+    const fnTag = `${FabricLeaf.CLASS_NAME}#getSchemaProfileId`;
+    this.log.debug(`${fnTag}, Getting SchemaProfileId`);
+    throw new Error("Method not implemented.");
+  }
+
+  /**
    * Deploys the necessary contracts for the Ethereum leaf.
    *
    * This method deploys the fungible wrapper contract and, if uncommented,

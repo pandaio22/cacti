@@ -54,6 +54,7 @@ export function protoToAsset(asset: ProtoAsset, networkId: NetworkId): Asset {
     amount: String(asset.amount),
     contractName: asset.contractName,
     network: networkId,
+    schemaProfile: asset.tokenizedAssetRecord, //ADDED BY RODOLFO
   };
   if (asset.mspId) {
     (assetObj as FabricFungibleAsset).mspId = asset.mspId;

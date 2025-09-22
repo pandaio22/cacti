@@ -66,6 +66,12 @@ error TokenNotUnlocked(string tokenId);
 
 error InsuficientAmountLocked(string tokenId, uint256 amount);
 
+/*ADDED BY RODOLFO*/
+interface ISATPToken {
+    function getSchemaProfile() external view returns (string memory);
+}
+
+
 
 /**
  * @title SATPWrapper
@@ -398,4 +404,10 @@ contract SATPWrapperContract is Ownable, ITraceableContract{
         }
         return dynamicParams;
     }
+
+    /**ADDED BY RODOLFO*/
+    function fetchSchemaProfile(address contractAddress) external view returns (string memory) {
+        return ISATPToken(contractAddress).getSchemaProfile();
+}
+
 }
