@@ -46,6 +46,8 @@ import {
   GetTokenizedAssetRecordEndpoint,
   GetAssetSchemaAuthorityEndpoint,
   GetAssetProviderEndpoint,
+  VerifyTokenizedAssetRecordVCEndpoint,
+  VerifySchemaProfileVCEndpoint,
 } from "./entities/registry/endpoints/registry-endpoints";
 import { AssetSchemaAuthorityService } from "../typescript/entities/asset-schema-authority/modules/services/asset-schema-authority-service/implementations/asset-schema-authority-service";
 import { RegistryApiService } from "../typescript/entities/registry/modules/services/registry-api-service/implementations/registry-api-service";
@@ -372,6 +374,13 @@ export class PluginAssetSchemaArchitecture
       new RegistryService(),
     );
 
+    const verifyTokenizedAssetRecordVCEndpoint =
+      new VerifyTokenizedAssetRecordVCEndpoint(new RegistryService());
+
+    const verifySchemaProfileVCEndpoint = new VerifySchemaProfileVCEndpoint(
+      new RegistryService(),
+    );
+
     this.endpoints = [
       assetSchemaCertificationEndpoint,
       schemaProfileCertificationEndpoint,
@@ -387,6 +396,8 @@ export class PluginAssetSchemaArchitecture
       getTokenizedAssetRecordEndpoint,
       getAssetSchemaAuthorityEndpoint,
       getAssetProviderEndpoint,
+      verifyTokenizedAssetRecordVCEndpoint,
+      verifySchemaProfileVCEndpoint,
     ];
 
     return await this.endpoints;

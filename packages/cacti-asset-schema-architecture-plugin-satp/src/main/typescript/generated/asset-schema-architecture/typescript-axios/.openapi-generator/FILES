@@ -98,5 +98,7 @@ docs/TokenIssuanceAuthorizationRequest.md
 docs/TokenizedAssetRecord.md
 docs/TokenizedAssetRecordDidDocument.md
 docs/TokenizedAssetRecordVerifiableCredential.md
+docs/VerificationResult.md
+docs/VerifyTokenizedAssetRecordVC200Response.md
 git_push.sh
 index.ts

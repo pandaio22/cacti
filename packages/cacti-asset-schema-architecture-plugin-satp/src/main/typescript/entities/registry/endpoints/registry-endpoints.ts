@@ -9,6 +9,8 @@ import { GetSchemaProfileEndpoint } from "./get-schema-profile-endpoint";
 import { GetTokenizedAssetRecordEndpoint } from "./get-tokenized-asset-record-endpoint";
 import { GetAssetSchemaAuthorityEndpoint } from "./get-asset-schema-authority-endpoint";
 import { GetAssetProviderEndpoint } from "./get-asset-provider-endpoint";
+import { VerifyTokenizedAssetRecordVCEndpoint } from "./verify-tokenized-asset-record-vc";
+import { VerifySchemaProfileVCEndpoint } from "./verify-schema-profile-vc";
 
 export {
   RegisterTokenAuthorizationEndpoint,
@@ -22,4 +24,6 @@ export {
   GetTokenizedAssetRecordEndpoint,
   GetAssetSchemaAuthorityEndpoint,
   GetAssetProviderEndpoint,
+  VerifyTokenizedAssetRecordVCEndpoint,
+  VerifySchemaProfileVCEndpoint,
 };

@@ -1563,4 +1563,14 @@ UniqueId:
     description: A unique identifier string for an artifact
     example: "QmapEvFnkXp6f6w2CqZRhKLhgEn11EuUQn2mH1HF7mnTJQ"
 
+VerificationResult:
+  type: object
+  required:
+    - result
+  properties:
+    result:
+      type: boolean
+
+
+
 

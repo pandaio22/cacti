@@ -17,6 +17,7 @@ import {
   TokenIssuanceAuthorizationID,
   RegisteredAssetSchemaAuthorityID,
   RegisteredAssetProviderID,
+  VerificationResult,
 } from "../../../../../../generated/asset-schema-architecture/typescript-axios/api";
 
 import { RegisteredAssetSchemaDao } from "../../../dao/dao-asset-schema";
@@ -30,6 +31,7 @@ import { DidResolverService } from "../../did-resolver-service/implementations/d
 import { ValidationService } from "../../validation-service/implementations/validation-service";
 import { VcVerificationService } from "../../vc-verification-service/implementations/vc-verification-service";
 import { IRegistryService } from "../interfaces/registry-service.interface";
+import { ValidationResult } from "../../../../../../types/asset-schema-architecture-types.type";
 
 import { DEFAULT_LOCAL_CONTEXTS } from "../../../../../../utils/defaultLocalContexts";
 
@@ -509,5 +511,57 @@ export class RegistryService implements IRegistryService {
       id: assetProviderCertificate.id,
       type: "RegisteredAssetProviderID",
     } as RegisteredAssetProviderID;
+  }
+
+  /**
+   * ADDED FOR SCENARIO 4 TEST
+   * @param tokenizedAssetRecordVerifiableCredential
+   * @returns
+   */
+  public async verifyTokenizedAssetRecordVC(
+    tokenizedAssetRecordVerifiableCredential: TokenizedAssetRecordVerifiableCredential,
+  ): Promise<VerificationResult> {
+    if (!tokenizedAssetRecordVerifiableCredential) {
+      throw new Error(
+        "Missing required inputs for verifying the Tokenized Asset Record VC",
+      );
+    }
+    const result: ValidationResult =
+      await this.verifiableCredentialService.verifyTokenizedAssetRecordVerifiableCredential(
+        tokenizedAssetRecordVerifiableCredential,
+      );
+    if (!result.valid) {
+      throw new Error(
+        "Invalid Verifiable Credential: Error when verifying Verifiable Credential.",
+      );
+    }
+
+    return { result: result.valid } as VerificationResult;
+  }
+
+  /**
+   * ADDED FOR SCENARIO 4 TEST
+   * @param schemaProfileVerifiableCredential
+   * @returns
+   */
+  public async verifySchemaProfileVC(
+    schemaProfileVerifiableCredential: SchemaProfileVerifiableCredential,
+  ): Promise<VerificationResult> {
+    if (!schemaProfileVerifiableCredential) {
+      throw new Error(
+        "Missing required inputs for verifying the Schema Profile VC",
+      );
+    }
+    const result: ValidationResult =
+      await this.verifiableCredentialService.verifySchemaProfileVerifiableCredential(
+        schemaProfileVerifiableCredential,
+      );
+    if (!result.valid) {
+      throw new Error(
+        "Invalid Verifiable Credential: Error when verifying Verifiable Credential.",
+      );
+    }
+
+    return { result: result.valid } as VerificationResult;
   }
 }

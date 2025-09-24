@@ -15,6 +15,8 @@ All URIs are relative to *http://localhost:3000/api/@hyperledger/cacti-asset-sch
 |[**registerAssetProvider**](#registerassetprovider) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-provider | Register an Asset Provider|
 |[**registerAssetSchemaAuthority**](#registerassetschemaauthority) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-asset-schema-authority | Register an Asset Schema Authority|
 |[**registerTokenIssuanceAuthorization**](#registertokenissuanceauthorization) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/register-token-issuance-authorization | Register Token Issuance Authorization|
+|[**verifySchemaProfileVC**](#verifyschemaprofilevc) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-schema-profile-vc | Verify a Schema Profile Verifiable Credential (SP VC)|
+|[**verifyTokenizedAssetRecordVC**](#verifytokenizedassetrecordvc) | **POST** /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-tokenized-asset-record-vc | Verify a Tokenized Asset Record Verifiable Credential (TAR VC)|
 
 # **commissionAssetSchema**
 > CommissionAssetSchema200Response commissionAssetSchema(commissionAssetSchemaRequest)
@@ -600,6 +602,114 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Token issuance authorization registered successfully |  -  |
+|**400** | Bad Request |  -  |
+|**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **verifySchemaProfileVC**
+> VerifyTokenizedAssetRecordVC200Response verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential)
+
+This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC). 
+
+### Example
+
+```typescript
+import {
+    RegistryApi,
+    Configuration,
+    CommissionSchemaProfileRequestSchemaProfileVerifiableCredential
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new RegistryApi(configuration);
+
+let commissionSchemaProfileRequestSchemaProfileVerifiableCredential: CommissionSchemaProfileRequestSchemaProfileVerifiableCredential; //
+
+const { status, data } = await apiInstance.verifySchemaProfileVC(
+    commissionSchemaProfileRequestSchemaProfileVerifiableCredential
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **commissionSchemaProfileRequestSchemaProfileVerifiableCredential** | **CommissionSchemaProfileRequestSchemaProfileVerifiableCredential**|  | |
+
+
+### Return type
+
+**VerifyTokenizedAssetRecordVC200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/ld+json
+ - **Accept**: application/ld+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Verification completed successfully |  -  |
+|**400** | Bad Request |  -  |
+|**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **verifyTokenizedAssetRecordVC**
+> VerifyTokenizedAssetRecordVC200Response verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential)
+
+This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC). 
+
+### Example
+
+```typescript
+import {
+    RegistryApi,
+    Configuration,
+    CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new RegistryApi(configuration);
+
+let commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential; //
+
+const { status, data } = await apiInstance.verifyTokenizedAssetRecordVC(
+    commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential** | **CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential**|  | |
+
+
+### Return type
+
+**VerifyTokenizedAssetRecordVC200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/ld+json
+ - **Accept**: application/ld+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Verification completed successfully |  -  |
 |**400** | Bad Request |  -  |
 |**500** | Internal Server Error |  -  |
 

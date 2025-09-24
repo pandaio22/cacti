@@ -403,6 +403,64 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-tokenized-asset-record-vc:
+    post:
+      tags:
+        - Registry
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-tokenized-asset-record-vc
+      summary: Verify a Tokenized Asset Record Verifiable Credential (TAR VC)
+      description: |
+        This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC).
+      operationId: verifyTokenizedAssetRecordVC
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/TokenizedAssetRecordVerifiableCredential'
+      responses:
+        '200':
+          description: Verification completed successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-schema-profile-vc:
+    post:
+      tags:
+        - Registry
+      x-hyperledger-cacti:
+        http:
+          verbLowerCase: post
+          path: /api/@hyperledger/cacti-asset-schema-architecture/registry/verify-schema-profile-vc
+      summary: Verify a Schema Profile Verifiable Credential (SP VC)
+      description: |
+        This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC).
+      operationId: verifySchemaProfileVC
+      requestBody:
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/SchemaProfileVerifiableCredential'
+      responses:
+        '200':
+          description: Verification completed successfully
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
   /api/@hyperledger/cacti-asset-schema-architecture/asset-schema-authority/asset-schema-certification:
     post:
       tags:

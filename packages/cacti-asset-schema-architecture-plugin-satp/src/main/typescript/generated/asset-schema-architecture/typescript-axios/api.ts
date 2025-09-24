@@ -2909,6 +2909,32 @@ export interface TokenizedAssetRecordVerifiableCredential {
      */
     'proof'?: CommissionAssetSchemaRequestAssetSchemaVerifiableCredentialProof;
 }
+/**
+ * 
+ * @export
+ * @interface VerificationResult
+ */
+export interface VerificationResult {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VerificationResult
+     */
+    'result': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface VerifyTokenizedAssetRecordVC200Response
+ */
+export interface VerifyTokenizedAssetRecordVC200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VerifyTokenizedAssetRecordVC200Response
+     */
+    'result': boolean;
+}
 
 /**
  * AssetSchemaAuthorityApi - axios parameter creator
@@ -3569,6 +3595,78 @@ export const RegistryApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC). 
+         * @summary Verify a Schema Profile Verifiable Credential (SP VC)
+         * @param {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential} commissionSchemaProfileRequestSchemaProfileVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifySchemaProfileVC: async (commissionSchemaProfileRequestSchemaProfileVerifiableCredential: CommissionSchemaProfileRequestSchemaProfileVerifiableCredential, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'commissionSchemaProfileRequestSchemaProfileVerifiableCredential' is not null or undefined
+            assertParamExists('verifySchemaProfileVC', 'commissionSchemaProfileRequestSchemaProfileVerifiableCredential', commissionSchemaProfileRequestSchemaProfileVerifiableCredential)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/verify-schema-profile-vc`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(commissionSchemaProfileRequestSchemaProfileVerifiableCredential, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC). 
+         * @summary Verify a Tokenized Asset Record Verifiable Credential (TAR VC)
+         * @param {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential} commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyTokenizedAssetRecordVC: async (commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential' is not null or undefined
+            assertParamExists('verifyTokenizedAssetRecordVC', 'commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential', commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential)
+            const localVarPath = `/api/@hyperledger/cacti-asset-schema-architecture/registry/verify-tokenized-asset-record-vc`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3722,6 +3820,32 @@ export const RegistryApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['RegistryApi.registerTokenIssuanceAuthorization']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC). 
+         * @summary Verify a Schema Profile Verifiable Credential (SP VC)
+         * @param {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential} commissionSchemaProfileRequestSchemaProfileVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential: CommissionSchemaProfileRequestSchemaProfileVerifiableCredential, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifyTokenizedAssetRecordVC200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['RegistryApi.verifySchemaProfileVC']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC). 
+         * @summary Verify a Tokenized Asset Record Verifiable Credential (TAR VC)
+         * @param {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential} commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifyTokenizedAssetRecordVC200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['RegistryApi.verifyTokenizedAssetRecordVC']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -3841,6 +3965,26 @@ export const RegistryApiFactory = function (configuration?: Configuration, baseP
          */
         registerTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig): AxiosPromise<RegisterTokenIssuanceAuthorization200Response> {
             return localVarFp.registerTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC). 
+         * @summary Verify a Schema Profile Verifiable Credential (SP VC)
+         * @param {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential} commissionSchemaProfileRequestSchemaProfileVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential: CommissionSchemaProfileRequestSchemaProfileVerifiableCredential, options?: RawAxiosRequestConfig): AxiosPromise<VerifyTokenizedAssetRecordVC200Response> {
+            return localVarFp.verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC). 
+         * @summary Verify a Tokenized Asset Record Verifiable Credential (TAR VC)
+         * @param {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential} commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options?: RawAxiosRequestConfig): AxiosPromise<VerifyTokenizedAssetRecordVC200Response> {
+            return localVarFp.verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3982,6 +4126,30 @@ export class RegistryApi extends BaseAPI {
      */
     public registerTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequest: RegisterTokenIssuanceAuthorizationRequest, options?: RawAxiosRequestConfig) {
         return RegistryApiFp(this.configuration).registerTokenIssuanceAuthorization(registerTokenIssuanceAuthorizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to verify a Schema Profile Verifiable Credential (SP VC). 
+     * @summary Verify a Schema Profile Verifiable Credential (SP VC)
+     * @param {CommissionSchemaProfileRequestSchemaProfileVerifiableCredential} commissionSchemaProfileRequestSchemaProfileVerifiableCredential 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RegistryApi
+     */
+    public verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential: CommissionSchemaProfileRequestSchemaProfileVerifiableCredential, options?: RawAxiosRequestConfig) {
+        return RegistryApiFp(this.configuration).verifySchemaProfileVC(commissionSchemaProfileRequestSchemaProfileVerifiableCredential, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a client to verify a Tokenized Asset Record Verifiable Credential (TAR VC). 
+     * @summary Verify a Tokenized Asset Record Verifiable Credential (TAR VC)
+     * @param {CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential} commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RegistryApi
+     */
+    public verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential: CommissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options?: RawAxiosRequestConfig) {
+        return RegistryApiFp(this.configuration).verifyTokenizedAssetRecordVC(commissionTokenizedAssetRecordRequestTokenizedAssetRecordVerifiableCredential, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

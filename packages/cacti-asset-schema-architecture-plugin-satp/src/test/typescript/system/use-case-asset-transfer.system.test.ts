@@ -212,7 +212,7 @@ describe("Scenario #4 - SATP Asset Transfer", () => {
           tokenizedAssetRecordVerifiableCredential:
             tokenizedAssetRecordVerifiableCredential,
         });
-      await new Promise((resolve) => setTimeout(resolve, 5 * 60 * 1000)); // 5 minutes
+      await new Promise((resolve) => setTimeout(resolve, 15 * 60 * 1000)); // 5 minutes
       //Then
       expect(schemaProfileCertificationEndpoint.status).toEqual(200);
       expect(schemaProfileCertificationEndpoint.data).toBeDefined();

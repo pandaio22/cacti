@@ -845,6 +845,28 @@ export class Stage0ServerService extends SATPService {
       //2nd - Validate Tokenized Asset Record signature
       // Missing the library :(
 
+      const tokenizedAssetRecordVc =
+        getTokenizedAssetRecord.data.tokenizedAssetRecordVerifiableCredential;
+      const verifyTokenizedAssetRecordVC = await this.api.post(
+        "/api/@hyperledger/cacti-asset-schema-architecture/registry/verify-tokenized-asset-record-vc",
+        tokenizedAssetRecordVc,
+        {
+          headers: {
+            Accept: "application/ld+json",
+            "Content-Type": "application/ld+json",
+          },
+        },
+      );
+      if (!verifyTokenizedAssetRecordVC.data.result) {
+        throw new AssetMissing(
+          fnTag,
+          `tokenizedAssetRecord Verifiable Credential is invalid`,
+        );
+      }
+      console.log(
+        `${fnTag}, Tokenized Asset Record VC verified successfully:`,
+        getTokenizedAssetRecord.data,
+      );
       /**
        * Validating Schema Profile (SP) corresponding to Tokenized Asset Record (TAR):
        * Since the Tokenized Asset Record (TAR) carries a reference to the Schema Profile (SP),
@@ -875,9 +897,35 @@ export class Stage0ServerService extends SATPService {
         );
       }
       console.log(
-        `${fnTag}, Tokenized Asset Record fetched successfully:`,
-        getTokenizedAssetRecord.data,
+        `${fnTag}, Schema Profile fetched successfully:`,
+        getSchemaProfile.data,
       );
+
+      //Verify Schema Profile VC
+
+      const schemaProfileVc =
+        getSchemaProfile.data.schemaProfileVerifiableCredential;
+      const verifySchemaProfileVC = await this.api.post(
+        "/api/@hyperledger/cacti-asset-schema-architecture/registry/verify-schema-profile-vc",
+        schemaProfileVc,
+        {
+          headers: {
+            Accept: "application/ld+json",
+            "Content-Type": "application/ld+json",
+          },
+        },
+      );
+      if (!verifySchemaProfileVC.data.result) {
+        throw new AssetMissing(
+          fnTag,
+          `tokenizedAssetRecord Verifiable Credential is invalid`,
+        );
+      }
+      console.log(
+        `${fnTag}, Tokenized Asset Record VC verified successfully:`,
+        verifySchemaProfileVC.data,
+      );
+
       return { result: true, schemaProfile: uid };
     } catch (error) {
       this.Log.error(`Error in ${fnTag}`, error);
