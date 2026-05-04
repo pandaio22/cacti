@@ -58,10 +58,12 @@ import type {
   ILocalLogRepository,
   IRemoteLogRepository,
   IAuditEntryRepository,
+  IOracleLogRepository,
 } from "./database/repository/interfaces/repository";
 import { KnexRemoteLogRepository as RemoteLogRepository } from "./database/repository/knex-remote-log-repository";
 import { KnexLocalLogRepository as LocalLogRepository } from "./database/repository/knex-local-log-repository";
 import { KnexAuditEntryRepository as AuditEntryRepository } from "./database/repository/knex-audit-repository";
+import { KnexOracleLogRepository as OracleLogRepository } from "./database/repository/knex-oracle-log-repository";
 import { BLODispatcher, type BLODispatcherOptions } from "./api1/dispatcher";
 import { type JsonObject } from "swagger-ui-express";
 import type {
@@ -81,8 +83,6 @@ import {
   type ICrashRecoveryManagerOptions,
 } from "./services/gateway/crash-manager";
 import { OraclePersistence } from "./database/oracle-persistence";
-import { KnexOracleLogRepository } from "./database/repository/knex-oracle-log-repository";
-
 import * as OAS from "../json/oapi-api1-bundled.json";
 import { knexLocalInstance } from "./database/knexfile";
 import schedule, { Job } from "node-schedule";
@@ -297,6 +297,18 @@ export interface SATPGatewayConfig extends ICactusPluginOptions {
    * @see {@link AuditEntryRepository} for local persistence implementation
    */
   auditRepository?: Knex.Config;
+
+  /**
+   * Local database configuration for oracle log persistence.
+   * @description
+   * Knex.js configuration for local database persistence of oracle logs used in
+   * SATP protocol operations. Supports logging of oracle interactions and
+   * evidence generation for cross-chain asset transfers.
+   *
+   * @see {@link Knex.Config} for database configuration options
+   * @see {@link OracleLogRepository} for oracle log persistence implementation
+   */
+  oracleLogRepository?: Knex.Config;
 
   /**
    * Enable crash recovery mechanisms.
@@ -519,6 +531,7 @@ export class SATPGateway implements IPluginWebService, ICactusPlugin {
   public localRepository?: ILocalLogRepository;
   public remoteRepository?: IRemoteLogRepository;
   public auditRepository: IAuditEntryRepository;
+  public oracleLogRepository!: IOracleLogRepository;
   private readonly shutdownHooks: ShutdownHook[];
   private crashManager?: CrashManager;
   private readonly monitorService: MonitorService;
@@ -643,6 +656,20 @@ export class SATPGateway implements IPluginWebService, ICactusPlugin {
         knexLocalInstance.default,
       );
     }
+    if (this.config.oracleLogRepository) {
+      this.oracleLogRepository = new OracleLogRepository(
+        this.config.oracleLogRepository,
+      );
+    } else {
+      this.logger.info(
+        "Oracle log repository is not defined. Setting up default config...",
+      );
+      this.oracleLogRepository = new OracleLogRepository({
+        client: "sqlite3",
+        connection: { filename: ":memory:" },
+        useNullAsDefault: true,
+      });
+    }
 
     if (this.config.keyPair === undefined) {
       throw new Error("Key pair is undefined");
@@ -709,18 +736,9 @@ export class SATPGateway implements IPluginWebService, ICactusPlugin {
         } else {
           throw new Error("GatewayIdentity is not defined");
         }
-        const hardcodedKnexConfig = {
-          client: "sqlite3",
-          connection: { filename: ":memory:" },
-          useNullAsDefault: true,
-        };
 
-        const oracleLogRepository = new KnexOracleLogRepository(
-          hardcodedKnexConfig,
-        );
-        //const oracleLogRepository = new KnexOracleLogRepository(undefined);
         const oracleDbLogger = new OraclePersistence({
-          oracleLogRepository,
+          oracleLogRepository: this.oracleLogRepository,
           logLevel: this.config.logLevel,
           monitorService: this.monitorService,
         });
