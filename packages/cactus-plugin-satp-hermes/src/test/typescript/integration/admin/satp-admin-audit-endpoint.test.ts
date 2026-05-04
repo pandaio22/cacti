@@ -234,7 +234,11 @@ describe("Audit Endpoint Integration Tests", () => {
     ).rejects.toMatchObject({
       response: {
         status: 400,
-        data: { error: "InvalidParameter" },
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            errorCode: "format.openapi.validation",
+          }),
+        ]),
       },
     });
   });
